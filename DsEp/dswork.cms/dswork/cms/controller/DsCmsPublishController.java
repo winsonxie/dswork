@@ -522,11 +522,11 @@ public class DsCmsPublishController extends BaseController
 
 	private String getOwn()
 	{
-		return common.web.auth.AuthOwnUtil.getUser(request).getOwn();
+		return common.auth.AuthUtil.getLoginUser(request).getOwn();
 	}
 
 	private String getAccount()
 	{
-		return common.web.auth.AuthOwnUtil.getUser(request).getAccount();
+		return common.auth.AuthUtil.getLoginUser(request).getAccount();
 	}
 }

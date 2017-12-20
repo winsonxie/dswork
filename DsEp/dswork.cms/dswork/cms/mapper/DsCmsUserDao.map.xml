@@ -10,7 +10,6 @@
 		<if test="@Ognl@isNotEmpty(account)"> and ACCOUNT like #{account, typeHandler=LikeTypeHandler} </if>
 		<if test="@Ognl@isNotEmpty(name)"> and NAME like #{name, typeHandler=LikeTypeHandler} </if>
 		<if test="@Ognl@isNotEmpty(mobile)"> and MOBILE like #{mobile, typeHandler=LikeTypeHandler}</if>
-		<if test="@Ognl@isNotEmpty(qybm)"> and QYBM=#{qybm} </if>
 		<if test="@Ognl@isNotEmpty(status)"> and STATUS=#{status} </if>
 	</where>
 </sql>

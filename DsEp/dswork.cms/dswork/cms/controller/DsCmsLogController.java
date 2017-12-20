@@ -78,6 +78,6 @@ public class DsCmsLogController extends BaseController
 
 	private String getOwn()
 	{
-		return common.web.auth.AuthOwnUtil.getUser(request).getOwn();
+		return common.auth.AuthUtil.getLoginUser(request).getOwn();
 	}
 }

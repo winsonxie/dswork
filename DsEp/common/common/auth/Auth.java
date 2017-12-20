@@ -51,6 +51,24 @@ public class Auth
 		return logintype.intValue() == USER;
 	}
 
+	// 用于判断cms、bbs的拥有者
+	public String getOwn()
+	{
+		if(isAdmin())
+		{
+			return "admin" + getAccount();
+		}
+		else if(isEnterprise())
+		{
+			return "ep" + getQybm();
+		}
+		else if(isUser())
+		{
+			return "person" + getAccount();
+		}
+		return "";
+	}
+
 	public Long getId()
 	{
 		return id;

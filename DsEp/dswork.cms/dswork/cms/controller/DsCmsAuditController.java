@@ -307,16 +307,16 @@ public class DsCmsAuditController extends BaseController
 
 	private String getOwn()
 	{
-		return common.web.auth.AuthOwnUtil.getUser(request).getOwn();
+		return common.auth.AuthUtil.getLoginUser(request).getOwn();
 	}
 
 	private String getAccount()
 	{
-		return common.web.auth.AuthOwnUtil.getUser(request).getAccount();
+		return common.auth.AuthUtil.getLoginUser(request).getAccount();
 	}
 
 	private String getName()
 	{
-		return common.web.auth.AuthOwnUtil.getUser(request).getName();
+		return common.auth.AuthUtil.getLoginUser(request).getName();
 	}
 }
