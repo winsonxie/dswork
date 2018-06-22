@@ -1,26 +1,19 @@
 package common.cms.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import common.cms.GsonUtil;
 
-public class VCategory
+public class ViewArticle
 {
 	private Long id;
-	private Long pid;
 	private Long siteid;
-	private String name;
+	private Long categoryid;
 	private String title;
 	private int scope;
 	private int status;
 	private String url;
-	private String viewsite;
-	private String pageviewsite;
-	private String mviewsite;
-	private String mpageviewsite;
 	private String metakeywords;
 	private String metadescription;
 	private String summary;
@@ -31,9 +24,6 @@ public class VCategory
 	private String content;
 	private String jsondata;
 
-	private VCategory parent;
-	private List<VCategory> list = new ArrayList<VCategory>();
-
 	public Long getId()
 	{
 		return id;
@@ -42,16 +32,6 @@ public class VCategory
 	public void setId(Long id)
 	{
 		this.id = id;
-	}
-
-	public Long getPid()
-	{
-		return pid;
-	}
-
-	public void setPid(Long pid)
-	{
-		this.pid = pid;
 	}
 
 	public Long getSiteid()
@@ -64,14 +44,14 @@ public class VCategory
 		this.siteid = siteid;
 	}
 
-	public String getName()
+	public Long getCategoryid()
 	{
-		return name;
+		return categoryid;
 	}
 
-	public void setName(String name)
+	public void setCategoryid(Long categoryid)
 	{
-		this.name = name;
+		this.categoryid = categoryid;
 	}
 
 	public String getTitle()
@@ -112,46 +92,6 @@ public class VCategory
 	public void setUrl(String url)
 	{
 		this.url = url;
-	}
-
-	public String getViewsite()
-	{
-		return viewsite;
-	}
-
-	public void setViewsite(String viewsite)
-	{
-		this.viewsite = viewsite;
-	}
-
-	public String getPageviewsite()
-	{
-		return pageviewsite;
-	}
-
-	public void setPageviewsite(String pageviewsite)
-	{
-		this.pageviewsite = pageviewsite;
-	}
-
-	public String getMviewsite()
-	{
-		return mviewsite;
-	}
-
-	public void setMviewsite(String mviewsite)
-	{
-		this.mviewsite = mviewsite;
-	}
-
-	public String getMpageviewsite()
-	{
-		return mpageviewsite;
-	}
-
-	public void setMpageviewsite(String mpageviewsite)
-	{
-		this.mpageviewsite = mpageviewsite;
 	}
 
 	public String getMetakeywords()
@@ -242,26 +182,6 @@ public class VCategory
 	public void setJsondata(String jsondata)
 	{
 		this.jsondata = jsondata;
-	}
-
-	public VCategory getParent()
-	{
-		return parent;
-	}
-
-	public void setParent(VCategory parent)
-	{
-		this.parent = parent;
-	}
-
-	public List<VCategory> getList()
-	{
-		return list;
-	}
-
-	public void addList(VCategory c)
-	{
-		this.list.add(c);
 	}
 
 	@SuppressWarnings("rawtypes")

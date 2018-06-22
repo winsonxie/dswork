@@ -1,11 +1,12 @@
 <%@page language="java" pageEncoding="UTF-8"%><%
 	response.setCharacterEncoding("UTF-8");
 	response.setContentType("text/plain;charset=UTF-8");
-	String rootpath = "http://www.gzly.gov.cn";
+	String rootpath = "http://192.168.1.10";
+	String webadminpath = "http://192.168.1.10:4444";
 	String contentpath = rootpath + "/visitgz";
-	String dataspath =  "http://www.gzly.gov.cn:8080/www-visitgz/m/cms/category.jsp?siteid=7&pagesize=10";
-	String datapath = "http://www.gzly.gov.cn:8080/www-visitgz/m/cms/list.jsp?siteid=7&pagesize=10";
-	String xtpath = "http://121.8.226.113";
+	String dataspath =  webadminpath + "/www-visitgz/m/cms/category.jsp?siteid=7&pagesize=10";
+	String datapath = webadminpath + "/www-visitgz/m/cms/list.jsp?siteid=7&pagesize=10";
+	String xtpath = "http://192.168.1.10";
 %>{<%
 	%>"siteid":"7"<%
 	%>,"siteurl":"<%=rootpath%>"<%
@@ -22,8 +23,8 @@
 	%>]<%
 	%>,"url":"<%=dataspath%>&categoryids=13,14,15,16&categoryids=22,23,24,25,26&categoryids=28&categoryids=17,18,19,20,21&categoryids=33,34,35,36&categoryids=37,38,39,40"<%
 	%>,"adverurl":""<%
-	%>,"msgdataurl":"http://www.gzly.gov.cn:8080/gzly/category.jsp?siteid=0&pagesize=10&categoryids=59,59"<%
-	%>,"login_auto":"http://121.8.226.113/lxsydb/enterprise/login/autoLoginAction.jsp"<%
-	%>,"login":"http://121.8.226.113/lxsydb/enterprise/login/loginVerificationAction.jsp"<%
+	%>,"msgdataurl":"<%=webadminpath%>/gzly/category.jsp?siteid=0&pagesize=10&categoryids=59,59"<%
+	%>,"login_auto":"<%=xtpath%>/lxsydb/enterprise/login/autoLoginAction.jsp"<%
+	%>,"login":"<%=xtpath%>/lxsydb/enterprise/login/loginVerificationAction.jsp"<%
 	%>,"hotdataurl":"<%=dataspath%>&categoryids=2002,2002"<%
 %>}

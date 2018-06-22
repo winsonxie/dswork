@@ -143,6 +143,24 @@ public class DsCmsCategoryController extends DsCmsBaseController
 				DsCmsSite s = service.getSite(po.getSiteid());
 				if(checkOwn(s.getId()))
 				{
+					List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+					Map<String, String> map = new HashMap<String, String>();
+					String[] cnameArr = req.getStringArray("cname", false);
+					String[] ctitleArr = req.getStringArray("ctitle", false);
+					String[] cdatatypeArr = req.getStringArray("cdatatype", false);
+					for(int i = 0; i < cnameArr.length; i++)
+					{
+						if(ctitleArr[i].length() > 0 && map.get(ctitleArr[i]) == null)
+						{
+							Map<String, String> m = new HashMap<String, String>();
+							m.put("cname", cnameArr[i]);
+							m.put("ctitle", ctitleArr[i]);
+							m.put("cdatatype", cdatatypeArr[i]);
+							map.put(ctitleArr[i], ctitleArr[i]);
+							list.add(m);
+						}
+					}
+					po.setJsontable(GsonUtil.toJson(list));
 					po.setStatus(0);// 没有新增状态，直接就是修改状态
 					service.save(po);
 					print(1);
@@ -356,25 +374,25 @@ public class DsCmsCategoryController extends DsCmsBaseController
 	{
 		try
 		{
-			DsCmsCategory m = service.get(po.getId());
-			DsCmsSite s = service.getSite(m.getSiteid());
-			if(m.getSiteid() == s.getId() && checkOwn(s.getId()))
+			DsCmsCategory c = service.get(po.getId());
+			DsCmsSite s = service.getSite(c.getSiteid());
+			if(c.getSiteid() == s.getId() && checkOwn(s.getId()))
 			{
 				List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-				Map<String, String> t = new HashMap<String, String>();
+				Map<String, String> map = new HashMap<String, String>();
 				String[] cnameArr = req.getStringArray("cname", false);
 				String[] ctitleArr = req.getStringArray("ctitle", false);
 				String[] cdatatypeArr = req.getStringArray("cdatatype", false);
 				for(int i = 0; i < cnameArr.length; i++)
 				{
-					if(ctitleArr[i].length() > 0 && t.get(ctitleArr[i]) == null)
+					if(ctitleArr[i].length() > 0 && map.get(ctitleArr[i]) == null)
 					{
-						Map<String, String> c = new HashMap<String, String>();
-						c.put("cname", cnameArr[i]);
-						c.put("ctitle", ctitleArr[i]);
-						c.put("cdatatype", cdatatypeArr[i]);
-						t.put(ctitleArr[i], ctitleArr[i]);
-						list.add(c);
+						Map<String, String> m = new HashMap<String, String>();
+						m.put("cname", cnameArr[i]);
+						m.put("ctitle", ctitleArr[i]);
+						m.put("cdatatype", cdatatypeArr[i]);
+						map.put(ctitleArr[i], ctitleArr[i]);
+						list.add(m);
 					}
 				}
 				po.setJsontable(GsonUtil.toJson(list));

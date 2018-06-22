@@ -9,9 +9,9 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import common.cms.model.VCategory;
-import common.cms.model.VPage;
-import common.cms.model.VSite;
+import common.cms.model.ViewCategory;
+import common.cms.model.ViewArticle;
+import common.cms.model.ViewSite;
 import dswork.core.db.MyBatisDao;
 import dswork.core.page.Page;
 import dswork.core.page.PageRequest;
@@ -27,28 +27,28 @@ public class DsCmsDao extends MyBatisDao
 		return DsCmsDao.class;
 	}
 
-	public VSite getSite(Long siteid)
+	public ViewSite getSite(Long siteid)
 	{
-		return (VSite)executeSelect("getSite", siteid);
+		return (ViewSite)executeSelect("getSite", siteid);
 	}
 
-	public VCategory getCategory(Long siteid, Long categoryid)
+	public ViewCategory getCategory(Long siteid, Long categoryid)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("siteid", siteid);
 		map.put("id", categoryid);
-		return (VCategory)executeSelect("getCategory", map);
+		return (ViewCategory)executeSelect("getCategory", map);
 	}
 
-	public VPage get(Long siteid, Long pageid)
+	public ViewArticle getArticle(Long siteid, Long pageid)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("siteid", siteid);
 		map.put("id", pageid);
-		return (VPage)executeSelect("get", map);
+		return (ViewArticle)executeSelect("get", map);
 	}
 
-	public Page<VPage> queryPage(Long siteid, int currentPage, int pageSize, String idArray, Boolean isDesc, boolean onlyImageTop, boolean onlyPageTop, String keyvalue)
+	public Page<ViewArticle> queryArticlePage(Long siteid, int currentPage, int pageSize, String idArray, Boolean isDesc, boolean onlyImageTop, boolean onlyPageTop, String keyvalue)
 	{
 		if(currentPage <= 0){currentPage = 1;}
 		if(pageSize <= 0){pageSize = 25;}
@@ -65,7 +65,7 @@ public class DsCmsDao extends MyBatisDao
 		return queryPage("query", rq, "queryCount", rq);
 	}
 
-	public List<VCategory> queryCategory(Long siteid)
+	public List<ViewCategory> queryCategoryList(Long siteid)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("siteid", siteid);

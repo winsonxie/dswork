@@ -7,6 +7,7 @@
 <title></title>
 <%@include file="/commons/include/addAjax.jsp" %>
 <script type="text/javascript">
+$dswork.deleteRow = function(obj){$(obj).parent().parent().remove();};
 $dswork.callback = function(){if($dswork.result.type == 1){
 	location.href = "getCategory.htm?siteid=${fn:escapeXml(param.siteid)}";
 }};
@@ -114,6 +115,49 @@ $(function(){
 </c:if>
 	</tbody>
 </table>
+<div class="line"></div>
+<table id="contactTable" border="0" cellspacing="1" cellpadding="0" class="listTable">
+	<tr class="list_title">
+		<td style="width:35%;">变量名</td>
+		<td style="width:35%;">名称</td>
+		<td style="width:10%;">类型</td>
+		<td class="menuTool"><a class="insert" onclick="$('#contactTable>tbody').append($('#cloneTable').html());" href="#">添加项</a></td>
+	</tr>
+</table>
+<script type="text/template" id="cloneTable">
+	<tr class="list">
+		<td><input type="text" name="ctitle" dataType="Char" value="" /></td>
+		<td><input type="text" name="cname" value="" /></td>
+		<td><select name="cdatatype">
+			<option value="">无校验</option>
+			<option value="Char">Char</option>
+			<option value="Chinese">Chinese</option>
+			<option value="Email">Email</option>
+			<option value="IdCard">IdCard</option>
+			<option value="UserCard">UserCard</option>
+			<option value="UnitCode">UnitCode</option>
+			<option value="OrgCode">OrgCode</option>
+			<option value="Mobile">Mobile</option>
+			<option value="Money">Money</option>
+			<option value="Numeral">Numeral</option>
+			<option value="Phone">Phone</option>
+			<option value="Require">Require</option>
+			<option value="RequireCompact">RequireCompact</option>
+			<option value="RequireTrim">RequireTrim</option>
+			<option value="Url">Url</option>
+			<option value="Zip">Zip</option>
+			<option value="Number">Number</option>
+			<option value="NumberPlus">NumberPlus</option>
+			<option value="NumberMinus">NumberMinus</option>
+			<option value="Integer">Integer</option>
+			<option value="IntegerPlus">IntegerPlus</option>
+			<option value="IntegerMinus">IntegerMinus</option>
+			<option value="Filename">Filename</option>
+			<option value="Password">Password</option>
+		</select></td>
+		<td><input type="button" class="delete" onclick="$dswork.deleteRow(this)" /></td>
+	</tr>
+</script>
 <input type="hidden" name="siteid" value="${fn:escapeXml(param.siteid)}" />
 </form>
 </body>

@@ -3,10 +3,8 @@
  */
 package common.cms;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import common.cms.model.VPage;
+import common.cms.model.ViewArticle;
+import common.cms.model.ViewArticleNav;
 import dswork.core.page.Page;
 
 public class CmsFactoryMobile extends CmsFactory
@@ -26,7 +24,7 @@ public class CmsFactoryMobile extends CmsFactory
 		categoryMap = cms.categoryMap;
 	}
 
-	public Map<String, Object> queryPage(int currentPage, int pageSize, boolean onlyImageTop, boolean onlyPageTop, boolean isDesc, String url, Object categoryid)
+	public ViewArticleNav queryPage(int currentPage, int pageSize, boolean onlyImageTop, boolean onlyPageTop, boolean isDesc, String url, Object categoryid)
 	{
 		if(currentPage <= 0)
 		{
@@ -38,26 +36,24 @@ public class CmsFactoryMobile extends CmsFactory
 		}
 		StringBuilder idArray = new StringBuilder();
 		idArray.append(toLong(categoryid));
-		Page<VPage> page = getDao().queryPage(siteid, currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, null);
-		Map<String, Object> map = new HashMap<String, Object>();
+		Page<ViewArticle> page = getDao().queryArticlePage(siteid, currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, null);
+		ViewArticleNav nav = new ViewArticleNav();
 		currentPage = page.getCurrentPage();// 更新当前页
-		map.put("list", page.getResult());
-		Map<String, Object> pagemap = new HashMap<String, Object>();
-		pagemap.put("page", currentPage);
-		pagemap.put("pagesize", pageSize);
-		pagemap.put("first", 1);
-		pagemap.put("firsturl", url);
+		nav.setList(page.getResult());
+		nav.getDatapage().setPage(currentPage);
+		nav.getDatapage().setPagesize(pageSize);
+		nav.getDatapage().setFirst(1);
+		nav.getDatapage().setFirsturl(url);
 		int tmp = initpage(currentPage - 1, page.getLastPage());
-		pagemap.put("prev", tmp);
-		pagemap.put("prevurl", (tmp == 1 ? url : (url.replaceAll("\\.html", "_" + tmp + ".html"))));
+		nav.getDatapage().setPrev(tmp);
+		nav.getDatapage().setPrevurl(tmp == 1 ? url : (url.replaceAll("\\.html", "_" + tmp + ".html")));
 		tmp = initpage(currentPage + 1, page.getLastPage());
-		pagemap.put("next", tmp);
-		pagemap.put("nexturl", (tmp == 1 ? url : (url.replaceAll("\\.html", "_" + tmp + ".html"))));
+		nav.getDatapage().setNext(tmp);
+		nav.getDatapage().setNexturl(tmp == 1 ? url : (url.replaceAll("\\.html", "_" + tmp + ".html")));
 		tmp = page.getLastPage();
-		pagemap.put("last", tmp);
-		pagemap.put("lasturl", (tmp == 1 ? url : (url.replaceAll("\\.html", "_" + tmp + ".html"))));
-		map.put("datauri", url.replaceAll("\\.html", ""));
-		map.put("datapage", pagemap);
+		nav.getDatapage().setLast(tmp);
+		nav.getDatapage().setLasturl(tmp == 1 ? url : (url.replaceAll("\\.html", "_" + tmp + ".html")));
+		nav.setDatauri(url.replaceAll("\\.html", ""));
 
 		url = "/m" + url;
 		StringBuilder sb = new StringBuilder();
@@ -101,7 +97,7 @@ public class CmsFactoryMobile extends CmsFactory
 			String u = url.replaceAll("\\.html", "_" + temppage + ".html");
 			sb.append("<a href=\"").append(site.getUrl()).append(u).append("\">...</a>");
 		}
-		if(1 != page.getLastPage())
+		if(page.getLastPage() != 1)
 		{
 			String u = url.replaceAll("\\.html", "_" + page.getLastPage() + ".html");
 			sb.append("<a");
@@ -115,7 +111,7 @@ public class CmsFactoryMobile extends CmsFactory
 			}
 			sb.append(">").append(page.getLastPage()).append("</a>");
 		}
-		map.put("datapageview", sb.toString());// 翻页字符串
-		return map;
+		nav.setDatapageview(sb.toString());// 翻页字符串
+		return nav;
 	}
 }

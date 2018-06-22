@@ -1,6 +1,6 @@
 package common.cms.model;
 
-public class VSite
+public class ViewSite
 {
 	private Long id;
 	private String own;

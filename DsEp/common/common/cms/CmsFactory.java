@@ -10,9 +10,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import common.cms.model.VCategory;
-import common.cms.model.VPage;
-import common.cms.model.VSite;
+import common.cms.model.ViewCategory;
+import common.cms.model.ViewArticle;
+import common.cms.model.ViewArticleNav;
+import common.cms.model.ViewArticleSet;
+import common.cms.model.ViewSite;
 import dswork.core.page.Page;
 
 public class CmsFactory
@@ -31,9 +33,9 @@ public class CmsFactory
 	protected static DsCmsDao dao = null;
 
 	protected long siteid = 0L;
-	protected VSite site = new VSite();
-	protected List<VCategory> categoryList = new ArrayList<VCategory>();
-	protected Map<String, VCategory> categoryMap = new HashMap<String, VCategory>();
+	protected ViewSite site = new ViewSite();
+	protected List<ViewCategory> categoryList = new ArrayList<ViewCategory>();
+	protected Map<String, ViewCategory> categoryMap = new HashMap<String, ViewCategory>();
 
 	protected HttpServletRequest request;
 
@@ -53,8 +55,8 @@ public class CmsFactory
 			this.site = getDao().getSite(siteid);
 			if(this.site != null)
 			{
-				List<VCategory> clist = getDao().queryCategory(siteid);
-				for(VCategory m : clist)
+				List<ViewCategory> clist = getDao().queryCategoryList(siteid);
+				for(ViewCategory m : clist)
 				{
 					if(m.getPid() == null)
 					{
@@ -64,12 +66,12 @@ public class CmsFactory
 					}
 					categoryMap.put(String.valueOf(m.getId()), m);
 				}
-				for(VCategory m : clist)
+				for(ViewCategory m : clist)
 				{
 					String pid = String.valueOf(m.getPid());
 					if(!pid.equals("0") && categoryMap.get(pid) != null)
 					{
-						VCategory p = categoryMap.get(pid);
+						ViewCategory p = categoryMap.get(pid);
 						m.setParent(p);
 						p.addList(m);
 					}
@@ -96,27 +98,27 @@ public class CmsFactory
 		this.request = request;
 	}
 
-	public VSite getSite()
+	public ViewSite getSite()
 	{
 		return site;
 	}
 
-	public VCategory getCategory(Object categoryid)
+	public ViewCategory getCategory(Object categoryid)
 	{
 		return categoryMap.get(String.valueOf(categoryid));
 	}
 
-	public VPage get(String pageid)
+	public ViewArticle get(String pageid)
 	{
-		return getDao().get(siteid, toLong(pageid));
+		return getDao().getArticle(siteid, toLong(pageid));
 	}
 
-	public List<VPage> queryList(int currentPage, int pageSize, boolean onlyImageTop, boolean onlyPageTop, boolean isDesc, Object... categoryids)
+	public List<ViewArticle> queryList(int currentPage, int pageSize, boolean onlyImageTop, boolean onlyPageTop, boolean isDesc, Object... categoryids)
 	{
 		return doQueryList(currentPage, pageSize, isDesc, onlyImageTop, onlyPageTop, null, categoryids);
 	}
 
-	public Map<String, Object> queryPage(int currentPage, int pageSize, boolean onlyImageTop, boolean onlyPageTop, boolean isDesc, String url, Object categoryid)
+	public ViewArticleNav queryPage(int currentPage, int pageSize, boolean onlyImageTop, boolean onlyPageTop, boolean isDesc, String url, Object categoryid)
 	{
 		if(currentPage <= 0)
 		{
@@ -128,26 +130,24 @@ public class CmsFactory
 		}
 		StringBuilder idArray = new StringBuilder();
 		idArray.append(toLong(categoryid));
-		Page<VPage> page = getDao().queryPage(siteid, currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, null);
-		Map<String, Object> map = new HashMap<String, Object>();
+		Page<ViewArticle> page = getDao().queryArticlePage(siteid, currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, null);
+		ViewArticleNav nav = new ViewArticleNav();
 		currentPage = page.getCurrentPage();// 更新当前页
-		map.put("list", page.getResult());
-		Map<String, Object> pagemap = new HashMap<String, Object>();
-		pagemap.put("page", currentPage);
-		pagemap.put("pagesize", pageSize);
-		pagemap.put("first", 1);
-		pagemap.put("firsturl", url);
+		nav.setList(page.getResult());
+		nav.getDatapage().setPage(currentPage);
+		nav.getDatapage().setPagesize(pageSize);
+		nav.getDatapage().setFirst(1);
+		nav.getDatapage().setFirsturl(url);
 		int tmp = initpage(currentPage - 1, page.getLastPage());
-		pagemap.put("prev", tmp);
-		pagemap.put("prevurl", (tmp == 1 ? url : (url.replaceAll("\\.html", "_" + tmp + ".html"))));
+		nav.getDatapage().setPrev(tmp);
+		nav.getDatapage().setPrevurl(tmp == 1 ? url : (url.replaceAll("\\.html", "_" + tmp + ".html")));
 		tmp = initpage(currentPage + 1, page.getLastPage());
-		pagemap.put("next", tmp);
-		pagemap.put("nexturl", (tmp == 1 ? url : (url.replaceAll("\\.html", "_" + tmp + ".html"))));
+		nav.getDatapage().setNext(tmp);
+		nav.getDatapage().setNexturl(tmp == 1 ? url : (url.replaceAll("\\.html", "_" + tmp + ".html")));
 		tmp = page.getLastPage();
-		pagemap.put("last", tmp);
-		pagemap.put("lasturl", (tmp == 1 ? url : (url.replaceAll("\\.html", "_" + tmp + ".html"))));
-		map.put("datauri", url.replaceAll("\\.html", ""));
-		map.put("datapage", pagemap);
+		nav.getDatapage().setLast(tmp);
+		nav.getDatapage().setLasturl(tmp == 1 ? url : (url.replaceAll("\\.html", "_" + tmp + ".html")));
+		nav.setDatauri(url.replaceAll("\\.html", ""));
 		StringBuilder sb = new StringBuilder();
 		int viewpage = 3, temppage = 1;// 左右显示个数
 		sb.append("<a");
@@ -189,7 +189,7 @@ public class CmsFactory
 			String u = url.replaceAll("\\.html", "_" + temppage + ".html");
 			sb.append("<a href=\"").append(site.getUrl()).append(u).append("\">...</a>");
 		}
-		if(1 != page.getLastPage())
+		if(page.getLastPage() != 1)
 		{
 			String u = url.replaceAll("\\.html", "_" + page.getLastPage() + ".html");
 			sb.append("<a");
@@ -203,16 +203,16 @@ public class CmsFactory
 			}
 			sb.append(">").append(page.getLastPage()).append("</a>");
 		}
-		map.put("datapageview", sb.toString());// 翻页字符串
-		return map;
+		nav.setDatapageview(sb.toString());// 翻页字符串
+		return nav;
 	}
 
-	public Map<String, Object> queryPage(int currentPage, int pageSize, boolean isDesc, String keyvalue, Object... categoryids)
+	public ViewArticleSet queryPage(int currentPage, int pageSize, boolean isDesc, String keyvalue, Object... categoryids)
 	{
 		return doQueryPage(currentPage, pageSize, isDesc, false, false, keyvalue, categoryids);
 	}
 
-	private List<VPage> doQueryList(int currentPage, int pageSize, boolean isDesc, boolean onlyImageTop, boolean onlyPageTop, String keyvalue, Object... categoryids)
+	private List<ViewArticle> doQueryList(int currentPage, int pageSize, boolean isDesc, boolean onlyImageTop, boolean onlyPageTop, String keyvalue, Object... categoryids)
 	{
 		StringBuilder idArray = new StringBuilder();
 		if(categoryids.length > 0)
@@ -223,10 +223,10 @@ public class CmsFactory
 				idArray.append(",").append(toLong(categoryids[i]));
 			}
 		}
-		return getDao().queryPage(siteid, currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, keyvalue).getResult();
+		return getDao().queryArticlePage(siteid, currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, keyvalue).getResult();
 	}
 
-	private Map<String, Object> doQueryPage(int currentPage, int pageSize, boolean isDesc, boolean onlyImageTop, boolean onlyPageTop, String keyvalue, Object... categoryids)
+	private ViewArticleSet doQueryPage(int currentPage, int pageSize, boolean isDesc, boolean onlyImageTop, boolean onlyPageTop, String keyvalue, Object... categoryids)
 	{
 		StringBuilder idArray = new StringBuilder();
 		if(categoryids.length > 0)
@@ -237,24 +237,24 @@ public class CmsFactory
 				idArray.append(",").append(toLong(categoryids[i]));
 			}
 		}
-		Map<String, Object> map = new HashMap<String, Object>();
+		ViewArticleSet set = new ViewArticleSet();
 		try
 		{
-			Page<VPage> page = getDao().queryPage(siteid, currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, keyvalue);
-			map.put("status", "1");// success
-			map.put("msg", "success");
-			map.put("size", page.getTotalCount());
-			map.put("page", page.getCurrentPage());
-			map.put("pagesize", page.getPageSize());
-			map.put("totalpage", page.getTotalPage());
-			map.put("rows", page.getResult());
+			Page<ViewArticle> page = getDao().queryArticlePage(siteid, currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, keyvalue);
+			set.setStatus(1);// success
+			set.setMsg("success");
+			set.setSize(page.getTotalCount());
+			set.setPage(page.getCurrentPage());
+			set.setPagesize(page.getPageSize());
+			set.setTotalpage(page.getTotalPage());
+			set.setRows(page.getResult());
 		}
 		catch(Exception e)
 		{
-			map.put("status", "0");
-			map.put("msg", "error");
+			set.setStatus(0);
+			set.setMsg("error");
 		}
-		return map;
+		return set;
 	}
 
 	public void put(String name, boolean listOrPage, int currentPage, int pageSize, boolean isDesc, boolean onlyImageTop, boolean onlyPageTop, String keyvalue, Object... categoryids)
@@ -301,17 +301,17 @@ public class CmsFactory
 	 *        父栏目，查询根栏目为空
 	 * @return List&lt;Map&lt;String, Object&gt;&gt;
 	 */
-	public List<VCategory> queryCategory(Object categoryid)
+	public List<ViewCategory> queryCategory(Object categoryid)
 	{
 		String pid = String.valueOf(toLong(categoryid));
 		if(pid.equals("0"))
 		{
 			return categoryList;
 		}
-		VCategory p = categoryMap.get(pid);
+		ViewCategory p = categoryMap.get(pid);
 		if(p == null)
 		{
-			p = new VCategory(); 
+			p = new ViewCategory(); 
 		}
 		return p.getList();
 	}

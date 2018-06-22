@@ -3,6 +3,10 @@
 <%@page language="java" pageEncoding="UTF-8" import="
 dswork.web.MyRequest,
 common.cms.CmsFactory,
+common.cms.model.ViewSite,
+common.cms.model.ViewCategory,
+common.cms.model.ViewArticle,
+common.cms.model.ViewArticleSet,
 common.json.GsonUtil,
 java.util.List,
 java.util.ArrayList,
@@ -21,8 +25,7 @@ private List<Long> splitString(String values){
 	}
 	catch(Exception e){}
 	return list;
-}
-%><%
+}%><%
 Map<String, Object> map = new HashMap<String, Object>();
 try{
 	MyRequest req = new MyRequest(request);
@@ -33,7 +36,7 @@ try{
 	int pagesize = req.getInt("pagesize", 10);
 
 	CmsFactory cms = new CmsFactory(siteid);
-	Map<String, Object> s = cms.getSite();
+	ViewSite s = cms.getSite();
 	
 	List<Map<String, Object>> rows = new ArrayList<Map<String, Object>>();
 	map.put("status", "1");
@@ -42,52 +45,57 @@ try{
 	for(String categoryids : idsArray){
 		List<Long> _idsLong = splitString(categoryids);
 		if(_idsLong.size() > 0){// 栏目页
-			String categoryid = String.valueOf(_idsLong.get(0));
-			_idsLong.remove(0);
-			Map<String, Object> one = new HashMap<String, Object>();
-			one.put("categoryids", categoryids);
-			one.put("categoryid", categoryid);
-			Map<String, Object> c = cms.getCategory(categoryid);
-			if(c == null){
-				one.put("status", "0");
-				one.put("msg", "栏目不存在");
-				rows.add(one);
-			}
-			else{
-				one.put("status", "1");
-				one.put("msg", "success");
-				one.put("category", c);
-				if(_idsLong.size() > 0){
-					Map<String, Object> datamap = cms.queryPage(currentPage, pagesize, true, null, _idsLong.toArray(new Long[_idsLong.size()]));
-					for(Map<String, Object> p : (List<Map<String, Object>>)datamap.get("rows")){p.remove("content");}
-					one.put("size", datamap.get("size"));
-					one.put("page", datamap.get("page"));
-					one.put("pagesize", datamap.get("pagesize"));
-					one.put("totalpage", datamap.get("totalpage"));
-					one.put("rows", datamap.get("rows"));
-				}
-				else{
-					one.put("size", -1);
-				}
-				rows.add(one);
-			}
+	String categoryid = String.valueOf(_idsLong.get(0));
+	_idsLong.remove(0);
+	Map<String, Object> one = new HashMap<String, Object>();
+	one.put("categoryids", categoryids);
+	ViewCategory c = cms.getCategory(categoryid);
+	if(c == null){
+		one.put("status", "0");
+		one.put("msg", "栏目不存在");
+		rows.add(one);
+	}
+	else
+	{
+		one.put("category", c);
+		one.put("status", "1");
+		one.put("msg", "success");
+		if(_idsLong.size() > 0)
+		{
+	ViewArticleSet set = cms.queryPage(currentPage, pagesize, true, null, _idsLong.toArray(new Long[_idsLong.size()]));
+	for(ViewArticle p : set.getRows())
+	{
+		p.setContent(null);
+	}
+	one.put("size", set.getSize());
+	one.put("page", set.getPage());
+	one.put("pagesize", set.getPagesize());
+	one.put("totalpage", set.getTotalpage());
+	one.put("rows", set.getRows());
+		}
+		else
+		{
+	one.put("size", -1);
+		}
+		rows.add(one);
+	}
 		}
 	}
 	/*
 		{
-			status:1,
-			msg:"success",
-			rows:[
-				{
-					status:1,
-					msg:"success",
-					// categoryid:栏目ID,
-					categoryname:栏目名称,
-					category:{栏目对象},
-					rows:[当前页数据]
-				},
-				...
-			]
+	status:1,
+	msg:"success",
+	rows:[
+		{
+	status:1,
+	msg:"success",
+	// categoryid:栏目ID,
+	categoryname:栏目名称,
+	category:{栏目对象},
+	rows:[当前页数据]
+		},
+		...
+	]
 		} 
 	 */
 	out.print(GsonUtil.toJson(map));

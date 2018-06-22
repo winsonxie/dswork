@@ -1,16 +1,15 @@
 package common.cms.controller;
 
-import java.util.Map;
-
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import common.cms.CmsFactory;
 import common.cms.CmsFactoryMobile;
-import common.cms.model.VCategory;
-import common.cms.model.VPage;
-import common.cms.model.VSite;
+import common.cms.model.ViewCategory;
+import common.cms.model.ViewArticle;
+import common.cms.model.ViewArticleNav;
+import common.cms.model.ViewSite;
 import dswork.core.util.TimeUtil;
 import dswork.mvc.BaseController;
 
@@ -61,7 +60,7 @@ public class DsCmsbuildController extends BaseController
 
 		put("cms", cms);
 		put("year", TimeUtil.getCurrentTime("yyyy"));
-		VSite s = cms.getSite();
+		ViewSite s = cms.getSite();
 		put("site", s);
 		put("categorylist", cms.queryCategory("0"));// 顶层节点列表
 		if(req.getString("view").equals("true"))
@@ -74,8 +73,8 @@ public class DsCmsbuildController extends BaseController
 		}
 		if(pageid > 0)// 内容页
 		{
-			VPage p = cms.get(pageid + "");
-			VCategory c = cms.getCategory(p.getCategoryid() + "");
+			ViewArticle p = cms.get(pageid + "");
+			ViewCategory c = cms.getCategory(p.getCategoryid() + "");
 			put("category", c);
 			put("vo", p.getVo());
 			put("id", p.getId());
@@ -96,7 +95,7 @@ public class DsCmsbuildController extends BaseController
 		{
 			int page = req.getInt("page", 1);
 			int pagesize = req.getInt("pagesize", 25);
-			VCategory c = cms.getCategory(categoryid + "");
+			ViewCategory c = cms.getCategory(categoryid + "");
 			if(c.getScope() == 2)
 			{
 				return null;// 外链
@@ -109,11 +108,11 @@ public class DsCmsbuildController extends BaseController
 			put("categoryid", categoryid);
 			put("category", c);
 			put("vo", c.getVo());
-			Map<String, Object> mm = cms.queryPage(page, pagesize, false, false, true, c.getUrl(), categoryid);
-			put("datalist", mm.get("list"));
-			put("datapageview", mm.get("datapageview"));
-			put("datauri", mm.get("datauri"));
-			put("datapage", mm.get("datapage"));
+			ViewArticleNav nav = cms.queryPage(page, pagesize, false, false, true, c.getUrl(), categoryid);
+			put("datalist", nav.getList());
+			put("datapageview", nav.getDatapageview());
+			put("datauri", nav.getDatauri());
+			put("datapage", nav.getDatapage());
 			return "/" + s.getFolder() + (mobile ? "/templates/m/"+c.getMviewsite() : "/templates/"+c.getViewsite());
 		}
 		return "/" + s.getFolder() + (mobile ? "/templates/m/"+s.getMviewsite() : "/templates/"+s.getViewsite());

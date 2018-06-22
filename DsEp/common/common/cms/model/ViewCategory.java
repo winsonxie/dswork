@@ -1,19 +1,26 @@
 package common.cms.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import common.cms.GsonUtil;
 
-public class VPage
+public class ViewCategory
 {
 	private Long id;
+	private Long pid;
 	private Long siteid;
-	private Long categoryid;
+	private String name;
 	private String title;
-	private String scope;
-	private String status;
+	private int scope;
+	private int status;
 	private String url;
+	private String viewsite;
+	private String pageviewsite;
+	private String mviewsite;
+	private String mpageviewsite;
 	private String metakeywords;
 	private String metadescription;
 	private String summary;
@@ -24,6 +31,9 @@ public class VPage
 	private String content;
 	private String jsondata;
 
+	private transient ViewCategory parent;
+	private List<ViewCategory> list = new ArrayList<ViewCategory>();
+
 	public Long getId()
 	{
 		return id;
@@ -32,6 +42,16 @@ public class VPage
 	public void setId(Long id)
 	{
 		this.id = id;
+	}
+
+	public Long getPid()
+	{
+		return pid;
+	}
+
+	public void setPid(Long pid)
+	{
+		this.pid = pid;
 	}
 
 	public Long getSiteid()
@@ -44,14 +64,14 @@ public class VPage
 		this.siteid = siteid;
 	}
 
-	public Long getCategoryid()
+	public String getName()
 	{
-		return categoryid;
+		return name;
 	}
 
-	public void setCategoryid(Long categoryid)
+	public void setName(String name)
 	{
-		this.categoryid = categoryid;
+		this.name = name;
 	}
 
 	public String getTitle()
@@ -64,22 +84,22 @@ public class VPage
 		this.title = title;
 	}
 
-	public String getScope()
+	public int getScope()
 	{
 		return scope;
 	}
 
-	public void setScope(String scope)
+	public void setScope(int scope)
 	{
 		this.scope = scope;
 	}
 
-	public String getStatus()
+	public int getStatus()
 	{
 		return status;
 	}
 
-	public void setStatus(String status)
+	public void setStatus(int status)
 	{
 		this.status = status;
 	}
@@ -92,6 +112,46 @@ public class VPage
 	public void setUrl(String url)
 	{
 		this.url = url;
+	}
+
+	public String getViewsite()
+	{
+		return viewsite;
+	}
+
+	public void setViewsite(String viewsite)
+	{
+		this.viewsite = viewsite;
+	}
+
+	public String getPageviewsite()
+	{
+		return pageviewsite;
+	}
+
+	public void setPageviewsite(String pageviewsite)
+	{
+		this.pageviewsite = pageviewsite;
+	}
+
+	public String getMviewsite()
+	{
+		return mviewsite;
+	}
+
+	public void setMviewsite(String mviewsite)
+	{
+		this.mviewsite = mviewsite;
+	}
+
+	public String getMpageviewsite()
+	{
+		return mpageviewsite;
+	}
+
+	public void setMpageviewsite(String mpageviewsite)
+	{
+		this.mpageviewsite = mpageviewsite;
 	}
 
 	public String getMetakeywords()
@@ -182,6 +242,26 @@ public class VPage
 	public void setJsondata(String jsondata)
 	{
 		this.jsondata = jsondata;
+	}
+
+	public ViewCategory getParent()
+	{
+		return parent;
+	}
+
+	public void setParent(ViewCategory parent)
+	{
+		this.parent = parent;
+	}
+
+	public List<ViewCategory> getList()
+	{
+		return list;
+	}
+
+	public void addList(ViewCategory c)
+	{
+		this.list.add(c);
 	}
 
 	@SuppressWarnings("rawtypes")

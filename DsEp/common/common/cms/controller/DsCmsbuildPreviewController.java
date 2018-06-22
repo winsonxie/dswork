@@ -1,7 +1,5 @@
 package common.cms.controller;
 
-import java.util.Map;
-
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,11 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import common.cms.CmsFactory;
 import common.cms.CmsFactoryMobile;
 import common.cms.CmsFactoryPreview;
-import common.cms.model.VCategory;
-import common.cms.model.VPage;
-import common.cms.model.VSite;
+import common.cms.model.ViewCategory;
+import common.cms.model.ViewArticle;
+import common.cms.model.ViewArticleNav;
+import common.cms.model.ViewSite;
 import dswork.core.util.TimeUtil;
 import dswork.mvc.BaseController;
+
 @Scope("prototype")
 @Controller
 public class DsCmsbuildPreviewController extends BaseController
@@ -33,13 +33,13 @@ public class DsCmsbuildPreviewController extends BaseController
 		}
 		put("cms", cms);
 		put("year", TimeUtil.getCurrentTime("yyyy"));
-		VSite s = cms.getSite();
+		ViewSite s = cms.getSite();
 		put("site", s);
 		put("ctx", request.getContextPath() + "/html/" + s.getFolder() + (mobile ? "/html/m" : "/html"));// 预览时，现在可以不需要运行服务器，即可浏览相对地址
 		if(pageid > 0)// 内容页
 		{
-			VPage p = cms.get(pageid.toString());
-			VCategory c = cms.getCategory(p.getCategoryid());
+			ViewArticle p = cms.get(pageid.toString());
+			ViewCategory c = cms.getCategory(p.getCategoryid());
 			put("category", c);
 			put("categorylist", cms.queryCategory("0"));// 顶层节点列表
 			put("id", p.getId());
@@ -61,7 +61,7 @@ public class DsCmsbuildPreviewController extends BaseController
 		{
 			int page = req.getInt("page", 1);
 			int pagesize = req.getInt("pagesize", 25);
-			VCategory c = cms.getCategory(categoryid + "");
+			ViewCategory c = cms.getCategory(categoryid + "");
 			if(c.getViewsite().length() == 0)
 			{
 				return null;
@@ -71,11 +71,11 @@ public class DsCmsbuildPreviewController extends BaseController
 			put("categoryid", categoryid);
 			put("category", c);
 			put("vo", c.getVo());
-			Map<String, Object> mm = cms.queryPage(page, pagesize, false, false, true, c.getUrl(), categoryid);
-			put("datalist", mm.get("list"));
-			put("datapageview", mm.get("datapageview"));
-			put("datauri", mm.get("datauri"));
-			put("datapage", mm.get("datapage"));
+			ViewArticleNav nav = cms.queryPage(page, pagesize, false, false, true, c.getUrl(), categoryid);
+			put("datalist", nav.getList());
+			put("datapageview", nav.getDatapageview());
+			put("datauri", nav.getDatauri());
+			put("datapage", nav.getDatapage());
 			return "/" + s.getFolder() + (mobile ? "/templates/m/"+c.getMviewsite() : "/templates/"+c.getViewsite());
 		}
 		// 首页

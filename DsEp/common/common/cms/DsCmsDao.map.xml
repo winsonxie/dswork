@@ -11,25 +11,25 @@
 <sql id="c_category">
 	id, pid, siteid, name, name as title, scope, status, url, viewsite, pageviewsite, mviewsite, mpageviewsite, metakeywords, metadescription, summary, releasetime, releasesource, releaseuser, img, content, jsondata
 </sql>
-<sql id="c_page">
+<sql id="c_article">
 	id, siteid, categoryid, title, scope, status, url, metakeywords, metadescription, summary, releasetime, releasesource, releaseuser, img, content, jsondata
 </sql>
 
-<select id="getSite" resultType="common.cms.model.VSite">
+<select id="getSite" resultType="common.cms.model.ViewSite">
 	select <include refid="c_site" /> from DS_CMS_SITE
 	where ID=#{id}
 </select>
-<select id="getCategory" resultType="common.cms.model.VCategory">
+<select id="getCategory" resultType="common.cms.model.ViewCategory">
 	select <include refid="c_category" /> from DS_CMS_CATEGORY
 	where ID=#{id} and SITEID=#{siteid}
 </select>
-<select id="get" resultType="common.cms.model.VPage">
-	select <include refid="c_page" /> from DS_CMS_PAGE
+<select id="get" resultType="common.cms.model.ViewArticle">
+	select <include refid="c_article" /> from DS_CMS_PAGE
 	where ID=#{id} and SITEID=#{siteid}
 </select>
 
-<select id="query" resultType="common.cms.model.VCategory">
-	select <include refid="c_page" /> from DS_CMS_PAGE
+<select id="query" resultType="common.cms.model.ViewArticle">
+	select <include refid="c_article" /> from DS_CMS_PAGE
 	where SITEID=#{siteid} 
 		<if test="@Ognl@isNotEmpty(idArray)"> and CATEGORYID in (${idArray}) </if>
 		<if test="@Ognl@isNotEmpty(status)"> and STATUS=#{status} </if>
@@ -49,7 +49,7 @@
 		<if test="@Ognl@isNotEmpty(releasetime)"> and RELEASETIME&lt;=#{releasetime} </if>
 		<if test="@Ognl@isNotEmpty(keyvalue)"> and (TITLE like #{keyvalue, typeHandler=LikeTypeHandler} or SUMMARY like #{keyvalue, typeHandler=LikeTypeHandler} or CONTENT like #{keyvalue, typeHandler=LikeTypeHandler}) </if>
 </select>
-<select id="queryCategory" resultType="common.cms.model.VCategory">
+<select id="queryCategory" resultType="common.cms.model.ViewCategory">
 	select <include refid="c_category" /> from DS_CMS_CATEGORY
 	where SITEID=#{siteid} and STATUS&gt;-1
 	order by SEQ
