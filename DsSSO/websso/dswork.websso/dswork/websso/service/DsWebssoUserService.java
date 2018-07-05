@@ -7,17 +7,14 @@ import java.util.Stack;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import dswork.core.db.EntityDao;
 import dswork.core.util.TimeUtil;
 import dswork.core.util.UniqueId;
-import dswork.core.db.BaseService;
 import dswork.websso.model.DsCommonUser;
 import dswork.websso.model.DsWebssoUser;
 import dswork.websso.dao.DsCommonUserDao;
 import dswork.websso.dao.DsWebssoUserDao;
 
 @Service
-@SuppressWarnings("all")
 public class DsWebssoUserService
 {
 	@Autowired

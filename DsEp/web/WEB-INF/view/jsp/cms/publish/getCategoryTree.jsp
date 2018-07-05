@@ -110,14 +110,14 @@ $(function(){
 <table border="0" cellspacing="0" cellpadding="0" class="listLogo">
 	<tr>
 		<td class="title">切换站点：<select id="site"><c:forEach items="${siteList}" var="d"><option value="${d.id}"<c:if test="${d.id==siteid}"> selected="selected"</c:if>>${fn:escapeXml(d.name)}</option></c:forEach></select>
-			<input id="btn_site" type="button" class="button" value="发布首页" />&nbsp;<input type="button" class="button" value="预览首页" onclick="window.open('${ctx}/cmsbuild/buildHTML.chtml?view=true&siteid=${siteid}');" />
-			<c:if test="${enablemobile}"><input type="button" class="button" value="预览移动版首页" onclick="window.open('${ctx}/cmsbuild/buildHTML.chtml?view=true&siteid=${siteid}&mobile=true');" /></c:if>
+			<input id="btn_site" type="button" class="button" value="发布首页" />&nbsp;<input type="button" class="button" value="预览首页" onclick="window.open('${ctx}/cmsbuild/buildHTML.chtml?view=true&siteid=${siteid}');" /><c:if test="${enablemobile}">
+			<input type="button" class="button" value="预览移动版首页" onclick="window.open('${ctx}/cmsbuild/buildHTML.chtml?view=true&siteid=${siteid}&mobile=true');" /></c:if>
 			&nbsp;&nbsp;
 			选择需要发布的栏目：<select id="category"><option value="0">全部栏目</option><c:forEach items="${categoryList}" var="d"><option value="${d.id}">${d.label}${fn:escapeXml(d.name)}</option></c:forEach></select>
 			<input id="btn_category" type="button" class="button" value="发布栏目首页" />
 			<input id="btn_page" type="button" class="button" value="发布栏目内容" />
-			<input id="view" type="button" class="button" value="预览栏目" />
-			<c:if test="${enablemobile}"><input id="mview" type="button" class="button" value="预览移动版栏目" /></c:if>
+			<input id="view" type="button" class="button" value="预览栏目" /><c:if test="${enablemobile}">
+			<input id="mview" type="button" class="button" value="预览移动版栏目" /></c:if>
 			<input id="btn_category_d" type="button" class="button" value="删除栏目首页" />
 			<input id="btn_page_d" type="button" class="button" value="删除发布内容" />
 		</td>

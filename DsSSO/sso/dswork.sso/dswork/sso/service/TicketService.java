@@ -88,7 +88,7 @@ public class TicketService
 						if(_key != null && _key == _outtime_key)// 密钥存在，且相同
 						{
 							mapOnce.remove(_ticket);// 使用后必须移除
-							value = TicketService.getValueByTicket(_ticket);
+							value = getValueByTicket(_ticket);
 						}
 					}
 				}

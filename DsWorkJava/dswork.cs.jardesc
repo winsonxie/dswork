@@ -11,10 +11,7 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=DsWorkJava/dswork.config&lt;dswork.config.spring"/>
-        <javaElement handleIdentifier="=DsWorkJava/dswork.config&lt;dswork.config.ex"/>
-        <file path="/DsWorkJava/dswork.config/MANIFEST.MF"/>
-        <javaElement handleIdentifier="=DsWorkJava/dswork.config&lt;dswork.config.mybatis"/>
         <javaElement handleIdentifier="=DsWorkJava/dswork.cs&lt;dswork.cs{MyStart.java"/>
+        <file path="/DsWorkJava/dswork.cs/MANIFEST.MF"/>
     </selectedElements>
 </jardesc>

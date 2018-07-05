@@ -41,6 +41,7 @@ public class DsCmsbuildController extends BaseController
 				cms = cms_m;
 			}
 		}
+		cms.setRequest(request);
 //		if(cms == null)
 //		{
 //			cms = new CmsFactory(siteid);

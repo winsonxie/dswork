@@ -76,6 +76,9 @@ $dswork.ztree.dataFilter = function (treeId, parentNode, data){
 				</c:forEach>
 			</select>
 		</td>
+		<td class="menuTool">
+			<a class="select" href="#" onclick="$jskey.dialog.showDialog({url:'readme.htm',title:'说明',fit:true,draggable:false});">说明</a>
+		</td>
 	</tr>
 </table>
 </div>

@@ -44,4 +44,16 @@
 	select <include refid="columns" /> from DS_COMMON_USER where ACCOUNT=LOWER(#{account})
 </select>
 
+<select id="selectByIdcard" resultMap="result">
+	select <include refid="columns" /> from DS_COMMON_USER where IDCARD=LOWER(#{idcard})
+</select>
+
+<select id="selectByMobile" resultMap="result">
+	select <include refid="columns" /> from DS_COMMON_USER where MOBILE=LOWER(#{mobile})
+</select>
+
+<select id="selectByEmail" resultMap="result">
+	select <include refid="columns" /> from DS_COMMON_USER where EMAIL=LOWER(#{email})
+</select>
+
 </mapper>

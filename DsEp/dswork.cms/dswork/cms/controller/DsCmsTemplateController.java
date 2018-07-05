@@ -244,4 +244,10 @@ public class DsCmsTemplateController extends DsCmsBaseController
 			print("0:文件读写失败，请重试");
 		}
 	}
+
+	@RequestMapping("readme")
+	public String readme()
+	{
+		return "/cms/template/readme.jsp";
+	}
 }

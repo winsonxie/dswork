@@ -27,6 +27,7 @@ public class DsCmsbuildPreviewController extends BaseController
 		boolean mobile = req.getString("mobile", "false").equals("true");
 
 		CmsFactory cms = new CmsFactoryPreview(siteid);
+		cms.setRequest(request);
 		if(mobile)
 		{
 			cms = new CmsFactoryMobile(cms);

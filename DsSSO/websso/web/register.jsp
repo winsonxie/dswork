@@ -1,6 +1,7 @@
 <%@page language="java" pageEncoding="UTF-8" import="
 java.net.URLEncoder,
-dswork.websso.util.WebssoUtil
+dswork.websso.util.WebssoUtil,
+dswork.web.MyRequest
 "%><%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"
 %><%!
 private String getUrl(HttpServletRequest request)
@@ -22,7 +23,10 @@ request.setAttribute("hasWechat", WebssoUtil.HAS_WECHAT);
 request.setAttribute("hasAlipay", WebssoUtil.HAS_ALIPAY);
 request.setAttribute("weblogin", WebssoUtil.WEBLOGIN);
 
-String serviceURL = getUrl(request) + "/registerAction.jsp";
+MyRequest req = new MyRequest(request);
+String serviceURL = req.getString("serviceURL");
+serviceURL = URLEncoder.encode(serviceURL, "UTF-8");
+serviceURL += getUrl(request) + "/registerAction.jsp?serviceURL=" + serviceURL;
 serviceURL = URLEncoder.encode(serviceURL, "UTF-8");
 request.setAttribute("serviceURL", serviceURL);
 %><html>

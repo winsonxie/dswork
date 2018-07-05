@@ -100,6 +100,14 @@
 		<if test="@Ognl@isNotEmpty(editid)"> and EDITID like #{editid, typeHandler=LikeTypeHandler} </if>
 		<if test="@Ognl@isNotEmpty(editname)"> and EDITNAME like #{editname, typeHandler=LikeTypeHandler} </if>
 		<if test="@Ognl@isNotEmpty(excluderemove)"> and (STATUS!='-1' or AUDITSTATUS!='4') </if>
+		<if test="@Ognl@isNotEmpty(keyvalue)"> and (
+			TITLE like #{keyvalue, typeHandler=LikeTypeHandler}
+			or METAKEYWORDS like #{keyvalue, typeHandler=LikeTypeHandler}
+			or METADESCRIPTION like #{keyvalue, typeHandler=LikeTypeHandler}
+			or SUMMARY like #{keyvalue, typeHandler=LikeTypeHandler}
+			or CONTENT like #{keyvalue, typeHandler=LikeTypeHandler}
+		 )
+		</if>
 	</where>
 </sql>
 

@@ -23,7 +23,7 @@ function onChangeListen(){
 	<tr>
 		<td class="title">&nbsp;</td>
 		<td class="menuTool">
-			<a class="save" id="dataFormSave" href="#">保存</a>
+			<a class="save" href="#" id="dataFormSave">保存</a>
 		</td>
 	</tr>
 </table>

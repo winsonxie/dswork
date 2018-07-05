@@ -258,7 +258,7 @@ public class DsCmsEditController extends DsCmsBaseController
 			if(c.getScope() == 0)
 			{
 				long[] idArray = req.getLongArray("keyIndex", 0);
-				if(siteNotBePermission(s.getId()))
+				if(categoryNotNeedAudit(s.getId(), c.getId()))
 				{
 					for(long id : idArray)
 					{

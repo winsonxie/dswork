@@ -80,6 +80,10 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 		if(dsworkDataSource.length() > 0)
 		{
 			context.setInitParameter("dswork.datasource", dsworkDataSource);
+		}
+		String jdbcURL = EnvironmentUtil.getToString("jdbc.url", "");
+		if(jdbcURL.length() > 0)
+		{
 			if("com.alibaba.druid.pool.DruidDataSource".equalsIgnoreCase(dsworkDataSource))
 			{
 				spring = ",classpath*:/dswork/config/spring/spring-datasource-druid.xml" + spring;
@@ -88,10 +92,6 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 			{
 				spring = ",classpath*:/dswork/config/spring/spring-datasource.xml" + spring;
 			}
-		}
-		else
-		{
-			spring = ",classpath*:/dswork/config/spring/spring-datasource.xml" + spring;
 		}
 		String dsworkCommon = EnvironmentUtil.getToString("jdbc.common.dialect.name", "");
 		if(dsworkCommon.length() > 0)

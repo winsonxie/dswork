@@ -14,8 +14,8 @@
 		<td class="menuTool">
 			<c:if test="${po.scope==2}"><a class="look" target="_blank" href="${fn:escapeXml(po.url)}">预览外链</a></c:if>
 			<c:if test="${po.scope!=2}">
-			<a class="look" target="_blank" href="${ctx}/cmsbuild/preview.chtml?siteid=${po.siteid}&categoryid=${po.id}">预览栏目</a>
-			<c:if test="${enablemobile}"><a class="look" target="_blank" href="${ctx}/cmsbuild/preview.chtml?siteid=${po.siteid}&categoryid=${po.id}&mobile=true">预览移动版栏目</a></c:if>
+			<a class="look" target="_blank" href="${ctx}/cmsbuild/preview.chtml?siteid=${po.siteid}&categoryid=${po.id}">预览栏目</a><c:if test="${enablemobile}">
+			<a class="look" target="_blank" href="${ctx}/cmsbuild/preview.chtml?siteid=${po.siteid}&categoryid=${po.id}&mobile=true">预览移动版栏目</a></c:if>
 			</c:if>
 		</td>
 	</tr>

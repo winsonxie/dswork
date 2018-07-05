@@ -45,8 +45,8 @@ $(function(){
 		<td class="menuTool">
 		<c:if test="${scope==2}"><a class="look" target="_blank" href="${po.url}">预览外链</a></c:if>
 		<c:if test="${scope!=2}">
-			<a class="look" target="_blank" href="${ctx}/cmsbuild/preview.chtml?siteid=${po.siteid}&categoryid=${po.id}">预览本栏目</a>
-			<c:if test="${enablemobile}"><a class="look" target="_blank" href="${ctx}/cmsbuild/preview.chtml?siteid=${po.siteid}&categoryid=${po.id}&mobile=true">预览移动版本栏目</a></c:if>
+			<a class="look" target="_blank" href="${ctx}/cmsbuild/preview.chtml?siteid=${po.siteid}&categoryid=${po.id}">预览本栏目</a><c:if test="${enablemobile}">
+			<a class="look" target="_blank" href="${ctx}/cmsbuild/preview.chtml?siteid=${po.siteid}&categoryid=${po.id}&mobile=true">预览移动版本栏目</a></c:if>
 		</c:if>
 		<c:if test="${po.audit}">
 			<a class="back" onclick="_revoke();" href="#">撤回提交</a>

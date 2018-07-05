@@ -2,12 +2,14 @@
 <eclipse-userlibraries version="2">
     <library name="JAVA" systemlibrary="false">
         <archive path="/Lib/common/aopalliance-1.0.jar"/>
+        <archive path="/Lib/common/gson-2.8.5.jar"/>
         <archive path="/Lib/common/commons/commons-collections-3.2.2.jar"/>
         <archive path="/Lib/common/commons/commons-dbcp-1.4.jar"/>
         <archive path="/Lib/common/commons/commons-io-2.5.jar"/>
         <archive path="/Lib/common/commons/commons-lang-2.6.jar"/>
         <archive path="/Lib/common/commons/commons-logging-1.2.jar"/>
         <archive path="/Lib/common/commons/commons-pool-1.6.jar"/>
+        <archive path="/Lib/common/dswork/dswork.config.jar"/>
         <archive path="/Lib/common/dswork/dswork.core.jar"/>
         <archive path="/Lib/common/dswork/dswork.http.jar"/>
         <archive path="/Lib/common/dswork/dswork.jdbc.jar"/>
