@@ -809,9 +809,18 @@ public class DsCmsEditController extends DsCmsBaseController
 			String ym = TimeUtil.getCurrentTime("yyyyMM");
 			String imgPath = getCmsRoot() + "/html/" + siteFolder + "/html/f/img/" + ym + "/" + imgName;
 			HttpUtil httpUtil = new HttpUtil().create(imgUrl);
-			if(FileUtil.writeFile(imgPath, httpUtil.connectStream(), true))
+			// 防止因httpUtil.connectStream()可能为null而出现NPE
+			try
 			{
-				return siteUrl + "/f/img/" + ym + "/" + imgName;
+				if(FileUtil.writeFile(imgPath, httpUtil.connectStream(), true))
+				{
+					return siteUrl + "/f/img/" + ym + "/" + imgName;
+				}
+			}
+			catch(Exception e)
+			{
+				System.err.println("图片 " + imgUrl + " 转换到本地失败");
+				e.printStackTrace();
 			}
 		}
 		return imgUrl;
