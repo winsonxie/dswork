@@ -9,19 +9,13 @@ import dswork.core.page.Page;
 
 public class CmsFactoryMobile extends CmsFactory
 {
-	@Deprecated
-	public CmsFactoryMobile(long siteid)
-	{
-		super(siteid);
-	}
-
 	public CmsFactoryMobile(CmsFactory cms)
 	{
-		siteid = cms.siteid;
-		site = cms.site;
-		dao = cms.getDao();
-		categoryList = cms.categoryList;
-		categoryMap = cms.categoryMap;
+		this.site = cms.site;
+		this.dao = cms.getDao();
+		this.request = cms.request;
+		this.categoryList = cms.categoryList;
+		this.categoryMap = cms.categoryMap;
 	}
 
 	public ViewArticleNav queryPage(int currentPage, int pageSize, boolean onlyImageTop, boolean onlyPageTop, boolean isDesc, String url, Object categoryid)
@@ -36,7 +30,7 @@ public class CmsFactoryMobile extends CmsFactory
 		}
 		StringBuilder idArray = new StringBuilder();
 		idArray.append(toLong(categoryid));
-		Page<ViewArticle> page = getDao().queryArticlePage(siteid, currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, null);
+		Page<ViewArticle> page = getDao().queryArticlePage(site.getId(), currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, null);
 		ViewArticleNav nav = new ViewArticleNav();
 		currentPage = page.getCurrentPage();// 更新当前页
 		nav.setList(page.getResult());

@@ -161,6 +161,7 @@ public class DsCmsAuditController extends DsCmsBaseController
 					DsCmsSite s = service.getSite(p.getSiteid());
 					if("pass".equals(action))
 					{
+						p.setStatus(1);
 						p.setAuditstatus(4);
 						service.updateCategoryEdit(p, true, s.isWriteLog());
 						print(1);
@@ -168,6 +169,7 @@ public class DsCmsAuditController extends DsCmsBaseController
 					}
 					if("nopass".equals(action))
 					{
+						p.setStatus(0);
 						p.setAuditstatus(2);
 						service.updateCategoryEdit(p, false, s.isWriteLog());
 						print(1);
@@ -262,6 +264,7 @@ public class DsCmsAuditController extends DsCmsBaseController
 					String action = req.getString("action");
 					if("pass".equals(action))
 					{
+						p.setStatus(1);
 						p.setAuditstatus(4);
 						if(p.getStatus() == -1)
 						{
@@ -276,6 +279,7 @@ public class DsCmsAuditController extends DsCmsBaseController
 					}
 					if("nopass".equals(action))
 					{
+						p.setStatus(0);
 						p.setAuditstatus(2);
 						service.updatePageEdit(p, false, s.isWriteLog());
 						print(1);

@@ -9,7 +9,7 @@
 	id, own, name, folder, url, img, viewsite, mviewsite, metakeywords, metadescription
 </sql>
 <sql id="c_category">
-	a.id, a.pid, a.siteid, a.name, a.name as title, a.status, a.url, a.viewsite, a.pageviewsite,
+	a.id, a.pid, a.siteid, a.name, a.name as title, a.status, a.url, a.viewsite, a.pageviewsite, a.mviewsite, a.mpageviewsite,
 	b.metakeywords, b.metadescription, b.summary, b.releasetime, b.releasesource, b.releaseuser, b.img, b.content, b.jsondata
 </sql>
 <sql id="c_article">

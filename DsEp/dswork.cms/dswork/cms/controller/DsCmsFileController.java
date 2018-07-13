@@ -70,8 +70,9 @@ public class DsCmsFileController extends DsCmsBaseController
 			put("siteid", siteid);
 			return "/cms/file/getFileTree.jsp";
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -121,8 +122,9 @@ public class DsCmsFileController extends DsCmsBaseController
 				}
 			}
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
+			e.printStackTrace();
 		}
 		sb.append("]");
 		print(sb.toString());
@@ -173,8 +175,9 @@ public class DsCmsFileController extends DsCmsBaseController
 				return "/cms/file/getFile.jsp";
 			}
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -216,8 +219,9 @@ public class DsCmsFileController extends DsCmsBaseController
 				}
 			}
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -256,8 +260,9 @@ public class DsCmsFileController extends DsCmsBaseController
 			}
 			print("{\"err\":\"\",\"msg\":\"x.zip\"}");
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
+			e.printStackTrace();
 			print("{\"err\":\"上传失败\",\"msg\":\"\"}");
 		}
 	}

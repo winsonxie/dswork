@@ -14,14 +14,15 @@ $dswork.callback = function(){if($dswork.result.type==1){
 }}
 $(function(){
 	$(".form_title").css("width", "8%");
-<c:if test="${(scope==0 || scope==1)&&!po.audit}">
-	$('#content').xheditor({html5Upload:true,upMultiple:1,upLinkUrl:"uploadFile.htm?categoryid=${po.id}",upImgUrl:"uploadImage.htm?categoryid=${po.id}"});
+<c:if test="${!po.audit}">
+	<c:if test="${scope==0||scope==1}">$('#content').xheditor({html5Upload:true,upMultiple:1,upLinkUrl:"uploadFile.htm?categoryid=${po.id}",upImgUrl:"uploadImage.htm?categoryid=${po.id}"});</c:if>
 	function show(){
 		var i = new Image();
 		i.src = $("#inputImg").val();
 		i.onload = function(){$("#imgShow").attr("src",this.src).show()};
 		i.onerror = function(){$("#imgShow").hide()};
 	}
+	<c:if test="${scope==0||scope==1}">
 	function fill(){
 		var v = $("#inputImg").val(), m = {}, list = [], count = -1;
 		$('<div>'+$('#content').val()+'</div>').find("img").each(function(){var s = $(this).attr("src");if(!m[s]){list.push(s);m[s] = s;}});
@@ -31,6 +32,7 @@ $(function(){
 		show();
 	}
 	$("#btnFill").on("click", fill);
+	</c:if>
 	$("#btnClean").on("click", function(){$("#inputImg").val("");show();});
 	$("#inputImg").on("keyup", show);
 	show();
@@ -94,18 +96,9 @@ $(function(){
 </c:if>
 <c:if test="${!po.audit}">
 <table border="0" cellspacing="1" cellpadding="0" class="listTable">
-<c:if test="${scope==0 || scope==1}">
 	<tr>
 		<td class="form_title">摘要</td>
 		<td class="form_input"><input type="text" name="summary" maxlength="100" style="width:400px;" value="${fn:escapeXml(po.summary)}" /></td>
-	</tr>
-	<tr>
-		<td class="form_title">meta关键词</td>
-		<td class="form_input"><input type="text" name="metakeywords" maxlength="100" style="width:300px;" value="${fn:escapeXml(po.metakeywords)}" /></td>
-	</tr>
-	<tr>
-		<td class="form_title">meta描述</td>
-		<td class="form_input"><input type="text" name="metadescription" maxlength="100" style="width:300px;" value="${fn:escapeXml(po.metadescription)}" /></td>
 	</tr>
 	<tr>
 		<td class="form_title">来源</td>
@@ -114,6 +107,15 @@ $(function(){
 	<tr>
 		<td class="form_title">作者</td>
 		<td class="form_input"><input type="text" name="releaseuser" maxlength="100" style="width:300px;" value="${fn:escapeXml(po.releaseuser)}" /></td>
+	</tr>
+<c:if test="${scope==0 || scope==1}">
+	<tr>
+		<td class="form_title">meta关键词</td>
+		<td class="form_input"><input type="text" name="metakeywords" maxlength="100" style="width:300px;" value="${fn:escapeXml(po.metakeywords)}" /></td>
+	</tr>
+	<tr>
+		<td class="form_title">meta描述</td>
+		<td class="form_input"><input type="text" name="metadescription" maxlength="100" style="width:300px;" value="${fn:escapeXml(po.metadescription)}" /></td>
 	</tr>
 	<tr>
 		<td class="form_title">图片</td>
@@ -143,6 +145,15 @@ $(function(){
 </c:forEach>
 </c:if>
 <c:if test="${scope==2}">
+	<tr>
+		<td class="form_title">图片</td>
+		<td class="form_input">
+			<input type="text" name="img" id="inputImg" maxlength="100" style="width:400px;" value="${fn:escapeXml(po.img)}" />
+			&nbsp; <input type="button" class="button" id="btnClean" value="清空">
+			<br />
+			<img id="imgShow" style="width:100px">
+		</td>
+	</tr>
 	<tr>
 		<td class="form_title">URL</td>
 		<td class="form_input"><input type="text" name="url" maxlength="100" style="width:400px;" value="${fn:escapeXml(po.url)}" /></td>

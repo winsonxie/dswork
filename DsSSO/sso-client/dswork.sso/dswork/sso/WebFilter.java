@@ -389,15 +389,18 @@ public class WebFilter implements Filter
 			ssoName = String.valueOf(CONFIG.getProperty("sso.ssoName")).trim();
 			ssoPassword = String.valueOf(CONFIG.getProperty("sso.ssoPassword")).trim();
 			webURL = String.valueOf(CONFIG.getProperty("sso.webURL")).trim();
-			if("null".equals(webURL))
+			loginURL = String.valueOf(CONFIG.getProperty("sso.loginURL")).trim();
+			logoutURL = String.valueOf(CONFIG.getProperty("sso.logoutURL")).trim();
+			if(!"null".equals(webURL))
 			{
-				loginURL = String.valueOf(CONFIG.getProperty("sso.loginURL")).trim();
-				logoutURL = String.valueOf(CONFIG.getProperty("sso.logoutURL")).trim();
-			}
-			else
-			{
-				loginURL  = webURL + "/login";
-				logoutURL = webURL + "/logout";
+				if("null".equals(loginURL))
+				{
+					loginURL  = webURL + "/login";
+				}
+				if("null".equals(logoutURL))
+				{
+					logoutURL = webURL + "/logout";
+				}
 				passwordURL = webURL + "/password";
 			}
 			systemURL = String.valueOf(CONFIG.getProperty("sso.systemURL")).trim();

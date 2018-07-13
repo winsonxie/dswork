@@ -30,14 +30,13 @@ public class CmsFactory
 			return 0L;
 		}
 	}
-	protected static DsCmsDao dao = null;
 
-	protected long siteid = 0L;
-	protected ViewSite site = new ViewSite();
+	protected DsCmsDao dao;
+	protected ViewSite site;
+	protected HttpServletRequest request;
+
 	protected List<ViewCategory> categoryList = new ArrayList<ViewCategory>();
 	protected Map<String, ViewCategory> categoryMap = new HashMap<String, ViewCategory>();
-
-	protected HttpServletRequest request;
 
 	public CmsFactory()
 	{
@@ -45,52 +44,40 @@ public class CmsFactory
 
 	public CmsFactory(long siteid)
 	{
-		try
+		this.site = getDao().getSite(siteid);
+		if(this.site != null)
 		{
-			if(getDao() == null)
+			List<ViewCategory> clist = getDao().queryCategoryList(siteid);
+			for(ViewCategory m : clist)
 			{
-				init();
-			}
-			this.siteid = siteid;
-			this.site = getDao().getSite(siteid);
-			if(this.site != null)
-			{
-				List<ViewCategory> clist = getDao().queryCategoryList(siteid);
-				for(ViewCategory m : clist)
+				if(m.getPid() == null)
 				{
-					if(m.getPid() == null)
-					{
-						m.setPid(0L);
-						m.setParent(m);// 顶层节点的父节点为节点自己
-						categoryList.add(m);
-					}
-					categoryMap.put(String.valueOf(m.getId()), m);
+					m.setPid(0L);
+					m.setParent(m);// 顶层节点的父节点为节点自己
+					categoryList.add(m);
 				}
-				for(ViewCategory m : clist)
+				categoryMap.put(String.valueOf(m.getId()), m);
+			}
+			for(ViewCategory m : clist)
+			{
+				String pid = String.valueOf(m.getPid());
+				if(!pid.equals("0") && categoryMap.get(pid) != null)
 				{
-					String pid = String.valueOf(m.getPid());
-					if(!pid.equals("0") && categoryMap.get(pid) != null)
-					{
-						ViewCategory p = categoryMap.get(pid);
-						m.setParent(p);
-						p.addList(m);
-					}
+					ViewCategory p = categoryMap.get(pid);
+					m.setParent(p);
+					p.addList(m);
 				}
 			}
-		}
-		catch(Exception ex)
-		{
 		}
 	}
 
 	protected DsCmsDao getDao()
 	{
+		if(dao == null)
+		{
+			dao = (DsCmsDao) dswork.spring.BeanFactory.getBean("dsCmsDao");
+		}
 		return dao;
-	}
-
-	protected void init()
-	{
-		dao = (DsCmsDao) dswork.spring.BeanFactory.getBean("dsCmsDao");
 	}
 
 	public void setRequest(HttpServletRequest request)
@@ -110,7 +97,7 @@ public class CmsFactory
 
 	public ViewArticle get(String pageid)
 	{
-		return getDao().getArticle(siteid, toLong(pageid));
+		return getDao().getArticle(site.getId(), toLong(pageid));
 	}
 
 	public List<ViewArticle> queryList(int currentPage, int pageSize, boolean onlyImageTop, boolean onlyPageTop, boolean isDesc, Object... categoryids)
@@ -130,7 +117,7 @@ public class CmsFactory
 		}
 		StringBuilder idArray = new StringBuilder();
 		idArray.append(toLong(categoryid));
-		Page<ViewArticle> page = getDao().queryArticlePage(siteid, currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, null);
+		Page<ViewArticle> page = getDao().queryArticlePage(site.getId(), currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, null);
 		ViewArticleNav nav = new ViewArticleNav();
 		currentPage = page.getCurrentPage();// 更新当前页
 		nav.setList(page.getResult());
@@ -223,7 +210,7 @@ public class CmsFactory
 				idArray.append(",").append(toLong(categoryids[i]));
 			}
 		}
-		return getDao().queryArticlePage(siteid, currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, keyvalue).getResult();
+		return getDao().queryArticlePage(site.getId(), currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, keyvalue).getResult();
 	}
 
 	private ViewArticleSet doQueryPage(int currentPage, int pageSize, boolean isDesc, boolean onlyImageTop, boolean onlyPageTop, String keyvalue, Object... categoryids)
@@ -240,7 +227,7 @@ public class CmsFactory
 		ViewArticleSet set = new ViewArticleSet();
 		try
 		{
-			Page<ViewArticle> page = getDao().queryArticlePage(siteid, currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, keyvalue);
+			Page<ViewArticle> page = getDao().queryArticlePage(site.getId(), currentPage, pageSize, idArray.toString(), isDesc, onlyImageTop, onlyPageTop, keyvalue);
 			set.setStatus(1);// success
 			set.setMsg("success");
 			set.setSize(page.getTotalCount());

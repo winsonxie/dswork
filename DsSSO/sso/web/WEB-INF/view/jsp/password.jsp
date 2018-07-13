@@ -100,6 +100,7 @@ function doclick(){
 	</div>
 </div>
   <input type="hidden" name="service" value="${fn:escapeXml(service)}" />
+  <input type="hidden" name="loginURL" value="${fn:escapeXml(loginURL)}" />
 </form>
 </body>
 <script type="text/javascript">

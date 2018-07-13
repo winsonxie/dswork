@@ -67,8 +67,9 @@ public class DsCmsCategoryController extends DsCmsBaseController
 			put("siteid", siteid);
 			return "/cms/category/getCategory.jsp";
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -107,8 +108,9 @@ public class DsCmsCategoryController extends DsCmsBaseController
 			put("siteid", siteid);
 			return "/cms/category/getRecycledCategory.jsp";
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -496,8 +498,9 @@ public class DsCmsCategoryController extends DsCmsBaseController
 				}
 			}
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
+			e.printStackTrace();
 		}
 		return list;
 	}

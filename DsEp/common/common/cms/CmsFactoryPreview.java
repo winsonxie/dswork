@@ -5,22 +5,18 @@ package common.cms;
 
 public class CmsFactoryPreview extends CmsFactory
 {
-	private static DsCmsDao dao = null;
+	public CmsFactoryPreview(Long siteid)
+	{
+		super(siteid);
+	}
 
 	@Override
 	protected DsCmsDao getDao()
 	{
+		if(dao == null)
+		{
+			dao = (DsCmsDao) dswork.spring.BeanFactory.getBean("dsCmsPreviewDao");
+		}
 		return dao;
-	}
-
-	@Override
-	protected void init()
-	{
-		dao = (DsCmsDao) dswork.spring.BeanFactory.getBean("dsCmsPreviewDao");
-	}
-
-	public CmsFactoryPreview(Long siteid)
-	{
-		super(siteid);
 	}
 }

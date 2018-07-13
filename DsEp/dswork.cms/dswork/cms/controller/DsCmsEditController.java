@@ -21,6 +21,10 @@ import dswork.core.page.PageNav;
 import dswork.core.page.PageRequest;
 import dswork.core.util.FileUtil;
 import dswork.core.util.TimeUtil;
+import dswork.html.HtmlUtil;
+import dswork.html.nodes.Document;
+import dswork.html.nodes.Element;
+import dswork.http.HttpUtil;
 import dswork.web.MyFile;
 
 @Scope("prototype")
@@ -113,6 +117,9 @@ public class DsCmsEditController extends DsCmsBaseController
 						map.put(ctitleArr[i], cvalueArr[i]);
 					}
 					po.setJsondata(GsonUtil.toJson(map));
+					po.setImg(changeImageToLocal(s, po.getImg()));
+					po.setContent(changeContentToLocal(s, po.getContent()));
+					po.setStatus(0);
 
 					String action = req.getString("action");
 					if("save".equals(action))
@@ -124,9 +131,10 @@ public class DsCmsEditController extends DsCmsBaseController
 					}
 					if("submit".equals(action))
 					{
-						po.setStatus(1);
 						if(categoryNotNeedAudit(s.getId(), c.getId()))
 						{
+							po.setStatus(1);
+							po.setAuditstatus(0);
 							service.savePageEdit(po, true, s.isWriteLog(), getAccount(), getName());// url拼接/id.html
 						}
 						else
@@ -237,6 +245,8 @@ public class DsCmsEditController extends DsCmsBaseController
 					put("pageModel", pageModel);
 					put("pageNav", new PageNav<DsCmsPageEdit>(request, pageModel));
 					put("po", c);
+					put("enablemobile", s.getEnablemobile() == 1);
+					put("categoryNeedAudit", !categoryNotNeedAudit(s.getId(), c.getId()));
 					return "/cms/edit/getPage.jsp";
 				}
 			}
@@ -413,11 +423,11 @@ public class DsCmsEditController extends DsCmsBaseController
 				p.setReleasesource(po.getReleasesource());
 				p.setReleaseuser(po.getReleaseuser());
 				p.setReleasetime(po.getReleasetime());
-				p.setContent(po.getContent());
-				p.setImg(po.getImg());
 				p.setImgtop(po.getImgtop());
 				p.setPagetop(po.getPagetop());
-				p.setStatus(1);
+				p.setImg(changeImageToLocal(s, po.getImg()));
+				p.setContent(changeContentToLocal(s, po.getContent()));
+				p.setStatus(0);
 
 				Map<String, String> map = new LinkedHashMap<String, String>();
 				String[] ctitleArr = req.getStringArray("ctitle", false);
@@ -446,6 +456,8 @@ public class DsCmsEditController extends DsCmsBaseController
 				{
 					if(categoryNotNeedAudit(p.getSiteid(), p.getCategoryid()))
 					{
+						p.setStatus(1);
+						p.setAuditstatus(0);
 						p.pushEditidAndEditname(getAccount(), getName());
 						p.setEdittime(TimeUtil.getCurrentTime());
 						service.updatePageEdit(p, true, s.isWriteLog(), getAccount(), getName());
@@ -577,11 +589,12 @@ public class DsCmsEditController extends DsCmsBaseController
 				p.setReleasetime(po.getReleasetime());
 				p.setReleasesource(po.getReleasesource());
 				p.setReleaseuser(po.getReleaseuser());
-				p.setImg(po.getImg());
-				p.setContent(po.getContent());
 				p.setUrl(po.getUrl());
 				p.pushEditidAndEditname(getAccount(), getName());
 				p.setEdittime(TimeUtil.getCurrentTime());
+				p.setImg(changeImageToLocal(s, po.getImg()));
+				p.setContent(changeContentToLocal(s, po.getContent()));
+				p.setStatus(0);
 
 				Map<String, String> map = new LinkedHashMap<String, String>();
 				String[] ctitleArr = req.getStringArray("ctitle", false);
@@ -608,6 +621,8 @@ public class DsCmsEditController extends DsCmsBaseController
 				{
 					if(categoryNotNeedAudit(p.getSiteid(), p.getId()))
 					{
+						p.setStatus(1);
+						po.setAuditstatus(0);
 						service.updateCategoryEdit(p, true, s.isWriteLog(), getAccount(), getName());
 						print(1);
 						return;
@@ -689,9 +704,9 @@ public class DsCmsEditController extends DsCmsBaseController
 				}
 			}
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
-			ex.printStackTrace();
+			e.printStackTrace();
 		}
 		print("{\"err\":\"上传失败！\",\"msg\":\"\"}");
 	}
@@ -737,11 +752,69 @@ public class DsCmsEditController extends DsCmsBaseController
 				}
 			}
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
-			ex.printStackTrace();
+			e.printStackTrace();
 		}
 		print("{\"err\":\"上传失败！\",\"msg\":\"\"}");
+	}
+
+	private String changeContentToLocal(DsCmsSite site, String content)
+	{
+		Document doc = HtmlUtil.parse(content);
+		List<Element> imgs = doc.select("img");
+		for(Element img : imgs)
+		{
+			String imgUrl = img.attr("src");
+			String newUrl = changeImageToLocal(site, imgUrl);
+			if(!imgUrl.equals(newUrl))
+			{
+				content = content.replace(imgUrl, newUrl);
+			}
+		}
+		return content;
+	}
+
+	private String changeImageToLocal(DsCmsSite site, String imgUrl)
+	{
+		if(site.getUrl().length() == 0)
+		{
+			if(imgUrl.startsWith("http"))
+			{
+				return remoteImageToLocal(site.getUrl(), site.getFolder(), imgUrl);
+			}
+		}
+		else
+		{
+			if(imgUrl.startsWith("http") && !imgUrl.startsWith(site.getUrl()))
+			{
+				return remoteImageToLocal(site.getUrl(), site.getFolder(), imgUrl);
+			}
+		}
+		return imgUrl;
+	}
+
+	private String remoteImageToLocal(String siteUrl, String siteFolder, String imgUrl)
+	{
+		if(
+			imgUrl.endsWith(".jpg") ||
+			imgUrl.endsWith(".jpeg") ||
+			imgUrl.endsWith(".gif") ||
+			imgUrl.endsWith(".png")
+		)
+		{
+			String[] ss = imgUrl.split("\\.");
+			String extName = ss[ss.length - 1];
+			String imgName = System.currentTimeMillis() + "." + extName;
+			String ym = TimeUtil.getCurrentTime("yyyyMM");
+			String imgPath = getCmsRoot() + "/html/" + siteFolder + "/html/f/img/" + ym + "/" + imgName;
+			HttpUtil httpUtil = new HttpUtil().create(imgUrl);
+			if(FileUtil.writeFile(imgPath, httpUtil.connectStream(), true))
+			{
+				return siteUrl + "/f/img/" + ym + "/" + imgName;
+			}
+		}
+		return imgUrl;
 	}
 
 	private String getCmsRoot()

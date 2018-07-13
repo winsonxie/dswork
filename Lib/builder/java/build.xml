@@ -4,7 +4,7 @@
 	<java classname="dswork.builder.Builder" fork="true">
 		<arg value="your.xml" />
 		<classpath>
-			<pathelement path="./lib/dswork.builder.jar" />
+			<pathelement path="./lib/dswork-builder.jar" />
 			<pathelement path="./../../module/template/freemarker-2.3.27.jar" />
 			<pathelement path="./../../database/mysql/mysql-connector-java-5.1.45-bin.jar" />
 			<pathelement path="./../../database/mssql/mssql-jdbc4.jar" />

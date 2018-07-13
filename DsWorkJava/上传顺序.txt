@@ -1,0 +1,12 @@
+dswork-core
+dswork-html
+dswork-http
+dswork-jdbc
+dswork-ognl
+dswork-spring
+dswork-web
+
+
+以下两个需要依赖core和web
+dswork-config
+dswork-mvc

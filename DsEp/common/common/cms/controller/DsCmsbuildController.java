@@ -28,9 +28,10 @@ public class DsCmsbuildController extends BaseController
 		Long categoryid = req.getLong("categoryid", -1);
 		Long pageid = req.getLong("pageid", -1);
 		boolean mobile = req.getString("mobile", "false").equals("true");
+		boolean view = req.getString("view", "false").equals("true");
 
 		CmsFactory cms = (CmsFactory) request.getSession().getAttribute(mobile ? CMS_FACTORY_KEY_M : CMS_FACTORY_KEY);
-		if(cms == null)
+		if(view || cms == null)
 		{
 			cms = new CmsFactory(siteid);
 			CmsFactory cms_m = new CmsFactoryMobile(cms);
@@ -64,7 +65,7 @@ public class DsCmsbuildController extends BaseController
 		ViewSite s = cms.getSite();
 		put("site", s);
 		put("categorylist", cms.queryCategory("0"));// 顶层节点列表
-		if(req.getString("view").equals("true"))
+		if(view)
 		{
 			put("ctx", request.getContextPath() + "/html/" + s.getFolder() + (mobile ? "/html/m" : "/html"));// 预览时，现在可以不需要运行服务器，即可浏览相对地址
 		}

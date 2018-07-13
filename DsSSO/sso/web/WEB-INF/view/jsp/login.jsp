@@ -82,6 +82,7 @@ a:hover{color:#0000ff;text-decoration:underline;}
 	Copyright &copy; 2014-2017
 </div>
 <c:if test="${errorMsg != ''}"><script type="text/javascript">alert("${errorMsg}");</script></c:if>
+<c:if test="${loginURL != ''}"><script type="text/javascript">location.href="${${fn:escapeXml(loginURL)}";</script></c:if>
 </body>
 <script type="text/javascript" src="${ctx}/js/jskey/jskey_md5.js"></script>
 <script type="text/javascript">

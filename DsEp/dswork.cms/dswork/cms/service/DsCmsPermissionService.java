@@ -45,10 +45,10 @@ public class DsCmsPermissionService
 	public int save(DsCmsPermission po)
 	{
 		if(
-			po.getAudit().length() < 2
-			&& po.getEditall().length() < 2
-			&& po.getEditown().length() < 2
-			&& po.getPublish().length() < 2
+			po.getAudit().length() < 2 &&
+			po.getEditall().length() < 2 &&
+			po.getEditown().length() < 2 &&
+			po.getPublish().length() < 2
 		)// 没有任何权限，直接删除
 		{
 			dao.delete(po.getSiteid(), po.getAccount());

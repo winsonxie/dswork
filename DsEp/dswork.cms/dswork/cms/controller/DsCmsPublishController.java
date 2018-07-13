@@ -254,7 +254,6 @@ public class DsCmsPublishController extends DsCmsBaseController
 		int pagesize = req.getInt("pagesize", 25);
 		_building(false, siteid, categoryid, pageid, pagesize);
 	}
-	private HttpUtil httpUtil = new HttpUtil();
 
 	/**
 	 * 生成或删除信息
@@ -543,6 +542,7 @@ public class DsCmsPublishController extends DsCmsBaseController
 		}
 	}
 
+	private HttpUtil httpUtil = new HttpUtil();
 	private void _buildFile(String path, String urlpath, String siteFolder, boolean enablemobile)
 	{
 		try

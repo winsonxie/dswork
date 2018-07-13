@@ -1,0 +1,97 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>com.github.skeychen</groupId>
+	<artifactId>dswork-spring</artifactId>
+	<version>8.8.0.RELEASE</version>
+	
+	<name>dswork-spring</name>
+	<description>dswork-spring</description>
+	<url>https://github.com/skeychen/dswork</url>
+	
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License v3.0</name>
+			<url>https://github.com/skeychen/dswork/blob/master/LICENSE</url>
+		</license>
+	</licenses>
+	
+	<developers><developer><id>skeychen</id><name>skey</name><email>249725997@qq.com</email></developer></developers>
+	
+	<scm>
+		<connection>scm:git:git://github.com/skeychen/dswork</connection>
+		<developerConnection>scm:git:git://github.com/skeychen/dswork</developerConnection>
+		<url>https://github.com/skeychen/dswork</url>
+	</scm>
+	
+	<build>
+		<sourceDirectory>./</sourceDirectory>
+		<directory>E:/Workspaces/jar/pom/dswork-spring</directory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+						<manifestFile>./MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions><execution><phase>package</phase><goals><goal>jar-no-fork</goal></goals></execution></executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.9.1</version>
+						<executions>
+							<execution>
+								<phase>package</phase><goals><goal>jar</goal></goals>
+								<configuration><additionalparam>-Xdoclint:none</additionalparam></configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions><execution><phase>verify</phase><goals><goal>sign</goal></goals></execution></executions>
+					</plugin>
+				</plugins>
+			</build>
+			<distributionManagement>
+				<snapshotRepository>
+					<id>dswork-server</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+				</snapshotRepository>
+				<repository>
+					<id>dswork-server</id>
+					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>4.3.18.RELEASE</spring.version>
+	</properties>
+	<dependencies>
+		<dependency><groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId><version>3.0.1</version></dependency>
+		<dependency><groupId>org.springframework</groupId><artifactId>spring-context</artifactId><version>${spring.version}</version></dependency>
+		<dependency><groupId>org.springframework</groupId><artifactId>spring-webmvc</artifactId><version>${spring.version}</version></dependency>
+	</dependencies>
+	
+</project>

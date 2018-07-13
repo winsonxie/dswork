@@ -55,7 +55,8 @@
 	update DS_CMS_CATEGORY set
 		URL=#{url},
 		SUMMARY=#{summary},
-		RELEASETIME=#{releasetime},
+		RELEASESOURCE=#{releasesource},
+		RELEASEUSER=#{releaseuser},
 		IMG=#{img},
 		STATUS=#{status}
 	where ID=#{id} and SITEID=#{siteid} and SCOPE=2
