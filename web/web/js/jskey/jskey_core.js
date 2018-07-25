@@ -1,10 +1,10 @@
 ﻿/**
  * jskey库合集
- * @version 16
+ * @version 8.8.1
  * @datetime 2018-06-27 14:30
  * @author skey_chen
  * @copyright 2011-2018 &copy; 249725997@qq.com
- * @license LGPL
+ * @license LGPL-3.0 https://github.com/skeychen/dswork/blob/master/LICENSE
  */
 var $jskey=$jskey||{};
 ;!function(){"use strict";
