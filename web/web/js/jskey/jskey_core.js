@@ -1,7 +1,7 @@
 ﻿/**
  * jskey库合集
- * @version 15
- * @datetime 2018-03-07 16:20
+ * @version 16
+ * @datetime 2018-06-27 14:30
  * @author skey_chen
  * @copyright 2011-2018 &copy; 249725997@qq.com
  * @license LGPL
