@@ -11,8 +11,8 @@ sub,sup{vertical-align:baseline;}
 html{overflow:-moz-scrollbars-vertical;zoom:expression(function(ele){ele.style.zoom = "1";document.execCommand("BackgroundImageCache",false,true)}(this))}
 
 body,table,tr{background-color:#ffffff;}
-body::-webkit-scrollbar {width:4px;}
-body::-webkit-scrollbar-thumb {background-color:#95B8E7;border-radius:4px;}
+body::-webkit-scrollbar {width:5px;}
+body::-webkit-scrollbar-thumb {background-color:#95B8E7;}
 body::-webkit-scrollbar-track {background-color:#eeeeee;opacity:0.1;}
 table.normal{width:99%;}
 
