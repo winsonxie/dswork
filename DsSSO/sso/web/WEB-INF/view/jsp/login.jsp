@@ -29,7 +29,7 @@ i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 .boxmsg{padding:0;display:none;}
 .boxname{padding:0;}
 .box{overflow:hidden;text-align:center;width:100%;margin:0 auto;padding:8px 0;border:none;}
-.box .name{background-color:#fff;width:100%;padding:23px 0 8px 0;margin:0 auto;font-size:22px;line-height:22px;text-align:center;font-weight:normal;}
+.box .name{background-color:#fff;width:100%;padding:16px 0 8px 0;margin:0 auto;font-size:22px;line-height:22px;text-align:center;font-weight:normal;}
 .box .errmsg{color:#ff0000;line-height:25px;}
 .box .vbox{margin:0 auto;padding:0;overflow:hidden;text-align:left;vertical-align:top;width:275px;}
 .box .vbox .input{border-radius:0 6px 6px 0;vertical-align:middle;height:48px;line-height:48px;background-color:#edf2f6;border:#d6e5ef 1px solid;border-left:none;width:194px;outline:none;padding:0 0 0 12px;}
@@ -44,10 +44,11 @@ i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 .box .button{background-color:${c};color:#fff;width:280px;height:50px;line-height:50px;cursor:pointer;border:none;border-radius:6px;-webkit-appearance:none;}
 .box .button:hover{filter:alpha(opacity:50);opacity:0.9;}
 .box .checkbox{vertical-align:middle;}
+.box .radio{vertical-align:middle;}
 
-.box label{font-weight:bold;font-size:16px;line-height:18px;}
-.box label.left{float:left;margin-left:38px;}
-.box label.right{float:right;margin-right:38px;}
+.box .left{float:left;margin-left:38px;}
+.box .right{float:right;margin-right:38px;}
+.box label{font-weight:bold;font-size:16px;line-height:18px;cursor:pointer;}
 .box label a{font-size:16px;line-height:18px;text-decoration:none;}
 
 .cp{color:#666;font-size:12px;width:80%;overflow:hidden;text-align:center;padding:15px 0;margin:20px auto 0 auto;border:none;}
