@@ -60,11 +60,11 @@ i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 .bg{width:100%;height:730px;position:absolute;top:110px;left:0;z-index:-1;background:url(${ctx}/themes/share/bg/login.gif) no-repeat top center;}
 .view .login{float:right;margin:0 47px 0 auto;}
 */
-body {background-color:#fff;background:#fff url(${ctx}/themes/share/bg/wave.png) bottom center repeat-x;}
+body {background:#fff url(${ctx}/themes/share/bg/wave.png) bottom center repeat-x;}
 </style>
 <style type="text/css">
 @media only screen and (max-width:999px){.title{text-align:center;}}
-@media only screen and (max-width:767px){.title{font-size:28px;padding:30px 0px;}.view .login{float:none;margin:0 auto;}}
+@media only screen and (max-width:767px){body {background:#fff;}.title{font-size:28px;padding:30px 0px;}.view .login{float:none;margin:0 auto;}}
 @media only screen and (max-width:480px){.bg{background:none;}.boxname{display:none;}.title{font-size:24px;line-height:30px;margin:0 0 16px 0;}.view .title{padding:30px 0px 20px 0;margin:0;}.view .login{float:none;margin:0 auto;width:100%;border-left:none;border-right:none;box-shadow:none;}}
 @media only screen and (max-width:361px){.title{font-size:20px;}.box .name{font-size:20px;}}
 </style>
