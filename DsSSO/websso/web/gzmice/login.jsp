@@ -2,7 +2,7 @@
 response.setHeader("Cache-Control","no-store");
 response.setDateHeader("Expires", 0);
 response.setHeader("Pragma","no-cache"); 
-request.setAttribute("c", "#003c7b");// #003c7b #71d29 #125995 #d3880d #2A92EB
+request.setAttribute("c", "#2A92EB");// #003c7b #71d29 #125995 #d3880d #2A92EB
 request.setAttribute("ctx", "/sso");
 %><%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"
 %><%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"
