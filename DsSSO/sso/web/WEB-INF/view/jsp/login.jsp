@@ -2,7 +2,7 @@
 response.setHeader("Cache-Control","no-store");
 response.setDateHeader("Expires", 0);
 response.setHeader("Pragma","no-cache"); 
-request.setAttribute("c", "#003c7b");// #003c7b #71d29 #125995 #d3880d #2A92EB
+request.setAttribute("c", "#003c7b");// #003c7b #125995 #d3880d #2A92EB
 request.setAttribute("ctx", request.getContextPath());
 %><%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"
 %><%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"
@@ -112,14 +112,13 @@ body {background:#fff url(${ctx}/themes/share/bg/wave.png) bottom center repeat-
 	<div class="box">
 		<input type="button" class="button" value="登 录" onclick="doclick()" />
 	</div>
-	<div class="box"><div class="vbox">
-		<label class="right">&nbsp;&nbsp;<input id="savename" type="checkbox" autocomplete="off" class="checkbox" onclick="">&nbsp;记住用户名&nbsp;</label>
-	</div></div>
-	<%--
 	<div class="box"><div class="vbox link">
 		<label class="right"><input id="savename" type="checkbox" autocomplete="off" class="checkbox" onclick="">&nbsp;记住用户名</label>
+	<%--
 		<a href="#" class="left">立即注册</a><b class="left">|</b><a href="#" class="left">忘记密码?</a>
+	--%>
 	</div></div>
+	<%--
 	<div class="box"><div class="vbox">
 		<fieldset class="fieldset">
 			<legend align="center" class="legend">其他方式登录</legend>
