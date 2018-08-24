@@ -144,8 +144,11 @@ public class AuthController
 			if(loginURL.length() > 0)
 			{
 				loginURL = loginURL + (loginURL.indexOf("?")==-1 ? "?" : "&") + "service=" + java.net.URLEncoder.encode(serviceURL, "UTF-8");
+				loginURL = loginURL + "&msg=" + java.net.URLEncoder.encode(java.net.URLEncoder.encode(msg, "UTF-8"), "UTF-8");
+				response.sendRedirect(loginURL);
+				return null;
 			}
-			request.setAttribute("loginURL", loginURL);
+			// request.setAttribute("loginURL", loginURL);
 			request.setAttribute("errorMsg", msg);
 			try
 			{
