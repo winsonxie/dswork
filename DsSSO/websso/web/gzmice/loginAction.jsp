@@ -41,7 +41,7 @@ request.setAttribute("ssotoken", ssotoken);
 <form action="/sso/webssoAction.jsp" method="post" style="display:none" id="myform">
 <input name="account" value="${fn:escapeXml(po.useraccount)}" />
 <input name="ssotoken" value="${fn:escapeXml(ssotoken)}" />
-<input name="loginURL" value="/sso/login" />
+<input name="loginURL" value="/websso/gzmice/login.jsp" />
 <input name="service" value="${fn:escapeXml(serviceURL)}" />
 <input name="msg" value="${fn:escapeXml(msg)}" />
 </form>

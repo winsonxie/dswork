@@ -24,11 +24,8 @@ request.setAttribute("hasAlipay", WebssoUtil.HAS_ALIPAY);
 request.setAttribute("weblogin", WebssoUtil.WEBLOGIN);
 
 MyRequest req = new MyRequest(request);
-String serviceURL = req.getString("serviceURL");
-serviceURL = URLEncoder.encode(serviceURL, "UTF-8");
-serviceURL += getUrl(request) + "/loginAction.jsp?serviceURL=" + serviceURL;
-serviceURL = URLEncoder.encode(serviceURL, "UTF-8");
-request.setAttribute("serviceURL", serviceURL);
+String serviceURL = getUrl(request) + "/loginAction.jsp?serviceURL=" + URLEncoder.encode(req.getString("serviceURL"), "UTF-8");
+request.setAttribute("serviceURL", URLEncoder.encode(serviceURL, "UTF-8"));
 %><html>
 <body>
 <c:if test="${hasQq}"><a href="${weblogin}/login.jsp?type=qq&serviceURL=${serviceURL}"><img alt="QQ登录" src="${weblogin}/img/qq_logo.png"></a></c:if>
