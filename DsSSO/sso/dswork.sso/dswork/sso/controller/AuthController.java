@@ -70,7 +70,18 @@ public class AuthController
 		}
 		request.setAttribute("service", serviceURL);
 		request.setAttribute("loginURL", loginURL);
-		request.setAttribute("msg", "");
+		String msg = req.getString("msg");
+		try
+		{
+			if(msg.length() > 0)
+			{
+				msg = java.net.URLDecoder.decode(msg, "UTF-8");
+			}
+		}
+		catch (Exception e)
+		{
+		}
+		request.setAttribute("msg", msg);
 		return "/login.jsp";
 	}
 
