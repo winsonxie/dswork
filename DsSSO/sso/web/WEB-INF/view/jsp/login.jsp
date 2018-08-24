@@ -64,7 +64,8 @@ i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 .cp a:link,
 .cp a:visited,
 .cp a:active{font-size:12px;font-weight:normal;font-family:arial;color:${c};text-decoration:underline;outline:none;}
-
+</style>
+<style type="text/css">
 /*
 .bg{width:100%;height:730px;position:absolute;top:110px;left:0;z-index:-1;background:url(${ctx}/themes/share/bg/login.gif) no-repeat top center;}
 .view .login{float:right;margin:0 47px 0 auto;}
