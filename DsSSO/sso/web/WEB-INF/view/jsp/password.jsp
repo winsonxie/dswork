@@ -2,7 +2,7 @@
 response.setHeader("Cache-Control","no-store");
 response.setDateHeader("Expires", 0);
 response.setHeader("Pragma","no-cache"); 
-request.setAttribute("c", "#003c7b");// #003c7b #71d29 #125995 #d3880d #2A92EB
+request.setAttribute("c", "#003c7b");// #003c7b #b71d29 #125995 #d3880d #2a92eb
 request.setAttribute("ctx", request.getContextPath());
 %><%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"
 %><%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"
@@ -20,8 +20,10 @@ body {background-color:#fff;font-family:arial,"microsoft yahei","宋体";color:$
 i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 
 .view {overflow:hidden;margin:0 auto;width:100%;min-width:300px;max-width:1000px;overflow:hidden;padding:8px 0;}
+.title{background-color:${c};color:#fff;margin:0 0 40px 0;}
 .title,
 .view .title{font-weight:bold;text-align:center;font-size:32px;line-height:40px;padding:38px 0px;}
+.view .title{background-color:inherit;color:${c};margin:0;}
 .view .login{margin:0 auto;padding:0;width:360px;max-width:360px;border:${c} solid 0px;overflow:hidden;background-color:#fff;box-shadow:0 0 8px 0px ${c};}
 
 .boxmsg{padding:0;display:none;}
@@ -63,31 +65,14 @@ i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 .cp a:visited,
 .cp a:active{font-size:12px;font-weight:normal;font-family:arial;color:${c};text-decoration:underline;outline:none;}
 
-
-.title{background-color:${c};color:#fff;margin:0 0 40px 0;}
-.view .title{background-color:inherit;color:${c};margin:0;}
 /*
 .bg{width:100%;height:730px;position:absolute;top:110px;left:0;z-index:-1;background:url(${ctx}/themes/share/bg/login.gif) no-repeat top center;}
 .view .login{float:right;margin:0 47px 0 auto;}
 */
 body {background:#fff url(${ctx}/themes/share/bg/wave.png) bottom center repeat-x;}
+.fieldset a {margin:0 19px;}
 </style>
-<style type="text/css">
-.fieldset{margin:0;border:0;border-top:#e0e0e0 1px solid;padding:5px 0 10px 0;}
-.fieldset .legend{text-align:center;color:#999;margin:0 auto;padding:0;font-size:12px;}
-.icon_qq,
-.icon_weibo,
-.icon_alipay,
-.icon_wechat{margin:0 auto;padding:0;display:inline-block;width:30px;height:30px;vertical-align:middle;border-radius:50%;font-size:normal;font-weight:normal;outline:0 none;}
-.icon_qq    {background:#0288d1 url(${ctx}/themes/share/bg/icons.png)   0px 6px no-repeat;}
-.icon_weibo {background:#d32f2f url(${ctx}/themes/share/bg/icons.png) -30px 6px no-repeat;}
-.icon_alipay{background:#00aaee url(${ctx}/themes/share/bg/icons.png) -60px 6px no-repeat;}
-.icon_wechat{background:#00d20d url(${ctx}/themes/share/bg/icons.png) -90px 6px no-repeat;}
-@media only screen and (max-width:999px){.title{text-align:center;}}
-@media only screen and (max-width:767px){body {background:#fff;}.title{font-size:28px;padding:30px 0px;}.view .login{float:none;margin:0 auto;}}
-@media only screen and (max-width:480px){.bg{background:none;}.boxname{display:none;}.title{font-size:24px;line-height:30px;margin:0 0 16px 0;}.view .title{padding:30px 0px 20px 0;margin:0;}.view .login{float:none;margin:0 auto;width:100%;border-left:none;border-right:none;box-shadow:none;}}
-@media only screen and (max-width:361px){.title{font-size:20px;}.box .name{font-size:20px;}}
-</style>
+<link rel="stylesheet" type="text/css" href="${ctx}/themes/ssomedia.css"/>
 </head>
 <body>
 <div class="bg"></div>
@@ -130,33 +115,15 @@ body {background:#fff url(${ctx}/themes/share/bg/wave.png) bottom center repeat-
 	&copy; 2014-2018 249725997@qq.com
 </div>
 </body>
-<script type="text/javascript" src="${ctx}/js/jskey/jskey_md5.js"></script>
-<script type="text/javascript" src="${ctx}/js/jskey/jskey_des.js"></script>
+<script type="text/javascript" src="${ctx}/js/jskey/jskey_sso.js"></script>
 <script type="text/javascript">
-function _$(id){return document.getElementById(id);}
-function _uncheck(id){
-	var s = "";
-	if(id == "oldpassword"){if(!_$(id).value){s="原密码不能为空";}}
-	if(id == "password"){if(!_$(id).value){s="新密码不能为空";}else{if(_$(id+'2').value&&_$(id).value!=_$(id+'2').value){s = "确认密码不一致";}}}
-	if(id == "password2"){if(_$(id).value!=_$('password').value){s = "确认密码不一致";}}
-	if(id == "authcode"){if(!_$(id).value){s="验证码不能为空";}}
-	if(s != ""){s = "<i>&#xf1010;</i> "+s+"<br>";_$("errmsg").innerHTML = s;_$("errmsgdiv").style.display = "block";return true;}else{_$("errmsgdiv").style.display= "none";return false;}
-}
 function doclick(){
-	if(_uncheck("oldpassword") || _uncheck("password") || _uncheck("password2") || _uncheck("authcode")){return;}
+	if(docheck()){return;}
 	try{_$('oldpassword').value = $jskey.md5($jskey.md5(_$('oldpassword').value)+_$('authcode').value);}catch(e){}
 	try{_$('password').value = $jskey.encodeDes(_$('password').value, _$('authcode').value);}catch(e){}
 	_$("w").submit();
 }
-_$("mycode").click();
 _$("authcode").value = "";
-
-function registEvent($e, et, fn){$e.attachEvent ? $e.attachEvent("on"+et, fn) : $e.addEventListener(et, fn, false);}
-function registKey(id){registEvent(_$(id), "keydown", function(event){if(event.keyCode == 13){doclick();}});registEvent(_$(id), "keyup", function(event){_uncheck(this.getAttribute("id"));});}
-registKey("oldpassword");
-registKey("password");
-registKey("password2");
-registKey("authcode");
 <c:if test="${errorMsg != ''}">
 _$("errmsg").innerHTML = "${errorMsg}";
 _$("errmsgdiv").style.display = "block";
