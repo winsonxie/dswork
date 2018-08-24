@@ -28,15 +28,15 @@ try{
 				msg = "用户已禁用，请联系管理员！";
 			}
 			else if((EncryptUtil.encryptMd5(user.getPassword()+authcode).equals(password))){
-				boolean gkcode = true;
-				if(",admin,99999,hxp,www,".indexOf(xaccount) == -1){
-					code = EncryptUtil.decodeDes(code, "login");
-					if(!dswork.sso.controller.AuthCodeUtil.getCode().equals(code)){
-						gkcode = false;
-						msg = "管控密码错误！";
-					}
-				}
-				if(gkcode){
+				//boolean gkcode = true;
+				//if(",admin,99999,hxp,www,".indexOf(xaccount) == -1){
+				//	code = EncryptUtil.decodeDes(code, "login");
+				//	if(!dswork.sso.controller.AuthCodeUtil.getCode().equals(code)){
+				//		gkcode = false;
+				//		msg = "管控密码错误！";
+				//	}
+				//}
+				//if(gkcode){
 					String cookieTicket = dswork.sso.controller.AuthController.putLoginInfo(request, response, user.getAccount(), user.getName());
 					try{
 						service.saveLogLogin(cookieTicket, dswork.sso.controller.AuthController.getClientIp(request), user.getAccount(), user.getName(), true);
@@ -52,14 +52,14 @@ try{
 						response.sendRedirect(serviceURL += ((serviceURL.indexOf("?") != -1) ? "&ticket=" : "?ticket=") + TicketService.getOnceTicket(cookieTicket));
 					}
 					return;
-				}
+				//}
 			}
 		}
 	}
 	// 失败则转回来
 	request.setAttribute("account", account);
 	request.setAttribute("service", serviceURL);
-	request.setAttribute("errorMsg", msg);
+	request.setAttribute("msg", msg);
 	try{
 		service.saveLogLogin("", dswork.sso.controller.AuthController.getClientIp(request), account, "", false);
 	}
