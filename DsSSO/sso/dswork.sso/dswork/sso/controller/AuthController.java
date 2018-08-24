@@ -70,7 +70,7 @@ public class AuthController
 		}
 		request.setAttribute("service", serviceURL);
 		request.setAttribute("loginURL", loginURL);
-		request.setAttribute("errorMsg", "");
+		request.setAttribute("msg", "");
 		return "/login.jsp";
 	}
 
@@ -149,7 +149,7 @@ public class AuthController
 				return null;
 			}
 			// request.setAttribute("loginURL", loginURL);
-			request.setAttribute("errorMsg", msg);
+			request.setAttribute("msg", msg);
 			try
 			{
 				service.saveLogLogin("", getClientIp(request), account, "", false);
@@ -228,7 +228,7 @@ public class AuthController
 				request.setAttribute("account", _account);
 				request.setAttribute("service", serviceURL);
 				request.setAttribute("loginURL", loginURL);
-				request.setAttribute("errorMsg", "");
+				request.setAttribute("msg", "");
 				return "/password.jsp";
 			}
 		}
@@ -323,7 +323,7 @@ public class AuthController
 					// 失败则转回来
 					request.setAttribute("account", _account);
 					request.setAttribute("service", serviceURL);
-					request.setAttribute("errorMsg", msg);
+					request.setAttribute("msg", msg);
 					return "/password.jsp";
 				}
 			}
