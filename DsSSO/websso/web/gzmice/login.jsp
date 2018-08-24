@@ -77,6 +77,7 @@ i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 .view .login{float:right;margin:0 47px 0 auto;}
 */
 body {background:#fff url(/sso/themes/share/bg/wave.png) bottom center repeat-x;}
+.fieldset a {margin:0 30px;}
 </style>
 <style type="text/css">
 .fieldset{margin:0;border:0;border-top:#e0e0e0 1px solid;padding:5px 0 10px 0;}
@@ -120,12 +121,12 @@ body {background:#fff url(/sso/themes/share/bg/wave.png) bottom center repeat-x;
 	</div>
 	<div class="box"><div class="vbox link">
 		<label class="right"><input id="savename" type="checkbox" autocomplete="off" class="checkbox" onclick="">&nbsp;记住用户名</label>
-		<a href="register.jsp?service=${serviceEncode}" class="left">立即注册</a><b class="left">|</b><a href="#" class="left">忘记密码?</a>
+		<b class="left">没有账号？</b><a href="register.jsp?service=${serviceEncode}" class="left">立即注册</a><%--<b class="left">|</b><a href="#" class="left">忘记密码?</a>--%>
 	</div></div>
 	<div class="box"><div class="vbox">
 		<fieldset class="fieldset">
 			<legend align="center" class="legend">其他方式登录</legend>
-			<a href="#" class="icon_qq"></a><a href="#" class="icon_weibo"></a><a href="#" class="icon_alipay"></a><a href="#" class="icon_wechat"></a>
+			<a onclick="return false;" href="#" class="icon_qq"></a><a onclick="return false;" href="#" class="icon_alipay"></a><a onclick="return false;" href="#" class="icon_wechat"></a>
 		</fieldset>
 	</div></div>
   </div>
@@ -133,7 +134,7 @@ body {background:#fff url(/sso/themes/share/bg/wave.png) bottom center repeat-x;
   </form>
 </div>
 <div class="cp">
-	&copy; 2014-2018 249725997@qq.com
+	&copy; 2014-2018 广州商务会展促进服务中心
 </div>
 </body>
 <script type="text/javascript" src="${ctx}/js/jskey/jskey_md5.js"></script>
