@@ -70,6 +70,7 @@ i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 .bg{width:100%;height:730px;position:absolute;top:110px;left:0;z-index:-1;background:url(${ctx}/themes/share/bg/login.gif) no-repeat top center;}
 .view .login{float:right;margin:0 47px 0 auto;}
 */
+.fieldset a {margin:0 19px;}
 body {background:#fff url(${ctx}/themes/share/bg/wave.png) bottom center repeat-x;}
 </style>
 <style type="text/css">
