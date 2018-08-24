@@ -125,6 +125,6 @@ function doclick(){
 	_$("w").submit();
 }
 _$("authcode").value = "";
-<c:if test="${errorMsg != ''}">_$("msg").innerHTML = "${errorMsg}";_$("msgdiv").style.display = "block";</c:if>
+<c:if test="${fn:length(errorMsg)>0}">_$("msg").innerHTML = "${errorMsg}";_$("msgdiv").style.display = "block";</c:if>
 </script>
 </html>
