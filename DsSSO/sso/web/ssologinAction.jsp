@@ -71,7 +71,7 @@ catch(Exception e)
 <form action="login" method="post" style="display:none" id="myform">
 <input name="account" value="${fn:escapeXml(account)}" />
 <input name="service" value="${fn:escapeXml(serviceURL)}" />
-<input name="errorMsg" value="${fn:escapeXml(msg)}" />
+<input name="msg" value="${fn:escapeXml(msg)}" />
 </form>
 <script type="text/javascript">
 alert('登录失败：${fn:escapeXml(msg)}')
