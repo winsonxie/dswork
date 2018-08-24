@@ -36,14 +36,14 @@ function _uncheck(id){
 		}
 		if(id == "password2"){if(_$(id).value!=_$("password").value){s = "确认密码不一致";}}
 		if(id == "authcode"){if(!_$(id).value){s="验证码不能为空";}}
-		if(s != ""){
+		if(s != "" && _$("msgdiv")){
 			s = "<i>&#xf1010;</i> "+s+"<br>";
-			_$("errmsg").innerHTML = s;
-			_$("errmsgdiv").style.display = "block";
+			_$("msg").innerHTML = s;
+			_$("msgdiv").style.display = "block";
 			return true;
 		}
 		else{
-			_$("errmsgdiv").style.display= "none";
+			_$("msgdiv").style.display= "none";
 		}
 	}
 	return false;

@@ -30,7 +30,7 @@ i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 .boxname{padding:0;}
 .box{overflow:hidden;text-align:center;width:100%;margin:0 auto;padding:8px 0;border:none;}
 .box .name{background-color:#fff;width:100%;padding:16px 0 8px 0;margin:0 auto;font-size:22px;line-height:22px;text-align:center;font-weight:normal;}
-.box .errmsg{color:#ff0000;line-height:25px;}
+.box .msg{color:#ff0000;line-height:25px;}
 .box .vbox{margin:0 auto;padding:0;overflow:hidden;text-align:left;vertical-align:top;width:275px;}
 .box .vbox .input{border-radius:0 6px 6px 0;vertical-align:middle;height:48px;line-height:48px;background-color:#edf2f6;border:#d6e5ef 1px solid;border-left:none;width:194px;outline:none;padding:0 0 0 12px;}
 .box .vbox .input:focus{border-color:${c};}
@@ -87,8 +87,8 @@ body {background:#fff url(${ctx}/themes/share/bg/wave.png) bottom center repeat-
 	<div class="box"><div class="vbox">
 		<span><i>&#xf1002;</i></span><input type="password" id="password" name="password" autocomplete="off" class="input" value="" title="密码" placeholder="密码" />
 	</div></div>
-	<div class="box boxmsg" id="errmsgdiv"><div class="vbox">
-		<div id="errmsg" class="errmsg"></div>
+	<div class="box boxmsg" id="msgdiv"><div class="vbox">
+		<div id="msg" class="msg"></div>
 	</div></div>
 	<div class="box"><div class="vbox">
 		<input type="text" id="authcode" name="authcode" autocomplete="off" maxlength="4" class="input code" value="" title="验证码" placeholder="验证码" />
@@ -100,14 +100,14 @@ body {background:#fff url(${ctx}/themes/share/bg/wave.png) bottom center repeat-
 	<div class="box"><div class="vbox link">
 		<label class="right"><input id="savename" type="checkbox" autocomplete="off" class="checkbox" onclick="">&nbsp;记住用户名</label>
 	<%--
-		<a href="#" class="left">立即注册</a><b class="left">|</b><a href="#" class="left">忘记密码?</a>
+		<a onclick="return false;" href="#" class="left">立即注册</a><b class="left">|</b><a onclick="return false;" href="#" class="left">忘记密码?</a>
 	--%>
 	</div></div>
 	<%--
 	<div class="box"><div class="vbox">
 		<fieldset class="fieldset">
 			<legend align="center" class="legend">其他方式登录</legend>
-			<a href="#" class="icon_qq"></a><a href="#" class="icon_weibo"></a><a href="#" class="icon_alipay"></a><a href="#" class="icon_wechat"></a>
+			<a onclick="return false;" href="#" class="icon_qq"></a><a onclick="return false;" href="#" class="icon_weibo"></a><a onclick="return false;" href="#" class="icon_alipay"></a><a onclick="return false;" href="#" class="icon_wechat"></a>
 		</fieldset>
 	</div></div>
 	--%>
@@ -127,10 +127,7 @@ function doclick(){
 	_$("w").submit();
 }
 _$("authcode").value = "";
-<c:if test="${errorMsg != ''}">
-_$("errmsg").innerHTML = "${errorMsg}";
-_$("errmsgdiv").style.display = "block";
-</c:if>
+<c:if test="${errorMsg != ''}">_$("msg").innerHTML = "${errorMsg}";_$("msgdiv").style.display = "block";</c:if>
 </script>
 <c:if test="${fn:length(loginURL)>0}"><script type="text/javascript"><c:if test="${errorMsg != ''}">alert("${errorMsg}");</c:if>location.href="${fn:escapeXml(loginURL)}";</script></c:if>
 </html>
