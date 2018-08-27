@@ -75,7 +75,7 @@ public class AuthController
 		{
 			if(msg.length() > 0)
 			{
-				msg = java.net.URLDecoder.decode(msg, "UTF-8");
+				msg = java.net.URLDecoder.decode(msg, "UTF-8");// 防止get方式(两次转码)传递，尝试再转码一次
 			}
 		}
 		catch (Exception e)
