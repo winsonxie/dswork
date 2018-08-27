@@ -2,35 +2,42 @@
 %><%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"
 %><%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"
 %><%
-String msg = "";
+dswork.web.MyRequest req = new dswork.web.MyRequest(request);
+String msg = req.getString("msg");
 String ssotoken = "";
 dswork.websso.model.DsWebssoUser po = new dswork.websso.model.DsWebssoUser();
-dswork.web.MyRequest req = new dswork.web.MyRequest(request);
-String serviceURL = java.net.URLDecoder.decode(req.getString("service", ""), "UTF-8");// get方式传过来的
+String serviceURL = java.net.URLDecoder.decode(java.net.URLDecoder.decode(req.getString("service", ""), "UTF-8"), "UTF-8");// get方式传过来的
 if(serviceURL.length() == 0)
 {
 	msg = "参数错误";
 }
 else
 {
-	req.getFillObject(po);
-	try
+	if("".equals(msg))
 	{
-		dswork.websso.service.DsWebssoUserService service = (dswork.websso.service.DsWebssoUserService)dswork.spring.BeanFactory.getBean("dsWebssoUserService");
-		po = service.getByOpendid(po);
-		if(po == null)
+		req.getFillObject(po);
+		try
 		{
-			msg = "用户不存在";
+			dswork.websso.service.DsWebssoUserService service = (dswork.websso.service.DsWebssoUserService)dswork.spring.BeanFactory.getBean("dsWebssoUserService");
+			dswork.websso.model.DsWebssoUser tmp = po;
+			po = service.getByOpendid(po);
+			if(po == null)
+			{
+				msg = "该"+(tmp.getOpenidqq().length() > 0 ? "QQ" : (tmp.getOpenidwechat().length() > 0 ? "微信" : (tmp.getOpenidalipay() > 0 ? "支付宝" : "")))+"账号未注册用户";
+			}
+			else
+			{
+				ssotoken = dswork.core.util.EncryptUtil.encryptMd5("" + "skeywebsso");
+			}
 		}
-		ssotoken = dswork.core.util.EncryptUtil.encryptMd5(po.getUseraccount() + "skeywebsso");
-	}
-	catch(Exception e)
-	{
-		msg = e.getMessage();
+		catch(Exception e)
+		{
+			msg = e.getMessage();
+		}
 	}
 }
 request.setAttribute("serviceURL", serviceURL);
-request.setAttribute("msg", java.net.URLEncoder.encode(msg, "UTF-8"));// 服务器认get传来的
+request.setAttribute("msg", msg);
 request.setAttribute("po", po);
 request.setAttribute("ssotoken", ssotoken);
 %><!DOCTYPE html><html>
