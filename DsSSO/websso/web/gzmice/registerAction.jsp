@@ -19,15 +19,16 @@ else
 		try
 		{
 			dswork.websso.service.DsWebssoUserService service = (dswork.websso.service.DsWebssoUserService)dswork.spring.BeanFactory.getBean("dsWebssoUserService");
-			 dswork.websso.model.DsWebssoUser tmp = service.getByOpendid(po);
+			dswork.websso.model.DsWebssoUser tmp = service.getByOpendid(po);
 			if(tmp == null)
 			{
-				msg = "该"+(po.getOpenidqq().length() > 0 ? "QQ" : (po.getOpenidwechat().length() > 0 ? "微信" : (po.getOpenidalipay() > 0 ? "支付宝" : "")))+"账号未注册用户";
+				service.save(po);
+				ssotoken = dswork.core.util.EncryptUtil.encryptMd5(po.getUseraccount() + "skeywebsso");
 			}
 			else
 			{
+				msg = "该"+(po.getOpenidqq().length() > 0 ? "QQ" : (po.getOpenidwechat().length() > 0 ? "微信" : (po.getOpenidalipay().length() > 0 ? "支付宝" : "")))+"账号已注册用户";
 				po = tmp;
-				ssotoken = dswork.core.util.EncryptUtil.encryptMd5(tmp.getUseraccount() + "skeywebsso");
 			}
 		}
 		catch(Exception e)
@@ -48,7 +49,7 @@ request.setAttribute("ssotoken", ssotoken);
 <form action="/sso/webssoAction.jsp" method="post" style="display:none" id="myform">
 <input name="account" value="${fn:escapeXml(po.useraccount)}" />
 <input name="ssotoken" value="${fn:escapeXml(ssotoken)}" />
-<input name="loginURL" value="/sso/login" />
+<input name="loginURL" value="/websso/gzmice/login.jsp" />
 <input name="service" value="${fn:escapeXml(serviceURL)}" />
 <input name="msg" value="${fn:escapeXml(msg)}" />
 </form>

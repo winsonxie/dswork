@@ -166,6 +166,17 @@ body {background:#fff url(/sso/themes/share/bg/wave.png) bottom center repeat-x;
 	<div class="box"><div class="vbox link">
 		<b class="left">已有账号？</b><a href="login.jsp?service=${servicex}" class="left">立即登录</a><%--<b class="left">|</b><a href="#" class="left">忘记密码?</a>--%>
 	</div></div>
+	<div class="box"><div class="vbox">
+		<fieldset class="fieldset">
+			<legend align="center" class="legend">其他方式登录</legend>
+				<%
+				String serviceURL = "/websso/gzmice/registerAction.jsp?service=" + java.net.URLEncoder.encode(java.net.URLEncoder.encode(service, "UTF-8"), "UTF-8");
+				request.setAttribute("serviceURL", java.net.URLEncoder.encode(serviceURL, "UTF-8"));
+				%><a href="http://lelepark.com/weblogin/login.jsp?type=qq&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_qq"></a>
+				<a href="http://lelepark.com/weblogin/login.jsp?type=alipay&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_alipay"></a>
+				<a href="http://lelepark.com/weblogin/login.jsp?type=wechat&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_wechat"></a>
+		</fieldset>
+	</div></div>
   </div>
   <input type="hidden" name="service" value="${fn:escapeXml(service)}" />
   </form>

@@ -19,15 +19,15 @@ else
 		try
 		{
 			dswork.websso.service.DsWebssoUserService service = (dswork.websso.service.DsWebssoUserService)dswork.spring.BeanFactory.getBean("dsWebssoUserService");
-			dswork.websso.model.DsWebssoUser tmp = po;
-			po = service.getByOpendid(po);
-			if(po == null)
+			dswork.websso.model.DsWebssoUser tmp = service.getByOpendid(po);
+			if(tmp == null)
 			{
-				msg = "该"+(tmp.getOpenidqq().length() > 0 ? "QQ" : (tmp.getOpenidwechat().length() > 0 ? "微信" : (tmp.getOpenidalipay().length() > 0 ? "支付宝" : "")))+"账号未注册用户";
+				msg = "该"+(po.getOpenidqq().length() > 0 ? "QQ" : (po.getOpenidwechat().length() > 0 ? "微信" : (po.getOpenidalipay().length() > 0 ? "支付宝" : "")))+"账号未注册用户";
 			}
 			else
 			{
-				ssotoken = dswork.core.util.EncryptUtil.encryptMd5("" + "skeywebsso");
+				po = tmp;
+				ssotoken = dswork.core.util.EncryptUtil.encryptMd5(tmp.getUseraccount() + "skeywebsso");
 			}
 		}
 		catch(Exception e)
