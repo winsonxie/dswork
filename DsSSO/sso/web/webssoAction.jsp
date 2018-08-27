@@ -15,9 +15,12 @@ String ssotoken = req.getString("ssotoken");
 String loginURL = req.getString("loginURL");
 String service = req.getString("service", request.getContextPath() + "/ticket.jsp");
 String msg = req.getString("msg");
+request.setAttribute("account", account);
+request.setAttribute("loginURL", loginURL);
+request.setAttribute("service", service);
 try
 {
-	if("".equals(msg))
+	if("".equals(msg) && account.length() > 0)
 	{
 		AuthFactoryService authservice  = (AuthFactoryService)dswork.spring.BeanFactory.getBean("authFactoryService");
 		LoginUser user = authservice.getLoginUserByAccount(account);
@@ -59,22 +62,19 @@ try
 				msg = "非合法操作";
 			}
 		}
-	}
-	// 失败则转回来
-	request.setAttribute("account", account);
-	request.setAttribute("service", service);
-	request.setAttribute("msg", URLEncoder.encode(msg ,"UTF-8"));
-	try
-	{
-		authservice.saveLogLogin("", AuthController.getClientIp(request), account, "", false);
-	}
-	catch(Exception e)
-	{
+		//try
+		//{
+		//	authservice.saveLogLogin("", AuthController.getClientIp(request), account, "", false);// 第三方登录原则上不会存在失败，只有没用户
+		//}
+		//catch(Exception e)
+		//{
+		//}
 	}
 }
 catch(Exception e)
 {
 }
+request.setAttribute("msg", msg);
 %><!DOCTYPE html><html>
 <head>
 <meta charset="UTF-8" /><title>统一身份认证平台</title>
