@@ -43,8 +43,8 @@ i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 .box .vbox img{width:120px;height:46px;border:none;cursor:pointer;vertical-align:middle;}
 .box .button{background-color:${c};color:#fff;width:280px;height:50px;line-height:50px;cursor:pointer;border:none;border-radius:6px;-webkit-appearance:none;}
 .box .button:hover{filter:alpha(opacity:80);opacity:0.8;}
-.box .checkbox{vertical-align:middle;}
-.box .radio{vertical-align:middle;}
+.box .checkbox{vertical-align:middle;cursor:pointer;}
+.box .radio{vertical-align:middle;cursor:pointer;}
 
 .box .left{float:left;}
 .box .right{float:right;}
