@@ -27,7 +27,7 @@ else
 			else
 			{
 				po = tmp;
-				ssotoken = dswork.core.util.EncryptUtil.encryptMd5(tmp.getUseraccount() + "skeywebsso");
+				ssotoken = dswork.core.util.EncryptUtil.encryptMd5(tmp.getSsoaccount() + "skeywebsso");
 			}
 		}
 		catch(Exception e)
@@ -46,7 +46,7 @@ request.setAttribute("ssotoken", ssotoken);
 </head>
 <body>
 <form action="/sso/webssoAction.jsp" method="post" style="display:none" id="myform">
-<input name="account" value="${fn:escapeXml(po.useraccount)}" />
+<input name="account" value="${fn:escapeXml(po.ssoaccount)}" />
 <input name="ssotoken" value="${fn:escapeXml(ssotoken)}" />
 <input name="loginURL" value="/websso/gzmice/login.jsp" />
 <input name="service" value="${fn:escapeXml(serviceURL)}" />

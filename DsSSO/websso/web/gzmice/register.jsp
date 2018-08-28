@@ -9,6 +9,7 @@ request.setAttribute("ctx", "/sso");
 %><%@page language="java" pageEncoding="UTF-8"%><%
 dswork.web.MyRequest req = new dswork.web.MyRequest(request);
 String msg = "";
+String type = "2".equals(req.getString("type", "2"))?"2":"1";// 2企业1个人
 try
 {
 	if(!"get".equals(request.getMethod().toLowerCase()))
@@ -46,7 +47,7 @@ try
 //			}
 			else
 			{
-				po.setType("2".equals(req.getString("type"))?"2":"1");// 2企业1个人
+				po.setType(type);
 				po.setId(dswork.core.util.UniqueId.genId());
 				String password = dswork.core.util.EncryptUtil.decodeDes(po.getPassword(), "dswork");
 				po.setPassword(password.toUpperCase());
@@ -65,6 +66,7 @@ catch(Exception e)
 request.setAttribute("msg", msg);
 %><%
 String service = req.getString("service", "/");
+request.setAttribute("type", type);
 request.setAttribute("service", service);
 request.setAttribute("servicex", java.net.URLEncoder.encode(service, "UTF-8"));
 %><!DOCTYPE html>
@@ -104,8 +106,8 @@ i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 .box .vbox img{width:120px;height:46px;border:none;cursor:pointer;vertical-align:middle;}
 .box .button{background-color:${c};color:#fff;width:280px;height:50px;line-height:50px;cursor:pointer;border:none;border-radius:6px;-webkit-appearance:none;}
 .box .button:hover{filter:alpha(opacity:80);opacity:0.8;}
-.box .checkbox{vertical-align:middle;}
-.box .radio{vertical-align:middle;}
+.box .checkbox{vertical-align:middle;cursor:pointer;}
+.box .radio{vertical-align:middle;cursor:pointer;}
 
 .box .left{float:left;}
 .box .right{float:right;}
@@ -128,7 +130,7 @@ i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 </style>
 <style type="text/css">
 body {background:#fff url(/sso/themes/share/bg/wave.png) bottom center repeat-x;}
-.fieldset a {margin:0 30px;}
+.fieldset a {margin:0 28px;}
 </style>
 <link rel="stylesheet" type="text/css" href="${ctx}/themes/ssomedia.css"/>
 </head>
@@ -138,11 +140,11 @@ body {background:#fff url(/sso/themes/share/bg/wave.png) bottom center repeat-x;
 <div class="view">
   <form id="w" action="register.jsp" method="post">
   <div class="login">
-	<div class="box boxname"><div class="name">用户注册</div></div>
+	<div class="box boxname"><div id="regname" class="name">${type=="2"?"企业":"个人"}用户注册</div></div>
 	<div class="box"><div class="vbox">
-		<b>类型：</b>
-		<label><input name="type" type="radio" autocomplete="off" class="radio" value="2" checked>企业</label>
-		<label><input name="type" type="radio" autocomplete="off" class="radio" value="1">个人</label>
+		<b>注册类型：</b>
+		<label><input name="type" type="radio" autocomplete="off" class="radio" value="2" ${type=="2"?" checked":" onclick='dotype()'"}>企业</label>
+		<label><input name="type" type="radio" autocomplete="off" class="radio" value="1" ${type=="2"?" onclick='dotype()'":" checked"}>个人</label>
 	</div></div>
 	<div class="box"><div class="vbox">
 		<span><i>&#xf1001;</i></span><input type="text" id="account" name="account" autocomplete="off" class="input" value="${fn:escapeXml(param.account)}" title="账号" placeholder="账号" />
@@ -161,16 +163,16 @@ body {background:#fff url(/sso/themes/share/bg/wave.png) bottom center repeat-x;
 		<img id="mycode" alt="请点击" src="about:blank" onclick="this.src='/websso/authcode?r=' + Math.random();" />
 	</div></div>
 	<div class="box">
-		<input type="button" class="button" value="登 录" onclick="doclick()" />
+		<input type="button" class="button" value="提交注册" onclick="doclick()" />
 	</div>
 	<div class="box"><div class="vbox link">
 		<b class="left">已有账号？</b><a href="login.jsp?service=${servicex}" class="left">立即登录</a><%--<b class="left">|</b><a href="#" class="left">忘记密码?</a>--%>
 	</div></div>
 	<div class="box"><div class="vbox">
 		<fieldset class="fieldset">
-			<legend align="center" class="legend">其他方式登录</legend>
+			<legend id="regmsg" align="center" class="legend">其他方式注册<b style="color:#ff0000;">${type=='2'?'企业':'个人'}</b>用户</legend>
 				<%
-				String serviceURL = "/websso/gzmice/registerAction.jsp?service=" + java.net.URLEncoder.encode(java.net.URLEncoder.encode(service, "UTF-8"), "UTF-8");
+				String serviceURL = "/websso/gzmice/registerAction.jsp?type=" + type + "&service=" + java.net.URLEncoder.encode(java.net.URLEncoder.encode(service, "UTF-8"), "UTF-8");
 				request.setAttribute("serviceURL", java.net.URLEncoder.encode(serviceURL, "UTF-8"));
 				%><a href="http://lelepark.com/weblogin/login.jsp?type=qq&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_qq"></a>
 				<a href="http://lelepark.com/weblogin/login.jsp?type=alipay&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_alipay"></a>
@@ -201,5 +203,8 @@ setTimeout(function(){location.href="login.jsp?service=${servicex}";},3000);
 </c:if>
 _$("msgdiv").style.display = "block";
 </c:if>
+function dotype(){
+	location.href = "register.jsp?type=${type=='2'?'1':'2'}&service=${servicex}";
+}
 </script>
 </html>

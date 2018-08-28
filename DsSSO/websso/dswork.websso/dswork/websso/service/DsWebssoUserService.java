@@ -24,32 +24,43 @@ public class DsWebssoUserService
 
 	public void save(DsWebssoUser po)
 	{
-		DsWebssoUser u = dao.getByOpenid(po);
+		DsWebssoUser u = dao.getByOpenid(po);// 一定是跟sso用户绑定的
 		if(u == null)
 		{
 			po.setId(UniqueId.genId());
-			po.setUseraccount(getAccount(po.getId()));
+			po.setUseraccount(getAccount(po.getId()));// 全小写
+			po.setSsoaccount(po.getUseraccount());
 			dao.save(po);
+			
+			DsCommonUser c = new DsCommonUser();
+			c.setId(po.getId());
+			c.setAccount(po.getSsoaccount());
+			c.setName(po.getName());
+			// c.setIdcard(idcard);
+			//c.setCakey(cakey);
+			//c.setWorkcard(workcard);
+			c.setEmail(po.getEmail());
+			c.setMobile(po.getMobile());
+			c.setPhone(po.getPhone());
+			c.setStatus(po.getStatus());
+			c.setCreatetime(TimeUtil.getCurrentTime());
+			
+			//c.setOrgpid(orgpid);
+			//c.setOrgid(orgid);
+			//c.setOrgpname(orgpname);
+			//c.setOrgname(orgname);
+			
+			c.setType(po.getType());
+			c.setTypename(po.getTypename());
+			c.setExalias(po.getExalias());
+			c.setExname(po.getExname());
+			
+			commonUserDao.save(c);
 		}
 		else
 		{
-			// WEBSSO_USER和COMMON_USER通过ID相关联，如果ID相等，则认为两者是同一个用户
-			if(commonUserDao.get(u.getId()) != null)
-			{
-				throw new RuntimeException("用户已存在");
-			}
-			po.setId(u.getId());
-			po.setUseraccount(getAccount(po.getId()));
+			throw new RuntimeException("该"+(po.getOpenidqq().length() > 0 ? "QQ" : (po.getOpenidwechat().length() > 0 ? "微信" : (po.getOpenidalipay().length() > 0 ? "支付宝" : "")))+"已注册用户");
 		}
-
-		DsCommonUser c = new DsCommonUser();
-		c.setId(po.getId());
-		c.setAccount(po.getUseraccount());
-		c.setName(po.getName());
-		c.setCreatetime(TimeUtil.getCurrentTime());
-		c.setEmail(po.getEmail());
-		c.setPhone(po.getPhone());
-		commonUserDao.save(c);
 	}
 
 	public void update(DsWebssoUser po)
