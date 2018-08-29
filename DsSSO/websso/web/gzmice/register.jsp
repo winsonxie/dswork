@@ -8,18 +8,18 @@ request.setAttribute("ctx", "/sso");
 %><%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"
 %><%@page language="java" pageEncoding="UTF-8"%><%
 dswork.web.MyRequest req = new dswork.web.MyRequest(request);
-String msg = "";
+String msg = req.getString("msg");
 String type = "2".equals(req.getString("type", "2"))?"2":"1";// 2企业1个人
 try
 {
-	if(!"get".equals(request.getMethod().toLowerCase()))
+	if("".equals(msg) && !"get".equals(request.getMethod().toLowerCase()))
 	{
 		String randcode = (String) request.getSession().getAttribute(dswork.web.MyAuthCodeServlet.SessionName_Randcode);
-		if (randcode == null || randcode.equals(""))
+		if(randcode == null || randcode.equals(""))
 		{
 			msg = "验证码已过期!";
 		}
-		else if (!randcode.toLowerCase().equals(req.getString("authcode").toLowerCase()))
+		else if(!randcode.toLowerCase().equals(req.getString("authcode").toLowerCase()))
 		{
 			msg = "验证码输入错误,请重新输入!";
 		}
