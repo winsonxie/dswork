@@ -174,9 +174,9 @@ body {background:#fff url(/sso/themes/share/bg/wave.png) bottom center repeat-x;
 				<%
 				String serviceURL = "/websso/gzmice/registerAction.jsp?type=" + type + "&service=" + java.net.URLEncoder.encode(java.net.URLEncoder.encode(service, "UTF-8"), "UTF-8");
 				request.setAttribute("serviceURL", java.net.URLEncoder.encode(serviceURL, "UTF-8"));
-				%><a href="http://lelepark.com/weblogin/login.jsp?type=qq&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_qq"></a>
-				<a href="http://lelepark.com/weblogin/login.jsp?type=alipay&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_alipay"></a>
-				<a href="http://lelepark.com/weblogin/login.jsp?type=wechat&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_wechat"></a>
+				%><a href="/websso/bind/login.jsp?type=qq&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_qq"></a>
+				<a href="/websso/bind/login.jsp?type=alipay&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_alipay"></a>
+				<a href="/websso/bind/login.jsp?type=wechat&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_wechat"></a>
 		</fieldset>
 	</div></div>
   </div>
