@@ -4,6 +4,7 @@
 %><%
 dswork.web.MyRequest req = new dswork.web.MyRequest(request);
 String msg = req.getString("msg");
+String type = "2".equals(req.getString("type", "2"))?"2":"1";// 2企业1个人
 String ssotoken = "";
 dswork.websso.model.DsWebssoUser po = new dswork.websso.model.DsWebssoUser();
 String serviceURL = java.net.URLDecoder.decode(java.net.URLDecoder.decode(req.getString("service", ""), "UTF-8"), "UTF-8");// get方式传过来的
@@ -32,6 +33,7 @@ request.setAttribute("serviceURL", serviceURL);
 request.setAttribute("msg", msg);
 request.setAttribute("po", po);
 request.setAttribute("ssotoken", ssotoken);
+request.setAttribute("type", type);
 %><!DOCTYPE html><html>
 <head>
 <meta charset="UTF-8" /><title>统一身份认证平台</title>
@@ -40,7 +42,7 @@ request.setAttribute("ssotoken", ssotoken);
 <form action="/sso/webssoAction.jsp" method="post" style="display:none" id="myform">
 <input name="account" value="${fn:escapeXml(po.ssoaccount)}" />
 <input name="ssotoken" value="${fn:escapeXml(ssotoken)}" />
-<input name="loginURL" value="/websso/gzmice/login.jsp" />
+<input name="loginURL" value="/websso/gzmice/register.jsp?type=${type}" />
 <input name="service" value="${fn:escapeXml(serviceURL)}" />
 <input name="msg" value="${fn:escapeXml(msg)}" />
 </form>
