@@ -1,0 +1,161 @@
+QQ互联：
+3356464478
+abc123456
+
+支付宝：
+lywintech@126.com
+123456xzy
+
+微信：
+lywintech@163.com
+liuyi*123
+
+微信公众号：
+lywintech@126.com
+lyabc123456
+
+open.qq.com:
+APP ID：1106600263
+APP KEY：FAyzNNzMyDzNARWp
+
+connect.qq.com:
+
+APP ID：101451971
+APP KEY：67e6c185bf695077a89c87e5b9c6b7e8
+
+QQ官方开发文档：http://wiki.connect.qq.com/%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c_oauth2-0
+QQ登录参考文档：http://blog.csdn.net/xiaoxian8023/article/details/38114921
+支付宝官方文档：https://docs.open.alipay.com/284/106001/
+支付宝登录参考文档：https://www.cnblogs.com/AndroidJotting/p/6515268.html, http://www.jb51.net/article/107732.htm
+微信官方文档：https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419316505&token=9459b695411b74454d5fc10abd2930b3736c4f80&lang=zh_CN
+微信登录参考文档：https://www.cnblogs.com/txw1958/p/weixin-qrlogin.html
+
+账户：lywintech@126.com
+2018011601911153 auth_user 8eabc79a06b74a16bc04f5f82a72OC52 
+AccessToken:authusrB399a1336eafb4d4694430bdd0a9d8X52 
+UserId:2088021079463529 UserType:1 UserStatus:T Email:null IsCertified:T IsStudentCertified:F nickName:null
+
+
+获取token:
+
+signContent:
+alipay_sdk=alipay-sdk-java-dynamicVersionNo&app_id=2018011601911153&charset=UTF-8&code=5c82b19085f640e4992c7a3ca1bbNA37&format=json&grant_type=authorization_code&method=alipay.system.oauth.token&sign_type=RSA2&timestamp=2018-01-18 10:40:40&version=1.0
+
+url:
+https://openapi.alipay.com/gateway.do?charset=UTF-8&method=alipay.system.oauth.token&sign=WIYUViWg3uWwtNkGhTUk9wIPWkLvbFKYAD7i4o7%2FeQ6IEU4piMFz2YprsNCYSBHNXePmNyj3PKgRbDc%2FmKKYmhLYbayFogavg0TYzh7yTMMF8rcqifuVe8pXXriVCVYB8%2Fp3ji%2FQoTxbu%2Bc1L0fWt72ScvbBW4b%2FBWdfhVSGQ618MbLsWsg%2FHvUyHWyNc%2FtuSuBiYMpfoonTPPXwwOKQ%2Fw%2B1%2BI%2BR7TnfXloeY2dqOBpaGh64m1cAIOFZWJ%2FeAEEQmmCK5mDYJTzSujmjeSzT%2B7Jv%2Bcl0ZTBKmdVOPPj3fVI1LcptJBMILOWJM8vXEhrCvkwZAasNjJIFS5TJBWM5Ig%3D%3D&version=1.0&app_id=2018011601911153&sign_type=RSA2&timestamp=2018-01-18+10%3A40%3A40&alipay_sdk=alipay-sdk-java-dynamicVersionNo&format=json
+
+map：接口参数：
+{grant_type=authorization_code, code=5c82b19085f640e4992c7a3ca1bbNA37}
+
+grant_type=authorization_code&code=5c82b19085f640e4992c7a3ca1bbNA37
+
+获取token返回：
+
+{"alipay_system_oauth_token_response":{"access_token":"authusrB4181d7984db94a9ca82297095ecbbF37","alipay_user_id":"20881075624131600559057010515237","expires_in":1296000,"re_expires_in":2592000,"refresh_token":"authusrB36bb761f6aa549048e2088164065dX37","user_id":"2088112728648373"},"sign":"Q92OpFTQlPmZhpoC7DD1292ZTYn14s/d8HtCSzRFqeotFp2AOVDQaz6Y23RBNKb7PK41+w2DHHP7hYOK8FT2UQDym4jIPQ8xDGR1RrXRN5smpwpwFV2TEi227yB3hDg/UGhCK4mHkt1i4Se2VwRjx2MqcliK+bgCGpWWz3AyAka6HT7m3DiAaQuPyasNEsDiKfniv+D2ZnvTjzcR8g+3gbOtLZnY8WCW0HfGUrsG83sbUlEtiMFTmvGBUCt1DhB4hciFbXkj6CNILFKxD0RIGQjEcZit4PmdmQs3kvfIz3XTWNJctmD0jYW5fVxGupZ+FIMukeyU1emVPEx0TlgVUg=="}
+
+
+获取token：
+signContent:
+alipay_sdk=alipay-sdk-java-dynamicVersionNo&app_id=2018011601911153&charset=UTF-8&code=816cfb9bec14424fba483a9286e5OF37&format=json&grant_type=authorization_code&method=alipay.system.oauth.token&sign_type=RSA2&timestamp=2018-01-18 11:44:19&version=1.0
+
+url:
+https://openapi.alipay.com/gateway.do?charset=UTF-8&method=alipay.system.oauth.token&sign=H3Zcd%2Fh5DpcOBx2OgIIflehZQdW%2B13mcKsDIVCVeg%2BxqdW45EiLXzMS4Phxw3jlpo%2B9%2Bx1caJRTRWkWOi5OgaqQxwiLf6G2hPk7B6CPjZ5aCyJT8Di%2B9eKLBoBPLddNeRcrpQQWF7tmdMOPRB0qldqAxWB9RZuN%2BSLPqhotr%2FDWyklAlGVPTBNmUyI%2BBQNuvQUikYw341puYKRnZfRG5TdD1l1p6tDgaYCy%2BS%2BogJE1vl5PL%2BdGqDkydIKwz2ylKMK1sVwETkXeG3oH6sljP1AFIqzvA5VpLSSD%2F0amhLWxn9SLQWK0av8TfWpZ1hY1a92H5qNWA4uTsiKoza39F%2FQ%3D%3D&version=1.0&app_id=2018011601911153&sign_type=RSA2&timestamp=2018-01-18+11%3A44%3A19&alipay_sdk=alipay-sdk-java-dynamicVersionNo&format=json
+
+getBytes之前的contenet:
+grant_type=authorization_code&code=816cfb9bec14424fba483a9286e5OF37
+
+返回结果Map:
+{protocalOptParams={alipay_sdk=alipay-sdk-java-dynamicVersionNo, format=json}, textParams={grant_type=authorization_code, code=816cfb9bec14424fba483a9286e5OF37}, rsp={"alipay_system_oauth_token_response":{"access_token":"authusrB4181d7984db94a9ca82297095ecbbF37","alipay_user_id":"20881075624131600559057010515237","expires_in":1296000,"re_expires_in":2592000,"refresh_token":"authusrB36bb761f6aa549048e2088164065dX37","user_id":"2088112728648373"},"sign":"Q92OpFTQlPmZhpoC7DD1292ZTYn14s/d8HtCSzRFqeotFp2AOVDQaz6Y23RBNKb7PK41+w2DHHP7hYOK8FT2UQDym4jIPQ8xDGR1RrXRN5smpwpwFV2TEi227yB3hDg/UGhCK4mHkt1i4Se2VwRjx2MqcliK+bgCGpWWz3AyAka6HT7m3DiAaQuPyasNEsDiKfniv+D2ZnvTjzcR8g+3gbOtLZnY8WCW0HfGUrsG83sbUlEtiMFTmvGBUCt1DhB4hciFbXkj6CNILFKxD0RIGQjEcZit4PmdmQs3kvfIz3XTWNJctmD0jYW5fVxGupZ+FIMukeyU1emVPEx0TlgVUg=="}, protocalMustParams={charset=UTF-8, method=alipay.system.oauth.token, sign=H3Zcd/h5DpcOBx2OgIIflehZQdW+13mcKsDIVCVeg+xqdW45EiLXzMS4Phxw3jlpo+9+x1caJRTRWkWOi5OgaqQxwiLf6G2hPk7B6CPjZ5aCyJT8Di+9eKLBoBPLddNeRcrpQQWF7tmdMOPRB0qldqAxWB9RZuN+SLPqhotr/DWyklAlGVPTBNmUyI+BQNuvQUikYw341puYKRnZfRG5TdD1l1p6tDgaYCy+S+ogJE1vl5PL+dGqDkydIKwz2ylKMK1sVwETkXeG3oH6sljP1AFIqzvA5VpLSSD/0amhLWxn9SLQWK0av8TfWpZ1hY1a92H5qNWA4uTsiKoza39F/Q==, version=1.0, app_id=2018011601911153, sign_type=RSA2, timestamp=2018-01-18 11:44:19}, url=https://openapi.alipay.com/gateway.do?charset=UTF-8&method=alipay.system.oauth.token&sign=H3Zcd%2Fh5DpcOBx2OgIIflehZQdW%2B13mcKsDIVCVeg%2BxqdW45EiLXzMS4Phxw3jlpo%2B9%2Bx1caJRTRWkWOi5OgaqQxwiLf6G2hPk7B6CPjZ5aCyJT8Di%2B9eKLBoBPLddNeRcrpQQWF7tmdMOPRB0qldqAxWB9RZuN%2BSLPqhotr%2FDWyklAlGVPTBNmUyI%2BBQNuvQUikYw341puYKRnZfRG5TdD1l1p6tDgaYCy%2BS%2BogJE1vl5PL%2BdGqDkydIKwz2ylKMK1sVwETkXeG3oH6sljP1AFIqzvA5VpLSSD%2F0amhLWxn9SLQWK0av8TfWpZ1hY1a92H5qNWA4uTsiKoza39F%2FQ%3D%3D&version=1.0&app_id=2018011601911153&sign_type=RSA2&timestamp=2018-01-18+11%3A44%3A19&alipay_sdk=alipay-sdk-java-dynamicVersionNo&format=json}
+
+
+获取用户信息：
+signContent：
+alipay_sdk=alipay-sdk-java-dynamicVersionNo&app_id=2018011601911153&auth_token=authusrB4181d7984db94a9ca82297095ecbbF37&charset=UTF-8&format=json&method=alipay.user.info.share&sign_type=RSA2&timestamp=2018-01-18 11:56:43&version=1.0
+
+url:
+https://openapi.alipay.com/gateway.do?charset=UTF-8&method=alipay.user.info.share&sign=QMslSAGRbJo%2BZYK17Vn0g9933Msq4vGpK7ZQDOd9KrwjrHaUMOx4c3thy%2FpewflPIcZUed2k2Fg38DIqrJEKHe0XjeFqL%2B6HA%2FsD7hrD%2BIcAPdJC37ebe6XEz7E9fyJznEs7qCGeM4ShpQeGCG0i%2BXRwZS7yhLlWzmW3efA2JWz49TQk2WamlTGQdosJtgKZ01xzj2uic2hzidmlo0NZJyFCjOt33W8LdLFM0%2BsnCcrQo4d9CzKXPoZxuHNqqXlnGlMOUx%2F3EHlPm342RElgKS9kfCHO9Ku5wKEwYK5S%2BRIvP7rp7qPhNGA%2BygnsvB1Mh089YtQ%2BybWmNG3anMYmOQ%3D%3D&version=1.0&app_id=2018011601911153&sign_type=RSA2&timestamp=2018-01-18+11%3A56%3A43&alipay_sdk=alipay-sdk-java-dynamicVersionNo&format=json&auth_token=authusrB4181d7984db94a9ca82297095ecbbF37
+
+contenet:
+null
+
+返回结果Map:
+{protocalOptParams={alipay_sdk=alipay-sdk-java-dynamicVersionNo, format=json, auth_token=authusrB4181d7984db94a9ca82297095ecbbF37}, textParams={}, rsp={"alipay_user_info_share_response":{"code":"10000","msg":"Success","avatar":"https:\/\/tfs.alipayobjects.com\/images\/partner\/T1aqVsXjXaXXXXXXXX","city":"广州市","gender":"f","is_certified":"T","is_student_certified":"F","nick_name":"晓梅","province":"广东省","user_id":"2088112728648373","user_status":"T","user_type":"2"},"sign":"Mr9ErCR5kww2IIuSJshtSYoqzeVa5NX4i5XfQsU9cOPTISqIrAFjjz6VJo9/Ae00J93a3joNM0qASEVCcs1A/d24BkFwA8GW4hzXfl9Eyzyvx2icEIIJLWGlkR16Rnjv0Yl+6ZkzDRbVCANdNBIOVZ2Yj0NSZopXraZzAiXtFJYZaU441jNls2kuGy/3GnydoEs+YDVxa3MDb1KKwTjJB/jByjkerKaNnXd37z8/rKzTrGHrxZ3wN0sNcLnhw7VV07Sz5GFjsfPZ+DgPlIlcgU0sglQzOaF28zKu1AW7UasA68HDRX6hmX7W2Vz76Hf1MvIHZMLEo9nmPnJ920m40g=="}, protocalMustParams={charset=UTF-8, method=alipay.user.info.share, sign=QMslSAGRbJo+ZYK17Vn0g9933Msq4vGpK7ZQDOd9KrwjrHaUMOx4c3thy/pewflPIcZUed2k2Fg38DIqrJEKHe0XjeFqL+6HA/sD7hrD+IcAPdJC37ebe6XEz7E9fyJznEs7qCGeM4ShpQeGCG0i+XRwZS7yhLlWzmW3efA2JWz49TQk2WamlTGQdosJtgKZ01xzj2uic2hzidmlo0NZJyFCjOt33W8LdLFM0+snCcrQo4d9CzKXPoZxuHNqqXlnGlMOUx/3EHlPm342RElgKS9kfCHO9Ku5wKEwYK5S+RIvP7rp7qPhNGA+ygnsvB1Mh089YtQ+ybWmNG3anMYmOQ==, version=1.0, app_id=2018011601911153, sign_type=RSA2, timestamp=2018-01-18 11:56:43}, url=https://openapi.alipay.com/gateway.do?charset=UTF-8&method=alipay.user.info.share&sign=QMslSAGRbJo%2BZYK17Vn0g9933Msq4vGpK7ZQDOd9KrwjrHaUMOx4c3thy%2FpewflPIcZUed2k2Fg38DIqrJEKHe0XjeFqL%2B6HA%2FsD7hrD%2BIcAPdJC37ebe6XEz7E9fyJznEs7qCGeM4ShpQeGCG0i%2BXRwZS7yhLlWzmW3efA2JWz49TQk2WamlTGQdosJtgKZ01xzj2uic2hzidmlo0NZJyFCjOt33W8LdLFM0%2BsnCcrQo4d9CzKXPoZxuHNqqXlnGlMOUx%2F3EHlPm342RElgKS9kfCHO9Ku5wKEwYK5S%2BRIvP7rp7qPhNGA%2BygnsvB1Mh089YtQ%2BybWmNG3anMYmOQ%3D%3D&version=1.0&app_id=2018011601911153&sign_type=RSA2&timestamp=2018-01-18+11%3A56%3A43&alipay_sdk=alipay-sdk-java-dynamicVersionNo&format=json&auth_token=authusrB4181d7984db94a9ca82297095ecbbF37}
+
+自定义获取用户信息：
+signContent:
+alipay_sdk=alipay-sdk-java-dynamicVersionNo&app_id=2018011601911153&auth_token=authusrB4181d7984db94a9ca82297095ecbbF37&charset=UTF-8&format=json&method=alipay.user.info.share&sign_type=RSA2&timestamp=2018-01-18 17:17:40&version=1.0
+
+url:
+https://openapi.alipay.com/gateway.do?charset=UTF-8&alipay_sdk=alipay-sdk-java-dynamicVersionNo&method=alipay.user.info.share&format=json&sign=jVNkxWW0l1WwvCb45BBHEZYagPlty9NwjlRi4G4LHzKru%2FhrlkjSsJ78fO%2BXwiu8SYO%2FUlVtvAaDZVEa3QKDo%2BQwdExXxz40Rljt7FOWvQC8nOLJNhJ18Vw5mtaAngp6x3Ays3f5%2BhtretFq7OND0zcSDJ%2B5LBcdJis6HhDi%2BFKGpbpsdRPk2w2STFXXSDLpHcGPtT%2BpitUMCmSru6enbo4locaYC2wOstvk62mWenEQPgeJF%2FpgFOmjQkPZJVen%2F5%2FfmcFYDPeXxF2rp31h6DU7s9BWPNq7ZhNiXz4Ka3fitbmXE2KoxapFmE0Wqp9mHYCjPwpNFDWa%2BGX7uTvAGA%3D%3D&auth_token=authusrB4181d7984db94a9ca82297095ecbbF37&version=1.0&app_id=2018011601911153&sign_type=RSA2&timestamp=2018-01-18+17%3A17%3A40
+
+content：接口参数：
+null
+
+
+自定义:
+获取token:
+signContent:
+alipay_sdk=alipay-sdk-java-dynamicVersionNo&app_id=2018011601911153&charset=UTF-8&code=fd39bd07cbcc45ed94619d23914bNX37&format=json&grant_type=authorization_code&method=alipay.system.oauth.token&sign_type=RSA2&timestamp=2018-01-18 15:38:30&version=1.0
+
+url:
+https://openapi.alipay.com/gateway.do?charset=UTF-8&alipay_sdk=alipay-sdk-java-dynamicVersionNo&code=fd39bd07cbcc45ed94619d23914bNX37&method=alipay.system.oauth.token&grant_type=authorization_code&format=json&sign=U1YgD9jNmesMoHMpWzC1GpmHOGXjWiQeVikCHAXymOoch9oARzWNxLBdgOeeMs31ElaP2jvHFCTv0nQt9Tqf%2BqwZ6gSqUvqdpSQhaEYXjK6ntCfPwsCibpVlXKyef1zYo3GCKHO%2BadPYLb7rTDqoNzgDDipNIA%2FKTs1c%2FujVvjNswqkm%2BVIza1q%2Fwrf3qKQI69qraSvEvbzUJh4PLArHpZuSHg6kRuoywvoESXkqO4TG%2FVy3EVsjg0LwRaj4FBhQBWYbFJg1pX%2Fy%2B1Oa9h7jgl8TpwXqVWb4j%2Br9TZxS0DTmhbq4jU3dIyrwgCiJPDV3KHv1W5ruR4%2Bbz2o1NE%2BULw%3D%3D&version=1.0&app_id=2018011601911153&sign_type=RSA2&timestamp=2018-01-18+15%3A38%3A30
+
+content：接口参数：
+grant_type=authorization_code&code=fd39bd07cbcc45ed94619d23914bNX37
+
+
+
+QQ登录
+获取auth_code参数拼接：
+https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101137684&redirect_uri=http%3a%2f%2fmfxuan.free.800m.net%2flogin.jsp&state=1&scope=get_user_info
+获取access_token参数拼接：
+https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&client_id=101137684&client_secret=xxxxx24b9da14xxxxxc2997xxxxxxxxx&code=xxxx12BBB0345xxxxxx68196E5C2xxxx&redirect_uri=http%3a%2f%2fmfxuan.free.800m.net%2flogin.jsp
+获取openid参数拼接：
+https://graph.qq.com/oauth2.0/me?access_token=11111111111111111111111111111111
+获取用户信息参数拼接
+https://graph.qq.com/user/get_user_info?access_token=11111111111111111111111111111111&oauth_consumer_key=101137684&openid=333333333333333333333333333
+
+code:
+1A048C195CD05C533A265A47860E7C8B
+BC5D2C088F5194F76DCED97F7A21EFFD
+
+getAccesstoken返回:
+access_token=BD6D5057E5119AFB6AA15C6A78738AC6&expires_in=7776000&9=53ABAE9F9949D3430773BFA75A5EEFE5
+出错时返回：
+callback( {"error":100019,"error_description":"code to access token error"} );
+
+openid:
+AE3A550783BAD89EE840851EB35205B1
+AE3A550783BAD89EE840851EB35205B1
+
+获取用户信息拼接参数：
+https://graph.qq.com/user/get_user_info?access_token=BD6D5057E5119AFB6AA15C6A78738AC6&oauth_consumer_key=67e6c185bf695077a89c87e5b9c6b7e8&openid=AE3A550783BAD89EE840851EB35205B1
+
+https://graph.qq.com/user/get_user_info?access_token=YOUR_ACCESS_TOKEN&oauth_consumer_key=YOUR_APP_ID&openid=YOUR_OPENID
+
+alipay:
+auth_code:
+b04008ca0fb242d3b68eb5fa8cedZX52
+0f8efa6a0d104cd79b615fee5eb5VX52
+
+{"alipay_system_oauth_token_response":{"access_token":"authusrB399a1336eafb4d4694430bdd0a9d8X52","alipay_user_id":"20880006412619085325131232015252","expires_in":1296000,"re_expires_in":2592000,"refresh_token":"authusrB36bb1dc31c3e414f91ee2f790b870D52","user_id":"2088021079463529"},"sign":"aVbIMeFdkqvfRsWSXd6perFJ3zSYsQK8UryYc4cHokrtZMXrIoGCgMiPGDXn4JtP0eHOZWIA2Z7hs1hTi654ARQJsEwW3JKC28P2CN3dQnTFsa5mQt9g5acMBuLdJl9y4Qw6+f8SwQ5UStLAepKoqDUrnNOUXuWUM7kQ1xHiBpga8qlpnuki8ngCE+ruSddhnc7uNe2qaFeWPBp6vlC3vD96a6uqcPL7ENJSOAXsJLBKPPVV8xNZaYsZHLxJj7QFUdyErW8LCqiZryYw+/1dNn/0psGxYrcgl6092F1DQdeg11aLzHrPvFAau9NifEaYmYprQtburrEQZuX+aYuLow=="}
+
+{"error_response":{"code":"40002","msg":"Invalid Arguments","sub_code":"isv.code-invalid","sub_msg":"授权码code无效"},"sign":"jGqVfwZ4iyKiG+jZViZrLrtAgoENgR6Qpdi1hMVUddYjr7XZmyOPYuv3u/foLqutmz0LNogV7YtgRxM+lDyZOwwkr7uUEx28nk1k4ma8b/KqdD9bIrEQzE2/kwuqIF7Gsh/F3BP3p/yceb50dUssrFOI0E1VU3CxBOQt/YmHz5YuuMx3qq8czAZnz0pMvfRQeJbSafxeAQoxRnkB+xKYSqAaVlCV9RrPwY/PhnPa19FZ6oMAcrPHyqnn8M/c+i3DDYFTUlxmDA5FDc4q+c+q5Gu0z5R3+kcnFLVf9Vq9V+sxD5o2IEWV0+rvaJu/X8846ghyGTPXa0HvbjHQ2jBW4w=="}
+
+微信请求授权参数拼接：
+https://open.weixin.qq.com/connect/qrconnect?appid=wxbdc5610cc59c1631&redirect_uri=https%3A%2F%2Fpassport.yhd.com%2Fwechat%2Fcallback.do&response_type=code&scope=snsapi_login&state=3d6be0a4035d839573b04816624a415e#wechat_redirect
+
+授权后返回：http://lelepark.com/websso/loginback/wechat/redirect_url.jsp?code=061nf78m05GJWk1PpE4m0MTR7m0nf78X&state=3d6be
+授权后返回：http://lelepark.com/websso/loginback/wechat/redirect_url.jsp?code=0617M4Aw1uvLua0XZJyw1BI4Aw17M4Aj&state=3d6be
+
+tokenurl:https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx5bc400afa0b178e1&secret=f4431f6cb6b61146b118fb71b239b8d5&code=071JMTzF08No6k2rdQwF0gDJzF0JMTzd&grant_type=authorization_code
+
+tokenjson:{"access_token":"6_qlELW5gc2OMm5DKeCg7gIrq89wNAuDcGCNpFsFddZzTKoSJ9M4mxWtaDKNwliN9DpFmyk4L49LaxUYs-e5ZJBw","expires_in":7200,"refresh_token":"6_DfmqiPF7Kp7aezcbyRmSRhjy-7PgP1wRpIVznpVRcxoDB5wkpDQdK_Ad2KdQQ_8BaENNfhguvAAn499RY4J_Qw","openid":"ocnWT1BgD-Kjb6HxLt6srImAlS0U","scope":"snsapi_login","unionid":"o2ZcEwyz6mkP12CWDWz3E_IAOyoo"}
+
+userurl:https://api.weixin.qq.com/sns/userinfo?access_token=6_qlELW5gc2OMm5DKeCg7gIrq89wNAuDcGCNpFsFddZzTKoSJ9M4mxWtaDKNwliN9DpFmyk4L49LaxUYs-e5ZJBw&openid=ocnWT1BgD-Kjb6HxLt6srImAlS0U
+
+userjson:{"openid":"ocnWT1BgD-Kjb6HxLt6srImAlS0U","nickname":"倒霉蛋","sex":2,"language":"zh_CN","city":"Guangzhou","province":"Guangdong","country":"CN",
+"headimgurl":"http:\/\/wx.qlogo.cn\/mmopen\/vi_32\/uYKhLnA9oo2uPQphjnIEYliaHicpJI2Iic0o8PLKjAYeVlD4RubMjibebkTuTgI9QV5M8bEZmicTu6avia0f4ru99NgA\/132","privilege":[],"unionid":"o2ZcEwyz6mkP12CWDWz3E_IAOyoo"}
+
+授权码重复使用返回：
+tokenjson:{"errcode":40163,"errmsg":"code been used, hints: [ req_id: GCYX60258th42 ]"}

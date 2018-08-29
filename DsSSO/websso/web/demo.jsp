@@ -1,44 +1,23 @@
 <%@page language="java" pageEncoding="UTF-8" import="
 java.net.URLEncoder,
-dswork.websso.util.WebssoUtil,
-dswork.web.MyRequest
+dswork.websso.util.WebssoUtil
 "%><%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"
-%><%!
-private String getUrl(HttpServletRequest request)
-{
-	String url = request.getScheme() + "://" + request.getServerName();
-	if(
-		("http".equals(request.getScheme()) && request.getServerPort() != 80) ||
-		("https".equals(request.getScheme()) && request.getServerPort() != 443)
-	)
-	{
-		url += ":" + request.getServerPort();
-	}
-	url += request.getContextPath();
-	return url;
-}
-%><%
+%><c:set var="ctx" value="${pageContext.request.contextPath}"
+/><%
 request.setAttribute("hasQq", WebssoUtil.HAS_QQ);
 request.setAttribute("hasWechat", WebssoUtil.HAS_WECHAT);
 request.setAttribute("hasAlipay", WebssoUtil.HAS_ALIPAY);
-request.setAttribute("weblogin", WebssoUtil.WEBLOGIN);
 
-MyRequest req = new MyRequest(request);
-String serviceURL = getUrl(request) + "/loginAction.jsp?serviceURL=" + URLEncoder.encode(req.getString("serviceURL"), "UTF-8");
-request.setAttribute("serviceURL", URLEncoder.encode(serviceURL, "UTF-8"));
-
-String serviceURL2 = getUrl(request) + "/registerAction.jsp?serviceURL=" + URLEncoder.encode(req.getString("serviceURL"), "UTF-8");
-request.setAttribute("serviceURL2", URLEncoder.encode(serviceURL2, "UTF-8"));
+String serviceURL = "/websso/demoAction.jsp";
+serviceURL = URLEncoder.encode(serviceURL, "UTF-8");
+request.setAttribute("serviceURL", serviceURL);
 %><html>
 <body>
-登录demo：<br />
-<c:if test="${hasQq}"><a href="${weblogin}/login.jsp?type=qq&serviceURL=${serviceURL}"><img alt="QQ登录" src="${weblogin}/img/qq_logo.png"></a></c:if>
-<c:if test="${hasWechat}"><a href="${weblogin}/login.jsp?type=wechat&serviceURL=${serviceURL}"><img alt="微信登录" src="${weblogin}/img/wechat_logo.png"></a></c:if>
-<c:if test="${hasAlipay}"><a href="${weblogin}/login.jsp?type=alipay&serviceURL=${serviceURL}"><img alt="支付宝登录" src="${weblogin}/img/alipay_logo.jpg"></a></c:if>
-<br /><br />
-注册demo：<br />
-<c:if test="${hasQq}"><a href="${weblogin}/login.jsp?type=qq&serviceURL=${serviceURL2}"><img alt="QQ登录" src="${weblogin}/img/qq_logo.png"></a></c:if>
-<c:if test="${hasWechat}"><a href="${weblogin}/login.jsp?type=wechat&serviceURL=${serviceURL2}"><img alt="微信登录" src="${weblogin}/img/wechat_logo.png"></a></c:if>
-<c:if test="${hasAlipay}"><a href="${weblogin}/login.jsp?type=alipay&serviceURL=${serviceURL2}"><img alt="支付宝登录" src="${weblogin}/img/alipay_logo.jpg"></a></c:if>
+<%-- <c:if test="${hasQq}"><a href="loginQq.jsp?serviceURL=${serviceURL}"><img alt="QQ登录" src="${ctx}/img/qq_logo.png"></a></c:if> --%>
+<%-- <c:if test="${hasWechat}"><a href="loginWechat.jsp?serviceURL=${serviceURL}"><img alt="微信登录" src="${ctx}/img/wechat_logo.png"></a></c:if> --%>
+<%-- <c:if test="${hasAlipay}"><a href="loginAlipay.jsp?serviceURL=${serviceURL}"><img alt="支付宝登录" src="${ctx}/img/alipay_logo.jpg"></a></c:if> --%>
+<c:if test="${hasQq}"><a href="/websso/bind/login.jsp?type=qq&serviceURL=${serviceURL}">QQ</a></c:if>
+<c:if test="${hasWechat}"><a href="/websso/bind/login.jsp?type=wechat&serviceURL=${serviceURL}">微信</a></c:if>
+<c:if test="${hasAlipay}"><a href="/websso/bind/login.jsp?type=alipay&serviceURL=${serviceURL}">支付宝</a></c:if>
 </body>
 </html>

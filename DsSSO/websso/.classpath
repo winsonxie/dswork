@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="common"/>
 	<classpathentry kind="src" path="config"/>
 	<classpathentry kind="src" path="dswork.websso"/>
+	<classpathentry kind="src" path="dswork.websso.bind"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JAVAEE">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
