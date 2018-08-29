@@ -4,7 +4,7 @@ String servicex = java.net.URLEncoder.encode(java.net.URLEncoder.encode(request.
 String serviceURL = "/websso/gzmice/loginAction.jsp?service=" + servicex;
 request.setAttribute("serviceURL", java.net.URLEncoder.encode(serviceURL, "UTF-8"));
 %>
-<a href="http://lelepark.com/weblogin/login.jsp?type=qq&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_qq"></a>
+<a href="/websso/bind/login.jsp?type=qq&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_qq"></a>
 <a onclick="return false;" href="#" class="icon_weibo"></a>
-<a href="http://lelepark.com/weblogin/login.jsp?type=alipay&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_alipay"></a>
-<a href="http://lelepark.com/weblogin/login.jsp?type=wechat&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_wechat"></a>
+<a href="/websso/bind/login.jsp?type=alipay&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_alipay"></a>
+<a href="/websso/bind/login.jsp?type=wechat&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_wechat"></a>
