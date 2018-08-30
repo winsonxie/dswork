@@ -22,21 +22,44 @@ public class DsWebssoUserService
 	@Autowired
 	private DsCommonUserDao commonUserDao;
 
-	public void save(DsWebssoUser po)
+	/**
+	 * 这是注册功能
+	 * @param po
+	 */
+	public int saveForRebind(DsWebssoUser po)
 	{
+		int result = 0;
+		if(po.getSsoaccount().length() > 0)
+		{
+			DsWebssoUser u = dao.getBySsoaccount(po.getSsoaccount());
+			if(u == null)
+			{
+				po.setId(UniqueId.genId());
+				result = dao.save(po);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * 这是注册功能
+	 * @param po
+	 */
+	public int saveForRegister(DsWebssoUser po)
+	{
+		int result = 0;
 		DsWebssoUser u = dao.getByOpenid(po);// 一定是跟sso用户绑定的
 		if(u == null)
 		{
 			po.setId(UniqueId.genId());
-			po.setUseraccount(getAccount(po.getId()));// 全小写
-			po.setSsoaccount(po.getUseraccount());
+			po.setSsoaccount(getAccount(po.getId()));// 全小写
 			dao.save(po);
 			
 			DsCommonUser c = new DsCommonUser();
 			c.setId(po.getId());
 			c.setAccount(po.getSsoaccount());
 			c.setName(po.getName());
-			// c.setIdcard(idcard);
+			c.setIdcard(po.getIdcard());
 			//c.setCakey(cakey);
 			//c.setWorkcard(workcard);
 			c.setEmail(po.getEmail());
@@ -55,15 +78,12 @@ public class DsWebssoUserService
 			c.setExalias(po.getExalias());
 			c.setExname(po.getExname());
 			
-			commonUserDao.save(c);
+			result = commonUserDao.save(c);
 		}
-		else
-		{
-			throw new RuntimeException("该"+(po.getOpenidqq().length() > 0 ? "QQ" : (po.getOpenidwechat().length() > 0 ? "微信" : (po.getOpenidalipay().length() > 0 ? "支付宝" : "")))+"已注册用户");
-		}
+		return result;
 	}
 
-	public void update(DsWebssoUser po)
+	public void updateForRebind(DsWebssoUser po)
 	{
 		dao.update(po);
 	}
@@ -73,9 +93,9 @@ public class DsWebssoUserService
 		return dao.getByOpenid(po);
 	}
 
-	public DsWebssoUser getByUseraccount(String useraccount)
+	public DsWebssoUser getBySsoaccount(String ssoaccount)
 	{
-		return dao.getByUseraccount(useraccount);
+		return dao.getBySsoaccount(ssoaccount);
 	}
 
 	private String getAccount(long id)

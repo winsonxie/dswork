@@ -17,12 +17,12 @@ public class DsWebssoUserDao extends BaseDao<DsWebssoUser, Long>
 	@Override
 	public Class getEntityClass()
 	{
-		return DsWebssoUser.class;
+		return DsWebssoUserDao.class;
 	}
 
-	public DsWebssoUser getByUseraccount(String useraccount)
+	public DsWebssoUser getBySsoaccount(String ssoaccount)
 	{
-		return (DsWebssoUser) executeSelect("selectByUseraccount", useraccount);
+		return (DsWebssoUser) executeSelect("selectBySsoaccount", ssoaccount);
 	}
 
 	public DsWebssoUser getByOpenid(DsWebssoUser po)

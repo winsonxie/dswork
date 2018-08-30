@@ -15,7 +15,7 @@ public class DsCommonUserDao extends MyBatisDao
 	@Override
 	public Class getEntityClass()
 	{
-		return DsCommonUser.class;
+		return DsCommonUserDao.class;
 	}
 
 	public int save(DsCommonUser po)
