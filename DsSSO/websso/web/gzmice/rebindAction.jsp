@@ -4,6 +4,8 @@ java.net.URLEncoder
 "%><%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"
 %><%
 MyRequest req = new MyRequest(request);
+dswork.websso.model.DsWebssoUser po = new dswork.websso.model.DsWebssoUser();
+req.getFillObject(po);
 String type = req.getString("type", "").toLowerCase(java.util.Locale.ENGLISH);
 String service = URLEncoder.encode(req.getString("service"), "UTF-8");
 String msg = "";
@@ -29,11 +31,8 @@ try
 	}
 	else
 	{
-		dswork.websso.model.DsWebssoUser po = new dswork.websso.model.DsWebssoUser();
-		req.getFillObject(po);
-		
 		dswork.websso.service.DsWebssoUserService ssoservice = (dswork.websso.service.DsWebssoUserService)dswork.spring.BeanFactory.getBean("dsWebssoUserService");
-		DsWebssoUser u = ssoservice.getByUseraccount(account);
+		dswork.websso.model.DsWebssoUser u = ssoservice.getByUseraccount(account);
 		if(u == null)
 		{
 			msg = "用户不存在";
@@ -68,7 +67,7 @@ try
 			}
 			if(type.length() > 0)
 			{
-				service.update(u);
+				ssoservice.update(u);
 				msg = "";
 			}
 		}
