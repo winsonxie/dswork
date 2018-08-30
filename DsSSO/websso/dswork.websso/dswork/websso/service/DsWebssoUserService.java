@@ -34,7 +34,7 @@ public class DsWebssoUserService
 			DsWebssoUser u = dao.getBySsoaccount(po.getSsoaccount());
 			if(u == null)
 			{
-				po.setId(UniqueId.genId());
+				po.setId(UniqueId.genUniqueId());
 				result = dao.save(po);
 			}
 		}
@@ -51,7 +51,7 @@ public class DsWebssoUserService
 		DsWebssoUser u = dao.getByOpenid(po);// 一定是跟sso用户绑定的
 		if(u == null)
 		{
-			po.setId(UniqueId.genId());
+			po.setId(UniqueId.genUniqueId());
 			po.setSsoaccount(getAccount(po.getId()));// 全小写
 			dao.save(po);
 			
