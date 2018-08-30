@@ -7,23 +7,24 @@ dswork.websso.util.WebssoUtil
 try
 {
 	MyRequest req = new MyRequest(request);
-	String type = req.getString("type", "").toLowerCase(java.util.Locale.ENGLISH);
+	String bind = req.getString("bind", "").toLowerCase(java.util.Locale.ENGLISH);
+	request.setAttribute("bind", bind);
 	String serviceURL = URLEncoder.encode(req.getString("serviceURL"), "UTF-8");
 	String authorizeURL = "about:blank";
 	String url,appid,returnURL;
-	if("qq".equals(type) && WebssoUtil.HAS_QQ)
+	if("qq".equals(bind) && WebssoUtil.HAS_QQ)
 	{
 		url = "https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=%s&redirect_uri=%s&state=1&scope=get_user_info";
 		returnURL = URLEncoder.encode(dswork.websso.util.QqUtil.RETURNURL + "?serviceURL=" + serviceURL, "UTF-8");
 		appid = dswork.websso.util.QqUtil.APPID;
 	}
-	else if("wechat".equals(type) && WebssoUtil.HAS_WECHAT)
+	else if("wechat".equals(bind) && WebssoUtil.HAS_WECHAT)
 	{
 		url = "https://open.weixin.qq.com/connect/qrconnect?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_login&state=1#wechat_redirect";
 		returnURL = URLEncoder.encode(dswork.websso.util.WechatUtil.RETURNURL + "?serviceURL=" + serviceURL, "UTF-8");
 		appid = dswork.websso.util.WechatUtil.APPID;
 	}
-	else if("alipay".equals(type) && WebssoUtil.HAS_ALIPAY)
+	else if("alipay".equals(bind) && WebssoUtil.HAS_ALIPAY)
 	{
 		url = "https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=%s&scope=auth_user&redirect_uri=%s";
 		returnURL = URLEncoder.encode(dswork.websso.util.AlipayUtil.RETURNURL + "?serviceURL=" + serviceURL, "UTF-8");
@@ -48,7 +49,7 @@ catch(Exception e)
 <body>
 <script type="text/javascript">
 var authorize = "${authorizeURL}";
-<c:if test="${type=='qq'}">
+<c:if test="${bind=='qq'}">
 	function isPc(){return navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)==null}
 	if(!isPc()){
 		authorize = authorize + "&display=mobile";

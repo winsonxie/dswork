@@ -6,13 +6,13 @@ java.net.URLEncoder
 MyRequest req = new MyRequest(request);
 dswork.websso.model.DsWebssoUser po = new dswork.websso.model.DsWebssoUser();
 req.getFillObject(po);
-String type = req.getString("type", "").toLowerCase(java.util.Locale.ENGLISH);
+String bind = req.getString("bind", "").toLowerCase(java.util.Locale.ENGLISH);
 String service = URLEncoder.encode(req.getString("service"), "UTF-8");
 String msg = "";
 String ticket = "";
 String code = "";
 String account = "";
-String uname = po.getOpenidqq().length() > 0 ? "QQ" : (po.getOpenidwechat().length() > 0 ? "微信" : (po.getOpenidalipay().length() > 0 ? "支付宝" : ""));
+String uname = "qq".equals(bind) ? "QQ" : ("wechat".equals(bind) ? "微信" : ("alipay".equals(bind) ? "支付宝" : ""));
 try
 {
 	for(Cookie c : request.getCookies())
@@ -23,7 +23,7 @@ try
 	if(code.length() > 0 && ticket.length() > 0)
 	{
 		String s = dswork.core.util.EncryptUtil.decodeDes(code, ticket);
-		account = s.split("#")[0];//通过cookie取sso的登陆用户account
+		account = s.split("#")[0].toLowerCase(java.util.Locale.ENGLISH);//通过cookie取sso的登陆用户account
 	}
 	if(account.length() == 0)
 	{
@@ -32,10 +32,14 @@ try
 	else
 	{
 		dswork.websso.service.DsWebssoUserService ssoservice = (dswork.websso.service.DsWebssoUserService)dswork.spring.BeanFactory.getBean("dsWebssoUserService");
-		dswork.websso.model.DsWebssoUser u = ssoservice.getByUseraccount(account);
+		dswork.websso.model.DsWebssoUser u = ssoservice.getBySsoaccount(account);
 		if(u == null)
 		{
-			msg = "用户不存在";
+			po.setSsoaccount(account);
+			if(ssoservice.saveForRebind(po) <= 0)
+			{
+				msg = "请重新登录后再尝试";// 只有插入时账号已存在且没异常的情况下，才会出现
+			}
 		}
 		else
 		{
@@ -48,26 +52,31 @@ try
 					msg = "该" + uname + "账号已绑定其他用户";
 				}
 			}
-			if("qq".equals(type))
+			if("qq".equals(bind))
 			{
 				u.setOpenidqq(po.getOpenidqq());
 			}
-			else if("wechat".equals(type))
+			else if("wechat".equals(bind))
 			{
 				u.setOpenidwechat(po.getOpenidwechat());
 			}
-			else if("alipay".equals(type))
+			else if("alipay".equals(bind))
 			{
 				u.setOpenidalipay(po.getOpenidalipay());
 			}
 			else
 			{
 				msg = "请勿非法操作";
-				type = "";
+				bind = "";
 			}
-			if(type.length() > 0)
+			if(bind.length() > 0)
 			{
-				ssoservice.update(u);
+				if(po.getName().length() > 0){u.setName(po.getName());}
+				if(po.getCountry().length() > 0){u.setCountry(po.getCountry());}
+				if(po.getProvince().length() > 0){u.setProvince(po.getProvince());}
+				if(po.getCity().length() > 0){u.setCity(po.getCity());}
+				if(po.getMobile().length() > 0){u.setMobile(po.getMobile());}
+				ssoservice.updateForRebind(u);
 				msg = "";
 			}
 		}
