@@ -16,7 +16,7 @@ request.setAttribute("ctx", request.getContextPath());
 <link rel="stylesheet" type="text/css" href="${ctx}/themes/share/fonts/dsworkfont.css"/>
 <style type="text/css">
 html,body{height:100%;margin:0px auto;}
-body {background-color:#fff;font-family:arial,"microsoft yahei","宋体";color:${c};font-size:16px;line-height:120%;}
+body {background-color:#fff;font-family:tahoma,arial,"Microsoft YaHei","\5B8B\4F53",sans-serif;color:${c};font-size:16px;line-height:120%;}
 i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 
 .view {overflow:hidden;margin:0 auto;width:100%;min-width:300px;max-width:1000px;overflow:hidden;padding:8px 0;}
