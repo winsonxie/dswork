@@ -26,7 +26,7 @@ try
 		request.getSession().setAttribute(dswork.web.MyAuthCodeServlet.SessionName_Randcode, "");
 		if("".equals(msg))
 		{
-			dswork.websso.service.DsCommonUserService service = (dswork.websso.service.DsCommonUserService)dswork.spring.BeanFactory.getBean("dsCommonUserService");
+			dswork.websso.service.DsWebssoUserService service = (dswork.websso.service.DsWebssoUserService)dswork.spring.BeanFactory.getBean("dsCommonUserService");
 			dswork.websso.model.DsCommonUser po = new dswork.websso.model.DsCommonUser();
 			req.getFillObject(po);
 			if(service.getByAccount(po.getAccount()) != null)
