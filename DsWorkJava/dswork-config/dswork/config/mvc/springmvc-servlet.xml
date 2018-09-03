@@ -19,7 +19,7 @@
 	<context:component-scan base-package="${dswork.p4:x}.controller" />
 	<context:component-scan base-package="${dswork.p5:x}.controller" />
 	
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />  
+	<bean class="dswork.config.mvc.MyRequestMappingHandlerMapping" />
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" />
 	
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
