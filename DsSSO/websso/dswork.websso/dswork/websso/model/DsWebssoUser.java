@@ -45,6 +45,8 @@ public class DsWebssoUser
 	private String exalias = "";
 	// 类型扩展名称
 	private String exname = "";
+	// 密码
+	private String password = "";
 
 	public Long getId()
 	{
@@ -244,5 +246,15 @@ public class DsWebssoUser
 	public void setExname(String exname)
 	{
 		this.exname = exname;
+	}
+
+	public String getPassword()
+	{
+		return password;
+	}
+
+	public void setPassword(String password)
+	{
+		this.password = password;
 	}
 }
