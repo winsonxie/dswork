@@ -26,35 +26,41 @@ try
 		request.getSession().setAttribute(dswork.web.MyAuthCodeServlet.SessionName_Randcode, "");
 		if("".equals(msg))
 		{
-			dswork.websso.service.DsWebssoUserService service = (dswork.websso.service.DsWebssoUserService)dswork.spring.BeanFactory.getBean("dsCommonUserService");
-			dswork.websso.model.DsCommonUser po = new dswork.websso.model.DsCommonUser();
-			req.getFillObject(po);
-			if(service.getByAccount(po.getAccount()) != null)
+			dswork.websso.service.DsWebssoUserService ssoservice = (dswork.websso.service.DsWebssoUserService)dswork.spring.BeanFactory.getBean("dsWebssoUserService");
+			String account = req.getString("account").toLowerCase();
+			if(account.length() > 0)
 			{
-				msg = "账号已存在";
+				if(ssoservice.getByAccount(account))
+				{
+					msg = "账号已存在";
+				}
+//				else if(service.getByIdcard(po.getIdcard()) != null)
+//				{
+//					msg = "身份证号已存在";
+//				}
+//				else if(service.getByMobile(po.getMobile()) != null)
+//				{
+//					msg = "手机号已存在";
+//				}
+//				else if(service.getByEmail(po.getEmail()) != null)
+//				{
+//					msg = "邮箱已存在";
+//				}
+				else
+				{
+					dswork.websso.model.DsWebssoUser m = new dswork.websso.model.DsWebssoUser();
+					m.setSsoaccount(account);
+					m.setType(type);
+					String password = dswork.core.util.EncryptUtil.decodeDes(req.getString("password"), "dswork");
+					m.setPassword(password.toUpperCase());
+					m.setStatus(1);
+					ssoservice.saveForRegister(m);
+					msg = "success";
+				}
 			}
-//			else if(service.getByIdcard(po.getIdcard()) != null)
-//			{
-//				msg = "身份证号已存在";
-//			}
-//			else if(service.getByMobile(po.getMobile()) != null)
-//			{
-//				msg = "手机号已存在";
-//			}
-//			else if(service.getByEmail(po.getEmail()) != null)
-//			{
-//				msg = "邮箱已存在";
-//			}
 			else
 			{
-				po.setType(type);
-				po.setId(dswork.core.util.UniqueId.genId());
-				String password = dswork.core.util.EncryptUtil.decodeDes(po.getPassword(), "dswork");
-				po.setPassword(password.toUpperCase());
-				po.setCreatetime(dswork.core.util.TimeUtil.getCurrentTime());
-				po.setStatus(1);
-				service.save(po);
-				msg = "success";
+				msg = "账号输入错误";
 			}
 		}
 	}

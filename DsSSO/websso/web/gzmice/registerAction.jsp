@@ -20,7 +20,8 @@ else
 		try
 		{
 			dswork.websso.service.DsWebssoUserService ssoservice = (dswork.websso.service.DsWebssoUserService)dswork.spring.BeanFactory.getBean("dsWebssoUserService");
-			if(service.saveForRegister(po) == 0)
+			po.setStatus(1);
+			if(ssoservice.saveForRegister(po) == 0)
 			{
 				msg = "该"+(po.getOpenidqq().length() > 0 ? "QQ" : (po.getOpenidwechat().length() > 0 ? "微信" : (po.getOpenidalipay().length() > 0 ? "支付宝" : "")))+"已注册用户";
 			}

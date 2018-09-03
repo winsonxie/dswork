@@ -48,16 +48,33 @@ public class DsWebssoUserService
 	public int saveForRegister(DsWebssoUser po)
 	{
 		int result = 0;
-		DsWebssoUser u = dao.getByOpenid(po);// 一定是跟sso用户绑定的
-		if(u == null)
+		boolean saveUser = false;
+		DsCommonUser c = new DsCommonUser();
+		if(po.getSsoaccount().length() > 0)// 直接注册
 		{
-			po.setId(UniqueId.genUniqueId());
-			po.setSsoaccount(getAccount(po.getId()));// 全小写
-			dao.save(po);
-			
-			DsCommonUser c = new DsCommonUser();
+			DsCommonUser o = commonUserDao.getByAccount(po.getSsoaccount());
+			if(o == null)
+			{
+				saveUser = true;
+			}
+		}
+		else// 第三方注册
+		{
+			DsWebssoUser u = dao.getByOpenid(po);// 一定是跟sso用户绑定的
+			if(u == null)
+			{
+				po.setId(UniqueId.genUniqueId());
+				po.setSsoaccount(getAccount(po.getId()));// 全小写
+				po.setPassword("");
+				dao.save(po);
+				saveUser = true;
+			}
+		}
+		if(saveUser)
+		{
 			c.setId(po.getId());
 			c.setAccount(po.getSsoaccount());
+			c.setPassword(po.getPassword());
 			c.setName(po.getName());
 			c.setIdcard(po.getIdcard());
 			//c.setCakey(cakey);
@@ -96,6 +113,12 @@ public class DsWebssoUserService
 	public DsWebssoUser getBySsoaccount(String ssoaccount)
 	{
 		return dao.getBySsoaccount(ssoaccount);
+	}
+
+	public boolean getByAccount(String account)
+	{
+		DsCommonUser user = commonUserDao.getByAccount(account);
+		return user != null;
 	}
 
 	private String getAccount(long id)
