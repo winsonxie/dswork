@@ -1,20 +1,15 @@
 <%@page language="java" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/updAjax.jsp" %>
-<%@include file="/commons/include/editor.jsp" %>
+<%@include file="/commons/include/updAjax.jsp"%>
 <script type="text/javascript">
-$dswork.callback = function()
-{
-	if($dswork.result.type == 1)
-	{
-		location.href = "getDemo.htm?page=${page}";
-	}
-}
+$dswork.callback = function(){if($dswork.result.type == 1){
+	location.href = "getDemo.htm?page=${page}";
+}};
 </script>
 </head>
 <body>
@@ -32,15 +27,15 @@ $dswork.callback = function()
 <table border="0" cellspacing="1" cellpadding="0" class="listTable">
 	<tr>
 		<td class="form_title">标题</td>
-		<td class="form_input"><input type="text" name="title" value="${fn:escapeXml(po.title)}" /></td>
+		<td class="form_input"><input type="text" name="title" maxlength="30" value="${fn:escapeXml(po.title)}" /></td>
 	</tr>
 	<tr>
 		<td class="form_title">内容</td>
-		<td class="form_input"><input type="text" name="content" value="${fn:escapeXml(po.content)}" /></td>
+		<td class="form_input"><input type="text" name="content" maxlength="300" value="${fn:escapeXml(po.content)}" /></td>
 	</tr>
 	<tr>
 		<td class="form_title">创建时间</td>
-		<td class="form_input"><input type="text" name="foundtime" class="WebDate" format="yyyy-MM-dd" value="${fn:escapeXml(po.foundtime)}" /></td>
+		<td class="form_input"><input type="text" name="foundtime" maxlength="19" class="WebDate" format="yyyy-MM-dd" value="${fn:escapeXml(po.foundtime)}" /></td>
 	</tr>
 </table>
 <input type="hidden" name="id" value="${po.id}" />
