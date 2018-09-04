@@ -12,6 +12,5 @@
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <javaElement handleIdentifier="=DsWorkJava/dswork-builder&lt;dswork.builder"/>
-        <javaElement handleIdentifier="=DsWorkJava/dswork-builder&lt;template.java"/>
     </selectedElements>
 </jardesc>
