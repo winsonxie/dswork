@@ -15,15 +15,15 @@ import ${frame}.core.page.Page;
 import ${frame}.core.page.PageNav;
 import ${frame}.core.util.CollectionUtil;
 import ${namespace}.model.${model};
-import ${namespace}.service.${model}Service;
+import ${namespace}.service.${moduleUpperCamel}Service;
 
 @Scope("prototype")
 @Controller
 @RequestMapping("${module}")
-public class ${model}Controller extends BaseController
+public class ${moduleUpperCamel}Controller extends BaseController
 {
 	@Autowired
-	private ${model}Service service;
+	private ${moduleUpperCamel}Service service;
 
 	//添加
 	@RequestMapping
