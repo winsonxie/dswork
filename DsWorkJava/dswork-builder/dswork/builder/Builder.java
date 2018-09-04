@@ -93,6 +93,7 @@ public class Builder
 					param.put("namespace", namespace.replace('/', '.'));
 					param.put("model", m.model);
 					param.put("module", m.module);
+					param.put("moduleUpperCamel", m.moduleUpperCamel);
 					param.put("table", table);
 					
 					for(BuilderConfig.Template tpl : config.templates.template)
@@ -111,6 +112,7 @@ public class Builder
 							.replace("{web}", config.builds.web)
 							.replace("{model}", m.model)
 							.replace("{module}", m.module)
+							.replace("{moduleUpperCamel}", m.moduleUpperCamel)
 							.replace("{namespace}", m.namespace)
 							.replace("//", "/");
 						String x = "  " + printf(tpl.viewpath, config.templates.max) + "生成";
@@ -209,7 +211,10 @@ public class Builder
 		String str = ss[0];
 		for(int i = 1; i < ss.length; i++)
 		{
-			str += ss[i].substring(0, 1).toUpperCase() + ss[i].substring(1);
+			if(ss[i].length() > 0)
+			{
+				str += ss[i].substring(0, 1).toUpperCase() + ss[i].substring(1);
+			}
 		}
 		return str;
 	}
@@ -220,7 +225,10 @@ public class Builder
 		String str = "";
 		for(String s : ss)
 		{
-			str += s.substring(0, 1).toUpperCase() + s.substring(1);
+			if(s.length() > 0)
+			{
+				str += s.substring(0, 1).toUpperCase() + s.substring(1);
+			}
 		}
 		return str;
 	}

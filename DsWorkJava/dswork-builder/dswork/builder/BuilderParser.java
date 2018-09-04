@@ -120,6 +120,7 @@ public class BuilderParser
 			BuilderConfig.Build m = config.addBuild();
 			m.namespace = Builder.getToPath(getAttr(n, "namespace"));
 			m.module = Builder.getToPath(getAttr(n, "module"));
+			m.moduleUpperCamel = Builder.upperCamel(m.module.replace('/', '_'));
 			m.table = getAttr(n, "table");
 			m.model = getAttr(n, "model");
 			if(m.model.length() == 0)

@@ -2,40 +2,36 @@
  * ${table.comment}Model
  */
 package ${namespace}.model;
-public class ${table.nameUpperCamel}
+public class ${model}
 {
-<#list columnList as c>
+<#list table.column as c>
 	// ${c.comment}
-	<#if c.datatype == 'Long' || c.datatype == 'long'>
-	private ${c.datatype} ${c.nameLowerCamel} = ${c.defaultvalue!'0'}L;
-	<#elseif c.datatype == 'int'>
-	private int ${c.nameLowerCamel} = ${c.defaultvalue!'0'};
-	<#elseif c.datatype == 'float'>
-	private float ${c.nameLowerCamel} = ${c.defaultvalue!'0.0'}F;
-	<#elseif c.datatype == 'boolean'>
+	<#if c.type == 'Long' || c.type == 'long' || c.type == 'int' || c.type == 'float'>
+	private ${c.type} ${c.nameLowerCamel} = ${c.defaultvalue!};
+	<#elseif c.type == 'boolean'>
 	private boolean ${c.nameLowerCamel} = false;
-	<#elseif c.datatype == 'date'>
+	<#elseif c.type == 'date'>
 	private java.util.Date ${c.nameLowerCamel};
-	<#elseif c.datatype == 'String'>
+	<#elseif c.type == 'String'>
 	private String ${c.nameLowerCamel} = "${c.defaultvalue!}";
 	<#else>
-	private ${c.datatype} ${c.nameLowerCamel};
+	private ${c.type} ${c.nameLowerCamel};
 	</#if>
 </#list>
-<#list columnList as c>
+<#list table.column as c>
 
-	public ${c.datatype} get${c.nameUpperCamel}()
+	public ${c.type} get${c.nameUpperCamel}()
 	{
 		return ${c.nameLowerCamel};
 	}
 
-	<#if c.datatype == 'date'>
+	<#if c.type == 'date'>
 	public void set${c.nameUpperCamel}(java.util.Date ${c.nameLowerCamel})
 	{
 		this.${c.nameLowerCamel} = ${c.nameLowerCamel};
 	}
 	<#else>
-	public void set${c.nameUpperCamel}(${c.datatype} ${c.nameLowerCamel})
+	public void set${c.nameUpperCamel}(${c.type} ${c.nameLowerCamel})
 	{
 		this.${c.nameLowerCamel} = ${c.nameLowerCamel};
 	}

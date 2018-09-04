@@ -26,6 +26,7 @@ public class BuilderConfig
 		public String table;
 		public String model;
 		public String comment;
+		public String moduleUpperCamel;
 	}
 	public class Builds
 	{
