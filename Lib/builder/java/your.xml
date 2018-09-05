@@ -6,10 +6,8 @@
 		<param name="frame" value="dswork" />
 		<param name="developer" value="无名氏" />
 	</params>
-	<builds templatename="mvc" rootpath="E:/Workspaces/MySpace/temp" src="src" web="web" url="jdbc:mysql://myserver:3306/plant?characterEncoding=UTF-8&amp;useSSL=false&amp;allowMultiQueries=true&amp;user=plant&amp;password=plant@DB321">
-		<build namespace="/jwzz" module="/manage/jwzz/flow/type" table="PLANT_FLOW_TYPE" model="" comment="mybatis" />
-		<build namespace="/jwzz" module="/manage/jwzz/flow/part" table="PLANT_FLOW_PART" model="" comment="mybatis" />
-		<build namespace="/jwzz" module="/manage/jwzz/flow/partdata" table="PLANT_FLOW_PART_DATA" model="" comment="mybatis" />
+	<builds templatename="mvc" rootpath="E:/Workspaces/MySpace/temp" src="src" web="web" url="jdbc:mysql://myserver:3306/demo?characterEncoding=UTF-8&amp;useSSL=false&amp;allowMultiQueries=true&amp;user=demo&amp;password=demo@DB321">
+		<build namespace="testwork" module="/manage/demo" table="DEMO" model="" comment="mybatis" />
 	</builds>
 	<templates>
 		<template name="c#"  viewpath="/csharp/idao.ftl"         path="/{src}/Dao/{model}Dao.cs" comment="ibatisnet" />
