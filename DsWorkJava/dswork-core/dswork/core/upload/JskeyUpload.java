@@ -41,7 +41,7 @@ public class JskeyUpload extends Thread
 	 * 默认允许上传的文件后缀
 	 */
 	public static final String UPLOAD_FILE = EnvironmentUtil.getToString("jskey.upload.file", "bmp,doc,docx,gif,jpeg,jpg,pdf,png,ppt,pptx,rar,rtf,txt,xls,xlsx,zip,7z").toLowerCase();
-	private static final String UPLOAD_CHECK = "," + UPLOAD_FILE + ",";
+	private static final String UPLOAD_CHECK = "," + UPLOAD_FILE + ",";// "avi,bmp,css,doc,docx,flv,gif,jpeg,jpg,js,mp3,mp4,pdf,png,ppt,pptx,rtf,swf,txt,webm,xls,xlsx"
 
 	// ################################################################################################
 	// 文件操作相关
