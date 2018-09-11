@@ -1,7 +1,7 @@
 @echo off
 if exist %1\ (
 	setlocal ENABLEDELAYEDEXPANSION
-	xcopy "%~dp0\common\log/slf4j-api-1.7.25.jar" "%1" /y
+	xcopy "%~dp0\common\log\slf4j-api-1.7.25.jar" "%1" /y
 	xcopy "%~dp0\common\aopalliance-1.0.jar" "%1" /y
 	xcopy "%~dp0\common\gson-2.8.5.jar" "%1" /y
 	xcopy "%~dp0\common\jstl-1.2.jar" "%1" /y
