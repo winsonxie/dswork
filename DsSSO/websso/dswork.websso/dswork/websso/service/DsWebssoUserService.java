@@ -56,6 +56,7 @@ public class DsWebssoUserService
 			if(o == null)
 			{
 				saveUser = true;
+				po.setId(UniqueId.genUniqueId());
 			}
 		}
 		else// 第三方注册
