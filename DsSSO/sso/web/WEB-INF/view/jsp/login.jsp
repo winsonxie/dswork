@@ -71,7 +71,7 @@ i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 .view .login{float:right;margin:0 47px 0 auto;}
 */
 body {background:#fff url(${ctx}/themes/share/bg/wave.png) bottom center repeat-x;}
-.fieldset a {margin:0 19px;}
+.fieldset a {margin:0 15px;}
 </style>
 <link rel="stylesheet" type="text/css" href="${ctx}/themes/ssomedia.css"/>
 </head>
