@@ -77,7 +77,7 @@ $dswork.callback = function(){
 		<td style="width:8%;">操作</td>
 	</tr>
 	<tr class="list">
-		<td><input type="text" name="content" dataType="Char" style="width:400px;" maxlength="128" value="" /></td>
+		<td><input type="text" name="content" datatype="Char" style="width:400px;" maxlength="128" value="" /></td>
 		<td class="menuTool"><a class="insert" onclick="$('#contactTable>tbody').append($('#cloneTable>tbody>tr:eq(0)').clone());" href="#">添加项</a></td>
 	</tr>
 </table>
@@ -85,7 +85,7 @@ $dswork.callback = function(){
 <div style="display:none;">
 <table id="cloneTable">
 	<tr class="list">
-		<td><input type="text" name="content" dataType="Require" style="width:400px;" maxlength="100" value="" /></td>
+		<td><input type="text" name="content" datatype="Require" style="width:400px;" maxlength="100" value="" /></td>
 		<td><input type="button" class="delete" onclick="$dswork.deleteRow(this)" /></td>
 	</tr>
 </table>
