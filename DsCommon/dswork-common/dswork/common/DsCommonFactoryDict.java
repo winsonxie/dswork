@@ -56,7 +56,7 @@ public class DsCommonFactoryDict
 			dict = list.get(i);
 			sb.append("<label><input name=\"").append(checkboxName).append("\" type=\"checkbox\" value=\"").append(dict.getAlias()).append("\"/>").append(dict.getLabel()).append("</label>");
 		}
-		sb.append("<input name=\"").append(checkboxName).append("\" type=\"checkbox\" dataType=\"Group\" msg=\"必选\" style=\"display:none;\" />");
+		sb.append("<input name=\"").append(checkboxName).append("\" type=\"checkbox\" datatype=\"Group\" msg=\"必选\" style=\"display:none;\" />");
 		return sb.toString();
 	}
 	public String getRadio(String name, String radioName)
@@ -69,7 +69,7 @@ public class DsCommonFactoryDict
 			dict = list.get(i);
 			sb.append("<label><input name=\"").append(radioName).append("\" type=\"radio\" value=\"").append(dict.getAlias()).append("\"/>").append(dict.getLabel()).append("</label>");
 		}
-		sb.append("<input name=\"").append(radioName).append("\" type=\"radio\" dataType=\"Group\" msg=\"必选\" style=\"display:none;\" />");
+		sb.append("<input name=\"").append(radioName).append("\" type=\"radio\" datatype=\"Group\" msg=\"必选\" style=\"display:none;\" />");
 		return sb.toString();
 	}
 	

@@ -64,11 +64,11 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 	<input type="hidden" name="deployid" value="" />
 	<tr>
 		<td class="form_title">流程标识</td>
-		<td class="form_input"><input type="text" name="alias" style="width:200px;" maxlength="300" dataType="Char" value="" /> <span style="font-weight:bold;">保存后不可修改</span></td>
+		<td class="form_input"><input type="text" name="alias" style="width:200px;" maxlength="300" datatype="Char" value="" /> <span style="font-weight:bold;">保存后不可修改</span></td>
 	</tr>
 	<tr>
 		<td class="form_title">流程名字</td>
-		<td class="form_input"><input type="text" name="name" style="width:200px;" maxlength="300" dataType="Require" value="" /></td>
+		<td class="form_input"><input type="text" name="name" style="width:200px;" maxlength="300" datatype="Require" value="" /></td>
 	</tr>
 </table>
 <input type="hidden" id="flowxml" name="flowxml" value="" />

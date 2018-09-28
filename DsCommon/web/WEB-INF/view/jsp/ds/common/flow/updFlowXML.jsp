@@ -66,7 +66,7 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 	</tr>
 	<tr>
 		<td class="form_title">流程名字</td>
-		<td class="form_input"><input type="text" name="name" style="width:200px;" maxlength="300" dataType="Require" value="${fn:escapeXml(po.name)}" /></td>
+		<td class="form_input"><input type="text" name="name" style="width:200px;" maxlength="300" datatype="Require" value="${fn:escapeXml(po.name)}" /></td>
 	</tr>
 </table>
 <input type="hidden" id="flowxml" name="flowxml" value="" />
