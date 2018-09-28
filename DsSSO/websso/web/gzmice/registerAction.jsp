@@ -23,7 +23,7 @@ else
 			po.setStatus(1);
 			if(ssoservice.saveForRegister(po) == 0)
 			{
-				msg = "该"+(po.getOpenidqq().length() > 0 ? "QQ" : (po.getOpenidwechat().length() > 0 ? "微信" : (po.getOpenidalipay().length() > 0 ? "支付宝" : "")))+"已注册用户";
+				msg = "该"+(po.getOpenidqq().length() > 0 ? "QQ" : (po.getOpenidwechat().length() > 0 ? "微信" : (po.getOpenidalipay().length() > 0 ? "支付宝" : (po.getOpenidweibo().length() > 0 ? "微博" : ""))))+"已注册用户";
 			}
 			else
 			{

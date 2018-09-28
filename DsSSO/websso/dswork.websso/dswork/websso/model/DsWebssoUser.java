@@ -35,6 +35,8 @@ public class DsWebssoUser
 	private String openidalipay = "";
 	// 微信登陆的openid
 	private String openidwechat = "";
+	// 微博登陆的openid
+	private String openidweibo = "";
 	// 状态(0,禁止,1,允许)
 	private Integer status = 1;
 	// 类型
@@ -196,6 +198,16 @@ public class DsWebssoUser
 	public void setOpenidwechat(String openidwechat)
 	{
 		this.openidwechat = openidwechat;
+	}
+
+	public String getOpenidweibo()
+	{
+		return openidweibo;
+	}
+
+	public void setOpenidweibo(String openidweibo)
+	{
+		this.openidweibo = openidweibo;
 	}
 
 	public Integer getStatus()

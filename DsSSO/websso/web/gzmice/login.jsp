@@ -72,7 +72,7 @@ i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 </style>
 <style type="text/css">
 body {background:#fff url(/sso/themes/share/bg/wave.png) bottom center repeat-x;}
-.fieldset a {margin:0 28px;}
+.fieldset a {margin:0 15px;}
 </style>
 <link rel="stylesheet" type="text/css" href="${ctx}/themes/ssomedia.css"/>
 </head>
@@ -110,8 +110,9 @@ body {background:#fff url(/sso/themes/share/bg/wave.png) bottom center repeat-x;
 				String serviceURL = "/websso/gzmice/loginAction.jsp?service=" + java.net.URLEncoder.encode(java.net.URLEncoder.encode(service, "UTF-8"), "UTF-8");
 				request.setAttribute("serviceURL", java.net.URLEncoder.encode(serviceURL, "UTF-8"));
 				%><a href="/websso/bind/login.jsp?bind=qq&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_qq"></a>
-				<a href="/websso/bind/login.jsp?bind=alipay&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_alipay"></a>
-				<a href="/websso/bind/login.jsp?bind=wechat&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_wechat"></a>
+				<a href="/websso/bind/login.jsp?bind=weibo&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_weibo"></a>
+				<a href="/websso/bind/login.jsp?bind=alipay&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_alipay" style="background-color:gray"></a>
+				<a href="/websso/bind/login.jsp?bind=wechat&serviceURL=${fn:escapeXml(serviceURL)}" class="icon_wechat" style="background-color:gray"></a>
 		</fieldset>
 	</div></div>
   </div>

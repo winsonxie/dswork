@@ -22,7 +22,7 @@ else
 			dswork.websso.model.DsWebssoUser tmp = service.getByOpendid(po);
 			if(tmp == null)
 			{
-				msg = "该"+(po.getOpenidqq().length() > 0 ? "QQ" : (po.getOpenidwechat().length() > 0 ? "微信" : (po.getOpenidalipay().length() > 0 ? "支付宝" : "")))+"账号未注册用户";
+				msg = "该"+(po.getOpenidqq().length() > 0 ? "QQ" : (po.getOpenidwechat().length() > 0 ? "微信" : (po.getOpenidalipay().length() > 0 ? "支付宝" : (po.getOpenidweibo().length() > 0 ? "微博" : ""))))+"账号未注册用户";
 			}
 			else
 			{

@@ -12,7 +12,7 @@ String msg = "";
 String ticket = "";
 String code = "";
 String account = "";
-String uname = "qq".equals(bind) ? "QQ" : ("wechat".equals(bind) ? "微信" : ("alipay".equals(bind) ? "支付宝" : ""));
+String uname = "qq".equals(bind) ? "QQ" : ("wechat".equals(bind) ? "微信" : ("alipay".equals(bind) ? "支付宝" : ("weibo".equals(bind) ? "微博" : "")));
 try
 {
 	for(Cookie c : request.getCookies())
@@ -56,6 +56,10 @@ try
 			{
 				u.setOpenidqq(po.getOpenidqq());
 			}
+			else if("weibo".equals(bind))
+			{
+				u.setOpenidweibo(po.getOpenidweibo());
+			}
 			else if("wechat".equals(bind))
 			{
 				u.setOpenidwechat(po.getOpenidwechat());
@@ -65,7 +69,7 @@ try
 				u.setOpenidalipay(po.getOpenidalipay());
 			}
 			else
-			{
+			{ 
 				msg = "请勿非法操作";
 				bind = "";
 			}

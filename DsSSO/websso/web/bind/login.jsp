@@ -12,19 +12,25 @@ try
 	String serviceURL = URLEncoder.encode(req.getString("serviceURL"), "UTF-8");
 	String authorizeURL = "about:blank";
 	String url,appid,returnURL;
-	if("qq".equals(bind) && WebssoUtil.HAS_QQ)
+	if("weibo".equals(bind) && WebssoUtil.HasWeibo)
 	{
-		url = "https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=%s&redirect_uri=%s&state=1&scope=get_user_info";
-		returnURL = URLEncoder.encode(dswork.websso.util.QqUtil.RETURNURL + "?serviceURL=" + serviceURL, "UTF-8");
-		appid = dswork.websso.util.QqUtil.APPID;
+		url = "https://api.weibo.com/oauth2/authorize?client_id=%s&response_type=code&redirect_uri=%s";
+		returnURL = URLEncoder.encode(dswork.websso.util.WeiboUtil.RETURNURL + "?serviceURL=" + serviceURL, "UTF-8");
+		appid = dswork.websso.util.WeiboUtil.APPID;
 	}
-	else if("wechat".equals(bind) && WebssoUtil.HAS_WECHAT)
+	else if("wechat".equals(bind) && WebssoUtil.HasWechat)
 	{
 		url = "https://open.weixin.qq.com/connect/qrconnect?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_login&state=1#wechat_redirect";
 		returnURL = URLEncoder.encode(dswork.websso.util.WechatUtil.RETURNURL + "?serviceURL=" + serviceURL, "UTF-8");
 		appid = dswork.websso.util.WechatUtil.APPID;
 	}
-	else if("alipay".equals(bind) && WebssoUtil.HAS_ALIPAY)
+	else if("qq".equals(bind) && WebssoUtil.HasQQ)
+	{
+		url = "https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=%s&redirect_uri=%s&state=1&scope=get_user_info";
+		returnURL = URLEncoder.encode(dswork.websso.util.QqUtil.RETURNURL + "?serviceURL=" + serviceURL, "UTF-8");
+		appid = dswork.websso.util.QqUtil.APPID;
+	}
+	else if("alipay".equals(bind) && WebssoUtil.HasAlipay)
 	{
 		url = "https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=%s&scope=auth_user&redirect_uri=%s";
 		returnURL = URLEncoder.encode(dswork.websso.util.AlipayUtil.RETURNURL + "?serviceURL=" + serviceURL, "UTF-8");

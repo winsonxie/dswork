@@ -8,7 +8,8 @@ public class WebssoUtil
 	{
 	}
 
-	public static final boolean HAS_ALIPAY = EnvironmentUtil.getToBoolean("websso.alipay", false);
-	public static final boolean HAS_WECHAT = EnvironmentUtil.getToBoolean("websso.wechat", false);
-	public static final boolean HAS_QQ = EnvironmentUtil.getToBoolean("websso.qq", false);
+	public static final boolean HasWeibo = EnvironmentUtil.getToBoolean("websso.weibo", false);
+	public static final boolean HasWechat = EnvironmentUtil.getToBoolean("websso.wechat", false);
+	public static final boolean HasQQ = EnvironmentUtil.getToBoolean("websso.qq", false);
+	public static final boolean HasAlipay = EnvironmentUtil.getToBoolean("websso.alipay", false);
 }

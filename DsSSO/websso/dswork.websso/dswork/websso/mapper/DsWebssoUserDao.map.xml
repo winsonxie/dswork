@@ -7,9 +7,9 @@
 
 <insert id="insert" parameterType="dswork.websso.model.DsWebssoUser">
 	insert into DS_WEBSSO_USER
-	(ID, SSOACCOUNT, COUNTRY, PROVINCE, CITY, IDCARD, NAME, SEX, EMAIL, MOBILE, PHONE, AVATAR, OPENIDQQ, OPENIDALIPAY, OPENIDWECHAT)
+	(ID, SSOACCOUNT, COUNTRY, PROVINCE, CITY, IDCARD, NAME, SEX, EMAIL, MOBILE, PHONE, AVATAR, OPENIDQQ, OPENIDALIPAY, OPENIDWECHAT, OPENIDWEIBO)
 	values
-	(#{id}, #{ssoaccount}, #{country}, #{province}, #{city}, #{idcard}, #{name}, #{sex}, #{email}, #{mobile}, #{phone}, #{avatar}, #{openidqq}, #{openidalipay}, #{openidwechat})
+	(#{id}, #{ssoaccount}, #{country}, #{province}, #{city}, #{idcard}, #{name}, #{sex}, #{email}, #{mobile}, #{phone}, #{avatar}, #{openidqq}, #{openidalipay}, #{openidwechat}, #{openidweibo})
 </insert>
 
 <delete id="delete">
@@ -31,7 +31,8 @@
 		AVATAR=#{avatar},
 		OPENIDQQ=#{openidqq},
 		OPENIDALIPAY=#{openidalipay},
-		OPENIDWECHAT=#{openidwechat}
+		OPENIDWECHAT=#{openidwechat},
+		OPENIDWEIBO=#{openidweibo}
 	where ID=#{id}
 </update>
 
@@ -51,9 +52,10 @@
 	<result property="openidqq" column="OPENIDQQ" />
 	<result property="openidalipay" column="OPENIDALIPAY" />
 	<result property="openidwechat" column="OPENIDWECHAT" />
+	<result property="openidweibo" column="OPENIDWEIBO" />
 </resultMap>
 
-<sql id="columns">ID, SSOACCOUNT, COUNTRY, PROVINCE, CITY, IDCARD, NAME, SEX, EMAIL, MOBILE, PHONE, AVATAR, OPENIDQQ, OPENIDALIPAY, OPENIDWECHAT</sql>
+<sql id="columns">ID, SSOACCOUNT, COUNTRY, PROVINCE, CITY, IDCARD, NAME, SEX, EMAIL, MOBILE, PHONE, AVATAR, OPENIDQQ, OPENIDALIPAY, OPENIDWECHAT, OPENIDWEIBO</sql>
 	
 <sql id="dynamicWhere">
 	<where>
@@ -75,20 +77,9 @@
 		<if test="@Ognl@isNotEmpty(openidqq)"> and OPENIDQQ=#{openidqq} </if>
 		<if test="@Ognl@isNotEmpty(openidalipay)"> and OPENIDALIPAY=#{openidalipay} </if>
 		<if test="@Ognl@isNotEmpty(openidwechat)"> and OPENIDWECHAT=#{openidwechat} </if>
-		<if test="@Ognl@isEmpty(openidqq) and @Ognl@isEmpty(openidalipay) and @Ognl@isEmpty(openidwechat)"> and ID='-10000' </if>
+		<if test="@Ognl@isNotEmpty(openidweibo)"> and OPENIDWEIBO=#{openidweibo} </if>
+		<if test="@Ognl@isEmpty(openidqq) and @Ognl@isEmpty(openidalipay) and @Ognl@isEmpty(openidwechat) and @Ognl@isEmpty(openidweibo)"> and ID='-10000' </if>
 	</where>
-</select>
-
-<select id="selectByOpenidqq" resultMap="result">
-	select <include refid="columns" /> from DS_WEBSSO_USER where OPENIDQQ=#{openid}
-</select>
-
-<select id="selectByOpenidalipay" resultMap="result">
-	select <include refid="columns" /> from DS_WEBSSO_USER where OPENIDALIPAY=#{openid}
-</select>
-
-<select id="selectByOpenidwechat" resultMap="result">
-	select <include refid="columns" /> from DS_WEBSSO_USER where OPENIDWECHAT=#{openid}
 </select>
 
 <select id="query" resultMap="result">

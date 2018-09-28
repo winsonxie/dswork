@@ -31,24 +31,31 @@ if(account.length() == 0)
 }
 else
 {
-	if("qq".equals(bind) && WebssoUtil.HAS_QQ)
+	if("weibo".equals(bind) && WebssoUtil.HasWeibo)
 	{
 	}
-	else if("wechat".equals(bind) && WebssoUtil.HAS_WECHAT)
+	else if("wechat".equals(bind) && WebssoUtil.HasWechat)
 	{
 	}
-	else if("alipay".equals(bind) && WebssoUtil.HAS_ALIPAY)
+	else if("qq".equals(bind) && WebssoUtil.HasQQ)
+	{
+	}
+	else if("alipay".equals(bind) && WebssoUtil.HasAlipay)
 	{
 	}
 	else
 	{
-		if("qq".equals(bind))
+		if("weibo".equals(bind))
 		{
-			msg = "暂不支持QQ账号绑定";
+			msg = "暂不支持微博账号绑定";
 		}
 		else if("wechat".equals(bind))
 		{
 			msg = "暂不支持微信账号绑定";
+		}
+		else if("qq".equals(bind))
+		{
+			msg = "暂不支持QQ账号绑定";
 		}
 		else if("alipay".equals(bind))
 		{
