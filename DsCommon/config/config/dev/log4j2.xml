@@ -17,6 +17,6 @@
 		<logger level="INFO" additivity="false" name="jdbc.sqlonly"><appender-ref ref="stdout" /><appender-ref ref="logfile" /></logger>
 		<logger level="WARN" additivity="false" name="org.mybatis"><appender-ref ref="stdout" /><appender-ref ref="logfile" /></logger>
 		<logger level="WARN" additivity="false" name="org.springframework"><appender-ref ref="stdout" /><appender-ref ref="logfile" /></logger>
-		<Root level="INFO"><AppenderRef ref="logfile" /><AppenderRef ref="stdout" /></Root>
+		<Root level="WARN"><AppenderRef ref="logfile" /><AppenderRef ref="stdout" /></Root>
 	</Loggers>
 </Configuration>
