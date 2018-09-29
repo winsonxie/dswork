@@ -165,6 +165,7 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 		}
 		
 		context.addListener("org.springframework.web.util.IntrospectorCleanupListener");
