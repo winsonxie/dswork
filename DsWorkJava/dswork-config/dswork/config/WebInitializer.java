@@ -57,7 +57,7 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 					EnvironmentUtil.setSystemProperties("/config/" + active + "/config.properties");
 				}
 				
-				String log4jFile = (new File(pathWeb + "/WEB-INF/classes/config/" + active + "/log4j2.xml")).isFile() ? "/" + active: "";
+				String log4jFile = (new File(pathWeb + "/WEB-INF/classes/config/" + active + "/log4j2.xml")).isFile() ? "/" + active : "";
 				log4j2 = "/WEB-INF/classes/config" + log4jFile + "/log4j2.xml";
 				
 				String ssoFile = (new File(pathWeb + "/WEB-INF/classes/config/" + active + "/sso.properties")).isFile() ? "/" + active : "";
