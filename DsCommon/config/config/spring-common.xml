@@ -18,7 +18,7 @@
         <property name="plugins">
         	<list>
 				<bean class="dswork.core.mybatis.OffsetLimitInterceptor">
-       				<property name="properties"><props><prop key="1">dswork.core.mybatis.dialect.LimitOffsetDialect</prop></props></property>
+       				<property name="properties"><props><prop key="dialect">dswork.core.mybatis.dialect.LimitOffsetDialect</prop></props></property>
 				</bean>
         	</list>
         </property>
