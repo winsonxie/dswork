@@ -14,7 +14,10 @@
 <select id="queryOrg" resultMap="resultOrg">
 	select ID, PID, NAME, STATUS from DS_COMMON_ORG
 	<where>
-		${pid == null ? "" : pid&gt;0 ? " PID="+pid : " PID is null "}
+		<if test="@Ognl@isNotEmpty(pid)">
+			<if test="0 &lt; pid"> and PID=#{pid} </if>
+			<if test="0 &gt;= pid"> and PID is null </if>
+		</if>
 		<if test="@Ognl@isNotEmpty(status)"> and STATUS=#{status} </if>
 	</where>
 	order by STATUS desc, SEQ, ID
