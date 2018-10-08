@@ -117,7 +117,8 @@ public class AuthController
 			}
 			else
 			{
-				request.getSession().setAttribute(dswork.web.MyAuthCodeServlet.SessionName_Randcode, "");// 对了再清除
+				request.getSession().setAttribute(MyAuthCodeServlet.SessionName_Randcode, "");// 对了再清除
+				
 				LoginUser user = service.getLoginUserByAccount(account);
 				if(user != null)
 				{
