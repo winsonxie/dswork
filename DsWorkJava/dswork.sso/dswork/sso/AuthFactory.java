@@ -111,12 +111,12 @@ public class AuthFactory
 	 * 获取岗位权限范围内的系统功能结构
 	 * @param systemAlias 系统标识
 	 * @param systemPassword 系统访问密码
-	 * @param postId 岗位ID
+	 * @param orgId 单位ID、部门ID、岗位ID
 	 * @return IFunc[]
 	 */
-	public static IFunc[] getFunctionByPost(String postId)
+	public static IFunc[] getFunctionByOrg(String orgId)
 	{
-		String u = getPath("getFunctionByPost").append("&postId=").append(postId).toString();
+		String u = getPath("getFunctionByOrg").append("&orgId=").append(orgId).toString();
 		String v = new HttpUtil().create(u, u.startsWith("https:")).connect().trim();
 		if(log.isDebugEnabled())
 		{
