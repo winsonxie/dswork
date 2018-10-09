@@ -11,9 +11,9 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=DsWorkJava/dswork-sso&lt;dswork.sso.model"/>
-        <javaElement handleIdentifier="=DsWorkJava/dswork-sso&lt;dswork.sso"/>
-        <javaElement handleIdentifier="=DsWorkJava/dswork-sso&lt;dswork.sso.util"/>
         <javaElement handleIdentifier="=DsWorkJava/dswork-sso&lt;dswork.sso.http"/>
+        <javaElement handleIdentifier="=DsWorkJava/dswork-sso&lt;dswork.sso.model"/>
+        <javaElement handleIdentifier="=DsWorkJava/dswork-sso&lt;dswork.sso.util"/>
+        <javaElement handleIdentifier="=DsWorkJava/dswork-sso&lt;dswork.sso"/>
     </selectedElements>
 </jardesc>
