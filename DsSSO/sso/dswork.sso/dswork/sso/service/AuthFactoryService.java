@@ -158,9 +158,9 @@ public class AuthFactoryService
 		return arr;
 	}
 
-	public IFunc[] getFuncBySystemAliasAndPostid(String systemAlias, String postid)
+	public IFunc[] getFuncBySystemAliasAndOrgid(String systemAlias, String orgid)
 	{
-		List<IFunc> list = dao.getFuncBySystemAliasAndPostid(systemAlias, postid);
+		List<IFunc> list = dao.getFuncBySystemAliasAndOrgid(systemAlias, orgid);
 		return list.toArray(new IFunc[list.size()]);
 	}
 }

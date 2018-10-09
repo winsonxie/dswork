@@ -160,21 +160,25 @@
 	(
 		select 'X' from DS_COMMON_ROLEFUNC _rf
 		left join DS_COMMON_ORGROLE _or on _or.ROLEID=_rf.ROLEID
-		left join DS_COMMON_USERORG _ur on _ur.ORGID=_or.ORGID
-		left join DS_COMMON_USER u on u.ID=_ur.USERID
-		where _rf.SYSTEMID=#{systemid} and u.ACCOUNT=#{account}
+		where _rf.SYSTEMID=#{systemid} 
+		and _or.ORGID in(
+			select u.ORGPID  from DS_COMMON_USER u where u.ACCOUNT=#{account} and u.ORGPID &gt; 0
+			union
+			select u.ORGID   from DS_COMMON_USER u where u.ACCOUNT=#{account} and u.ORGID &gt; 0
+			union
+			select _ur.ORGID from DS_COMMON_USERORG _ur where _ur.USERID in (select u.ID from DS_COMMON_USER u where u.ACCOUNT=#{account})
+		)
 		and f.ID=_rf.FUNCID
 	)
 	order by f.SEQ asc
 </select>
-<select id="getFuncBySystemidAndPostid" resultMap="resultFunc">
+<select id="getFuncBySystemidAndOrgid" resultMap="resultFunc">
 	select <include refid="columnsFunc"/> from DS_COMMON_FUNC f
 	where f.SYSTEMID=#{systemid} and exists
 	(
 		select 'X' from DS_COMMON_ROLEFUNC _rf
 		left join DS_COMMON_ORGROLE _or on _or.ROLEID=_rf.ROLEID
-		left join DS_COMMON_USERORG _ur on _ur.ORGID=_or.ORGID
-		where _rf.SYSTEMID=#{systemid} and _ur.ORGID=#{postid}
+		where _rf.SYSTEMID=#{systemid} and _or.ORGID=#{orgid}
 		and f.ID=_rf.FUNCID
 	)
 </select>

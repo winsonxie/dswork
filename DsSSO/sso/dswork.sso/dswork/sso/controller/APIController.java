@@ -258,13 +258,13 @@ public class APIController
 	 * @param postId 岗位ID
 	 * @return IFunc[]
 	 */
-	@RequestMapping("/getFunctionByPost")
-	public void getFunctionByPost(HttpServletRequest request, HttpServletResponse response)
+	@RequestMapping("/getFunctionByOrg")
+	public void getFunctionByOrg(HttpServletRequest request, HttpServletResponse response)
 	{
 		MyRequest req = new MyRequest(request);
 		String systemAlias = req.getString("name");
 		String pwd = req.getString("pwd");
-		String postId = req.getString("postId");
+		String orgId = req.getString("orgId");
 		try
 		{
 			response.setCharacterEncoding("UTF-8");
@@ -272,7 +272,7 @@ public class APIController
 			PrintWriter out = response.getWriter();
 			if(isSystemCheck(systemAlias, pwd))
 			{
-				IFunc[] m = service.getFuncBySystemAliasAndPostid(systemAlias, postId);
+				IFunc[] m = service.getFuncBySystemAliasAndOrgid(systemAlias, orgId);
 				out.print(toJson(m));
 			}
 			out.print("");

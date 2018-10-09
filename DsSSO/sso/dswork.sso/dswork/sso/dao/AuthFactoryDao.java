@@ -188,11 +188,11 @@ public class AuthFactoryDao extends MyBatisDao
 		return this.executeSelectList("getFuncBySystemidAndAccount", map);
 	}
 
-	public List<IFunc> getFuncBySystemAliasAndPostid(String systemAlias, String postid)
+	public List<IFunc> getFuncBySystemAliasAndOrgid(String systemAlias, String orgid)
 	{
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("systemid", getSystemId(systemAlias));
-		map.put("postid", postid);
-		return this.executeSelectList("getFuncBySystemidAndPostid", map);
+		map.put("orgid", orgid);
+		return this.executeSelectList("getFuncBySystemidAndOrgid", map);
 	}
 }
