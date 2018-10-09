@@ -16,8 +16,8 @@
 	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-mvc"/>
 	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-ognl"/>
 	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-spring"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork.sso"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork.sso.authfilter"/>
+	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-sso"/>
+	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-sso-authfilter"/>
 	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-web"/>
 	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-webio"/>
 	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-ee"/>
