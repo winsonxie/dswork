@@ -31,6 +31,7 @@ public PageRequest genSQL(PageRequest pr, boolean isCount){
 	if(isNotEmpty(pr, "pwdtime")){
 		sql.append(" and PWDTIME is not null");
 	}
+	sql.append(" order by ID desc");
 	pr.getFilters().put("sql", sql.toString());
 	return pr;
 }
