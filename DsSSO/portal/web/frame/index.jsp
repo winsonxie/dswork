@@ -15,15 +15,15 @@ if(null != request.getParameter("ticket"))
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui"/>
-<title>门户首页</title>
+<title>门户</title>
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
 <!--收藏夹显示图标-->
-<link rel="bookmark" type="image/x-icon" href="<%=path %>/favicon.ico"/>
+<link rel="bookmark" type="image/x-icon" href="/favicon.ico"/>
 <!--地址栏显示图标-->
-<link rel="icon" type="image/x-icon" href="<%=path %>/favicon.ico" />
-<link rel="shortcut icon" type="image/x-icon" href="<%=path %>/favicon.ico" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 
 <link rel="stylesheet" type="text/css" href="style/frame.css" />
 <link rel="stylesheet" type="text/css" href="js/easyui/themes/default/layout_panel_tabs.css" />
@@ -65,7 +65,7 @@ if(top.location != this.location){top.location = "<%=path %>/frame/index.jsp";}
 	</div>
 </div>
 <div region="south" data-options="border:false" style="height:24px;overflow:hidden;"><div class="bottomframe">
-	版权所有&nbsp;<span  class="copyRight">&copy;</span>&nbsp;skey_chen@163.com
+	<span class="copyRight">&copy;</span>&nbsp;2014-2018&nbsp;249725997@qq.com
 </div></div>
 </body>
 <script type="text/javascript" src="js/easyui/jquery.layout_panel_tabs.js"></script>
