@@ -70,7 +70,7 @@ function showRole(id, name){
 	</tr>
 </table>
 </div>
-<div region="west" split="true" title="访问授权管理" style="width:250px;">
+<div region="west" split="true" title="选择授权目标" style="width:250px;">
 	<div class="treediv">
 		<ul id="mytree" class="ztree tree" />
 	</div>
