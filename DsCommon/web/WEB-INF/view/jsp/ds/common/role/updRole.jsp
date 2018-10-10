@@ -107,7 +107,7 @@ $dswork.callback = function(){
 		<td class="form_input"><textarea id="memo" name="memo" style="width:400px;height:60px;">${fn:escapeXml(po.memo)}</textarea></td>
 	</tr>
 	<tr>
-		<td class="form_title">功能分配</td>
+		<td class="form_title">资源访问控制</td>
 		<td class="form_input"><input type="checkbox" id="refresh" name="refresh" value="1" /></td>
 	</tr>
 </table>

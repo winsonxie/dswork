@@ -17,7 +17,7 @@ $dswork.ztree.click = function(){
 	else{attachUrl("about:blank");}
 	return false;
 };
-$dswork.ztree.root.name = "组织机构管理";
+$dswork.ztree.root.name = "组织机构";
 $dswork.ztree.root.id = ${po.id};
 $dswork.ztree.root.status = ${po.status};
 $dswork.ztree.url = function(treeNode){return "${ctx}/common/share/getJsonOrg.htm?pid=" + treeNode.id;};
@@ -64,13 +64,13 @@ function showRole(id, name){
 <div region="north" style="overflow:hidden;border:0px;height:30px;">
 <table border="0" cellspacing="0" cellpadding="0" class="listLogo">
 	<tr>
-		<td class="title">${fn:escapeXml(po.name)}</td>
+		<td class="title">${fn:escapeXml(po.name)} - 访问授权管理</td>
 		<td class="menuTool">
 		</td>
 	</tr>
 </table>
 </div>
-<div region="west" split="true" title="授权管理" style="width:250px;">
+<div region="west" split="true" title="访问授权管理" style="width:250px;">
 	<div class="treediv">
 		<ul id="mytree" class="ztree tree" />
 	</div>
