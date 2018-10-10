@@ -30,7 +30,7 @@ var treedata = [
 {id:100000, name:'门户管理', img:"", imgOpen:"", url:"", items:[
 	{id:100002,name:'系统管理', img:"", imgOpen:"", url:'/ds/common/system/getSystem.htm', items:[]}
 	,{id:100003,name:'组织管理', img:"", imgOpen:"", url:'/ds/common/org/getOrgTree.htm', items:[]}
-	,{id:100004,name:'岗位授权管理', img:"", imgOpen:"", url:'/ds/common/orgrole/getOrgTree.htm', items:[]}
+	,{id:100004,name:'授权管理', img:"", imgOpen:"", url:'/ds/common/orgrole/getOrgTree.htm', items:[]}
 	,{id:100006,name:'用户类型管理', img:"", imgOpen:"", url:'/ds/common/usertype/getUsertype.htm', items:[]}
 	,{id:100007,name:'用户管理', img:"", imgOpen:"", url:'/ds/common/user/getUser.htm', items:[]}
 	,{id:100008,name:'用户授权管理', img:"", imgOpen:"", url:'/ds/common/userorg/getOrgTree.htm', items:[]}

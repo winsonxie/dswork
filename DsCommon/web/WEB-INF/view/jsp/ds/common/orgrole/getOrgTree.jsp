@@ -12,7 +12,8 @@ $dswork.callback = null;
 function refreshNode(re){$dswork.ztree.refreshNode(re);}
 $dswork.ztree.click = function(){
 	var node = $dswork.ztree.getSelectedNode();
-	if(node.status == 0 && node.id > 0){attachUrl("updOrgRole1.htm?keyIndex=" + node.id);}
+	//if(node.status == 0 && node.id > 0){attachUrl("updOrgRole1.htm?keyIndex=" + node.id);}
+	if(node.id > 0){attachUrl("updOrgRole1.htm?keyIndex=" + node.id);}
 	else{attachUrl("about:blank");}
 	return false;
 };
@@ -20,10 +21,20 @@ $dswork.ztree.root.name = "组织机构管理";
 $dswork.ztree.root.id = ${po.id};
 $dswork.ztree.root.status = ${po.status};
 $dswork.ztree.url = function(treeNode){return "${ctx}/common/share/getJsonOrg.htm?pid=" + treeNode.id;};
+$dswork.ztree.root.iconSkin = "groups";
 $dswork.ztree.dataFilter = function (treeId, parentNode, data){
-	if(data){for(var i = 0;i < data.length;i++){if(data[i].status == 0){
-		data[i].iconSkin = "user";
-	}}}return data;
+	if(data){for(var i = 0;i < data.length;i++){
+		if(data[i].status == 2){
+			data[i].iconSkin = "groups";
+		}
+		else if(data[i].status == 1){
+			data[i].iconSkin = "group";
+		}
+		else{
+			data[i].iconSkin = "user";
+		}
+	}}
+	return data;
 };
 $(function(){
 	var $z = $dswork.ztree;
@@ -59,7 +70,7 @@ function showRole(id, name){
 	</tr>
 </table>
 </div>
-<div region="west" split="true" title="岗位授权管理（选择岗位）" style="width:250px;">
+<div region="west" split="true" title="授权管理" style="width:250px;">
 	<div class="treediv">
 		<ul id="mytree" class="ztree tree" />
 	</div>
