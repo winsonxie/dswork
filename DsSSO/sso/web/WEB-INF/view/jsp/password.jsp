@@ -112,9 +112,9 @@ body {background:#fff url(${ctx}/themes/share/bg/wave.png) bottom center repeat-
   <input type="hidden" name="loginURL" value="${fn:escapeXml(loginURL)}" />
   </form>
 </div>
-<div class="cp">
+<%--<div class="cp">
 	&copy; 2014-2018 249725997@qq.com
-</div>
+</div>--%>
 </body>
 <script type="text/javascript" src="${ctx}/js/jskey/jskey_sso.js"></script>
 <script type="text/javascript">
