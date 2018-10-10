@@ -60,8 +60,8 @@ if(top.location != this.location){top.location = "<%=path %>/frame/index.jsp";}
 		</div>
 	</div>
 	<div id="tab-tools">
-		<a class="easyui-linkbutton" title="关闭当前" data-options="plain:true,iconCls:'icon-closeone'" onclick="var i=$('#tt').tabs('getTabIndex',$('#tt').tabs('getSelected'));if(i>0){$('#tt').tabs('close',i);}return false;" href="#"></a>
-		<a class="easyui-linkbutton" title="关闭所有" data-options="plain:true,iconCls:'icon-closeall'" onclick="var v=$('#tt').tabs('tabs').length;while(v > 0){$('#tt').tabs('close', 1);v--;};return false;" href="#"></a>
+		<a class="easyui-linkbutton" title="关闭当前" data-options="plain:true,iconCls:'icon-closeone'" onclick="if(true){var t=$('#tt').tabs('getSelected');if(t.panel('options').closable){$('#tt').tabs('close',$('#tt').tabs('getTabIndex',t));}}return false;" href="#"></a>
+		<a class="easyui-linkbutton" title="关闭所有" data-options="plain:true,iconCls:'icon-closeall'" onclick="if(true){var v=$('#tt').tabs('tabs').length;while(v>0){var t=$('#tt').tabs('getTab',v-1);if(t.panel('options').closable){$('#tt').tabs('close',$('#tt').tabs('getTabIndex',t));}v--;}}return false;" href="#"></a>
 	</div>
 </div>
 <div region="south" data-options="border:false" style="height:24px;overflow:hidden;"><div class="bottomframe">
