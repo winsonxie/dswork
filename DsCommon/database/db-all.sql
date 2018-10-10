@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS DS_COMMON_USER;
 DROP TABLE IF EXISTS DS_COMMON_USERTYPE;
 CREATE TABLE DS_COMMON_USERTYPE
 (
-   ID                   BIGINT NOT NULL COMMENT '主键',
+   ID                   BIGINT(18) NOT NULL COMMENT '主键',
    NAME                 VARCHAR(300) COMMENT '名称',
    ALIAS                VARCHAR(300) COMMENT '标识',
    STATUS               INT(1) COMMENT '状态(1)',
@@ -41,7 +41,7 @@ DROP TABLE IF EXISTS DS_BBS_PAGE;
 DROP TABLE IF EXISTS DS_BBS_SITE;
 CREATE TABLE DS_BBS_SITE
 (
-   ID                   BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
+   ID                   BIGINT(18) NOT NULL AUTO_INCREMENT COMMENT '主键',
    OWN                  VARCHAR(300) COMMENT '拥有者',
    NAME                 VARCHAR(300) COMMENT '名称',
    FOLDER               VARCHAR(300) COMMENT '目录名称',
@@ -52,9 +52,9 @@ CREATE TABLE DS_BBS_SITE
 ) COMMENT '论坛站点';
 CREATE TABLE DS_BBS_FORUM
 (
-   ID                   BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
-   PID                  BIGINT COMMENT '父ID',
-   SITEID               BIGINT COMMENT '站点ID',
+   ID                   BIGINT(18) NOT NULL AUTO_INCREMENT COMMENT '主键',
+   PID                  BIGINT(18) COMMENT '父ID',
+   SITEID               BIGINT(18) COMMENT '站点ID',
    NAME                 VARCHAR(300) COMMENT '名称',
    SUMMARY              VARCHAR(300) COMMENT '摘要',
    STATUS               INT(1) COMMENT '状态(1启用,0禁用)',
@@ -68,9 +68,9 @@ CREATE TABLE DS_BBS_FORUM
 ) COMMENT '版块';
 CREATE TABLE DS_BBS_PAGE
 (
-   ID                   BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
-   SITEID               BIGINT COMMENT '站点ID',
-   FORUMID              BIGINT COMMENT '版块ID',
+   ID                   BIGINT(18) NOT NULL AUTO_INCREMENT COMMENT '主键',
+   SITEID               BIGINT(18) COMMENT '站点ID',
+   FORUMID              BIGINT(18) COMMENT '版块ID',
    USERID               VARCHAR(300) COMMENT '发表人ID',
    TITLE                VARCHAR(300) COMMENT '标题',
    URL                  VARCHAR(300) COMMENT '链接',
@@ -244,7 +244,7 @@ CREATE TABLE DS_COMMON_USERROLE
 DROP TABLE IF EXISTS DS_COMMON_LOGIN;
 CREATE TABLE DS_COMMON_LOGIN
 (
-   ID                   BIGINT NOT NULL COMMENT '主键',
+   ID                   BIGINT(18) NOT NULL COMMENT '主键',
    LOGINTIME            VARCHAR(19) COMMENT '登录时间',
    LOGOUTTIME           VARCHAR(19) COMMENT '登出时间',
    TIMEOUTTIME          VARCHAR(19) COMMENT '超时时间',
