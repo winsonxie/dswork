@@ -17,25 +17,33 @@ $jskey.decodeDes=decodeDes;
 
 /*sso*/
 function _$(id){return document.getElementById(id);}
+var x_new = "\u65b0";// 新
+var x_old = "\u539f";// 原
+
+var x_null = "\u4e0d\u80fd\u4e3a\u7a7a";
+var x_noacc = "\u8d26\u53f7"+x_null;// 账号不能为空
+var x_nopwd = "\u5bc6\u7801"+x_null;// 密码不能为空
+var x_nocode = "\u9a8c\u8bc1\u7801"+x_null;// 验证码不能为空
+var x_noeq = "\u786e\u8ba4\u5bc6\u7801\u4e0d\u4e00\u81f4";// 确认密码不一致
 function _uncheck(id){
 	var s = "";
 	if(_$(id)){
-		if(id == "account"){if(!_$(id).value){s="账号不能为空";}}
-		if(id == "oldpassword"){if(!_$(id).value){s="原密码不能为空";}}
+		if(id == "account"){if(!_$(id).value){s=x_noacc;}}// 账号不能为空
+		if(id == "oldpassword"){if(!_$(id).value){s=x_old+x_nopwd;}}//原密码不能为空
 		if(id == "password"){
 			if(_$(id+'2')){
 				if((/^(([A-Z]*|[a-z]*|\d*|[-_\~!@#\$%\^&\*\.\(\)\[\]\{\}<>\?\\\/\'\"]*)|.{0,5})$|\s/.test(_$(id).value))){
-					s=(_$("oldpassword")?"新":"")+"密码不少于6位，不能纯数字";
+					s=(_$("oldpassword")?x_new:"")+"\u5bc6\u7801\u4e0d\u5c11\u4e8e\u0036\u4f4d\uff0c\u4e0d\u80fd\u7eaf\u6570\u5b57";// 新   密码不少于6位，不能纯数字
 				}else{
-					if(_$(id+"2")&&_$(id).value!=_$(id+"2").value){s = "确认密码不一致";}
+					if(_$(id+"2")&&_$(id).value!=_$(id+"2").value){s = x_noeq;}// 确认密码不一致
 				}
 			}
 			else{
-				if(id == "password"){if(!_$(id).value){s=(_$("oldpassword")?"新":"")+"密码不能为空";}else{if(_$(id+"2")&&_$(id).value!=_$(id+"2").value){s = "确认密码不一致";}}}
+				if(id == "password"){if(!_$(id).value){s=(_$("oldpassword")?x_new:"")+x_nopwd;}else{if(_$(id+"2")&&_$(id).value!=_$(id+"2").value){s = x_noeq;}}}
 			}
 		}
-		if(id == "password2"){if(_$(id).value!=_$("password").value){s = "确认密码不一致";}}
-		if(id == "authcode"){if(!_$(id).value){s="验证码不能为空";}}
+		if(id == "password2"){if(_$(id).value!=_$("password").value){s = x_noeq;}}
+		if(id == "authcode"){if(!_$(id).value){s=x_nocode;}}
 		if(s != "" && _$("msgdiv")){
 			s = "<i>&#xf1010;</i> "+s+"<br>";
 			_$("msg").innerHTML = s;
