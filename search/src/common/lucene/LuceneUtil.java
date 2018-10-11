@@ -60,18 +60,28 @@ public class LuceneUtil
 	private static final String CmsTitle = dswork.core.util.EnvironmentUtil.getToString("dswork.lucene.cms.title", ".searchtitle");
 	private static final String CmsContent = dswork.core.util.EnvironmentUtil.getToString("dswork.lucene.cms.content", ".searchcontent");
 
-	private static Formatter formatter = new SimpleHTMLFormatter("<span class='keyvalue'>", "</span>");// 关键字增加前后缀
-	private static Analyzer analyzerIndex = new BaseAnalyzer(false);
-	private static Analyzer analyzerKeyword = new org.apache.lucene.analysis.core.UnicodeWhitespaceAnalyzer();
-	private static Analyzer analyzerHighlighter = new BaseAnalyzer(true);
-	private static Directory directory = null;
-
 	private static String SearchType = "type";
 	private static String SearchSeq = "seq";
 	private static String SearchKey = "search";
 	private static String SearchName = "name";
 	private static String SearchMsg = "msg";
 	private static String SearchUri = "uri";
+	
+	private static Formatter formatter = new SimpleHTMLFormatter("<span class='keyvalue'>", "</span>");// 关键字增加前后缀
+	private static Analyzer analyzerIndex = new BaseAnalyzer(false);
+	private static Analyzer analyzerKeyword = new org.apache.lucene.analysis.core.UnicodeWhitespaceAnalyzer();
+	private static Analyzer analyzerHighlighter = new BaseAnalyzer(true);
+	
+
+	private static QueryParser queryParser = new QueryParser(SearchKey, analyzerKeyword);
+	private static QueryParser queryParserOther = new QueryParser(SearchKey, analyzerHighlighter);
+	static
+	{
+		queryParser.setDefaultOperator(QueryParser.OR_OPERATOR);
+		queryParserOther.setDefaultOperator(QueryParser.AND_OPERATOR);
+	}
+	
+	private static Directory directory = null;
 	private static Document getLuceneDocument(String type, long seq, String uri, String name, String msg)
 	{
 		if(type.length() > 0)
@@ -220,9 +230,9 @@ public class LuceneUtil
 		{
 			for(String x : types)
 			{
-				if(x.length() > 0)
+				if(x.trim().length() > 0)
 				{
-					tlist.add(x);
+					tlist.add(x.trim());
 				}
 			}
 		}
@@ -239,20 +249,16 @@ public class LuceneUtil
 			}
 			ireader = DirectoryReader.open(directory);
 			IndexSearcher isearcher = new IndexSearcher(ireader);
-			QueryParser qp = new QueryParser(SearchKey, analyzerKeyword);
-			qp.setDefaultOperator(QueryParser.OR_OPERATOR);// AND_OPERATOR
-			Query query = qp.parse(keyword);
+			
+			Query query = queryParser.parse(keyword);
 			
 			SortField[] sortField = new SortField[1];
 			sortField[0] = new SortField(SearchSeq, SortField.Type.LONG, true);
 			
-			
-
 			BooleanQuery.Builder builder = new BooleanQuery.Builder();//构造booleanQuery
-			if(types.length > 0)
+			if(tlist.size() > 0)
 			{
-				System.out.println("");
-				System.out.print("你选择的分类是：");
+				System.out.print("，分类：");
 				if(tlist.size() > 0)
 				{
 					if(tlist.size() == 1)
@@ -270,15 +276,22 @@ public class LuceneUtil
 					}
 				}
 			}
+			
 			builder.add(query, BooleanClause.Occur.MUST);
 			BooleanQuery booleanQuery = builder.build();
 			
+			
 			org.apache.lucene.search.TopFieldDocs topDocs = isearcher.search(booleanQuery, Size, new Sort(sortField));
 			searchSize = topDocs.totalHits;
-			
-			
-			// org.apache.lucene.search.TopDocs topDocs = isearcher.search(query, Size);
 
+			if(searchSize == 0)
+			{
+				query = queryParserOther.parse(keyword);
+				booleanQuery = builder.build();
+				topDocs = isearcher.search(booleanQuery, Size, new Sort(sortField));
+				searchSize = topDocs.totalHits;
+			}
+			// org.apache.lucene.search.TopDocs topDocs = isearcher.search(query, Size);
 			System.out.print("》，命中");
 			System.out.print(searchSize);
 			System.out.print("条(");
