@@ -62,7 +62,8 @@ public class LuceneUtil
 
 	private static Formatter formatter = new SimpleHTMLFormatter("<span class='keyvalue'>", "</span>");// 关键字增加前后缀
 	private static Analyzer analyzerIndex = new BaseAnalyzer(false);
-	private static Analyzer analyzer = new BaseAnalyzer(true);
+	private static Analyzer analyzerKeyword = new org.apache.lucene.analysis.core.UnicodeWhitespaceAnalyzer();
+	private static Analyzer analyzerHighlighter = new BaseAnalyzer(true);
 	private static Directory directory = null;
 
 	private static String SearchType = "type";
@@ -238,8 +239,8 @@ public class LuceneUtil
 			}
 			ireader = DirectoryReader.open(directory);
 			IndexSearcher isearcher = new IndexSearcher(ireader);
-			QueryParser qp = new QueryParser(SearchKey, analyzer);
-			qp.setDefaultOperator(QueryParser.AND_OPERATOR);
+			QueryParser qp = new QueryParser(SearchKey, analyzerKeyword);
+			qp.setDefaultOperator(QueryParser.OR_OPERATOR);// AND_OPERATOR
 			Query query = qp.parse(keyword);
 			
 			SortField[] sortField = new SortField[1];
@@ -304,8 +305,8 @@ public class LuceneUtil
 				String name = targetDoc.get(SearchName);
 				String content = targetDoc.get(SearchMsg);
 				String uri = targetDoc.get(SearchUri);
-				String title = highlighter.getBestFragment(analyzer, SearchName, name);
-				String summary = highlighter.getBestFragment(analyzer, SearchMsg, content);
+				String title = highlighter.getBestFragment(analyzerHighlighter, SearchName, name);
+				String summary = highlighter.getBestFragment(analyzerHighlighter, SearchMsg, content);
 				if(title == null)
 				{
 					title = name;
