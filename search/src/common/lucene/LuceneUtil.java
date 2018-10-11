@@ -251,8 +251,11 @@ public class LuceneUtil
 			}
 			ireader = DirectoryReader.open(directory);
 			IndexSearcher isearcher = new IndexSearcher(ireader);
+			BooleanQuery.Builder builder;
+			Query queryBuilder = null;
+			Query query = null;
+			org.apache.lucene.search.TopFieldDocs topDocs;
 			
-			BooleanQuery.Builder builder = new BooleanQuery.Builder();//构造booleanQuery
 			if(tlist.size() > 0)
 			{
 				System.out.print("，分类：");
@@ -260,7 +263,7 @@ public class LuceneUtil
 				{
 					if(tlist.size() == 1)
 					{
-						builder.add(new TermQuery(new Term(SearchType, tlist.get(0))), BooleanClause.Occur.MUST);
+						queryBuilder = new TermQuery(new Term(SearchType, tlist.get(0)));
 					}
 					else
 					{
@@ -269,31 +272,46 @@ public class LuceneUtil
 						{
 							builderTemp.add(new TermQuery(new Term(SearchType, x)), BooleanClause.Occur.SHOULD);
 						}
-						builder.add(builderTemp.build(), BooleanClause.Occur.MUST);
+						queryBuilder = builderTemp.build();
 					}
 				}
 			}
-
-			Query query = queryParserName.parse(keyword);
-			builder.add(query, BooleanClause.Occur.MUST);
-			BooleanQuery booleanQuery = builder.build();
 			
-			org.apache.lucene.search.TopFieldDocs topDocs = isearcher.search(booleanQuery, Size, new Sort());
+			builder = new BooleanQuery.Builder();//构造booleanQuery
+			if(queryBuilder != null)
+			{
+				builder.add(queryBuilder, BooleanClause.Occur.MUST);
+			}
+			query = queryParserName.parse(keyword);
+			builder.add(query, BooleanClause.Occur.MUST);
+			topDocs = isearcher.search(builder.build(), Size, new Sort());
 			searchSize = topDocs.totalHits;
+			
 			if(searchSize == 0)
 			{
+				SortField[] sortField = new SortField[1];
+				sortField[0] = new SortField(SearchSeq, SortField.Type.LONG, true);// 按时间排序
+				
+				builder = new BooleanQuery.Builder();//构造booleanQuery
+				if(queryBuilder != null)
+				{
+					builder.add(queryBuilder, BooleanClause.Occur.MUST);
+				}
 				query = queryParser.parse(keyword);
-				booleanQuery = builder.build();
-				topDocs = isearcher.search(booleanQuery, Size, new Sort());
+				builder.add(query, BooleanClause.Occur.MUST);
+				topDocs = isearcher.search(builder.build(), Size, new Sort());
 				searchSize = topDocs.totalHits;
+				
 				if(searchSize == 0)
 				{
-					SortField[] sortField = new SortField[1];
-					sortField[0] = new SortField(SearchSeq, SortField.Type.LONG, true);// 按时间排序
-					
+					builder = new BooleanQuery.Builder();//构造booleanQuery
+					if(queryBuilder != null)
+					{
+						builder.add(queryBuilder, BooleanClause.Occur.MUST);
+					}
 					query = queryParserOther.parse(keyword);
-					booleanQuery = builder.build();
-					topDocs = isearcher.search(booleanQuery, Size, new Sort(sortField));
+					builder.add(query, BooleanClause.Occur.MUST);
+					topDocs = isearcher.search(builder.build(), Size, new Sort(sortField));
 					searchSize = topDocs.totalHits;
 				}
 			}
