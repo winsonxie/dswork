@@ -61,7 +61,8 @@ public class LuceneUtil
 	private static final String CmsContent = dswork.core.util.EnvironmentUtil.getToString("dswork.lucene.cms.content", ".searchcontent");
 
 	private static Formatter formatter = new SimpleHTMLFormatter("<span class='keyvalue'>", "</span>");// 关键字增加前后缀
-	private static Analyzer analyzer = new BaseAnalyzer(false);
+	private static Analyzer analyzerIndex = new BaseAnalyzer(false);
+	private static Analyzer analyzer = new BaseAnalyzer(true);
 	private static Directory directory = null;
 
 	private static String SearchType = "type";
@@ -171,7 +172,7 @@ public class LuceneUtil
 			{
 				directory = org.apache.lucene.store.FSDirectory.open(java.nio.file.FileSystems.getDefault().getPath(INDEX_PATH));
 			}
-			IndexWriterConfig iwConfig = new IndexWriterConfig(new BaseAnalyzer(false));
+			IndexWriterConfig iwConfig = new IndexWriterConfig(analyzerIndex);// new BaseAnalyzer(false)
 			iwConfig.setOpenMode(OpenMode.CREATE_OR_APPEND);
 			iwriter = new IndexWriter(directory, iwConfig);
 			
