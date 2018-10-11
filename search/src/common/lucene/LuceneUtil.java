@@ -73,10 +73,12 @@ public class LuceneUtil
 	private static Analyzer analyzerHighlighter = new BaseAnalyzer(true);
 	
 
+	private static QueryParser queryParserName = new QueryParser(SearchName, analyzerKeyword);
 	private static QueryParser queryParser = new QueryParser(SearchKey, analyzerKeyword);
 	private static QueryParser queryParserOther = new QueryParser(SearchKey, analyzerHighlighter);
 	static
 	{
+		queryParserName.setDefaultOperator(QueryParser.OR_OPERATOR);
 		queryParser.setDefaultOperator(QueryParser.OR_OPERATOR);
 		queryParserOther.setDefaultOperator(QueryParser.AND_OPERATOR);
 	}
@@ -102,9 +104,9 @@ public class LuceneUtil
 		fieldType.setTokenized(false);
 		doc.add(new Field(SearchUri, uri, fieldType));
 		fieldType = new FieldType();
-		fieldType.setIndexOptions(IndexOptions.NONE);
+		fieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS);
 		fieldType.setStored(true);
-		fieldType.setTokenized(false);
+		fieldType.setTokenized(true);
 		doc.add(new Field(SearchName, name, fieldType));
 		fieldType = new FieldType();
 		fieldType.setIndexOptions(IndexOptions.NONE);
@@ -250,11 +252,6 @@ public class LuceneUtil
 			ireader = DirectoryReader.open(directory);
 			IndexSearcher isearcher = new IndexSearcher(ireader);
 			
-			Query query = queryParser.parse(keyword);
-			
-			SortField[] sortField = new SortField[1];
-			sortField[0] = new SortField(SearchSeq, SortField.Type.LONG, true);
-			
 			BooleanQuery.Builder builder = new BooleanQuery.Builder();//构造booleanQuery
 			if(tlist.size() > 0)
 			{
@@ -276,20 +273,29 @@ public class LuceneUtil
 					}
 				}
 			}
-			
+
+			Query query = queryParserName.parse(keyword);
 			builder.add(query, BooleanClause.Occur.MUST);
 			BooleanQuery booleanQuery = builder.build();
 			
-			
-			org.apache.lucene.search.TopFieldDocs topDocs = isearcher.search(booleanQuery, Size, new Sort(sortField));
+			org.apache.lucene.search.TopFieldDocs topDocs = isearcher.search(booleanQuery, Size, new Sort());
 			searchSize = topDocs.totalHits;
-
 			if(searchSize == 0)
 			{
-				query = queryParserOther.parse(keyword);
+				query = queryParser.parse(keyword);
 				booleanQuery = builder.build();
-				topDocs = isearcher.search(booleanQuery, Size, new Sort(sortField));
+				topDocs = isearcher.search(booleanQuery, Size, new Sort());
 				searchSize = topDocs.totalHits;
+				if(searchSize == 0)
+				{
+					SortField[] sortField = new SortField[1];
+					sortField[0] = new SortField(SearchSeq, SortField.Type.LONG, true);// 按时间排序
+					
+					query = queryParserOther.parse(keyword);
+					booleanQuery = builder.build();
+					topDocs = isearcher.search(booleanQuery, Size, new Sort(sortField));
+					searchSize = topDocs.totalHits;
+				}
 			}
 			// org.apache.lucene.search.TopDocs topDocs = isearcher.search(query, Size);
 			System.out.print("》，命中");
