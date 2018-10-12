@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="common"/>
 	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-common"/>
 	<classpathentry kind="src" path="config"/>
+	<classpathentry kind="src" path="dswork.common.table"/>
 	<classpathentry kind="src" path="dswork.common.dict"/>
 	<classpathentry kind="src" path="dswork.common.flow"/>
 	<classpathentry kind="src" path="dswork.common.rbac"/>
