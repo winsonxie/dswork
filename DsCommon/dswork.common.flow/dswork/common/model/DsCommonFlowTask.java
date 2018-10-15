@@ -23,6 +23,8 @@ public class DsCommonFlowTask
 	private String tusers = "";
 	// 参数
 	private String tmemo = "";
+	// 数据结构
+	private String datatable = "";
 
 	public Long getId()
 	{
@@ -112,5 +114,15 @@ public class DsCommonFlowTask
 	public void setTmemo(String tmemo)
 	{
 		this.tmemo = tmemo;
+	}
+
+	public String getDatatable()
+	{
+		return datatable;
+	}
+
+	public void setDatatable(String datatable)
+	{
+		this.datatable = datatable;
 	}
 }
