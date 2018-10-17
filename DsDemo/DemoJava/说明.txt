@@ -22,7 +22,7 @@
 		jdbc.url
 		jdbc.username
 		jdbc.password
-		jdbc.read.url #不写时等于jdbc.url
+		jdbc.read.url #不写时读写不分离，且以下配置无效
 		jdbc.read.username #不写时等于jdbc.username
 		jdbc.read.password #不写时等于jdbc.password
 	其余数据源配置，系统默认可扩展三个，和主连接说明一致
@@ -33,7 +33,7 @@
 		jdbc1.url
 		jdbc1.username
 		jdbc1.password
-		jdbc1.read.url #不写时等于jdbc1.url
+		jdbc1.read.url #不写时读写不分离，且以下配置无效
 		jdbc1.read.username #不写时等于jdbc1.username
 		jdbc1.read.password #不写时等于jdbc1.password
 		
