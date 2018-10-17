@@ -3,7 +3,7 @@ package dswork.cs;
 /**
  * 本地方式启动应用
  */
-public class Start
+public class Start 
 {
 	public static void main(String[] args)
 	{
