@@ -15,7 +15,7 @@
 		mvc主窗口将扫描controller目录
 		mybatis扫描mapper目录
 数据库连接配置，对应sqlSessionTemplate
-	主连接，系统底层采用读写分离，从库为读库（可负载多台），从库配置均加上read，不写时使用主库相同配置，都不写时使用默认配置
+	主连接，系统底层采用读写分离，从库为读库，从库配置均加上read，不写时使用主库相同配置，都不写时使用默认配置
 		jdbc.dialect.name=mysql #默认值，使用mysql时可不配置，可选值目前有：(gbase,mariadb,mysql,postgresql,sqlite,dm,oracle,db2,derby,sqlserver,sqlserver2000,sqlserver2005,sqlserver2008,sqlserver2012)
 		jdbc.mapper #主连接默认使用dswork.base-package配置的mapper目录扫描，可不配置，但配置了的话，则不使用dswork.base-package的扫描， 同样最多5个，以逗号分隔，需要配置全地址：classpath*:/com/test/mapper2/*.map.xml,classpath*:/common/**/*.map.xml
 		#其余连接数据源配置如下：
