@@ -3,11 +3,11 @@ package dswork.cs;
 /**
  * 本地方式启动应用
  */
-public class Start extends MyStart
+public class Start
 {
 	public static void main(String[] args)
 	{
-		MyStart m = (new Start()).myLog4jLoad().mySpringLoad();
+		MyStart m = (new MyStart()).myLog4jLoad().mySpringLoad();
 		// 执行需要的应用程序
 		ExecuteProject.execute(args);
 		
