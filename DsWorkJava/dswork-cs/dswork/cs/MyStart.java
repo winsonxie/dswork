@@ -10,11 +10,11 @@ import dswork.core.util.EnvironmentUtil;
  */
 public class MyStart
 {
-	static
+	public MyStart()
 	{
 		myConfigLoad();
 	}
-	private static void myConfigLoad()
+	private MyStart myConfigLoad()
 	{
 		try
 		{
@@ -23,8 +23,8 @@ public class MyStart
 			try
 			{
 				Class.forName("dswork.core.util.EnvironmentUtil");
-				isEnvironmentUtil = true;
 				active = dswork.core.util.EnvironmentUtil.getToString("dswork.active", "");
+				isEnvironmentUtil = true;
 			}
 			catch(Exception ee)
 			{
@@ -157,9 +157,10 @@ public class MyStart
 		{
 			e.printStackTrace();
 		}
+		return this;
 	}
 	
-	public static void myLog4jLoad()
+	public MyStart myLog4jLoad()
 	{
 		// log4j 1.x
 		//org.apache.log4j.PropertyConfigurator.configure(System.getProperty("log4jConfiguration"));
@@ -180,10 +181,10 @@ public class MyStart
 		{
 			e.printStackTrace();
 		}
-		
+		return this;
 	}
 	
-	public static void mySpringLoad()
+	public MyStart mySpringLoad()
 	{
 		try
 		{
@@ -208,9 +209,10 @@ public class MyStart
 		{
 			e.printStackTrace();
 		}
+		return this;
 	}
 	
-	public static void waitForQuit()
+	public MyStart waitForQuit()
 	{
 		// 以下代码用于防止main进程执行后结束，可用于捕获监听输入，输入quit或exit可退出
 	    try
@@ -232,5 +234,6 @@ public class MyStart
 		{
 			// TODO: handle exception
 		}
+		return this;
 	}
 }
