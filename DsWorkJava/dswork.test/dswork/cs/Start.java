@@ -7,9 +7,7 @@ public class Start extends MyStart
 {
 	public static void main(String[] args)
 	{
-		MyStart m = new MyStart();
-		m.myLog4jLoad();
-		m.mySpringLoad();
+		MyStart m = (new Start()).myLog4jLoad().mySpringLoad();
 		// 执行需要的应用程序
 		ExecuteProject.execute(args);
 		
