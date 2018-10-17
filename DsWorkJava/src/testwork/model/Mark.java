@@ -1,14 +1,14 @@
 /**
- * 样例Model，改造了试验性set返回值，测试中
+ * 样例Model
  */
 package testwork.model;
 
-public class Demo
+public class Mark
 {
 	// 主键
 	private Long id = 0L;
 	// 标题
-	private String title = "";
+	private Long demoid = 0L;
 	// 内容
 	private String content = "";
 	// 创建时间
@@ -19,20 +19,20 @@ public class Demo
 		return id;
 	}
 
-	public Demo setId(Long id)
+	public Mark setId(Long id)
 	{
 		this.id = id;
 		return this;
 	}
 
-	public String getTitle()
+	public Long getDemoid()
 	{
-		return title;
+		return demoid;
 	}
 
-	public Demo setTitle(String title)
+	public Mark setDemoid(Long demoid)
 	{
-		this.title = title;
+		this.demoid = demoid;
 		return this;
 	}
 
@@ -41,7 +41,7 @@ public class Demo
 		return content;
 	}
 
-	public Demo setContent(String content)
+	public Mark setContent(String content)
 	{
 		this.content = content;
 		return this;
@@ -52,7 +52,7 @@ public class Demo
 		return foundtime;
 	}
 
-	public Demo setFoundtime(String foundtime)
+	public Mark setFoundtime(String foundtime)
 	{
 		this.foundtime = foundtime;
 		return this;
