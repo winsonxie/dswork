@@ -72,6 +72,11 @@ public class DsCommonDaoIFlow extends MyBatisDao
 	{
 		executeInsert("insertFlowWaiting", m);
 	}
+	
+	public void deleteFlowPi(Long id)
+	{
+		executeDelete("deleteFlowPi", id);
+	}
 
 	private void deleteFlowWaiting(Long id)
 	{
@@ -201,6 +206,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			pi.setCaccount(account);
 			pi.setCname(name);
 			pi.setPialias("start");
+			pi.setDatatable(task.getDatatable());
 			executeInsert("insertFlowPi", pi);
 			Long piid = pi.getId();
 			IFlowWaiting m = new IFlowWaiting();
@@ -217,6 +223,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			m.setTnext(task.getTnext());
 			m.setTstart(time);
 			m.setTmemo(task.getTmemo());
+			m.setDatatable(task.getDatatable());
 			if(users != null)
 			{
 				if(users.split(",", -1).length > 1)
@@ -265,7 +272,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		this.updateFlowPi(piid, 0, "");// 结束
 	}
 
-	public boolean saveProcess(Long waitid, String[] nextTalias, String[] nextTusers, String account, String name, String resultType, String resultMsg)
+	public boolean saveProcess(Long waitid, String[] nextTalias, String[] nextTusers, String account, String name, String resultType, String resultMsg, String datatable)
 	{
 		IFlowWaiting m = this.getFlowWaiting(waitid);
 		if(m != null && m.getTcount() <= 1)
@@ -283,6 +290,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			pd.setPtime(time);
 			pd.setPtype(resultType);
 			pd.setMemo(resultMsg);
+			pd.setDatatable(datatable);
 			executeInsert("insertFlowPiData", pd);
 			boolean isEnd = false;
 			if(nextTalias == null)
@@ -316,6 +324,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						newm.setTname(t.getTname());
 						newm.setTcount(t.getTcount());
 						newm.setTnext(t.getTnext());
+						newm.setDatatable(t.getDatatable());
 						if(nextTusers != null)
 						{
 							String[] s = nextTusers[i].split(",", -1);

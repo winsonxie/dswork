@@ -128,12 +128,12 @@ public class DsCommonIFlowUtil
 	 * @param resultMsg 处理意见
 	 * @return true|false
 	 */
-	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg)
+	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String formdata)
 	{
 		try
 		{
 			init();
-			return dao.saveProcess(waitid, nextTalias, nextTusers, paccount, pname, resultType, resultMsg);
+			return dao.saveProcess(waitid, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, formdata);
 		}
 		catch(Exception e)
 		{
@@ -153,9 +153,9 @@ public class DsCommonIFlowUtil
 	 * @param resultMsg 处理意见
 	 * @return true|false
 	 */
-	public boolean process(long waitid, String[] nextTalias, String paccount, String pname, String resultType, String resultMsg)
+	public boolean process(long waitid, String[] nextTalias, String paccount, String pname, String resultType, String resultMsg, String formdata)
 	{
-		return process(waitid, nextTalias, null, paccount, pname, resultType, resultMsg);
+		return process(waitid, nextTalias, null, paccount, pname, resultType, resultMsg, formdata);
 	}
 
 	public List<IFlowWaiting> queryWaiting(String account)
@@ -335,5 +335,18 @@ public class DsCommonIFlowUtil
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public void deleteFlowPi(String id)
+	{
+		try
+		{
+			init();
+			dao.deleteFlowPi(Long.parseLong(id));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

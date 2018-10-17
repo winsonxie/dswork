@@ -27,6 +27,8 @@ public class IFlowPiData
 	private String ptype = "";
 	// 意见
 	private String memo = "";
+	// 表单数据
+	private String datatable = "";
 
 	public Long getId()
 	{
@@ -136,5 +138,15 @@ public class IFlowPiData
 	public void setMemo(String memo)
 	{
 		this.memo = memo;
+	}
+
+	public String getDatatable()
+	{
+		return datatable;
+	}
+
+	public void setDatatable(String datatable)
+	{
+		this.datatable = datatable;
 	}
 }

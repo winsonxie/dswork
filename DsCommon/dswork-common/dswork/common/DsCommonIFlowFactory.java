@@ -1,25 +1,23 @@
-package dswork.common.service;
+package dswork.common;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import dswork.common.dao.DsCommonDaoIFlow;
 import dswork.common.model.IFlow;
 import dswork.common.model.IFlowPi;
 import dswork.common.model.IFlowPiData;
-import dswork.common.model.IFlowTask;
 import dswork.common.model.IFlowWaiting;
+import dswork.common.service.DsCommonIFlowService;
 
-@Service
-public class DsCommonIFlowService
+public class DsCommonIFlowFactory
 {
-	@Autowired
-	private DsCommonDaoIFlow dao;
-
+	private  DsCommonIFlowService service;
+	
+	public DsCommonIFlowFactory(DsCommonIFlowService service) 
+	{
+		this.service = service;
+	}
+	
 	/**
 	 * 流程启动
 	 * @param alias 启动流程的标识
@@ -32,11 +30,11 @@ public class DsCommonIFlowService
 	 * @param taskInterface 接口类（暂时无用）
 	 * @return 流程实例ID
 	 */
-	public String saveStart(String alias, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
+	public String start(String alias, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
 	{
 		try
 		{
-			return dao.saveStart(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
+			return service.saveStart(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
 		}
 		catch(Exception e)
 		{
@@ -58,11 +56,11 @@ public class DsCommonIFlowService
 	 * @param taskInterface 接口类（暂时无用）
 	 * @return 流程实例ID
 	 */
-	public String saveStart(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
+	public String start(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
 	{
 		try
 		{
-			return dao.saveStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
+			return service.saveStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
 		}
 		catch(Exception e)
 		{
@@ -82,9 +80,9 @@ public class DsCommonIFlowService
 	 * @param taskInterface 接口类（暂时无用）
 	 * @return 流程实例的start待办信息或null
 	 */
-	public IFlowWaiting saveFlowStart(String alias, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
+	public IFlowWaiting startFlow(String alias, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
 	{
-		return dao.saveFlowStart(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
+		return service.saveFlowStart(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
 	}
 
 	/**
@@ -99,14 +97,14 @@ public class DsCommonIFlowService
 	 * @param taskInterface 接口类（暂时无用）
 	 * @return 流程实例的start待办信息或null
 	 */
-	public IFlowWaiting saveFlowStart(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
+	public IFlowWaiting startFlow(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
 	{
-		return dao.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
+		return service.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
 	}
 	
-	public void saveStop(String piid)
+	public void stop(String piid)
 	{
-		dao.saveStop(Long.parseLong(piid));
+		service.saveStop(piid);
 	}
 
 	/**
@@ -119,9 +117,9 @@ public class DsCommonIFlowService
 	 * @param resultMsg 处理意见
 	 * @return true|false
 	 */
-	public boolean saveProcess(long waitid, String[] nextTalias, String paccount, String pname, String resultType, String resultMsg, String formdata)
+	public boolean process(long waitid, String[] nextTalias, String paccount, String pname, String resultType, String resultMsg, String formdata)
 	{
-		return dao.saveProcess(waitid, nextTalias, null, paccount, pname, resultType, resultMsg, formdata);
+		return service.saveProcess(waitid, nextTalias, null, paccount, pname, resultType, resultMsg, formdata);
 	}
 
 	/**
@@ -135,85 +133,76 @@ public class DsCommonIFlowService
 	 * @param resultMsg 处理意见
 	 * @return true|false
 	 */
-	public boolean saveProcess(long waitid, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String formdata)
+	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String formdata)
 	{
-		return dao.saveProcess(waitid, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, formdata);
+		return service.saveProcess(waitid, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, formdata);
 	}
 
-	public List<IFlowWaiting> queryFlowWaiting(String account)
+	public List<IFlowWaiting> queryWaiting(String account)
 	{
-		return dao.queryFlowWaiting(account);
+		return service.queryFlowWaiting(account);
 	}
 
-	public boolean updateFlowWaitingUser(long waitid, String user)
+	public boolean takeWaiting(long waitid, String user)
 	{
 		if(user != null && user.trim().length() > 0)
 		{
-			dao.updateFlowWaitingUser(waitid, user);
+			service.updateFlowWaitingUser(waitid, user);
 			return true;
 		}
 		return false;
 	}
 
-	public IFlowWaiting getFlowWaiting(long waitid)
+	public IFlowWaiting getWaiting(long waitid)
 	{
-		return dao.getFlowWaiting(waitid);
+		return service.getFlowWaiting(waitid);
 	}
 
-	public Map<String, String> queryFlowTask(long flowid)
+	public Map<String, String> getTaskList(long flowid)
 	{
-		Map<String, String> map = new HashMap<String, String>();
-		List<IFlowTask> list = dao.queryFlowTask(flowid);
-		if(list != null)
-		{
-			for(IFlowTask m : list)
-			{
-				map.put(m.getTalias(), m.getTname());
-			}
-		}
-		return map;
+		return service.queryFlowTask(flowid);
 	}
 
 	public IFlow getFlowById(long flowid)
 	{
-		return dao.getFlowById(flowid);
+		return service.getFlowById(flowid);
 	}
 
 	public IFlowPi getFlowPiByPiid(String piid)
 	{
-		return dao.getFlowPiByPiid(piid);
+		return service.getFlowPiByPiid(piid);
 	}
 
 	public List<IFlowPi> queryFlowPi(String ywlsh)
 	{
-		return dao.queryFlowPi(ywlsh);
+		return service.queryFlowPi(ywlsh);
 	}
 
 	public List<IFlowPi> queryFlowPiBySblsh(String sblsh)
 	{
-		return dao.queryFlowPiBySblsh(sblsh);
+		return service.queryFlowPiBySblsh(sblsh);
 	}
 
 	public IFlowPi getFlowPi(String ywlsh)
 	{
-		return dao.getFlowPi(ywlsh);
+		return service.getFlowPi(ywlsh);
 	}
 
 	public IFlowPi getFlowPiBySblsh(String sblsh)
 	{
-		return dao.getFlowPiBySblsh(sblsh);
+		return service.getFlowPiBySblsh(sblsh);
 	}
 
 	public List<IFlowPiData> queryFlowPiData(String piid)
 	{
-		return dao.queryFlowPiData(Long.parseLong(piid));
+		return service.queryFlowPiData(piid);
 	}
 	public List<IFlowWaiting> queryFlowWaitingByPiid(String piid)
 	{
-		return dao.queryFlowWaitingByPiid(Long.parseLong(piid));
+		return service.queryFlowWaitingByPiid(piid);
 	}
 	public void deleteFlowPi(String id)
 	{
-		dao.deleteFlowPi(Long.parseLong(id));
+		service.deleteFlowPi(id);
 	}
 }

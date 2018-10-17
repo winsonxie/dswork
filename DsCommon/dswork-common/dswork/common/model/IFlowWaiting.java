@@ -37,6 +37,8 @@ public class IFlowWaiting
 	private String tmemo = "";
 	// 处理接口类
 	private String tinterface = "";
+	// 数据结构
+	private String datatable = "";
 
 	public Long getId()
 	{
@@ -196,5 +198,15 @@ public class IFlowWaiting
 	public void setTinterface(String tinterface)
 	{
 		this.tinterface = tinterface;
+	}
+
+	public String getDatatable()
+	{
+		return datatable;
+	}
+
+	public void setDatatable(String datatable)
+	{
+		this.datatable = datatable;
 	}
 }

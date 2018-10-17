@@ -111,12 +111,13 @@ function dataTableSave(){
 			$(".listTable .mtr").each(function() {
 				var row = {};
 				row.datatype = $(this).find("select[name=ttype]").val();
-				row.tname = $(this).find("input[name=tname]").val();
-				row.talias = $(this).find("input[name=talias]").val();
+				row.tname = $(this).find("input[name=tname]").val().replace(/\"/g,"&quot;");
+				row.talias = $(this).find("input[name=talias]").val().replace(/\"/g,"&quot;");
 				row.rwx = "400";
 				array.push(row);
 			});
 			parent.setModel(JSON.stringify(array));
+			console.log(JSON.stringify(array));
 			parent.$jskey.dialog.close();
 		}
 	//}

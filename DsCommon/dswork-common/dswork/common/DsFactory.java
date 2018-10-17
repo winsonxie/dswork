@@ -17,16 +17,17 @@ public class DsFactory
 		return DsCommonFactoryOrg.getInstance();
 	}
 	
-	private static DsCommonIFlowService service = null;
+	private static DsCommonIFlowFactory factory = null;
+	
 	/**
 	 * 相当于service，本身提供事务支持。
 	 */
-	public static DsCommonIFlowService getFlow()
+	public static DsCommonIFlowFactory getFlow()
 	{
-		if(service == null)
+		if(factory == null)
 		{
-			service = (DsCommonIFlowService) BeanFactory.getBean("dsCommonIFlowService");
+			factory = new DsCommonIFlowFactory((DsCommonIFlowService) BeanFactory.getBean("dsCommonIFlowService"));
 		}
-		return service;
+		return factory;
 	}
 }

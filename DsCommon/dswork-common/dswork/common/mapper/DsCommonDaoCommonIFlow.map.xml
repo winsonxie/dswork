@@ -29,13 +29,14 @@
 	<result property="tnext" column="TNEXT" />
 	<result property="tusers" column="TUSERS" />
 	<result property="tmemo" column="TMEMO" />
+	<result property="datatable" column="DATATABLE" />
 </resultMap>
 <select id="selectFlowTask" resultMap="resultFlowTask">
-	select ID, FLOWID, DEPLOYID, TALIAS, TNAME, TCOUNT, TNEXT, TUSERS, TMEMO
+	select ID, FLOWID, DEPLOYID, TALIAS, TNAME, TCOUNT, TNEXT, TUSERS, TMEMO, DATATABLE
 	from DS_FLOW_TASK where FLOWID=#{flowid} and TALIAS=#{talias}
 </select>
 <select id="queryFlowTask" resultMap="resultFlowTask">
-	select ID, FLOWID, DEPLOYID, TALIAS, TNAME, TCOUNT, TNEXT, TUSERS, TMEMO
+	select ID, FLOWID, DEPLOYID, TALIAS, TNAME, TCOUNT, TNEXT, TUSERS, TMEMO, DATATABLE
 	from DS_FLOW_TASK where FLOWID=#{flowid}
 </select>
 

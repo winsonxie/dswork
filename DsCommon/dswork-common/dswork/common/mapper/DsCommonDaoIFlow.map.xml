@@ -7,11 +7,11 @@
 
 <insert id="insertFlowPi" parameterType="dswork.common.model.IFlowPi">
 	insert into DS_FLOW_PI
-	(ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS)
+	(ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE)
 	values
 	(#{id}, #{ywlsh}, #{sblsh}, #{alias}, #{flowid}, #{deployid}, #{piday}, #{pidaytype}, #{pistart},
 		<if test="@Ognl@isEmpty(piend)">null</if><if test="@Ognl@isNotEmpty(piend)">#{piend}</if>,
-		#{piupstart}, #{piupend}, #{status}, #{caccount}, #{cname}, #{pialias})
+		#{piupstart}, #{piupend}, #{status}, #{caccount}, #{cname}, #{pialias}, #{datatable})
 </insert>
 <update id="updateFlowPi">
 	update DS_FLOW_PI set STATUS=#{status}<if test="status==0">, PIEND=#{piend}</if>, PIALIAS=#{pialias} where ID=#{id}
@@ -33,25 +33,26 @@
 	<result property="caccount" column="CACCOUNT" />
 	<result property="cname" column="CNAME" />
 	<result property="pialias" column="PIALIAS" />
+	<result property="datatable" column="DATATABLE" />
 </resultMap>
 <select id="queryFlowPi" resultMap="resultFlowPi">
-	select ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS
+	select ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE
 	from DS_FLOW_PI where YWLSH=#{ywlsh}
 </select>
 <select id="queryFlowPiBySblsh" resultMap="resultFlowPi">
-	select ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS
+	select ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE
 	from DS_FLOW_PI where SBLSH=#{sblsh}
 </select>
 <select id="queryFlowPiByPiid" resultMap="resultFlowPi">
-	select ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS
+	select ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, datatable
 	from DS_FLOW_PI where ID=#{piid}
 </select>
 
 <insert id="insertFlowPiData" parameterType="dswork.common.model.IFlowPiData">
 	insert into DS_FLOW_PI_DATA
-	(ID, PIID, TPREV, TALIAS, TNAME, STATUS, PACCOUNT, PNAME, PTIME, PTYPE, MEMO)
+	(ID, PIID, TPREV, TALIAS, TNAME, STATUS, PACCOUNT, PNAME, PTIME, PTYPE, MEMO, DATATABLE)
 	values
-	(#{id}, #{piid}, #{tprev}, #{talias}, #{tname}, #{status}, #{paccount}, #{pname}, #{ptime}, #{ptype}, #{memo})
+	(#{id}, #{piid}, #{tprev}, #{talias}, #{tname}, #{status}, #{paccount}, #{pname}, #{ptime}, #{ptype}, #{memo}, #{datatable})
 </insert>
 <resultMap id="resultFlowPiData" type="dswork.common.model.IFlowPiData">
 	<id property="id" column="ID" />
@@ -65,16 +66,17 @@
 	<result property="ptime" column="PTIME" />
 	<result property="ptype" column="PTYPE" />
 	<result property="memo" column="MEMO" />
+	<result property="datatable" column="DATATABLE" />
 </resultMap>
 <select id="queryFlowPiData" resultMap="resultFlowPiData">
-	select ID, PIID, TPREV, TALIAS, TNAME, STATUS, PACCOUNT, PNAME, PTIME, PTYPE, MEMO
+	select ID, PIID, TPREV, TALIAS, TNAME, STATUS, PACCOUNT, PNAME, PTIME, PTYPE, MEMO, DATATABLE
 	from DS_FLOW_PI_DATA
 	where PIID=#{piid}
 </select>
 
 
 <sql id="sqlFlowWaiting">
-	ID, PIID, YWLSH, SBLSH, FLOWID, FLOWNAME, TALIAS, TNAME, TCOUNT, TPREV, TNEXT, TSTART, TUSER, TUSERS, TMEMO
+	ID, PIID, YWLSH, SBLSH, FLOWID, FLOWNAME, TALIAS, TNAME, TCOUNT, TPREV, TNEXT, TSTART, TUSER, TUSERS, TMEMO, DATATABLE
 </sql>
 <insert id="insertFlowWaiting" parameterType="dswork.common.model.IFlowWaiting">
 	insert into DS_FLOW_PI_WAITING
@@ -83,8 +85,11 @@
 	(#{id}, #{piid}, #{ywlsh}, #{sblsh}, #{flowid}, #{flowname}, #{talias}, #{tname}, #{tcount}, #{tprev}, #{tnext}, #{tstart},
 		<if test="@Ognl@isEmpty(tuser)">null</if><if test="@Ognl@isNotEmpty(tuser)">#{tuser}</if>,
 		<if test="@Ognl@isEmpty(tusers)">null</if><if test="@Ognl@isNotEmpty(tusers)">#{tusers}</if>,
-	#{tmemo})
+	#{tmemo}, #{datatable})
 </insert>
+<delete id="deleteFlowPi">
+	delete from DS_FLOW_PI where ID=#{id}
+</delete>
 <delete id="deleteFlowWaiting">
 	delete from DS_FLOW_PI_WAITING where ID=#{id}
 </delete>
@@ -114,6 +119,7 @@
 	<result property="tuser" column="TUSER" />
 	<result property="tusers" column="TUSERS" />
 	<result property="tmemo" column="TMEMO" />
+	<result property="datatable" column="DATATABLE" />
 </resultMap>
 <select id="selectFlowWaiting" resultMap="resultFlowWaiting">
 	select <include refid="sqlFlowWaiting" /> from DS_FLOW_PI_WAITING where ID=#{id}

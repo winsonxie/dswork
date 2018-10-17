@@ -37,6 +37,8 @@ public class IFlowPi
 	private String cname = "";
 	// 当前任务标识，以逗号分隔
 	private String pialias = "";
+	// 数据结构
+	private String datatable = "";
 
 	public Long getId()
 	{
@@ -196,5 +198,15 @@ public class IFlowPi
 	public void setPialias(String pialias)
 	{
 		this.pialias = pialias;
+	}
+
+	public String getDatatable()
+	{
+		return datatable;
+	}
+
+	public void setDatatable(String datatable)
+	{
+		this.datatable = datatable;
 	}
 }
