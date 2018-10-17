@@ -1,3 +1,8 @@
+
+网页依赖项目：https://github.com/skeychen/dswork.git/trunk/web
+获取后，需要把/web/web目录映射为“/web”目录，可为静态资源
+
+
 系统结构说明
 	系统主要结构为主package：假设为com.test
 		其中分5个文件夹：controller、service、dao、model、mapper
