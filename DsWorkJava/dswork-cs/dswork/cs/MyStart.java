@@ -166,6 +166,7 @@ public class MyStart
 		//org.apache.log4j.PropertyConfigurator.configure(System.getProperty("log4jConfiguration"));
 		try
 		{
+			Class.forName("org.apache.logging.log4j.core.config.ConfigurationSource");
 			//log4j 2.x
 			org.apache.logging.log4j.core.config.ConfigurationSource source;
 			// 方法一
@@ -176,6 +177,10 @@ public class MyStart
 			// org.apache.logging.log4j.core.LoggerContext c = 
 			org.apache.logging.log4j.core.config.Configurator.initialize(null, source);
 			System.out.println("Log4j load completed");
+		}
+		catch(java.lang.ClassNotFoundException e)
+		{
+			return this;
 		}
 		catch(Exception e)
 		{
@@ -188,6 +193,7 @@ public class MyStart
 	{
 		try
 		{
+			Class.forName("org.springframework.context.ApplicationContext");
 			// ********初始化spring容器********
 			System.out.println("contextConfigLocation=" + System.getProperty("contextConfigLocation"));
 			org.springframework.context.support.GenericXmlApplicationContext context;
@@ -205,6 +211,10 @@ public class MyStart
 			}
 			System.out.println("Springframework ApplicationContext load completed");
 		}
+		catch(java.lang.ClassNotFoundException e)
+		{
+			return this;
+		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
@@ -212,7 +222,7 @@ public class MyStart
 		return this;
 	}
 	
-	public MyStart waitForQuit()
+	public static void waitForQuit()
 	{
 		// 以下代码用于防止main进程执行后结束，可用于捕获监听输入，输入quit或exit可退出
 	    try
@@ -234,6 +244,5 @@ public class MyStart
 		{
 			// TODO: handle exception
 		}
-		return this;
 	}
 }

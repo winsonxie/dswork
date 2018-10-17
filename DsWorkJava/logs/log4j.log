@@ -1,45 +1,4 @@
-2018-09-29 18:37:10,012 [DEBUG] org.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
-2018-09-29 18:37:10,151 [DEBUG] org.mybatis.spring.SqlSessionFactoryBean - Property 'configuration' or 'configLocation' not specified, using default MyBatis Configuration
-2018-09-29 18:37:10,229 [DEBUG] org.mybatis.spring.SqlSessionFactoryBean - Registered type alias: 'class dswork.core.mybatis.LikeTypeHandler'
-2018-09-29 18:37:10,230 [DEBUG] org.mybatis.spring.SqlSessionFactoryBean - Registered type alias: 'class dswork.core.mybatis.LikePrefixTypeHandler'
-2018-09-29 18:37:10,230 [DEBUG] org.mybatis.spring.SqlSessionFactoryBean - Registered type alias: 'class dswork.core.mybatis.LikeSuffixTypeHandler'
-2018-09-29 18:37:10,230 [DEBUG] org.mybatis.spring.SqlSessionFactoryBean - Registered plugin: 'dswork.core.mybatis.OffsetLimitInterceptor@7d42c224'
-2018-09-29 18:37:10,231 [DEBUG] org.mybatis.spring.SqlSessionFactoryBean - Registered type handler: 'T'
-2018-09-29 18:37:10,231 [DEBUG] org.mybatis.spring.SqlSessionFactoryBean - Registered type handler: 'T'
-2018-09-29 18:37:10,231 [DEBUG] org.mybatis.spring.SqlSessionFactoryBean - Registered type handler: 'T'
-2018-09-29 18:37:10,285 [DEBUG] org.mybatis.spring.SqlSessionFactoryBean - Parsed mapper file: 'URL [file:/E:/Workspaces/MySpace/dswork/DsWorkJava/web/WEB-INF/classes/dswork/config/mybatis/mysql.map.xml]'
-2018-09-29 18:37:10,297 [DEBUG] org.mybatis.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [E:\Workspaces\MySpace\dswork\DsWorkJava\web\WEB-INF\classes\testwork\mapper\All.map.xml]'
-2018-09-29 18:37:10,399 [DEBUG] org.mybatis.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [E:\Workspaces\MySpace\dswork\DsWorkJava\web\WEB-INF\classes\testwork\mapper\Demo.map.xml]'
-2018-09-29 18:37:10,931 [INFO] jdbc.sqlonly - set master datasource
-2018-09-29 18:37:12,922 [INFO] jdbc.sqlonly - set master datasource
-2018-09-29 18:37:12,996 [INFO] jdbc.sqlonly - set master datasource
-2018-09-29 18:37:13,081 [INFO] jdbc.sqlonly - 1. Connection opened
-2018-09-29 18:38:38,558 [INFO] jdbc.sqlonly - 
-1. select 'x'
-2018-09-29 18:38:38,559 [INFO] jdbc.sqlonly - 1. Connection closed 
-2018-09-29 18:38:38,561 [INFO] jdbc.sqlonly - 2. Connection opened
-2018-09-29 18:38:38,573 [DEBUG] org.mybatis.spring.SqlSessionUtils - Creating a new SqlSession
-2018-09-29 18:38:38,592 [DEBUG] org.mybatis.spring.SqlSessionUtils - Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3291b443]
-2018-09-29 18:38:38,605 [DEBUG] org.mybatis.spring.transaction.SpringManagedTransaction - JDBC Connection [jdbc:sqlite::resource:db, UserName=null, SQLiteJDBC] will be managed by Spring
-2018-09-29 18:38:38,610 [DEBUG] testwork.model.Demo.insert - ==>  Preparing: insert into DEMO (ID, TITLE, CONTENT, FOUNDTIME) values (?, ?, ?, ?) 
-2018-09-29 18:38:38,673 [DEBUG] testwork.model.Demo.insert - ==> Parameters: null, Title(String), Content(String), 2010-01-01(String)
-2018-09-29 18:39:16,176 [INFO] jdbc.sqlonly - set master datasource
-2018-09-29 18:39:17,944 [INFO] jdbc.sqlonly - set master datasource
-2018-09-29 18:39:18,008 [INFO] jdbc.sqlonly - set master datasource
-2018-09-29 18:39:18,092 [INFO] jdbc.sqlonly - 1. Connection opened
-2018-09-29 18:39:18,094 [INFO] jdbc.sqlonly - 
-1. select 'x'
-2018-09-29 18:39:18,095 [INFO] jdbc.sqlonly - 1. Connection closed 
-2018-09-29 18:39:18,096 [INFO] jdbc.sqlonly - 2. Connection opened
-2018-09-29 18:39:18,131 [INFO] jdbc.sqlonly - 
-2. insert into DEMO
-		(ID, TITLE, CONTENT, FOUNDTIME)
-		values
-		(NULL, 'Title', 'Content', '2010-01-01')
-2018-09-29 18:39:18,223 [INFO] jdbc.sqlonly - set master datasource
-2018-09-29 18:39:18,224 [INFO] jdbc.sqlonly - 
-2. select  ID, TITLE, CONTENT, FOUNDTIME  from DEMO
-2018-09-29 18:39:59,935 [INFO] jdbc.sqlonly - set master datasource
-2018-09-29 18:40:01,702 [INFO] jdbc.sqlonly - set master datasource
-2018-09-29 18:40:01,765 [INFO] jdbc.sqlonly - set master datasource
-2018-09-29 18:40:02,157 [INFO] jdbc.sqlonly - set master datasource
+2018-10-17 17:18:41,599 [INFO] jdbc.sqlonly - set master datasource
+2018-10-17 17:18:43,191 [INFO] jdbc.sqlonly - set master datasource
+2018-10-17 17:18:43,253 [INFO] jdbc.sqlonly - set master datasource
+2018-10-17 17:18:43,772 [INFO] jdbc.sqlonly - set master datasource
