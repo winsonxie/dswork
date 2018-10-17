@@ -5,7 +5,7 @@
 			http://www.springframework.org/schema/beans 
 			http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
 	   default-autowire="byName" default-lazy-init="false">
-	<bean id="masterDataSource" class="${dswork.datasource:org.apache.commons.dbcp.BasicDataSource}" destroy-method="close">
+	<bean id="masterDataSource" class="${dswork.datasource:dswork.config.BasicDataSource}" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName:dswork.jdbc.DriverSpy}" />
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
@@ -32,9 +32,9 @@
 		
 		<property name="filters" value="${jdbc.filters:}" />
 	</bean>
-	<bean id="slaveDataSource" class="${dswork.datasource:org.apache.commons.dbcp.BasicDataSource}" destroy-method="close">
+	<bean id="slaveDataSource" class="${dswork.datasource:dswork.config.BasicDataSource}" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName:dswork.jdbc.DriverSpy}" />
-		<property name="url" value="${jdbc.read.url:${jdbc.url}}" />
+		<property name="url" value="${jdbc.read.url}" />
 		<property name="username" value="${jdbc.read.username:${jdbc.username}}" />
 		<property name="password" value="${jdbc.read.password:${jdbc.password}}" />
 		<property name="minEvictableIdleTimeMillis" value="${jdbc.read.minEvictableIdleTimeMillis:${jdbc.minEvictableIdleTimeMillis:900000}}" />

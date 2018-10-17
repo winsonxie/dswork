@@ -5,7 +5,7 @@
 	        http://www.springframework.org/schema/beans 
 	        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
 	   default-autowire="byName" default-lazy-init="false">
-	<bean id="dataSource3" class="${dswork.datasource:org.apache.commons.dbcp.BasicDataSource}" destroy-method="close">
+	<bean id="masterDataSource3" class="${dswork.datasource:org.apache.commons.dbcp.BasicDataSource}" destroy-method="close">
 		<property name="driverClassName" value="${jdbc3.driverClassName:dswork.jdbc.DriverSpy}" />
 		<property name="url" value="${jdbc3.url}" />
 		<property name="username" value="${jdbc3.username}" />
@@ -28,6 +28,31 @@
 		<property name="testOnReturn" value="${jdbc3.testOnReturn:false}" />
 		
 		<property name="poolPreparedStatements" value="${jdbc3.poolPreparedStatements:false}" />
+	</bean>
+	<bean id="slaveDataSource3" class="${dswork.datasource:org.apache.commons.dbcp.BasicDataSource}" destroy-method="close">
+		<property name="driverClassName" value="${jdbc3.read.driverClassName:${jdbc3.driverClassName:dswork.jdbc.DriverSpy}}" />
+		<property name="url" value="${jdbc3.read.url}" />
+		<property name="username" value="${jdbc3.read.username:${jdbc3.username}}" />
+		<property name="password" value="${jdbc3.read.password:${jdbc3.password}}" />
+		<property name="minEvictableIdleTimeMillis" value="${jdbc3.read.minEvictableIdleTimeMillis:${jdbc3.minEvictableIdleTimeMillis:900000}}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${jdbc3.read.timeBetweenEvictionRunsMillis:${jdbc3.timeBetweenEvictionRunsMillis:900000}}" />
+		
+		<property name="initialSize" value="${jdbc3.read.initialSize:${jdbc3.initialSize:1}}" />
+		<property name="minIdle" value="${jdbc3.read.minIdle:${jdbc3.minIdle:1}}" />
+		<property name="maxIdle" value="${jdbc3.read.maxIdle:${jdbc3.maxIdle:50}}" />
+		<property name="maxActive" value="${jdbc3.read.maxActive:${jdbc3.maxActive:50}}" />
+		<property name="maxWait" value="${jdbc3.read.maxWait:${jdbc3.maxWait:60000}}" />
+		
+		<property name="validationQuery" value="${jdbc3.read.validationQuery:${jdbc3.validationQuery:select 'x'}}" />
+		<property name="testWhileIdle" value="${jdbc3.read.testWhileIdle:${jdbc3.testWhileIdle:true}}" />
+		<property name="testOnBorrow" value="${jdbc3.read.testOnBorrow:${jdbc3.testOnBorrow:false}}" />
+		<property name="testOnReturn" value="${jdbc3.read.testOnReturn:${jdbc3.testOnReturn:false}}" />
+		
+		<property name="poolPreparedStatements" value="${jdbc3.read.poolPreparedStatements:${jdbc3.poolPreparedStatements:false}}" />
+	</bean>
+	<bean id="dataSource3" class="dswork.core.datasource.DataSource">
+		<property name="masterDataSource" ref="masterDataSource3" />
+		<property name="slaveDataSource" ref="slaveDataSource3" />
 	</bean>
 	<bean id="sqlSessionFactory3" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="plugins">
