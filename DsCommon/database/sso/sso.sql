@@ -15,6 +15,20 @@ DROP TABLE IF EXISTS DS_COMMON_LOGIN;
 
 
 
+CREATE TABLE IF NOT EXISTS DS_COMMON_LOGIN
+(
+   ID                   BIGINT NOT NULL COMMENT '主键',
+   LOGINTIME            VARCHAR(19) COMMENT '登录时间',
+   LOGOUTTIME           VARCHAR(19) COMMENT '登出时间',
+   TIMEOUTTIME          VARCHAR(19) COMMENT '超时时间',
+   PWDTIME              VARCHAR(19) COMMENT '密码修改时间，没修改则为空，修改成功后直接登出',
+   TICKET               VARCHAR(128) COMMENT '登录标识',
+   IP                   VARCHAR(128) COMMENT 'IP地址',
+   ACCOUNT              VARCHAR(64) COMMENT '操作人账号',
+   NAME                 VARCHAR(30) COMMENT '操作人名称',
+   STATUS               INT COMMENT '状态(0失败,1成功)',
+   PRIMARY KEY (ID)
+) COMMENT '系统登录日志';
 CREATE TABLE IF NOT EXISTS DS_COMMON_USERTYPE
 (
    ID                   BIGINT NOT NULL COMMENT '主键',
@@ -150,23 +164,5 @@ CREATE TABLE IF NOT EXISTS DS_COMMON_USERORG
    CONSTRAINT FK_DS_COMMON_USERORG_USER FOREIGN KEY (USERID)
       REFERENCES DS_COMMON_USER (ID) ON DELETE CASCADE ON UPDATE CASCADE
 ) COMMENT '用户岗位关系';
-
-
-
-
-CREATE TABLE IF NOT EXISTS DS_COMMON_LOGIN
-(
-   ID                   BIGINT NOT NULL COMMENT '主键',
-   LOGINTIME            VARCHAR(19) COMMENT '登录时间',
-   LOGOUTTIME           VARCHAR(19) COMMENT '登出时间',
-   TIMEOUTTIME          VARCHAR(19) COMMENT '超时时间',
-   PWDTIME              VARCHAR(19) COMMENT '密码修改时间，没修改则为空，修改成功后直接登出',
-   TICKET               VARCHAR(128) COMMENT '登录标识',
-   IP                   VARCHAR(128) COMMENT 'IP地址',
-   ACCOUNT              VARCHAR(64) COMMENT '操作人账号',
-   NAME                 VARCHAR(30) COMMENT '操作人名称',
-   STATUS               INT COMMENT '状态(0失败,1成功)',
-   PRIMARY KEY (ID)
-) COMMENT '系统登录日志';
 
 
