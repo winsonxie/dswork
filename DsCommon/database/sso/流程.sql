@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS DS_FLOW
 (
    ID                   BIGINT(18) NOT NULL COMMENT '主键',
    CATEGORYID           BIGINT(18) COMMENT '分类',
-   ALIAS                VARCHAR(300) COMMENT '流程标识',
+   ALIAS                VARCHAR(64) COMMENT '流程标识',
    VNUM                 INT COMMENT '内部版本0为编辑版本',
    DEPLOYID             VARCHAR(300) COMMENT '流程发布ID，VNUM为0的放最新版本',
    NAME                 VARCHAR(300) COMMENT '名字',
@@ -29,12 +29,27 @@ CREATE TABLE IF NOT EXISTS DS_FLOW
    CONSTRAINT FK_DS_FLOW FOREIGN KEY (CATEGORYID)
       REFERENCES DS_FLOW_CATEGORY (ID) ON DELETE CASCADE ON UPDATE CASCADE
 ) COMMENT '流程';
+CREATE TABLE IF NOT EXISTS DS_FLOW_TASK
+(
+   ID                   BIGINT(18) NOT NULL COMMENT '主键',
+   FLOWID               BIGINT(18) COMMENT '流程ID',
+   DEPLOYID             VARCHAR(300) COMMENT '流程发布ID，当前版本此值为空',
+   TALIAS               VARCHAR(64) COMMENT '节点标识(start开始，end结束)',
+   TNAME                VARCHAR(300) COMMENT '节点名称',
+   TCOUNT               INT COMMENT '合并任务个数(只有一个任务时等于1，其余大于1)',
+   TNEXT                VARCHAR(1000) COMMENT '下级任务(以逗号分隔节点标识，以|线分隔分支任务)',
+   TUSERS               VARCHAR(1000) COMMENT '当前任务的用户ID(以逗号分隔节点标识)',
+   TMEMO                VARCHAR(1000) COMMENT '参数',
+   PRIMARY KEY (ID),
+   CONSTRAINT FK_DS_FLOW_TASK FOREIGN KEY (FLOWID)
+      REFERENCES DS_FLOW (ID) ON DELETE CASCADE ON UPDATE CASCADE
+) COMMENT '流程任务';
 CREATE TABLE IF NOT EXISTS DS_FLOW_PI
 (
    ID                   BIGINT(18) NOT NULL COMMENT '主键ID(流程实例ID)',
    YWLSH                VARCHAR(300) COMMENT '业务流水号',
    SBLSH                VARCHAR(300) COMMENT '申办流水号',
-   ALIAS                VARCHAR(300) COMMENT '流程标识',
+   ALIAS                VARCHAR(64) COMMENT '流程标识',
    FLOWID               BIGINT(18) COMMENT '流程ID(对应deployid)',
    DEPLOYID             VARCHAR(300) COMMENT '流程发布ID',
    PIDAY                INT COMMENT '时限天数',
@@ -54,7 +69,7 @@ CREATE TABLE IF NOT EXISTS DS_FLOW_PI_DATA
    ID                   BIGINT(18) NOT NULL COMMENT '主键ID',
    PIID                 BIGINT(18) COMMENT '流程实例ID',
    TPREV                VARCHAR(300) COMMENT '上级任务(从哪过来的)',
-   TALIAS               VARCHAR(300) COMMENT '任务标识',
+   TALIAS               VARCHAR(64) COMMENT '任务标识',
    TNAME                VARCHAR(300) COMMENT '任务名称',
    STATUS               INT(1) COMMENT '状态(0已处理,1代办,2挂起,3取消挂起)',
    PACCOUNT             VARCHAR(300) COMMENT '经办人ID',
@@ -74,32 +89,16 @@ CREATE TABLE IF NOT EXISTS DS_FLOW_PI_WAITING
    SBLSH                VARCHAR(300) BINARY COMMENT '申办流水号',
    FLOWID               BIGINT(18) COMMENT '流程ID',
    FLOWNAME             VARCHAR(300) COMMENT '流程名称',
-   TALIAS               VARCHAR(300) COMMENT '任务标识',
+   TALIAS               VARCHAR(64) COMMENT '任务标识',
    TNAME                VARCHAR(300) COMMENT '任务名称',
    TCOUNT               INT COMMENT '合并任务个数(只有一个任务时等于1，其余大于1)',
    TPREV                VARCHAR(300) COMMENT '上级任务(从哪过来的)',
-   TNEXT                VARCHAR(3000) COMMENT '下级任务(以逗号分隔节点标识，以|线分隔分支任务)',
+   TNEXT                VARCHAR(1000) COMMENT '下级任务(以逗号分隔节点标识，以|线分隔分支任务)',
    TSTART               VARCHAR(19) COMMENT '任务开始时间',
-   TUSER                VARCHAR(3000) COMMENT '经办人',
-   TUSERS               VARCHAR(3000) COMMENT '候选经办人',
-   TMEMO                VARCHAR(3000) COMMENT '参数',
-   TINTERFACE           VARCHAR(300) COMMENT '处理接口类',
+   TUSER                VARCHAR(1000) COMMENT '经办人',
+   TUSERS               VARCHAR(1000) COMMENT '候选经办人',
+   TMEMO                VARCHAR(1000) COMMENT '参数',
    PRIMARY KEY (ID),
    CONSTRAINT FK_DS_FLOW_PI_DOING FOREIGN KEY (PIID)
       REFERENCES DS_FLOW_PI (ID) ON DELETE CASCADE ON UPDATE CASCADE
 ) COMMENT '流程待办事项';
-CREATE TABLE IF NOT EXISTS DS_FLOW_TASK
-(
-   ID                   BIGINT(18) NOT NULL COMMENT '主键',
-   FLOWID               BIGINT(18) COMMENT '流程ID',
-   DEPLOYID             VARCHAR(300) COMMENT '流程发布ID，当前版本此值为空',
-   TALIAS               VARCHAR(300) COMMENT '节点标识(start开始，end结束)',
-   TNAME                VARCHAR(300) COMMENT '节点名称',
-   TCOUNT               INT COMMENT '合并任务个数(只有一个任务时等于1，其余大于1)',
-   TNEXT                VARCHAR(3000) COMMENT '下级任务(以逗号分隔节点标识，以|线分隔分支任务)',
-   TUSERS               VARCHAR(3000) COMMENT '当前任务的用户ID(以逗号分隔节点标识)',
-   TMEMO                VARCHAR(3000) COMMENT '参数',
-   PRIMARY KEY (ID),
-   CONSTRAINT FK_DS_FLOW_TASK FOREIGN KEY (FLOWID)
-      REFERENCES DS_FLOW (ID) ON DELETE CASCADE ON UPDATE CASCADE
-) COMMENT '流程任务';
