@@ -35,7 +35,7 @@ var treedata = [
 	,{id:100007,name:'门户用户管理', img:"", imgOpen:"", url:'/ds/common/user/getUser.htm', items:[]}
 	,{id:100008,name:'用户岗位管理', img:"", imgOpen:"", url:'/ds/common/userorg/getOrgTree.htm', items:[]}
 	,{id:100009,name:'门户登录日志', img:"", imgOpen:"", url:'/common/log/getCommonLogin.jsp', items:[]}
-	,{id:100010,name:'扩展', img:"", imgOpen:"", url:'', items:[
+	,{id:100010,name:'多级管理', img:"", imgOpen:"", url:'', items:[
 		{id:1000101,name:'组织管理', img:"", imgOpen:"", url:'/ds/common/ex/org/getOrgTree.htm', items:[]}
 		,{id:1000102,name:'用户管理', img:"", imgOpen:"", url:'/ds/common/ex/user/getOrgTree.htm', items:[]}
 		,{id:1000103,name:'授权管理', img:"", imgOpen:"", url:'/ds/common/ex/userorg/getOrgTree.htm', items:[]}
