@@ -1,4 +1,4 @@
-package dswork.common;
+package dswork.common.util;
 
 import java.util.List;
 import java.util.Map;
@@ -9,11 +9,11 @@ import dswork.common.model.IFlowPiData;
 import dswork.common.model.IFlowWaiting;
 import dswork.common.service.DsCommonIFlowService;
 
-public class DsCommonIFlowFactory
+public class DsCommonIFlowServiceUtil
 {
 	private  DsCommonIFlowService service;
 	
-	public DsCommonIFlowFactory(DsCommonIFlowService service) 
+	public DsCommonIFlowServiceUtil(DsCommonIFlowService service) 
 	{
 		this.service = service;
 	}

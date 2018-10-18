@@ -1,6 +1,7 @@
 package dswork.common;
 
 import dswork.common.service.DsCommonIFlowService;
+import dswork.common.util.DsCommonIFlowServiceUtil;
 import dswork.spring.BeanFactory;
 
 /**
@@ -17,16 +18,16 @@ public class DsFactory
 		return DsCommonFactoryOrg.getInstance();
 	}
 	
-	private static DsCommonIFlowFactory factory = null;
+	private static DsCommonIFlowServiceUtil factory = null;
 	
 	/**
 	 * 相当于service，本身提供事务支持。
 	 */
-	public static DsCommonIFlowFactory getFlow()
+	public static DsCommonIFlowServiceUtil getFlow()
 	{
 		if(factory == null)
 		{
-			factory = new DsCommonIFlowFactory((DsCommonIFlowService) BeanFactory.getBean("dsCommonIFlowService"));
+			factory = new DsCommonIFlowServiceUtil((DsCommonIFlowService) BeanFactory.getBean("dsCommonIFlowService"));
 		}
 		return factory;
 	}
