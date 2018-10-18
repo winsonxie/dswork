@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="common"/>
 	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-common"/>
 	<classpathentry kind="src" path="config"/>
-	<classpathentry kind="src" path="dswork.common.table"/>
 	<classpathentry kind="src" path="dswork.common.dict"/>
 	<classpathentry kind="src" path="dswork.common.flow"/>
 	<classpathentry kind="src" path="dswork.common.rbac"/>
@@ -14,6 +13,7 @@
 	<classpathentry kind="src" path="dswork.common.user.org"/>
 	<classpathentry kind="src" path="dswork.common.extends"/>
 	<classpathentry kind="src" path="dswork.common.single"/>
+	<classpathentry kind="src" path="dswork.common.table"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JAVAEE">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
