@@ -49,9 +49,13 @@ var taskMap = new $jskey.Map();
 var arr = new Array();
 var count = 0;
 function initTaskMap(){
+	taskMap.put("default", "");
+	arr[count++] = "default";
 	<c:forEach items="${taskMap}" var="m">
 	taskMap.put("${m.key}", "${m.value}");
-	arr[count++] = "${m.key}";
+	if("${m.key}" != "default"){
+		arr[count++] = "${m.key}";
+	}
 	</c:forEach>
 }
 function updTaskMap(datatable){
@@ -59,9 +63,9 @@ function updTaskMap(datatable){
 		var table = JSON.parse(datatable);
 		for(var i = 0; i < arr.length; i++){
 			var task = getRwx(arr[i]);
+			var array = [];
 			if(task != ""){
 				task = JSON.parse(task);
-				var array = [];
 				for (var m = 0; m < table.length; m++) {
 					var dt = table[m];
 					var row = {};
@@ -88,6 +92,19 @@ function updTaskMap(datatable){
 				}
 				task = array;
 				taskMap.put(arr[i], JSON.stringify(task));
+			}
+			else{
+				for (var m = 0; m < table.length; m++) {
+					var dt = table[m];
+					var row = {};
+					row.datatype = table[m].datatype;
+					row.tname = table[m].tname;
+					row.talias = table[m].talias;
+					row.rwx = "400";
+					array.push(row);
+				}
+				task = array;
+				taskMap.put("default", JSON.stringify(task));
 			}
 		}
 		$("#datatable").val(datatable);
@@ -184,15 +201,19 @@ function choose(){
 					&nbsp;标识 <input id="txt_alias" type="text" class="text" style="width:108px;" value="" />
 					&nbsp;用户 <input id="txt_users" type="text" class="text" style="width:168px;" value="" />
 				</div>
-				<div>
+				<div style="margin-bottom:5px;">
 					&nbsp;合并 <input id="txt_count" type="number" min="1" max="100" step="1" class="text" style="width:72px;" value="" />个任务
 					&nbsp;名称 <input id="txt_name" type="text" class="text" style="width:168px;" value="" />
 				</div>
+				<div>
+					&nbsp;会签 <input id="txt_subcount" type="number" min="-1" max="10000" step="1" class="text" style="width:72px;" value="" placeholder="无" />个任务
+					&nbsp;用户 <input id="txt_subusers" type="text" class="text" style="width:168px;" value="" placeholder="不填默认所有用户" />
+				</div>
 			</div>
-			<div style="float:left;width:60px;padding:3px 0 3px 3px">
+			<div style="float:left;width:60px;padding:3px 0 3px 3px;">
 				<input id="btn_save" type="button" class="button" style="padding:14px 6px;" value="增改任务" />
 			</div>
-			<div style="float:left;width:60px;padding:3px 0 3px 3px">
+			<div style="float:left;width:60px;padding:3px 0 3px 3px;">
 				<input id="btn_delete" type="button" class="button" style="padding:14px 6px;" value="不可操作" />
 			</div>
 		</td>

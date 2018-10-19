@@ -117,9 +117,9 @@ public class DsCommonIFlowServiceUtil
 	 * @param resultMsg 处理意见
 	 * @return true|false
 	 */
-	public boolean process(long waitid, String[] nextTalias, String paccount, String pname, String resultType, String resultMsg, String formdata)
+	public boolean process(long waitid, String[] nextTalias, String paccount, String pname, String resultType, String resultMsg, String datatable)
 	{
-		return service.saveProcess(waitid, nextTalias, null, paccount, pname, resultType, resultMsg, formdata);
+		return service.saveProcess(waitid, nextTalias, null, paccount, pname, resultType, resultMsg, datatable);
 	}
 
 	/**
@@ -133,9 +133,9 @@ public class DsCommonIFlowServiceUtil
 	 * @param resultMsg 处理意见
 	 * @return true|false
 	 */
-	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String formdata)
+	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
 	{
-		return service.saveProcess(waitid, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, formdata);
+		return service.saveProcess(waitid, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, datatable);
 	}
 
 	public List<IFlowWaiting> queryWaiting(String account)

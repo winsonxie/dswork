@@ -117,7 +117,7 @@ function dataTableSave(){
 				array.push(row);
 			});
 			parent.setModel(JSON.stringify(array));
-			console.log(JSON.stringify(array));
+			//console.log(JSON.stringify(array));
 			parent.$jskey.dialog.close();
 		}
 	//}

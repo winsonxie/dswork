@@ -14,7 +14,7 @@
 		#{piupstart}, #{piupend}, #{status}, #{caccount}, #{cname}, #{pialias}, #{datatable})
 </insert>
 <update id="updateFlowPi">
-	update DS_FLOW_PI set STATUS=#{status}<if test="status==0">, PIEND=#{piend}</if>, PIALIAS=#{pialias} where ID=#{id}
+	update DS_FLOW_PI set STATUS=#{status}<if test="status==0">, PIEND=#{piend}</if>, PIALIAS=#{pialias}, DATATABLE=#{datatable} where ID=#{id}
 </update>
 <resultMap id="resultFlowPi" type="dswork.common.model.IFlowPi">
 	<id property="id" column="ID" />
@@ -44,7 +44,7 @@
 	from DS_FLOW_PI where SBLSH=#{sblsh}
 </select>
 <select id="queryFlowPiByPiid" resultMap="resultFlowPi">
-	select ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, datatable
+	select ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE
 	from DS_FLOW_PI where ID=#{piid}
 </select>
 
@@ -97,7 +97,7 @@
 	delete from DS_FLOW_PI_WAITING where PIID=#{piid}
 </delete>
 <update id="updateFlowWaiting">
-	update DS_FLOW_PI_WAITING set TCOUNT=TCOUNT-1, TSTART=#{tstart}, TPRVE=#{tprev}
+	update DS_FLOW_PI_WAITING set TCOUNT=TCOUNT-1, TSTART=#{tstart}, TPREV=#{tprev}
 	where ID=#{id} and TCOUNT&gt;1
 </update>
 <update id="updateFlowWaitingUser">

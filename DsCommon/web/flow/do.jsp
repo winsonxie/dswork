@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@page import="dswork.common.DsFactory, dswork.web.MyRequest, dswork.common.model.*, java.util.List"%>
+<%@page import="dswork.common.DsFactory, dswork.web.MyRequest, dswork.common.model.*, java.util.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,9 +32,14 @@ try
 	IFlowWaiting po = DsFactory.getFlow().getWaiting(wid);
 	request.setAttribute("po", po);
 	java.util.Map<String, String> map = DsFactory.getFlow().getTaskList(po.getFlowid());
-	String datatable = po.getDatatable().replaceAll("\\\\", "");
-	List<IFlowDataRow> dt = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(datatable, List.class);
-	request.setAttribute("dt", dt);
+	String datatable = po.getDatatable();
+	Map<String, String> dtMap = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(datatable, Map.class);
+	String rwxJson = dtMap.get(po.getTalias());
+	if(!"".equals(rwxJson))
+	{
+		List<IFlowDataRow> dt = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(rwxJson, List.class);
+		request.setAttribute("dt", dt);
+	}
 %>
 	流程名称：${po.flowname}<br />
 	当前任务：${po.talias}&nbsp;${po.tname}<br />
@@ -60,9 +65,12 @@ try
 </form>
 <form id="formdata" method="post" action="">
 <c:forEach items="${dt}" var="dt">
-	<c:if test="${dt.rwx!='001'}">
+	<%-- <c:if test="${dt.rwx!='001'}"> --%>
+	<%-- ${fn:escapeXml(dt.talias)}：<input name="${fn:escapeXml(dt.tname)}" datatype="${fn:escapeXml(dt.datatype)}" ${fn:escapeXml(dt.rwx=='400'?'readonly':'')} /><br /> --%>
+	<%-- </c:if> --%>
+	<div ${fn:escapeXml(dt.rwx=='001'?'style=display:none;':'')}>
 	${fn:escapeXml(dt.talias)}：<input name="${fn:escapeXml(dt.tname)}" datatype="${fn:escapeXml(dt.datatype)}" ${fn:escapeXml(dt.rwx=='400'?'readonly':'')} /><br />
-	</c:if>
+	</div>
 </c:forEach>
 <!-- <input type="button" onclick="getFormData()" value="获取表单数据" /> -->
 </form>
@@ -75,7 +83,9 @@ function getFormData(){
 	var formdata = $("#formdata").serializeArray();
 	$.each(formdata, function(){
 		var m = map.get(this.name);
-		m.value = this.value.replace(/\"/g,"&quot;");
+		if(m.rwx == "420"){
+			m.value = this.value.replace(/\"/g,"&quot;");
+		}
 		map.put(this.name, m);
 		array.push(m);
 	});

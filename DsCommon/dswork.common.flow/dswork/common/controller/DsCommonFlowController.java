@@ -102,6 +102,8 @@ public class DsCommonFlowController extends BaseController
 							String[] tnextArr = req.getStringArray("tnext");
 							String[] tusersArr = req.getStringArray("tusers");
 							String[] tmemoArr = req.getStringArray("tmemo");
+							int[] subcountArr = req.getIntArray("subcount", -1);
+							String[] subusersArr = req.getStringArray("subusers");
 							for (int i = 0; i < taliasArr.length; i++)
 							{
 								DsCommonFlowTask m = new DsCommonFlowTask();
@@ -112,6 +114,8 @@ public class DsCommonFlowController extends BaseController
 								m.setTusers(tusersArr[i]);
 								m.setTmemo(tmemoArr[i]);
 								m.setDatatable(map.get(taliasArr[i]));
+								m.setSubcount(subcountArr[i]);
+								m.setSubusers(subusersArr[i]);
 								taskList.add(m);
 							}
 						}
@@ -130,6 +134,8 @@ public class DsCommonFlowController extends BaseController
 								m.setTusers(node.getUsers());
 								m.setTmemo("");
 								m.setDatatable(map.get(node.getAlias()));
+								m.setSubcount(node.getSubcount());
+								m.setSubusers(node.getSubusers());
 								taskList.add(m);
 							}
 						}
@@ -226,6 +232,8 @@ public class DsCommonFlowController extends BaseController
 				String[] tnextArr = req.getStringArray("tnext");
 				String[] tusersArr = req.getStringArray("tusers");
 				String[] tmemoArr = req.getStringArray("tmemo");
+				int[] subcountArr = req.getIntArray("subcount", -1);
+				String[] subusersArr = req.getStringArray("subusers");
 				for (int i = 0; i < taliasArr.length; i++)
 				{
 					DsCommonFlowTask m = new DsCommonFlowTask();
@@ -236,6 +244,8 @@ public class DsCommonFlowController extends BaseController
 					m.setTusers(tusersArr[i]);
 					m.setTmemo(tmemoArr[i]);
 					m.setDatatable(map.get(taliasArr[i]));
+					m.setSubcount(subcountArr[i]);
+					m.setSubusers(subusersArr[i]);
 					taskList.add(m);
 				}
 			}
@@ -254,6 +264,8 @@ public class DsCommonFlowController extends BaseController
 					m.setTusers(node.getUsers());
 					m.setTmemo("");
 					m.setDatatable(map.get(node.getAlias()));
+					m.setSubcount(node.getSubcount());
+					m.setSubusers(node.getSubusers());
 					taskList.add(m);
 				}
 			}

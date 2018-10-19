@@ -23,6 +23,21 @@ import dswork.core.util.UniqueId;
 @SuppressWarnings("all")
 public class DsCommonDaoIFlow extends MyBatisDao
 {
+	com.google.gson.GsonBuilder builder = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	private Map<String, String> dtMap = null;
+	private String dtSet = "";
+
+	public String toJson(Object object)
+	{
+		return builder.create().toJson(object);
+	}
+
+	public <T> T toBean(String json, Class<T> classOfT)
+	{
+		return builder.create().fromJson(json, classOfT);
+	}
+	
 	// 此处这样写法是为了让流程的管理可成独立项目运行，不在同一数据库中
 	// #############################################################
 	@Autowired
@@ -55,19 +70,20 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		return DsCommonDaoIFlow.class;
 	}
 
-	private void updateFlowPi(Long id, int status, String pialias)
+	private void updateFlowPi(Long id, int status, String pialias, String datatable)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
 		map.put("status", status);
 		map.put("pialias", pialias);
+		map.put("datatable", datatable);
 		if(status == 0)
 		{
 			map.put("piend", TimeUtil.getCurrentTime());
 		}
 		executeUpdate("updateFlowPi", map);
 	}
-
+	
 	private void saveFlowWaiting(IFlowWaiting m)
 	{
 		executeInsert("insertFlowWaiting", m);
@@ -206,7 +222,10 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			pi.setCaccount(account);
 			pi.setCname(name);
 			pi.setPialias("start");
-			pi.setDatatable(task.getDatatable());
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("start", task.getDatatable().replaceAll("\\\\", ""));
+			pi.setDatatable(toJson(map));
+			//pi.setDatatable(task.getDatatable());
 			executeInsert("insertFlowPi", pi);
 			Long piid = pi.getId();
 			IFlowWaiting m = new IFlowWaiting();
@@ -223,7 +242,8 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			m.setTnext(task.getTnext());
 			m.setTstart(time);
 			m.setTmemo(task.getTmemo());
-			m.setDatatable(task.getDatatable());
+			m.setDatatable(toJson(map));
+			//m.setDatatable(task.getDatatable());
 			if(users != null)
 			{
 				if(users.split(",", -1).length > 1)
@@ -269,7 +289,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 	public void saveStop(Long piid)
 	{
 		this.deleteFlowWaitingByPiid(piid);
-		this.updateFlowPi(piid, 0, "");// 结束
+		this.updateFlowPi(piid, 0, "", dtSet);// 结束
 	}
 
 	public boolean saveProcess(Long waitid, String[] nextTalias, String[] nextTusers, String account, String name, String resultType, String resultMsg, String datatable)
@@ -324,7 +344,16 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						newm.setTname(t.getTname());
 						newm.setTcount(t.getTcount());
 						newm.setTnext(t.getTnext());
-						newm.setDatatable(t.getDatatable());
+						String dt = m.getDatatable();
+						dtMap = new HashMap<String, String>();
+						if(!"".equals(dt))
+						{
+							dtMap = toBean(dt, Map.class);
+						}
+						dtMap.put(m.getTalias(), datatable);
+						dtMap.put(t.getTalias(), t.getDatatable().replaceAll("\\\\", ""));
+						dtSet = toJson(dtMap);
+						newm.setDatatable(dtSet); 
 						if(nextTusers != null)
 						{
 							String[] s = nextTusers[i].split(",", -1);
@@ -365,7 +394,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			if(isEnd)
 			{
 				this.deleteFlowWaitingByPiid(m.getPiid());// 已经结束，清空所有待办事项
-				this.updateFlowPi(m.getPiid(), 0, "");// 结束
+				this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
 
 				// 记录最后一步流向
 				pd.setId(UniqueId.genUniqueId());
@@ -378,7 +407,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				List<String> list = this.queryFlowWaitingTalias(m.getPiid());
 				if(list == null || list.size() == 0)
 				{
-					this.updateFlowPi(m.getPiid(), 0, "");// 结束
+					this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
 				}
 				else
 				{
@@ -388,7 +417,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 					{
 						sb.append(",").append(list.get(i));
 					}
-					this.updateFlowPi(m.getPiid(), 2, sb.toString());// 处理中
+					this.updateFlowPi(m.getPiid(), 2, sb.toString(), dtSet);// 处理中
 				}
 			}
 			return true;

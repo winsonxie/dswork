@@ -25,6 +25,10 @@ public class DsCommonFlowTask
 	private String tmemo = "";
 	// 数据结构
 	private String datatable = "";
+	//至少合并会签个数(不需要会签时值为-1)
+	private Integer subcount = -1;
+	// 当前会签的用户ID(以逗号分隔可选用户，以|线分隔并行用户)
+	private String subusers = "";
 
 	public Long getId()
 	{
@@ -124,5 +128,25 @@ public class DsCommonFlowTask
 	public void setDatatable(String datatable)
 	{
 		this.datatable = datatable;
+	}
+
+	public Integer getSubcount()
+	{
+		return subcount;
+	}
+
+	public void setSubcount(Integer subcount)
+	{
+		this.subcount = subcount;
+	}
+
+	public String getSubusers()
+	{
+		return subusers;
+	}
+
+	public void setSubusers(String subusers)
+	{
+		this.subusers = subusers;
 	}
 }

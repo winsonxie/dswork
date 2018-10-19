@@ -161,10 +161,13 @@ $dswork.readySubmit = function(){
 					&nbsp;标识 <input id="txt_alias" type="text" class="text" style="width:108px;" value="" />
 					&nbsp;用户 <input id="txt_users" type="text" class="text" style="width:168px;" value="" />
 				</div>
-				<div>
+				<div style="margin-bottom:5px;">
 					&nbsp;合并 <input id="txt_count" type="number" min="1" max="100" step="1" class="text" style="width:72px;" value="" />个任务
 					&nbsp;名称 <input id="txt_name" type="text" class="text" style="width:168px;" value="" />
-					<input id="txt_datatable" type="hidden" class="text" style="width:168px;" value="" />
+				</div>
+				<div>
+					&nbsp;会签 <input id="txt_subcount" type="number" min="0" max="10000" step="1" class="text" style="width:72px;" value="" placeholder="无" />个任务
+					&nbsp;用户 <input id="txt_subusers" type="text" class="text" style="width:168px;" value="" placeholder="不填默认所有用户" />
 				</div>
 			</div>
 			<div style="float:left;width:60px;padding:3px 0 3px 3px">
