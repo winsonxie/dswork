@@ -111,6 +111,17 @@ public class DomUtil
 			count = 1;
 		}
 		node.setCount(count);
+		int subcount = -1;
+		try
+		{
+			subcount  = Integer.parseInt(e.getAttribute("subcount"));
+		}
+		catch(Exception ex)
+		{
+			subcount = -1;
+		}
+		node.setSubcount(subcount);
+		node.setSubusers(e.getAttribute("subusers"));
 		if(e.getAttribute("color") != null && !"".equals(e.getAttribute("color")))
 		{
 			node.setColor(e.getAttribute("color"));

@@ -10,11 +10,12 @@ public class MyNode
 	public static final String COLOR_START = "7BB538";
 	public static final String COLOR_END = "FF6666";
 	public static final String COLOR_TASK = "6699CC";
-	
 	private String name = "";
 	private String alias = "";
 	private String users = "";
 	private int count = 1;
+	private int subcount = -1;
+	private String subusers = "";
 	private String color = "";
 	private int x = 0;
 	private int y = 0;
@@ -89,6 +90,26 @@ public class MyNode
 	public void setCount(int count)
 	{
 		this.count = count <= 1 ? 1 : count;
+	}
+
+	public String getSubusers()
+	{
+		return subusers;
+	}
+
+	public void setSubusers(String subusers)
+	{
+		this.subusers = subusers;
+	}
+
+	public int getSubcount()
+	{
+		return subcount;
+	}
+
+	public void setSubcount(int subcount)
+	{
+		this.subcount = subcount <= -1 ? -1 : subcount;
 	}
 
 	public String getColor()
@@ -184,7 +205,11 @@ public class MyNode
 		{
 			map.put("count", getCount() + "");
 		}
-		
+		if(getSubcount() > -1)
+		{
+			map.put("subcount", getSubcount() + "");
+			map.put("subusers", getSubusers());
+		}
 		if(("start".equals(getAlias())))
 		{
 			if(!COLOR_START.equals(getColor()))
