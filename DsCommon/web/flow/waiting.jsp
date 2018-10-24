@@ -10,7 +10,6 @@
 <style type="text/css">
 li,a {line-height:2em;}
 </style>
-</script>
 </head>
 <body>
 <table border="0" cellspacing="0" cellpadding="0" class="listLogo">

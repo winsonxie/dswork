@@ -47,7 +47,6 @@
 	select ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE
 	from DS_FLOW_PI where ID=#{piid}
 </select>
-
 <insert id="insertFlowPiData" parameterType="dswork.common.model.IFlowPiData">
 	insert into DS_FLOW_PI_DATA
 	(ID, PIID, TPREV, TALIAS, TNAME, STATUS, PACCOUNT, PNAME, PTIME, PTYPE, MEMO, DATATABLE)
@@ -73,10 +72,8 @@
 	from DS_FLOW_PI_DATA
 	where PIID=#{piid}
 </select>
-
-
 <sql id="sqlFlowWaiting">
-	ID, PIID, YWLSH, SBLSH, FLOWID, FLOWNAME, TALIAS, TNAME, TCOUNT, TPREV, TNEXT, TSTART, TUSER, TUSERS, TMEMO, DATATABLE
+	ID, PIID, YWLSH, SBLSH, FLOWID, FLOWNAME, TALIAS, TNAME, TCOUNT, TPREV, TNEXT, TSTART, TUSER, TUSERS, SUBCOUNT, SUBUSERS, TMEMO, DATATABLE
 </sql>
 <insert id="insertFlowWaiting" parameterType="dswork.common.model.IFlowWaiting">
 	insert into DS_FLOW_PI_WAITING
@@ -85,7 +82,7 @@
 	(#{id}, #{piid}, #{ywlsh}, #{sblsh}, #{flowid}, #{flowname}, #{talias}, #{tname}, #{tcount}, #{tprev}, #{tnext}, #{tstart},
 		<if test="@Ognl@isEmpty(tuser)">null</if><if test="@Ognl@isNotEmpty(tuser)">#{tuser}</if>,
 		<if test="@Ognl@isEmpty(tusers)">null</if><if test="@Ognl@isNotEmpty(tusers)">#{tusers}</if>,
-	#{tmemo}, #{datatable})
+	#{subcount}, #{subusers}, #{tmemo}, #{datatable})
 </insert>
 <delete id="deleteFlowPi">
 	delete from DS_FLOW_PI where ID=#{id}
@@ -103,6 +100,17 @@
 <update id="updateFlowWaitingUser">
 	update DS_FLOW_PI_WAITING set TUSER=#{tuser}, TUSERS=null where ID=#{id}
 </update>
+<!-- <update id="updateFlowWaitingSubusers">
+	update DS_FLOW_PI_WAITING set SUBUSERS=#{subusers} where ID=#{id}
+</update> -->
+<update id="updateSubFlowWaiting">
+	update DS_FLOW_PI_WAITING set SUBCOUNT=SUBCOUNT-1, SUBUSERS=#{subusers}
+	where ID=#{id}
+</update>
+<update id="updateSubFlowWaitingSubusers">
+	update DS_FLOW_PI_WAITING set SUBUSERS=#{subusers}
+	where ID=#{id}
+</update>
 <resultMap id="resultFlowWaiting" type="dswork.common.model.IFlowWaiting">
 	<id property="id" column="ID" />
 	<result property="piid" column="PIID" />
@@ -118,6 +126,8 @@
 	<result property="tstart" column="TSTART" />
 	<result property="tuser" column="TUSER" />
 	<result property="tusers" column="TUSERS" />
+	<result property="subcount" column="SUBCOUNT" />
+	<result property="subusers" column="SUBUSERS" />
 	<result property="tmemo" column="TMEMO" />
 	<result property="datatable" column="DATATABLE" />
 </resultMap>
@@ -136,6 +146,9 @@
 </select>
 <sql id="sqlQueryFlowWaiting">
 	select <include refid="sqlFlowWaiting" /> from DS_FLOW_PI_WAITING
-	where (TUSER=#{account} or TUSERS like #{account, typeHandler=LikeTypeHandler}) and TCOUNT=1
+	where ((TUSER=#{account} and SUBCOUNT &lt; 0) or TUSERS like #{account, typeHandler=LikeTypeHandler} 
+	or ((TUSER like #{account, typeHandler=LikeTypeHandler} or TUSER=',,') and SUBCOUNT > -1 and SUBUSERS not like #{account, typeHandler=LikeTypeHandler})
+	) 
+	and TCOUNT=1
 </sql>
 </mapper>

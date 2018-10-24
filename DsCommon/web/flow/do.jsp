@@ -30,16 +30,30 @@ try
 {
   if(wid > 0){
 	IFlowWaiting po = DsFactory.getFlow().getWaiting(wid);
-	request.setAttribute("po", po);
-	java.util.Map<String, String> map = DsFactory.getFlow().getTaskList(po.getFlowid());
-	String datatable = po.getDatatable();
-	Map<String, String> dtMap = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(datatable, Map.class);
-	String rwxJson = dtMap.get(po.getTalias());
-	if(!"".equals(rwxJson))
-	{
-		List<IFlowDataRow> dt = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(rwxJson, List.class);
+	//if(po.getSubcount() > -1 && "".equals(po.getSubusers()))
+	//{
+		//选人
+	//	String subusers = "zyz,lz";
+		//String subusers = "";
+	//	DsFactory.getFlow().startSubFlow(po.getId(), subusers);
+		//response.sendRedirect("");
+	//}
+	//else
+	//{
+		request.setAttribute("po", po);
+		java.util.Map<String, String> map = DsFactory.getFlow().getTaskList(po.getFlowid());
+		map.get(po.getTalias());
+		String datatable = po.getDatatable().replaceAll("\\\\", "");
+		List<IFlowDataRow> dt = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(datatable, List.class);
 		request.setAttribute("dt", dt);
-	}
+		/* Map<String, String> dtMap = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(datatable, Map.class);
+		String rwxJson = dtMap.get(po.getTalias());
+		
+		if(!"".equals(rwxJson))
+		{
+			List<IFlowDataRow> dt = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(rwxJson, List.class);
+			request.setAttribute("dt", dt);
+		} */
 %>
 	流程名称：${po.flowname}<br />
 	当前任务：${po.talias}&nbsp;${po.tname}<br />
@@ -69,7 +83,7 @@ try
 	<%-- ${fn:escapeXml(dt.talias)}：<input name="${fn:escapeXml(dt.tname)}" datatype="${fn:escapeXml(dt.datatype)}" ${fn:escapeXml(dt.rwx=='400'?'readonly':'')} /><br /> --%>
 	<%-- </c:if> --%>
 	<div ${fn:escapeXml(dt.rwx=='001'?'style=display:none;':'')}>
-	${fn:escapeXml(dt.talias)}：<input name="${fn:escapeXml(dt.tname)}" datatype="${fn:escapeXml(dt.datatype)}" ${fn:escapeXml(dt.rwx=='400'?'readonly':'')} /><br />
+	${fn:escapeXml(dt.talias)}：<input name="${fn:escapeXml(dt.tname)}" datatype="${fn:escapeXml(dt.datatype)}" ${fn:escapeXml(dt.rwx=='400'?'readonly':'')} value="${fn:escapeXml(dt.value)}" /><br />
 	</div>
 </c:forEach>
 <!-- <input type="button" onclick="getFormData()" value="获取表单数据" /> -->
@@ -112,7 +126,8 @@ $dswork.readySubmit = function(){
 </script>
 
 <%
-  }else{msg = "处理失败";}
+//}
+	}else{msg = "处理失败";}
 }catch(Exception ex){
 	ex.printStackTrace();
 	msg = "处理失败";

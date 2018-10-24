@@ -7,7 +7,6 @@
 <head>
 <title></title>
 <%@include file="/commons/include/get.jsp"%>
-</script>
 </head>
 <body>
 <table border="0" cellspacing="0" cellpadding="0" class="listLogo">
@@ -20,7 +19,7 @@
 </table>
 <%
 //String piid = DsFactory.getFlow().start("tech_duty", "1000", "0", "admin", "管理员", 0, true);
-String piid = DsFactory.getFlow().start("dd", "admin", "1000", "0", "admin", "管理员", 0, true);
+String piid = DsFactory.getFlow().start("hq", "admin", "1000", "0", "admin", "管理员", 0, true);
 %>
 <%=piid.equals("")?"启动失败":piid%>
 <br />
