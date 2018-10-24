@@ -184,14 +184,6 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		executeUpdate("updateFlowWaitingUser", map);
 	}
 	
-/*	public void updateFlowWaitingSubusers(Long id, String subusers)
-	{
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("id", id);
-		map.put("subusers", "," + subusers + ",");
-		executeUpdate("updateFlowWaitingSubusers", map);
-	}*/
-	
 	public int saveSubFlow(IFlowWaiting subflow)
 	{
 		return executeUpdate("insertFlowWaiting", subflow);
@@ -332,22 +324,23 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			pd.setDatatable(datatable);
 			executeInsert("insertFlowPiData", pd);
 			boolean isEnd = false;
-			if(m.getSubcount() > -1)
+			if(m.getSubcount() > -1)//会签任务
 			{
 				String subusers = m.getSubusers();
 				subusers += "".equals(subusers) ? "," + account + "," : account + ",";
-				if(m.getSubcount() == 0)
+				if(m.getSubcount() == 0)//会签个数为0时,subcount不需要继续减
 				{
-					this.updateSubFlowWaitingSubusers(m.getId(), subusers);
+					this.updateSubFlowWaitingSubusers(m.getId(), subusers);//更新subusers
 				}
 				else
 				{
-					this.updateSubFlowWaiting(m.getId(), subusers);
+					this.updateSubFlowWaiting(m.getId(), subusers);//更新subusers,subcount
 				}
 				if(m.getSubcount() == 1)
 				{
+					//最后一个会签个数
 					IFlowTask t = this.getFlowTask(m.getFlowid(), m.getTalias());
-					if(!"".equals(t.getTusers()))
+					if(!"".equals(t.getTusers()))//是否有用户来控制会签的结束
 					{
 						m.setId(UniqueId.genUniqueId());
 						m.setTuser("," + t.getTusers() + ",");
@@ -361,6 +354,10 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						{
 							isEnd = true;
 						}
+						else
+						{
+							isEnd = exeProcess(waitid, nextTalias, nextTusers, datatable, m, time, isEnd);
+						}
 					}
 				}
 			}
@@ -372,106 +369,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				}
 				else
 				{
-					this.deleteFlowWaiting(waitid);// 该待办事项已经处理
-					for(int i = 0; i < nextTalias.length; i++)
-					{
-						String talias = nextTalias[i];
-						IFlowWaiting w = this.getFlowWaitingByPiid(m.getPiid(), talias);
-						if(w != null && w.getId().longValue() != 0)
-						{
-							this.updateFlowWaiting(w.getId(), time, w.getTprev() + "," + m.getTalias());// 等待数减1, 上经节点增加一个
-						}
-						else
-						{
-							IFlowWaiting newm = new IFlowWaiting();
-							newm.setId(UniqueId.genUniqueId());
-							newm.setPiid(m.getPiid());
-							newm.setYwlsh(m.getYwlsh());
-							newm.setSblsh(m.getSblsh());
-							newm.setFlowid(m.getFlowid());
-							newm.setFlowname(m.getFlowname());
-							newm.setTstart(time);
-							newm.setTprev(m.getTalias());
-							IFlowTask t = this.getFlowTask(m.getFlowid(), talias);
-							newm.setTalias(t.getTalias());
-							newm.setTname(t.getTname());
-							newm.setTcount(t.getTcount());
-							newm.setTnext(t.getTnext());
-							List<IFlowDataRow> list = new ArrayList<IFlowDataRow>();
-							List<IFlowDataRow> oList = toBean(datatable!=null?datatable:"", List.class);
-							List<IFlowDataRow> nList = toBean(t.getDatatable()!=null?t.getDatatable().replaceAll("\\\\", ""):"", List.class);
-							if(nList != null && nList.size() > 0)
-							{
-								for (int j = 0; j < nList.size(); j++)
-								{
-									IFlowDataRow nRow = toBean(toJson(nList.get(j)),IFlowDataRow.class);
-									if(oList != null && oList.size() > 0)
-									{
-										IFlowDataRow oRow = toBean(toJson(oList.get(j)),IFlowDataRow.class);
-										nRow.setValue(oRow.getValue());
-									}
-									else
-									{
-										nRow.setValue("");
-									}
-									list.add(nRow);
-								}
-							}
-							else
-							{
-								if(oList != null && oList.size() > 0)
-								{
-									for (int j = 0; j < oList.size(); j++)
-									{
-										IFlowDataRow row = toBean(toJson(oList.get(j)),IFlowDataRow.class);
-										row.setRwx("001");
-										list.add(row);
-									}
-								}
-							}
-							newm.setDatatable(toJson(list).replaceAll("\"", "\\\\\""));
-							dtSet = toJson(list);
-							if(nextTusers != null)
-							{
-								String[] s = nextTusers[i].split(",", -1);
-								if(s.length > 1)
-								{
-									newm.setTusers("," + nextTusers[i] + ",");// 多人，候选人
-									newm.setTuser("");
-								}
-								else
-								{
-									newm.setTusers("");// 候选人
-									newm.setTuser("," + nextTusers[i] + ",");// 单人
-								}
-							}
-							else
-							{
-								String[] s = t.getTusers().split(",", -1);
-								if(s.length > 1)
-								{
-									newm.setTusers("," + t.getTusers() + ",");// 多人，候选人
-									newm.setTuser("");
-								}
-								else
-								{
-									newm.setTusers("");// 候选人
-									newm.setTuser("," + t.getTusers() + ",");// 单人
-								}
-							}
-							newm.setTmemo(t.getTmemo());
-							newm.setSubcount(t.getSubcount());
-							if(t.getSubcount() > -1)
-							{
-								newm.setTuser("," + t.getSubusers() + ",");
-							}
-							this.saveFlowWaiting(newm);
-						}
-						if(talias.equals("end"))
-						{
-							isEnd = true;
-						}
-					}
+					isEnd = exeProcess(waitid, nextTalias, nextTusers, datatable, m, time, isEnd);
 				}
 			}
 			if(isEnd)
@@ -511,6 +409,111 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		}
 	}
 
+	private boolean exeProcess(Long waitid, String[] nextTalias, String[] nextTusers, String datatable, IFlowWaiting m, String time, boolean isEnd)
+	{
+		this.deleteFlowWaiting(waitid);// 该待办事项已经处理
+		for(int i = 0; i < nextTalias.length; i++)
+		{
+			String talias = nextTalias[i];
+			IFlowWaiting w = this.getFlowWaitingByPiid(m.getPiid(), talias);
+			if(w != null && w.getId().longValue() != 0)
+			{
+				this.updateFlowWaiting(w.getId(), time, w.getTprev() + "," + m.getTalias());// 等待数减1, 上经节点增加一个
+			}
+			else
+			{
+				IFlowWaiting newm = new IFlowWaiting();
+				newm.setId(UniqueId.genUniqueId());
+				newm.setPiid(m.getPiid());
+				newm.setYwlsh(m.getYwlsh());
+				newm.setSblsh(m.getSblsh());
+				newm.setFlowid(m.getFlowid());
+				newm.setFlowname(m.getFlowname());
+				newm.setTstart(time);
+				newm.setTprev(m.getTalias());
+				IFlowTask t = this.getFlowTask(m.getFlowid(), talias);
+				newm.setTalias(t.getTalias());
+				newm.setTname(t.getTname());
+				newm.setTcount(t.getTcount());
+				newm.setTnext(t.getTnext());
+				List<IFlowDataRow> list = new ArrayList<IFlowDataRow>();
+				List<IFlowDataRow> oList = toBean(datatable!=null?datatable:"", List.class);
+				List<IFlowDataRow> nList = toBean(t.getDatatable()!=null?t.getDatatable().replaceAll("\\\\", ""):"", List.class);
+				if(nList != null && nList.size() > 0)
+				{
+					for (int j = 0; j < nList.size(); j++)
+					{
+						IFlowDataRow nRow = toBean(toJson(nList.get(j)),IFlowDataRow.class);
+						if(oList != null && oList.size() > 0)
+						{
+							IFlowDataRow oRow = toBean(toJson(oList.get(j)),IFlowDataRow.class);
+							nRow.setValue(oRow.getValue());
+						}
+						else
+						{
+							nRow.setValue("");
+						}
+						list.add(nRow);
+					}
+				}
+				else
+				{
+					if(oList != null && oList.size() > 0)
+					{
+						for (int j = 0; j < oList.size(); j++)
+						{
+							IFlowDataRow row = toBean(toJson(oList.get(j)),IFlowDataRow.class);
+							row.setRwx("001");
+							list.add(row);
+						}
+					}
+				}
+				newm.setDatatable(toJson(list).replaceAll("\"", "\\\\\""));
+				dtSet = toJson(list);
+				if(nextTusers != null)
+				{
+					String[] s = nextTusers[i].split(",", -1);
+					if(s.length > 1)
+					{
+						newm.setTusers("," + nextTusers[i] + ",");// 多人，候选人
+						newm.setTuser("");
+					}
+					else
+					{
+						newm.setTusers("");// 候选人
+						newm.setTuser("," + nextTusers[i] + ",");// 单人
+					}
+				}
+				else
+				{
+					String[] s = t.getTusers().split(",", -1);
+					if(s.length > 1)
+					{
+						newm.setTusers("," + t.getTusers() + ",");// 多人，候选人
+						newm.setTuser("");
+					}
+					else
+					{
+						newm.setTusers("");// 候选人
+						newm.setTuser("," + t.getTusers() + ",");// 单人
+					}
+				}
+				newm.setTmemo(t.getTmemo());
+				newm.setSubcount(t.getSubcount());
+				if(t.getSubcount() > -1)
+				{
+					newm.setTuser("," + t.getSubusers() + ",");
+				}
+				this.saveFlowWaiting(newm);
+			}
+			if(talias.equals("end"))
+			{
+				isEnd = true;
+			}
+		}
+		return isEnd;
+	}
+
 	public boolean updateSubFlowWaiting(Long id, String subusers)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -525,5 +528,39 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		map.put("id", id);
 		map.put("subusers", subusers);
 		return executeUpdate("updateSubFlowWaitingSubusers", map) > 0 ? true : false;
+	}
+	
+	public boolean updateFlowUser(Long wid, String olduser, String oldname,String newuser, String newname)
+	{
+		IFlowWaiting m = this.getFlowWaiting(wid);
+		if(m != null)
+		{
+			String tuser = m.getTuser();
+			if(tuser.indexOf(olduser) > 0 && tuser.indexOf(newuser) < 0)
+			{
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("id", m.getId());
+				tuser = tuser.replaceAll("," + olduser + ",", "," + newuser + ",");
+				map.put("tuser", tuser);
+				String time = TimeUtil.getCurrentTime();
+				IFlowPiData pd = new IFlowPiData();
+				pd.setId(UniqueId.genUniqueId());
+				pd.setPiid(m.getPiid());
+				pd.setTprev(m.getTprev());
+				pd.setTalias(m.getTalias());
+				pd.setTname(m.getTname());
+				pd.setStatus(0);// 状态(0已处理,1代办,2挂起,3取消挂起)
+				pd.setPaccount(olduser);
+				pd.setPname(oldname);
+				pd.setPtime(time);
+				pd.setPtype("1");
+				pd.setMemo("无");
+				pd.setDatatable("[]");
+				executeInsert("insertFlowPiData", pd);
+				executeUpdate("updateFlowUser", map);
+				return true;
+			}
+		}
+		return false;
 	}
 }

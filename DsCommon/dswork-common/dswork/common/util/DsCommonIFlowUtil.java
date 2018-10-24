@@ -349,4 +349,18 @@ public class DsCommonIFlowUtil
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean updateFlowUser(Long wid, String olduser, String oldname,String newuser, String newname)
+	{
+		try
+		{
+			init();
+			return dao.updateFlowUser(wid, olduser, oldname, newuser, newname);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

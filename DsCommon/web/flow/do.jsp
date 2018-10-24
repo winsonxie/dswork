@@ -30,30 +30,12 @@ try
 {
   if(wid > 0){
 	IFlowWaiting po = DsFactory.getFlow().getWaiting(wid);
-	//if(po.getSubcount() > -1 && "".equals(po.getSubusers()))
-	//{
-		//选人
-	//	String subusers = "zyz,lz";
-		//String subusers = "";
-	//	DsFactory.getFlow().startSubFlow(po.getId(), subusers);
-		//response.sendRedirect("");
-	//}
-	//else
-	//{
-		request.setAttribute("po", po);
-		java.util.Map<String, String> map = DsFactory.getFlow().getTaskList(po.getFlowid());
-		map.get(po.getTalias());
-		String datatable = po.getDatatable().replaceAll("\\\\", "");
-		List<IFlowDataRow> dt = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(datatable, List.class);
-		request.setAttribute("dt", dt);
-		/* Map<String, String> dtMap = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(datatable, Map.class);
-		String rwxJson = dtMap.get(po.getTalias());
-		
-		if(!"".equals(rwxJson))
-		{
-			List<IFlowDataRow> dt = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(rwxJson, List.class);
-			request.setAttribute("dt", dt);
-		} */
+	request.setAttribute("po", po);
+	java.util.Map<String, String> map = DsFactory.getFlow().getTaskList(po.getFlowid());
+	map.get(po.getTalias());
+	String datatable = po.getDatatable().replaceAll("\\\\", "");
+	List<IFlowDataRow> dt = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(datatable, List.class);
+	request.setAttribute("dt", dt);
 %>
 	流程名称：${po.flowname}<br />
 	当前任务：${po.talias}&nbsp;${po.tname}<br />
@@ -73,20 +55,15 @@ try
 		&nbsp;<label><input type="radio"  name="resultType" value="-1" />拟作废</label>
 	<br />
 	意见：<textarea name="resultMsg" style="width:400px;">无</textarea><br />
-	<%-- 数据结构：${po.datatable} --%>
 <input type="hidden" name="wid" value="<%=wid%>" />
 <input type="hidden" id="datatable" name="datatable" value="" />
 </form>
 <form id="formdata" method="post" action="">
 <c:forEach items="${dt}" var="dt">
-	<%-- <c:if test="${dt.rwx!='001'}"> --%>
-	<%-- ${fn:escapeXml(dt.talias)}：<input name="${fn:escapeXml(dt.tname)}" datatype="${fn:escapeXml(dt.datatype)}" ${fn:escapeXml(dt.rwx=='400'?'readonly':'')} /><br /> --%>
-	<%-- </c:if> --%>
 	<div ${fn:escapeXml(dt.rwx=='001'?'style=display:none;':'')}>
 	${fn:escapeXml(dt.talias)}：<input name="${fn:escapeXml(dt.tname)}" datatype="${fn:escapeXml(dt.datatype)}" ${fn:escapeXml(dt.rwx=='400'?'readonly':'')} value="${fn:escapeXml(dt.value)}" /><br />
 	</div>
 </c:forEach>
-<!-- <input type="button" onclick="getFormData()" value="获取表单数据" /> -->
 </form>
 <script type="text/javascript">
 var map = new $jskey.Map();
@@ -126,7 +103,6 @@ $dswork.readySubmit = function(){
 </script>
 
 <%
-//}
 	}else{msg = "处理失败";}
 }catch(Exception ex){
 	ex.printStackTrace();

@@ -197,12 +197,19 @@ public class DsCommonIFlowServiceUtil
 	{
 		return service.queryFlowPiData(piid);
 	}
+	
 	public List<IFlowWaiting> queryFlowWaitingByPiid(String piid)
 	{
 		return service.queryFlowWaitingByPiid(piid);
 	}
+	
 	public void deleteFlowPi(String id)
 	{
 		service.deleteFlowPi(id);
+	}
+	
+	public boolean updateFlowUser(Long wid, String olduser, String oldname,String newuser, String newname)
+	{
+		return service.updateFlowUser(wid, olduser, oldname, newuser, newname);
 	}
 }

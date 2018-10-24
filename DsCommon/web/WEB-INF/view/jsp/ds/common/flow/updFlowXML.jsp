@@ -155,6 +155,16 @@ function choose(){
 	};
 	$jskey.dialog.showChooseKey({id:"chooseSystem", title:"表单结构", args:{url:"getFlowDataTable.htm", data:datatable}, width:"600", height:"450", closable:false});
 }
+$(function(){
+	$("#txt_subcount").change(function(){
+		if($(this).val() > -1) {
+			$("#txt_subusers").removeAttr("readonly").attr("placeholder","默认所有用户");
+		}
+		else{
+			$("#txt_subusers").attr("readonly",true).attr("placeholder","无会签用户");
+		}
+	});
+});
 </script>
 </head>
 <body>
@@ -207,7 +217,7 @@ function choose(){
 				</div>
 				<div>
 					&nbsp;会签 <input id="txt_subcount" type="number" min="-1" max="10000" step="1" class="text" style="width:72px;" value="" placeholder="无" />个任务
-					&nbsp;用户 <input id="txt_subusers" type="text" class="text" style="width:168px;" value="" placeholder="不填默认所有用户" />
+					&nbsp;会签用户 <input id="txt_subusers" type="text" class="text" style="width:143px;" value="" placeholder="默认所有用户" />
 				</div>
 			</div>
 			<div style="float:left;width:60px;padding:3px 0 3px 3px;">

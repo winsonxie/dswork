@@ -35,7 +35,7 @@ public class IFlowWaiting
 	private String tusers = "";
 	// 至少合并会签个数(不需要会签时值为-1)
 	private Integer subcount = -1;
-	// 当前会签的用户ID(以逗号分隔可选用户，以|线分隔并行用户)
+	// 已进行会签的用户ID(以逗号分隔用户)
 	private String subusers = "";
 	// 参数
 	private String tmemo = "";

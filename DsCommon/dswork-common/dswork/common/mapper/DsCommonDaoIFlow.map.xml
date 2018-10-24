@@ -100,15 +100,16 @@
 <update id="updateFlowWaitingUser">
 	update DS_FLOW_PI_WAITING set TUSER=#{tuser}, TUSERS=null where ID=#{id}
 </update>
-<!-- <update id="updateFlowWaitingSubusers">
-	update DS_FLOW_PI_WAITING set SUBUSERS=#{subusers} where ID=#{id}
-</update> -->
 <update id="updateSubFlowWaiting">
 	update DS_FLOW_PI_WAITING set SUBCOUNT=SUBCOUNT-1, SUBUSERS=#{subusers}
 	where ID=#{id}
 </update>
 <update id="updateSubFlowWaitingSubusers">
 	update DS_FLOW_PI_WAITING set SUBUSERS=#{subusers}
+	where ID=#{id}
+</update>
+<update id="updateFlowUser">
+	update DS_FLOW_PI_WAITING set TUSER=#{tuser}
 	where ID=#{id}
 </update>
 <resultMap id="resultFlowWaiting" type="dswork.common.model.IFlowWaiting">

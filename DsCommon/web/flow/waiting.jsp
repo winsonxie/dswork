@@ -27,6 +27,7 @@ li,a {line-height:2em;}
 		${fn:escapeXml(d.flowname)}[${fn:escapeXml(d.talias)}]
 		<c:if test="${d.tuser!=''}">
 		&nbsp;<a class="update" href="do.jsp?wid=${d.id}">办理</a>&nbsp;<a target="_blank" class="update" href="${ctx}/common/share/showFlowRunning.htm?piid=${d.piid}">查看图形</a>
+		&nbsp;<a class="update" href="changeExe.jsp?wid=${d.id}">代办</a>
 		</c:if>
 		<c:if test="${d.tusers!=''}">
 		&nbsp;<a class="update" href="take.jsp?wid=${d.id}">取得任务</a>

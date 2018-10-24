@@ -216,4 +216,9 @@ public class DsCommonIFlowService
 	{
 		dao.deleteFlowPi(Long.parseLong(id));
 	}
+	
+	public boolean updateFlowUser(Long wid, String olduser, String oldname,String newuser, String newname)
+	{
+		return dao.updateFlowUser(wid, olduser, oldname, newuser, newname);
+	}
 }

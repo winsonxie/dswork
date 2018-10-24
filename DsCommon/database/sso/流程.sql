@@ -100,7 +100,6 @@ CREATE TABLE IF NOT EXISTS DS_FLOW_PI_DATA
 CREATE TABLE IF NOT EXISTS DS_FLOW_PI_WAITING
 (
    ID                   BIGINT(18) NOT NULL COMMENT '主键ID',
-   PID                  BIGINT(18) NULL COMMENT '外键ID',
    PIID                 BIGINT(18) COMMENT '实例ID',
    YWLSH                VARCHAR(128) COMMENT '业务流水号',
    SBLSH                VARCHAR(128) BINARY COMMENT '申办流水号',
@@ -115,7 +114,7 @@ CREATE TABLE IF NOT EXISTS DS_FLOW_PI_WAITING
    TUSER                VARCHAR(1000) COMMENT '经办人',
    TUSERS               VARCHAR(1000) COMMENT '候选经办人',
    SUBCOUNT             INT(4) COMMENT '至少合并会签个数(不需要会签时值为-1)',
-   SUBUSERS             VARCHAR(1000) COMMENT '当前会签的用户ID(以逗号分隔可选用户，以|线分隔并行用户)',
+   SUBUSERS             VARCHAR(1000) COMMENT '已进行会签的用户ID(以逗号分隔用户)',
    TMEMO                VARCHAR(1000) COMMENT '参数',
    DATATABLE            TEXT COMMENT '数据结构',
    PRIMARY KEY (ID),
