@@ -217,7 +217,7 @@ $(function(){
 				</div>
 				<div>
 					&nbsp;会签 <input id="txt_subcount" type="number" min="-1" max="10000" step="1" class="text" style="width:72px;" value="" placeholder="无" />个任务
-					&nbsp;会签用户 <input id="txt_subusers" type="text" class="text" style="width:143px;" value="" placeholder="默认所有用户" />
+					&nbsp;会签用户 <input id="txt_subusers" type="text" class="text" style="width:143px;" value="" placeholder="无会签用户" readonly="readonly" />
 				</div>
 			</div>
 			<div style="float:left;width:60px;padding:3px 0 3px 3px;">

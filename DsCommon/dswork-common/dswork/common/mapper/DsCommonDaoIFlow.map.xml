@@ -148,7 +148,8 @@
 <sql id="sqlQueryFlowWaiting">
 	select <include refid="sqlFlowWaiting" /> from DS_FLOW_PI_WAITING
 	where ((TUSER=#{account} and SUBCOUNT &lt; 0) or TUSERS like #{account, typeHandler=LikeTypeHandler} 
-	or ((TUSER like #{account, typeHandler=LikeTypeHandler} or TUSER=',,') and SUBCOUNT > -1 and SUBUSERS not like #{account, typeHandler=LikeTypeHandler})
+	or ((TUSER like #{account, typeHandler=LikeTypeHandler} or TUSER like '%,,%' ) and SUBCOUNT > -1 
+	and (SUBUSERS not like #{account, typeHandler=LikeTypeHandler} or TUSER like #{tuser, typeHandler=LikeTypeHandler}) )
 	) 
 	and TCOUNT=1
 </sql>

@@ -198,7 +198,11 @@ public class DsCommonDaoIFlow extends MyBatisDao
 	
 	public List<IFlowWaiting> queryFlowWaiting(String account)
 	{
-		return executeSelectList("queryFlowWaiting", "," + account + ",");
+		String tuser = account;
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("account", "," + account + ",");
+		map.put("tuser", "|," + tuser + ",");
+		return executeSelectList("queryFlowWaiting", map);
 	}
 
 	public IFlowWaiting saveFlowStart(String alias, String users, String ywlsh, String sblsh, String account, String name, int piDay, boolean isWorkDay)
@@ -331,6 +335,11 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				if(m.getSubcount() == 0)//会签个数为0时,subcount不需要继续减
 				{
 					this.updateSubFlowWaitingSubusers(m.getId(), subusers);//更新subusers
+					String cuser = "|," + account + ",";
+					if(m.getTuser().indexOf(cuser) > 0)
+					{
+						isEnd = exeProcess(waitid, nextTalias, nextTusers, datatable, m, time, isEnd);
+					}
 				}
 				else
 				{
@@ -342,11 +351,11 @@ public class DsCommonDaoIFlow extends MyBatisDao
 					IFlowTask t = this.getFlowTask(m.getFlowid(), m.getTalias());
 					if(!"".equals(t.getTusers()))//是否有用户来控制会签的结束
 					{
-						m.setId(UniqueId.genUniqueId());
-						m.setTuser("," + t.getTusers() + ",");
-						m.setSubcount(-1);
-						m.setSubusers("");
-						this.saveFlowWaiting(m);
+						String tuser = m.getTuser() + "|," + t.getTusers() + ",";//tuser |后的用户是用来控制会签环节结束的用户
+						Map<String, Object> map = new HashMap<String, Object>();
+						map.put("id", m.getId());
+						map.put("tuser", tuser);
+						executeUpdate("updateFlowUser", map);
 					}
 					else
 					{
@@ -549,7 +558,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				pd.setTprev(m.getTprev());
 				pd.setTalias(m.getTalias());
 				pd.setTname(m.getTname());
-				pd.setStatus(0);// 状态(0已处理,1代办,2挂起,3取消挂起)
+				pd.setStatus(1);// 状态(0已处理,1代办,2挂起,3取消挂起)
 				pd.setPaccount(olduser);
 				pd.setPname(oldname);
 				pd.setPtime(time);
