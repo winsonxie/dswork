@@ -152,9 +152,7 @@ public class HttpCommon
 			}
 			else
 			{
-				String encodedName = java.net.URLEncoder.encode(nv.getName(), charsetName);
-				String encodedValue = java.net.URLEncoder.encode(nv.getValue(), charsetName);
-				bout.write(String.format(CONTENT_VALUE, encodedName, encodedValue).getBytes("ISO-8859-1"));
+				bout.write(String.format(CONTENT_VALUE, nv.getName(), nv.getValue()).getBytes(charsetName));
 			}
 			bout.write(rn);
 			bout.write(rnBoundary);
