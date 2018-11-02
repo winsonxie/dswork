@@ -17,7 +17,7 @@ import javax.net.ssl.SSLSocketFactory;
 /**
  * 封装http请求
  * @author skey
- * @version 1.0
+ * @version 2.0
  */
 public class HttpUtil
 {
@@ -27,6 +27,8 @@ public class HttpUtil
 	private int connectTimeout = 10000;
 	private int readTimeout = 30000;
 	private String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.104";
+	private static String boundary = "----WebKitFormBoundaryForDsworkAbcdefg";
+	private static String boundaryContentType = "multipart/form-data; boundary=" + boundary;
 
 	/**
 	 * 返回当前是否https请求
@@ -195,8 +197,8 @@ public class HttpUtil
 			this.http.setConnectTimeout(connectTimeout);
 			this.http.setReadTimeout(readTimeout);
 			this.http.setRequestProperty("User-Agent", userAgent);
-			this.http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 			this.http.setRequestProperty("Accept-Charset", "utf-8");
+			this.http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 			this.http.setRequestMethod("GET");
 		}
 		catch(Exception e)
@@ -232,12 +234,21 @@ public class HttpUtil
 			byte[] arr = null;
 			if(this.form.size() > 0)
 			{
-				String data = HttpCommon.format(form, charsetName);
-				arr = data.getBytes("ISO-8859-1");
+				if(formdata)
+				{
+					this.http.setRequestProperty("Content-Type", boundaryContentType);
+					arr = HttpCommon.formatFormdata(form, charsetName, boundary);
+				}
+				else
+				{
+					String data = HttpCommon.format(form, charsetName);
+					arr = data.getBytes("ISO-8859-1");
+				}
 			}
 			else if(databody != null)
 			{
 				arr = databody;
+				this.http.setRequestProperty("Content-Type", "application/octet-stream");
 			}
 			if(arr != null)
 			{
@@ -331,12 +342,21 @@ public class HttpUtil
 			byte[] arr = null;
 			if(this.form.size() > 0)
 			{
-				String data = HttpCommon.format(form, charsetName);
-				arr = data.getBytes("ISO-8859-1");
+				if(formdata)
+				{
+					this.http.setRequestProperty("Content-Type", boundaryContentType);
+					arr = HttpCommon.formatFormdata(form, charsetName, boundary);
+				}
+				else
+				{
+					String data = HttpCommon.format(form, charsetName);
+					arr = data.getBytes("ISO-8859-1");
+				}
 			}
 			else if(databody != null)
 			{
 				arr = databody;
+				this.http.setRequestProperty("Content-Type", "application/octet-stream");
 			}
 			if(arr != null)
 			{
@@ -415,6 +435,7 @@ public class HttpUtil
 	
 	// 表单项
 	private List<NameValue> form = new ArrayList<NameValue>();
+	private boolean formdata = false;
 
 	/**
 	 * 清除已清加的表单项
@@ -423,6 +444,7 @@ public class HttpUtil
 	public HttpUtil clearForm()
 	{
 		form.clear();
+		formdata = false;
 		return this;
 	}
 
@@ -434,9 +456,51 @@ public class HttpUtil
 	 */
 	public HttpUtil addForm(String name, String value)
 	{
-		form.add(new NameValue(name, value));
+		NameValue c = new NameValue(name, value);
+		if(c.getName().length() > 0)
+		{
+			form.add(c);
+		}
 		return this;
 	}
+
+	/**
+	 * 添加文件表单项
+	 * @param name String
+	 * @param filename String
+	 * @param fileobject byte[]
+	 * @return HttpUtil
+	 */
+	public HttpUtil addForm(String name, String filename, byte[] fileobject)
+	{
+		NameFile c = new NameFile(name, filename, fileobject);
+		if(c.getName().length() > 0)
+		{
+			form.add(c);
+			formdata = true;
+		}
+		return this;
+	}
+
+//	/**
+//	 * 添加文件表单项
+//	 * @param name String
+//	 * @param filename String
+//	 * @param contenttype String
+//	 * @param fileobject byte[]
+//	 * @return HttpUtil
+//	 */
+//	public HttpUtil addForm(String name, String filename, String contenttype, byte[] fileobject)
+//	{
+//
+//		NameFile c = new NameFile(name, filename, contenttype, fileobject);
+//		if(c.getName().length() > 0)
+//		{
+//			form.add(c);
+//			formdata = true;
+//		}
+//		return this;
+//	}
 
 	/**
 	 * 批量添加表单项
@@ -447,7 +511,14 @@ public class HttpUtil
 	{
 		for(NameValue c : array)
 		{
-			form.add(c);
+			if(c.getName().length() > 0)
+			{
+				if(c.isFormdata())
+				{
+					formdata = true;
+				}
+				form.add(c);
+			}
 		}
 		return this;
 	}

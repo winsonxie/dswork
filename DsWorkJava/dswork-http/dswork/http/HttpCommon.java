@@ -1,5 +1,6 @@
 package dswork.http;
 
+import java.io.ByteArrayOutputStream;
 import java.net.HttpURLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,13 +19,10 @@ import javax.net.ssl.TrustManager;
 /**
  * HttpCommon主要供HttpUtil内部调用
  * @author skey
- * @version 1.0
+ * @version 2.0
  */
 public class HttpCommon
 {
-	private static final String NAME_VALUE_SEPARATOR = "=";
-	private static final String PARAMETER_SEPARATOR = "&";
-
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM y HH:mm:ss 'GMT'", Locale.US);
 	private static Date convertGMT(String value)
 	{
@@ -99,23 +97,24 @@ public class HttpCommon
 		}
 	};
 
-	public static String format(List<? extends NameValue> parameters, String charset)
-	{
-		return format(parameters, PARAMETER_SEPARATOR, charset);
-	}
-
-	public static String format(List<? extends NameValue> parameters, String parameterSeparator, String charsetName)
+	private static final String NAME_VALUE_SEPARATOR = "=";
+	private static final String PARAMETER_SEPARATOR = "&";
+	public static String format(List<? extends NameValue> parameters, String charsetName)
 	{
 		StringBuilder result = new StringBuilder();
 		for(NameValue parameter : parameters)
 		{
+			if(parameter.isFormdata())
+			{
+				continue;
+			}
 			try
 			{
 				String encodedName = java.net.URLEncoder.encode(parameter.getName(), charsetName);
 				String encodedValue = java.net.URLEncoder.encode(parameter.getValue(), charsetName);
 				if(result.length() > 0)
 				{
-					result.append(parameterSeparator);
+					result.append(PARAMETER_SEPARATOR);
 				}
 				result.append(encodedName);
 				if(encodedValue != null)
@@ -130,6 +129,38 @@ public class HttpCommon
 			}
 		}
 		return result.toString();
+	}
+
+	private static String CONTENT_FILE = "Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"\r\nContent-Type: %s";
+	private static String CONTENT_VALUE = "Content-Disposition: form-data; name=\"%s\"\r\n\r\n%s";
+	
+	public static byte[] formatFormdata(List<? extends NameValue> parameters, String charsetName, String boundarySeparator) throws java.io.IOException
+	{
+		ByteArrayOutputStream bout = new ByteArrayOutputStream(4096);
+		byte[] rnBoundary = (boundarySeparator + "\r\n").getBytes("ISO-8859-1");
+		byte[] rn = "\r\n".getBytes("ISO-8859-1");
+		bout.write(rnBoundary);
+		for(NameValue nv : parameters)
+		{
+			if(nv.isFormdata())
+			{
+				NameFile nf = (NameFile)nv;
+				bout.write(String.format(CONTENT_FILE, nf.getName(), nf.getFilename(), nf.getContenttype()).getBytes("ISO-8859-1"));
+				bout.write(rn);
+				bout.write(rn);
+				bout.write(nf.getFileobject());
+			}
+			else
+			{
+				String encodedName = java.net.URLEncoder.encode(nv.getName(), charsetName);
+				String encodedValue = java.net.URLEncoder.encode(nv.getValue(), charsetName);
+				bout.write(String.format(CONTENT_VALUE, encodedName, encodedValue).getBytes("ISO-8859-1"));
+			}
+			bout.write(rn);
+			bout.write(rnBoundary);
+		}
+		bout.close();
+		return bout.toByteArray();
 	}
 
 	public static String parse(List<? extends Cookie> parameters, String parameterSeparator)

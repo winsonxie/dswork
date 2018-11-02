@@ -3,12 +3,13 @@ package dswork.http;
 /**
  * 自定义NameValue
  * @author skey
- * @version 1.0
+ * @version 2.0
  */
 public class NameValue
 {
 	private String name;
 	private String value;
+	private boolean formdata = false;
 
 	/**
 	 * 构造方法
@@ -17,7 +18,7 @@ public class NameValue
 	 */
 	public NameValue(String name, String value)
 	{
-		this.name = String.valueOf(name);
+		this.name = String.valueOf(name).trim();
 		this.value = value;
 	}
 	
@@ -40,4 +41,15 @@ public class NameValue
 	{
 		return this.value;
 	}
+
+	public boolean isFormdata()
+	{
+		return formdata;
+	}
+
+	protected void setFormdata(boolean formdata)
+	{
+		this.formdata = formdata;
+	}
+	
 }
