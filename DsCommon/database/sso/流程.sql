@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS DS_FLOW_TASK
    TNEXT                VARCHAR(1000) COMMENT '下级任务(以逗号分隔节点标识，以|线分隔分支任务)',
    TUSERS               VARCHAR(1000) COMMENT '当前任务的用户ID(以逗号分隔可选用户，以|线分隔分支任务用户)',
    SUBCOUNT             INT(4) COMMENT '至少合并会签个数(不需要会签时值为-1)',
-   SUBUSERS             VARCHAR(1000) COMMENT '当前会签的用户ID(以逗号分隔可选用户，以|线分隔并行用户)',
+   SUBUSERS             VARCHAR(1000) COMMENT '当前会签的用户ID(以逗号分隔用户)',
    TMEMO                VARCHAR(1000) COMMENT '参数',
    DATATABLE            VARCHAR(10000) COMMENT '数据结构',
    PRIMARY KEY (ID),
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS DS_FLOW_PI_WAITING
    TPREV                VARCHAR(64) COMMENT '上级任务(从哪过来的)',
    TNEXT                VARCHAR(1000) COMMENT '下级任务(以逗号分隔节点标识，以|线分隔分支任务)',
    TSTART               VARCHAR(19) COMMENT '任务开始时间',
-   TUSER                VARCHAR(1000) COMMENT '经办人',
+   TUSER                VARCHAR(1000) COMMENT '经办人(当为会签待办时 ,|线后的用户是用来控制会签环节结束的用户),'
    TUSERS               VARCHAR(1000) COMMENT '候选经办人',
    SUBCOUNT             INT(4) COMMENT '至少合并会签个数(不需要会签时值为-1)',
    SUBUSERS             VARCHAR(1000) COMMENT '已进行会签的用户ID(以逗号分隔用户)',

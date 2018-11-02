@@ -29,7 +29,7 @@ public class IFlowWaiting
 	private String tnext = "";
 	// 任务开始时间
 	private String tstart = "";
-	// 经办人
+	// 经办人(当为会签待办时 ,|线后的用户是用来控制会签环节结束的用户)
 	private String tuser = "";
 	// 候选经办人
 	private String tusers = "";

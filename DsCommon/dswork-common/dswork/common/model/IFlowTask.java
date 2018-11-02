@@ -19,11 +19,11 @@ public class IFlowTask
 	private Integer tcount = 0;
 	// 下级任务(以逗号分隔节点标识，以|线分隔分支任务)
 	private String tnext = "";
-	// 当前任务的用户ID(以逗号分隔节点标识)
+	// 当前任务的用户ID(以逗号分隔可选用户，以|线分隔分支任务用户)
 	private String tusers = "";
 	// 至少合并会签个数(不需要会签时值为-1)
 	private Integer subcount = -1;
-	// 当前会签的用户ID(以逗号分隔可选用户，以|线分隔并行用户)
+	// 当前会签的用户ID(以逗号分隔用户)
 	private String subusers = "";
 	// 参数
 	private String tmemo = "";
