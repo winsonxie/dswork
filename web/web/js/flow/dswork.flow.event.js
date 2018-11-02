@@ -22,6 +22,7 @@ $f.set = function(x){
 			if($f.p.state == $dswork.flow.p.EDIT){
 				$f.setTask("", "", 1, "", "", "");
 				$("#btn_save").prop("disabled", false).val("增加任务");
+				$("#txt_subusers").attr("readonly",true).attr("placeholder","无会签用户");
 			}
 		}
 		$f.p.o = x;
@@ -146,6 +147,9 @@ $f.initEventNode = function(dom){
 			}else if(e.obj.alias == "end"){
 			}else{
 				$("#btn_delete").prop("disabled", false).val("删除任务");
+				if(e.obj.subcount > 0){
+					$("#txt_subusers").removeAttr("readonly").attr("placeholder","默认所有用户");
+				}
 			}
 			$("#btn_save").prop("disabled", true).val("不可操作");
 		}
