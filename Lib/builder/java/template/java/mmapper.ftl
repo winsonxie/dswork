@@ -29,7 +29,7 @@
 		${c.nameUpperCase}=${'#'}{${c.nameLowerCamel}}<#if c_has_next>,</#if>
 </#list>
 	where <#list table.columnKey as c>${c.nameUpperCase}=${'#'}{${c.nameLowerCamel}}<#if c_has_next> and </#if></#list>
-	<if test="@Ognl@isNotEmpty(lasttime)"> and LASTTIME=#{lasttime} </if>
+	<if test="@Ognl@isNotEmpty(lasttime)"> and LASTTIME=${'#'}{lasttime} </if>
 </update>
 
 <resultMap id="result" type="${namespace}.model.${model}">
