@@ -213,7 +213,7 @@ public class HttpUtil
 	 */
 	public String connect()
 	{
-		return connect("UTF-8");
+		return connect("UTF-8", "UTF-8");
 	}
 
 	/**
@@ -222,6 +222,17 @@ public class HttpUtil
 	 * @return 连接失败返回null
 	 */
 	public String connect(String charsetName)
+	{
+		return connect(charsetName, charsetName);
+	}
+
+	/**
+	 * 连接并返回网页文本
+	 * @param upCharsetName 对封装的表单的编码设置
+	 * @param downCharsetName 对获取的网页内容进行的编码设置
+	 * @return 连接失败返回null
+	 */
+	public String connect(String upCharsetName, String downCharsetName)
 	{
 		String result = null;
 		try
@@ -237,11 +248,11 @@ public class HttpUtil
 				if(formdata)
 				{
 					this.http.setRequestProperty("Content-Type", boundaryContentType);
-					arr = HttpCommon.formatFormdata(form, charsetName, boundary);
+					arr = HttpCommon.formatFormdata(form, upCharsetName, boundary);
 				}
 				else
 				{
-					String data = HttpCommon.format(form, charsetName);
+					String data = HttpCommon.format(form, upCharsetName);
 					arr = data.getBytes("ISO-8859-1");
 				}
 			}
@@ -286,7 +297,7 @@ public class HttpUtil
 						}
 					}
 				}
-				in = new BufferedReader(new InputStreamReader(http.getInputStream(), charsetName));
+				in = new BufferedReader(new InputStreamReader(http.getInputStream(), downCharsetName));
 				String temp = in.readLine();
 				while(temp != null)
 				{
@@ -305,6 +316,7 @@ public class HttpUtil
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 		}
 		try
 		{
