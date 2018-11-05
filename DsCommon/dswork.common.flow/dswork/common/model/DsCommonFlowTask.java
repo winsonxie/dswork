@@ -19,16 +19,16 @@ public class DsCommonFlowTask
 	private Integer tcount = 0;
 	// 下级任务(以逗号分隔节点标识，以|线分隔分支任务)
 	private String tnext = "";
-	// 当前任务的用户ID(以逗号分隔节点标识)
+	// 当前任务的用户ID(以逗号分隔可选用户)
 	private String tusers = "";
+	// 至少合并会签个数(不需要会签时值为-1)
+	private Integer subcount = -1;
+	// 当前会签的用户ID(以逗号分隔用户)
+	private String subusers = "";
 	// 参数
 	private String tmemo = "";
 	// 数据结构
 	private String datatable = "";
-	//至少合并会签个数(不需要会签时值为-1)
-	private Integer subcount = -1;
-	// 当前会签的用户ID(以逗号分隔可选用户，以|线分隔并行用户)
-	private String subusers = "";
 
 	public Long getId()
 	{
@@ -110,26 +110,6 @@ public class DsCommonFlowTask
 		this.tusers = tusers;
 	}
 
-	public String getTmemo()
-	{
-		return tmemo;
-	}
-
-	public void setTmemo(String tmemo)
-	{
-		this.tmemo = tmemo;
-	}
-
-	public String getDatatable()
-	{
-		return datatable;
-	}
-
-	public void setDatatable(String datatable)
-	{
-		this.datatable = datatable;
-	}
-
 	public Integer getSubcount()
 	{
 		return subcount;
@@ -148,5 +128,25 @@ public class DsCommonFlowTask
 	public void setSubusers(String subusers)
 	{
 		this.subusers = subusers;
+	}
+
+	public String getTmemo()
+	{
+		return tmemo;
+	}
+
+	public void setTmemo(String tmemo)
+	{
+		this.tmemo = tmemo;
+	}
+
+	public String getDatatable()
+	{
+		return datatable;
+	}
+
+	public void setDatatable(String datatable)
+	{
+		this.datatable = datatable;
 	}
 }

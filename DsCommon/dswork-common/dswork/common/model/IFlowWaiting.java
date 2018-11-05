@@ -29,13 +29,13 @@ public class IFlowWaiting
 	private String tnext = "";
 	// 任务开始时间
 	private String tstart = "";
-	// 经办人(当为会签待办时 ,|线后的用户是用来控制会签环节结束的用户)
+	// 经办人([会签用户|]经办用户，当为会签任务时对有中括号部分，用户前后补逗号)
 	private String tuser = "";
-	// 候选经办人
+	// 当前任务的用户ID(以逗号分隔可选用户)
 	private String tusers = "";
 	// 至少合并会签个数(不需要会签时值为-1)
 	private Integer subcount = -1;
-	// 已进行会签的用户ID(以逗号分隔用户)
+	// 已进行会签的用户ID(以逗号分隔用户，前后补逗号)
 	private String subusers = "";
 	// 参数
 	private String tmemo = "";
