@@ -27,16 +27,39 @@ public class AuthFactory
 		return gson.toJson(object);
 	}
 	
-	private static StringBuilder getPath(String path)
+	private static HttpUtil getHttp(String path)
 	{
-		StringBuilder sb = new StringBuilder(30);
-		sb.append(AuthGlobal.getURL()).append("/").append(path).append("?name=").append(AuthGlobal.getName()).append("&pwd=").append(AuthGlobal.getPwd());
-		return sb;
+		String u = new StringBuilder(30).append(AuthGlobal.getURL()).append("/").append(path).toString();
+		HttpUtil http = new HttpUtil();
+		http.create(u, u.startsWith("https:"))
+		.addForm("name", AuthGlobal.getName())
+		.addForm("pwd", AuthGlobal.getPwd());
+		return http;
+	}
+	
+	private static void doDebug(String url, String json)
+	{
+		if(log.isDebugEnabled())
+		{
+			StringBuilder sb = new StringBuilder("AuthFactory:url=").append("url");
+			sb.append(", json=").append(json);
+			log.debug(sb.toString());
+		}
+	}
+	
+	private static void doDebug(String url, String json, String name, String value)
+	{
+		if(log.isDebugEnabled())
+		{
+			StringBuilder sb = new StringBuilder("AuthFactory:url=").append("url").append("?").append(name).append("=").append(value);
+			sb.append(", json=").append(json);
+			log.debug(sb.toString());
+		}
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////
 	// 权限相关的方法
-	//////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////// ///////////////
 	/**
 	 * 获取子系统信息
 	 * @param systemPassword 系统访问密码
@@ -44,12 +67,8 @@ public class AuthFactory
 	 */
 	public static ISystem getSystem()
 	{
-		String u = getPath("getSystem").toString();
-		String v = new HttpUtil().create(u, u.startsWith("https:")).connect().trim();
-		if(log.isDebugEnabled())
-		{
-			log.debug("AuthFactory:url=" + u + ", json:" + v);
-		}
+		String v = getHttp("getSystem").connect().trim();
+		doDebug("getSystem", v);
 		ISystem m = gson.fromJson(v, ISystem.class);
 		return m;
 	}
@@ -60,12 +79,8 @@ public class AuthFactory
 	 */
 	public static ISystem[] getSystemByUser(String userAccount)
 	{
-		String u = getPath("getSystemByUser").append("&userAccount=").append(userAccount).toString();
-		String v = new HttpUtil().create(u, u.startsWith("https:")).connect().trim();
-		if(log.isDebugEnabled())
-		{
-			log.debug("AuthFactory:url=" + u + ", json:" + v);
-		}
+		String v = getHttp("getSystemByUser").addForm("userAccount", userAccount).connect().trim();
+		doDebug("getSystemByUser", v, "userAccount", userAccount);
 		List<ISystem> list = gson.fromJson(v, new TypeToken<List<ISystem>>(){}.getType());
 		return list.toArray(new ISystem[list.size()]);
 	}
@@ -78,12 +93,8 @@ public class AuthFactory
 	 */
 	public static IFunc[] getFunctionBySystem()
 	{
-		String u = getPath("getFunctionBySystem").toString();
-		String v = new HttpUtil().create(u, u.startsWith("https:")).connect().trim();
-		if(log.isDebugEnabled())
-		{
-			log.debug("AuthFactory:url=" + u + ", json:" + v);
-		}
+		String v = getHttp("getFunctionBySystem").toString();
+		doDebug("getFunctionBySystem", v);
 		List<IFunc> list = gson.fromJson(v, new TypeToken<List<IFunc>>(){}.getType());
 		return list.toArray(new IFunc[list.size()]);
 	}
@@ -97,12 +108,8 @@ public class AuthFactory
 	 */
 	public static IFunc[] getFunctionByUser(String userAccount)
 	{
-		String u = getPath("getFunctionByUser").append("&userAccount=").append(userAccount).toString();
-		String v = new HttpUtil().create(u, u.startsWith("https:")).connect().trim();
-		if(log.isDebugEnabled())
-		{
-			log.debug("AuthFactory:url=" + u + ", json:" + v);
-		}
+		String v = getHttp("getFunctionByUser").addForm("userAccount", userAccount).toString();
+		doDebug("getFunctionByUser", v, "userAccount", userAccount);
 		List<IFunc> list = gson.fromJson(v, new TypeToken<List<IFunc>>(){}.getType());
 		return list.toArray(new IFunc[list.size()]);
 	}
@@ -116,12 +123,8 @@ public class AuthFactory
 	 */
 	public static IFunc[] getFunctionByOrg(String orgId)
 	{
-		String u = getPath("getFunctionByOrg").append("&orgId=").append(orgId).toString();
-		String v = new HttpUtil().create(u, u.startsWith("https:")).connect().trim();
-		if(log.isDebugEnabled())
-		{
-			log.debug("AuthFactory:url=" + u + ", json:" + v);
-		}
+		String v = getHttp("getFunctionByOrg").addForm("orgId", orgId).toString();
+		doDebug("getFunctionByOrg", v, "orgId", orgId);
 		List<IFunc> list = gson.fromJson(v, new TypeToken<List<IFunc>>(){}.getType());
 		return list.toArray(new IFunc[list.size()]);
 	}
@@ -136,12 +139,8 @@ public class AuthFactory
 	 */
 	public static IOrg getOrg(String orgId)
 	{
-		String u = getPath("getOrg").append("&orgId=").append(orgId).toString();
-		String v = new HttpUtil().create(u, u.startsWith("https:")).connect().trim();
-		if(log.isDebugEnabled())
-		{
-			log.debug("AuthFactory:url=" + u + ", json:" + v);
-		}
+		String v = getHttp("getOrg").addForm("orgId", orgId).toString();
+		doDebug("getOrg", v, "orgId", orgId);
 		IOrg m = gson.fromJson(v, IOrg.class);
 		return m;
 	}
@@ -153,12 +152,8 @@ public class AuthFactory
 	 */
 	public static IOrg[] queryOrgByOrgParent(String orgPid)
 	{
-		String u = getPath("queryOrgByOrgParent").append("&orgPid=").append(orgPid).toString();
-		String v = new HttpUtil().create(u, u.startsWith("https:")).connect().trim();
-		if(log.isDebugEnabled())
-		{
-			log.debug("AuthFactory:url=" + u + ", json:" + v);
-		}
+		String v = getHttp("queryOrgByOrgParent").addForm("orgPid", orgPid).toString();
+		doDebug("queryOrgByOrgParent", v, "orgPid", orgPid);
 		List<IOrg> list = gson.fromJson(v, new TypeToken<List<IOrg>>(){}.getType());
 		return list.toArray(new IOrg[list.size()]);
 	}
@@ -170,12 +165,8 @@ public class AuthFactory
 	 */
 	public static IOrg[] queryPostByOrg(String orgId)
 	{
-		String u = getPath("queryPostByOrg").append("&orgId=").append(orgId).toString();
-		String v = new HttpUtil().create(u, u.startsWith("https:")).connect().trim();
-		if(log.isDebugEnabled())
-		{
-			log.debug("AuthFactory:url=" + u + ", json:" + v);
-		}
+		String v = getHttp("queryPostByOrg").addForm("orgId", orgId).toString();
+		doDebug("queryPostByOrg", v, "orgId", orgId);
 		List<IOrg> list = gson.fromJson(v, new TypeToken<List<IOrg>>(){}.getType());
 		return list.toArray(new IOrg[list.size()]);
 	}
@@ -187,12 +178,8 @@ public class AuthFactory
 	 */
 	public static IUser getUser(String userAccount)
 	{
-		String u = getPath("getUser").append("&userAccount=").append(userAccount).toString();
-		String v = new HttpUtil().create(u, u.startsWith("https:")).connect().trim();
-		if(log.isDebugEnabled())
-		{
-			log.debug("AuthFactory:url=" + u + ", json:" + v);
-		}
+		String v = getHttp("getUser").addForm("userAccount", userAccount).toString();
+		doDebug("getUser", v, "userAccount", userAccount);
 		IUser m = gson.fromJson(v, IUser.class);
 		return m;
 	}
@@ -204,12 +191,8 @@ public class AuthFactory
 	 */
 	public static IUser[] queryUserByPost(String postId)
 	{
-		String u = getPath("queryUserByPost").append("&postId=").append(postId).toString();
-		String v = new HttpUtil().create(u, u.startsWith("https:")).connect().trim();
-		if(log.isDebugEnabled())
-		{
-			log.debug("AuthFactory:url=" + u + ", json:" + v);
-		}
+		String v = getHttp("queryUserByPost").addForm("postId", postId).toString();
+		doDebug("queryUserByPost", v, "postId", postId);
 		List<IUser> list = gson.fromJson(v, new TypeToken<List<IUser>>(){}.getType());
 		return list.toArray(new IUser[list.size()]);
 	}
@@ -221,12 +204,8 @@ public class AuthFactory
 	 */
 	public static IUser[] queryUserByOrgParent(String orgPid)
 	{
-		String u = getPath("queryUserByOrgParent").append("&orgPid=").append(orgPid).toString();
-		String v = new HttpUtil().create(u, u.startsWith("https:")).connect().trim();
-		if(log.isDebugEnabled())
-		{
-			log.debug("AuthFactory:url=" + u + ", json:" + v);
-		}
+		String v = getHttp("queryUserByOrgParent").addForm("orgPid", orgPid).toString();
+		doDebug("queryUserByOrgParent", v, "orgPid", orgPid);
 		List<IUser> list = gson.fromJson(v, new TypeToken<List<IUser>>(){}.getType());
 		return list.toArray(new IUser[list.size()]);
 	}
@@ -238,12 +217,8 @@ public class AuthFactory
 	 */
 	public static IUser[] queryUserByOrg(String orgId)
 	{
-		String u = getPath("queryUserByOrg").append("&orgId=").append(orgId).toString();
-		String v = new HttpUtil().create(u, u.startsWith("https:")).connect().trim();
-		if(log.isDebugEnabled())
-		{
-			log.debug("AuthFactory:url=" + u + ", json:" + v);
-		}
+		String v = getHttp("queryUserByOrg").addForm("orgId", orgId).toString();
+		doDebug("queryUserByOrg", v, "orgId", orgId);
 		List<IUser> list = gson.fromJson(v, new TypeToken<List<IUser>>(){}.getType());
 		return list.toArray(new IUser[list.size()]);
 	}
@@ -255,12 +230,8 @@ public class AuthFactory
 	 */
 	public static IOrg[] queryPostByUser(String userAccount)
 	{
-		String u = getPath("queryPostByUser").append("&userAccount=").append(userAccount).toString();
-		String v = new HttpUtil().create(u, u.startsWith("https:")).connect().trim();
-		if(log.isDebugEnabled())
-		{
-			log.debug("AuthFactory:url=" + u + ", json:" + v);
-		}
+		String v = getHttp("queryPostByUser").addForm("userAccount", userAccount).toString();
+		doDebug("queryPostByUser", v, "userAccount", userAccount);
 		List<IOrg> list = gson.fromJson(v, new TypeToken<List<IOrg>>(){}.getType());
 		return list.toArray(new IOrg[list.size()]);
 	}
