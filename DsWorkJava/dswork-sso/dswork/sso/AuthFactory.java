@@ -93,7 +93,7 @@ public class AuthFactory
 	 */
 	public static IFunc[] getFunctionBySystem()
 	{
-		String v = getHttp("getFunctionBySystem").toString();
+		String v = getHttp("getFunctionBySystem").connect().toString();
 		doDebug("getFunctionBySystem", v);
 		List<IFunc> list = gson.fromJson(v, new TypeToken<List<IFunc>>(){}.getType());
 		return list.toArray(new IFunc[list.size()]);
@@ -108,7 +108,7 @@ public class AuthFactory
 	 */
 	public static IFunc[] getFunctionByUser(String userAccount)
 	{
-		String v = getHttp("getFunctionByUser").addForm("userAccount", userAccount).toString();
+		String v = getHttp("getFunctionByUser").addForm("userAccount", userAccount).connect().toString();
 		doDebug("getFunctionByUser", v, "userAccount", userAccount);
 		List<IFunc> list = gson.fromJson(v, new TypeToken<List<IFunc>>(){}.getType());
 		return list.toArray(new IFunc[list.size()]);
@@ -123,7 +123,7 @@ public class AuthFactory
 	 */
 	public static IFunc[] getFunctionByOrg(String orgId)
 	{
-		String v = getHttp("getFunctionByOrg").addForm("orgId", orgId).toString();
+		String v = getHttp("getFunctionByOrg").addForm("orgId", orgId).connect().toString();
 		doDebug("getFunctionByOrg", v, "orgId", orgId);
 		List<IFunc> list = gson.fromJson(v, new TypeToken<List<IFunc>>(){}.getType());
 		return list.toArray(new IFunc[list.size()]);
@@ -139,7 +139,7 @@ public class AuthFactory
 	 */
 	public static IOrg getOrg(String orgId)
 	{
-		String v = getHttp("getOrg").addForm("orgId", orgId).toString();
+		String v = getHttp("getOrg").addForm("orgId", orgId).connect().toString();
 		doDebug("getOrg", v, "orgId", orgId);
 		IOrg m = gson.fromJson(v, IOrg.class);
 		return m;
@@ -152,7 +152,7 @@ public class AuthFactory
 	 */
 	public static IOrg[] queryOrgByOrgParent(String orgPid)
 	{
-		String v = getHttp("queryOrgByOrgParent").addForm("orgPid", orgPid).toString();
+		String v = getHttp("queryOrgByOrgParent").addForm("orgPid", orgPid).connect().toString();
 		doDebug("queryOrgByOrgParent", v, "orgPid", orgPid);
 		List<IOrg> list = gson.fromJson(v, new TypeToken<List<IOrg>>(){}.getType());
 		return list.toArray(new IOrg[list.size()]);
@@ -165,7 +165,7 @@ public class AuthFactory
 	 */
 	public static IOrg[] queryPostByOrg(String orgId)
 	{
-		String v = getHttp("queryPostByOrg").addForm("orgId", orgId).toString();
+		String v = getHttp("queryPostByOrg").addForm("orgId", orgId).connect().toString();
 		doDebug("queryPostByOrg", v, "orgId", orgId);
 		List<IOrg> list = gson.fromJson(v, new TypeToken<List<IOrg>>(){}.getType());
 		return list.toArray(new IOrg[list.size()]);
@@ -178,7 +178,7 @@ public class AuthFactory
 	 */
 	public static IUser getUser(String userAccount)
 	{
-		String v = getHttp("getUser").addForm("userAccount", userAccount).toString();
+		String v = getHttp("getUser").addForm("userAccount", userAccount).connect().toString();
 		doDebug("getUser", v, "userAccount", userAccount);
 		IUser m = gson.fromJson(v, IUser.class);
 		return m;
@@ -191,7 +191,7 @@ public class AuthFactory
 	 */
 	public static IUser[] queryUserByPost(String postId)
 	{
-		String v = getHttp("queryUserByPost").addForm("postId", postId).toString();
+		String v = getHttp("queryUserByPost").addForm("postId", postId).connect().toString();
 		doDebug("queryUserByPost", v, "postId", postId);
 		List<IUser> list = gson.fromJson(v, new TypeToken<List<IUser>>(){}.getType());
 		return list.toArray(new IUser[list.size()]);
@@ -204,7 +204,7 @@ public class AuthFactory
 	 */
 	public static IUser[] queryUserByOrgParent(String orgPid)
 	{
-		String v = getHttp("queryUserByOrgParent").addForm("orgPid", orgPid).toString();
+		String v = getHttp("queryUserByOrgParent").addForm("orgPid", orgPid).connect().toString();
 		doDebug("queryUserByOrgParent", v, "orgPid", orgPid);
 		List<IUser> list = gson.fromJson(v, new TypeToken<List<IUser>>(){}.getType());
 		return list.toArray(new IUser[list.size()]);
@@ -217,7 +217,7 @@ public class AuthFactory
 	 */
 	public static IUser[] queryUserByOrg(String orgId)
 	{
-		String v = getHttp("queryUserByOrg").addForm("orgId", orgId).toString();
+		String v = getHttp("queryUserByOrg").addForm("orgId", orgId).connect().toString();
 		doDebug("queryUserByOrg", v, "orgId", orgId);
 		List<IUser> list = gson.fromJson(v, new TypeToken<List<IUser>>(){}.getType());
 		return list.toArray(new IUser[list.size()]);
@@ -230,7 +230,7 @@ public class AuthFactory
 	 */
 	public static IOrg[] queryPostByUser(String userAccount)
 	{
-		String v = getHttp("queryPostByUser").addForm("userAccount", userAccount).toString();
+		String v = getHttp("queryPostByUser").addForm("userAccount", userAccount).connect().toString();
 		doDebug("queryPostByUser", v, "userAccount", userAccount);
 		List<IOrg> list = gson.fromJson(v, new TypeToken<List<IOrg>>(){}.getType());
 		return list.toArray(new IOrg[list.size()]);
