@@ -31,7 +31,7 @@ public class AuthFactory
 	{
 		String u = new StringBuilder(30).append(AuthGlobal.getURL()).append("/").append(path).toString();
 		HttpUtil http = new HttpUtil();
-		http.create(u, u.startsWith("https:"))
+		http.create(u, true)// 不进行主机名确认
 		.addForm("name", AuthGlobal.getName())
 		.addForm("pwd", AuthGlobal.getPwd());
 		return http;
