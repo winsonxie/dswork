@@ -22,6 +22,6 @@ dswork-cs cs环境，依赖dswork-core和dswork-spring
 dswork-java    pom非jar，cs环境
 dswork-javaweb pom非jar，bs环境
 
-dswork-common  依赖dswork-javaweb和dswork-flow
+dswork-common  在DsCommon项目中，依赖dswork-javaweb和dswork-flow
 
 dswork-ee 非发布，依赖tomcat-embed
