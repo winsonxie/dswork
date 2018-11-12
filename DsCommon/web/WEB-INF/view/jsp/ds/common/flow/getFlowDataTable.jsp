@@ -11,7 +11,7 @@ $(function(){
 var model = parent.getModel();
 var datatable = ""
 if(model != null && model != ""){
-	datatable = JSON.parse(model);
+	eval("datatable = " + model);
 	for(var i=0; i<datatable.length; i++){
 		$("#contactTable").append(''
 		+ '	<tr class="mtr">'
