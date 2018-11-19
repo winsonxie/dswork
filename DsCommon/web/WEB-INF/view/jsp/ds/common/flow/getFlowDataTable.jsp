@@ -13,114 +13,194 @@ var datatable = ""
 if(model != null && model != ""){
 	eval("datatable = " + model);
 	for(var i=0; i<datatable.length; i++){
-		$("#contactTable").append(''
-		+ '	<tr class="mtr">'
-		+ '		<td><input name="talias" datatype="Char" value="' + datatable[i].talias + '"></td>'
-		+ '		<td><input name="tname" datatype="Require" value="' + datatable[i].tname + '"></td>'
-		+ '		<td><select name="ttype">'
-		+ '				<option value="!Require" ' + (datatable[i].datatype=="!Require"?"selected":"") + ' >字符串</option>'
-		+ '				<option value="Require" ' + (datatable[i].datatype=="Require"?"selected":"") + ' >字符串(必填)</option>'
-		+ '				<option value="!Chinese" ' + (datatable[i].datatype=="!Chinese"?"selected":"") + ' >中文</option>'
-		+ '				<option value="Chinese" ' + (datatable[i].datatype=="Chinese"?"selected":"") + ' >中文(必填)</option>'
-		+ '				<option value="!WebDate" ' + (datatable[i].datatype=="!WebDate"?"selected":"") + ' >日期</option>'
-		+ '				<option value="WebDate" ' + (datatable[i].datatype=="WebDate"?"selected":"") + ' >日期(必填)</option>'
-		+ '				<option value="!Char" ' + (datatable[i].datatype=="!Char"?"selected":"") + ' >英、数、下划线</option>'
-		+ '				<option value="Char" ' + (datatable[i].datatype=="Char"?"selected":"") + ' >英、数、下划线(必填)</option>'
-		+ '				<option value="!IdCard" ' + (datatable[i].datatype=="!IdCard"?"selected":"") + ' >身份证号码</option>'
-		+ '				<option value="IdCard" ' + (datatable[i].datatype=="IdCard"?"selected":"") + ' >身份证号码(必填)</option>'
-		+ '				<option value="!Mobile" ' + (datatable[i].datatype=="!Mobile"?"selected":"") + ' >手机号码</option>'
-		+ '				<option value="Mobile" ' + (datatable[i].datatype=="Mobile"?"selected":"") + ' >手机号码(必填)</option>'
-		+ '				<option value="!Money" ' + (datatable[i].datatype=="!Money"?"selected":"") + ' >金额</option>'
-		+ '				<option value="Money" ' + (datatable[i].datatype=="Money"?"selected":"") + ' >金额(必填)</option>'
-		+ '				<option value="!Email" ' + (datatable[i].datatype=="!Email"?"selected":"") + ' >邮件格式</option>'
-		+ '				<option value="Email" ' + (datatable[i].datatype=="Email"?"selected":"") + ' >邮件格式(必填)</option>'
-		+ '				<option value="!Integer" ' + (datatable[i].datatype=="!Integer"?"selected":"") + ' >纯数字</option>'
-		+ '				<option value="Integer" ' + (datatable[i].datatype=="Integer"?"selected":"") + ' >纯数字(必填)</option>'
-		+ '				<option value="!UnitCode" ' + (datatable[i].datatype=="!UnitCode"?"selected":"") + ' >纯统一社会信用代码</option>'
-		+ '				<option value="UnitCode" ' + (datatable[i].datatype=="UnitCode"?"selected":"") + ' >纯统一社会信用代码(必填)</option>'
-		+ '		</select></td>'
-		+ '		<td><input type="button" class="delete"'
-		+ '			onclick="$(this).parent().parent().remove();" /></td>'
-		+ '	</tr>	'
-		);
+		var tr = "";
+			tr += ''
+				+ '	<tr class="mtr">'
+				+ '		<td style="width:120px;">'
+				+ '         <div class="line"></div>'
+				+ '			名称：<input type="text" name="talias" datatype="Char" style="width:70px;" value="' + datatable[i].talias + '"><br>'
+				+ '         <div class="line"></div>'
+				+ '			字段：<input type="text" name="tname" datatype="Require" style="width:70px;" placeholder="只允许输入字母" onkeyup="this.value=this.value.replace(/[^a-zA-Z]/g,\'\')" value="' + datatable[i].tname + '">'
+				+ '         <div class="line"></div>'
+				+ '		</td>'
+				+ '		<td class="mtd_tuse form_input"></td>'
+				+ '     <td><input type="button" class="delete" onclick="$(this).parent().parent().remove();" /></td>'
+				+ ' </tr>'
+				;
+		$("#contactTable").append(tr);
+		paintMtdTuse($("#contactTable .mtr .mtd_tuse:last"), datatable[i]);
 	}
 }
+
 });
 
-function dataTableSave(){
-	//if(confirm("确定保存吗？")){
-		var flag = true;
-		var message1 = [];
-		var message2 = [];
-		for (var i = 0; i < $(".listTable [name='talias']").length - 1; i++) {
-			var v = $($(".listTable [name='talias']")[i]).val();
-			var m = 0;
-			for (var j = i + 1; j < $(".listTable [name='talias']").length; j++) {
-				if (v == $($(".listTable [name='talias']")[j]).val()) {
-					if(v == ""){
-						alert("不能为空");
-						return;
-					}
-					message1.push(v);
-				}
+function paintMtdTuse($mtd_tuse, row){
+	var _tuse = row.tuse;
+	var _ttype = row.ttype;
+	
+	var $select = $("<select></select>");
+	$select.attr("name", "tuse");
+	$select.attr("onchange", "tuseChange(this);");
+	$("<option></option>").val("common").text("通用").appendTo($select);
+	$("<option></option>").val("file").text("文件").appendTo($select);
+	$("<option></option>").val("dict").text("字典").appendTo($select);
+	$("<option></option>").val("extend").text("扩展").appendTo($select);
+	$select.val(_tuse);
+	$select.appendTo($mtd_tuse);
+	
+	var $hidden = $("<input />");
+	$hidden.attr("type", "hidden");
+	$hidden.val(JSON.stringify(row));
+	$hidden.appendTo($mtd_tuse);
+	
+	var $span = $("<span></span>");
+	$span.attr("class", "tuse_extend");
+	$span.appendTo($mtd_tuse);
+	
+	var $btn = $("<input />");
+	$btn.attr("type", "button");
+	$btn.attr("style", "margin:0 10px;");
+	$btn.attr("onclick", "setTypeInfo(this)");
+	$btn.val("设置类型信息");
+	$btn.appendTo($span);
+	
+	var info = setInfo(_tuse, _ttype);
+	$("<span name='info'>" + info + "</span>").appendTo($span);
+}
+
+function setTypeInfo(_obj){
+	var data = $(_obj).parent().parent().find("[type=hidden]").val();
+	var tuse = $(_obj).parent().parent().find("[name=tuse]").val();
+	if(data == "" || (data != "" && JSON.parse(data).tuse != tuse)){
+		data = {};
+		data.tname = "";
+		data.talias = "";
+		data.tuse = $(_obj).parent().parent().find("[name=tuse]").val();
+		data.trwx = "400";
+		data.ttype = "";
+		data = JSON.stringify(data);
+	}
+	$jskey.dialog.callback = function(){
+		var result = $jskey.dialog.returnValue;
+		//console.log("result=" + result);
+		if(result != null){
+			if(result != data){
+				$(_obj).parent().parent().find("[type=hidden]").val(result);
+				result = JSON.parse(result);
+				var _tuse = result.tuse;
+				var _ttype = result.ttype;
+				var info = setInfo(_tuse, _ttype);
+				$(_obj).parent().find("[name=info]").html(info);
 			}
 		}
-		for (var i = 0; i < $(".listTable [name='tname']").length - 1; i++) {
-			var v = $($(".listTable [name='tname']")[i]).val();
-			var m = 0;
-			for (var j = i + 1; j < $(".listTable [name='tname']").length; j++) {
-				if (v == $($(".listTable [name='tname']")[j]).val()) {
-					if(v == ""){
-						alert("不能为空");
-						return;
-					}
-					message2.push(v);
-				}
-			}
+	};
+	$jskey.dialog.showChooseKey({id:"chooseSystem", title:"设置类型信息", args:{url:"setTypeInfo.htm", data:data}, width:"500", height:"400", closable:false});
+}
+
+function tuseChange(_obj){
+	var $obj = $(_obj);
+	var tuse = $obj.val();
+	var hidden = $obj.parent().find("[type=hidden]").val();
+	var info = "";
+	if(hidden != ""){
+		hidden = JSON.parse(hidden);
+		if(tuse == hidden.tuse){
+			info = setInfo(hidden.tuse, hidden.ttype);
 		}
-		message1 = removeArrayRepElement(message1);
-		message2 = removeArrayRepElement(message2);
-		if(message1!=""){
-			if(message2!=""){
-				alert("名称" + message1.join(",") + "字段" + message2.join(",")+"重复");
-				flag = false;
-			}
-			else{
-				alert("名称" + message1.join(",") + "重复");
-				flag = false;
-			}
-		}else{
-			if(message2!=""){
-				alert("字段" + message2.join(",") + "重复");
-				flag = false;
-			}
-		}
-		function removeArrayRepElement(arr){
-		     for (var i = 0; i < arr.length; i++) {
-		          for (var j = 0; j < arr.length; j++) {
-		              if (arr[i] == arr[j] && i != j) {//将后面重复的数删掉
-		                  arr.splice(j, 1);
-		              }
-		          }
-		     }
-		     return arr;
-		}
-		
-		if(flag){
-			var array = [];
-			$(".listTable .mtr").each(function() {
-				var row = {};
-				row.datatype = $(this).find("select[name=ttype]").val();
-				row.tname = $(this).find("input[name=tname]").val().replace(/\"/g,"&quot;");
-				row.talias = $(this).find("input[name=talias]").val().replace(/\"/g,"&quot;");
-				row.rwx = "400";
-				array.push(row);
+	}
+	$(_obj).parent().find("[name=info]").html(info);
+}
+
+function setInfo(tuse, ttype){
+	var k = "";
+	var v = "";
+	var info = "";
+	if(ttype.indexOf(",") > 0){
+		k = ttype.split(",")[0].split(":")[1];
+		v = ttype.split(",")[1].split(":")[1];
+	}
+	if(tuse == "common"){
+		info = "校验类型：" + k + (k.indexOf("!") < 0 ? "， 必填" : "") + "，默认值：" + v;
+	}
+	else if(tuse == "file"){
+		info = "文件类型：" + k + "，拓展名：" + v;
+	}
+	else if(tuse == "dict"){
+		info = "字典引用名：" + k + "，根节点：" + v;
+	}
+	else if(tuse == "extend"){
+		if(k != ""){
+			var karr = k.split("|");
+			var varr = v.split("|");
+			$.each(karr, function(index, value){
+			     info += karr[index] + ":" + varr[index] + "，"
 			});
-			parent.setModel(JSON.stringify(array));
-			//console.log(JSON.stringify(array));
-			parent.$jskey.dialog.close();
 		}
-	//}
+	}
+	return info;
+}
+
+function dataTableSave(){
+	var flag = true;
+	var talias = new Array();
+	var tname = new Array();
+	var mtalias = "";
+	var mtname = "";
+	for (var i = 0; i < $(".listTable [name='talias']").length; i++) {
+		talias[i] = $($(".listTable [name='talias']")[i]).val();
+		tname[i] = $($(".listTable [name='tname']")[i]).val();
+	}
+	var taarr = talias.sort();
+	var tnarr = tname.sort();
+	for(var i = 0; i < talias.length; i++){
+		if(taarr[i] == "" && tnarr[i] == ""){
+			alert("名称，字段不能为空");
+			return;
+		}
+		else{
+			if(taarr[i] == ""){
+				alert("名称不能为空");
+				return;
+			}
+			if(tnarr[i] == ""){
+				alert("字段不能为空");
+				return;
+			}
+		}
+		if (taarr[i] == taarr[i+1]){
+			mtalias += taarr[i] + ",";
+			flag = false;
+		}
+		if (tnarr[i] == tnarr[i+1]){
+			mtname += tnarr[i] + ",";
+			flag = false;
+		}
+	}
+	if(flag){
+		var array = [];
+		$("#contactTable .mtr").each(function() {
+			var row = $(this).find("input[type=hidden]").val();
+			if(row != ""){
+				row = JSON.parse(row);
+				row.tname = $(this).find("input[name=tname]").val();
+				row.talias = $(this).find("input[name=talias]").val();
+				array.push(row);
+			}
+		});
+		parent.setModel(JSON.stringify(array));
+		//console.log(JSON.stringify(array));
+		parent.$jskey.dialog.close();
+	}
+	else{
+		var msg = "";
+		if(mtalias != ""){
+			msg += "名称" + mtalias.substring(0, mtalias.length - 1) + "重复，";
+		}
+		if(mtname != ""){
+			msg += "字段" + mtname.substring(0, mtname.length - 1) + "重复";
+		}
+		alert(msg);
+	}
 }
 function cancel(){
 	parent.$jskey.dialog.close();
@@ -130,6 +210,7 @@ function cancel(){
 <body>
 <table border="0" cellspacing="0" cellpadding="0" class="listLogo">
 	<tr>
+		<td id="focus"></td>
 		<td class="menuTool">
 			<a class="save" id="dataTableSave" onclick="dataTableSave();return false;" href="#">确定修改</a>
 			<a class="close" id="close" onclick="cancel()" href="#">取消修改</a>
@@ -137,45 +218,36 @@ function cancel(){
 	</tr>
 </table>
 <div class="line"></div>
-<form id="dataForm" method="post" action="addTable2.htm">
 <table border="0" cellspacing="1" cellpadding="0" class="listTable" id="contactTable">
 	<tr class="list_title">
-		<td>名称</td>
-		<td>字段</td>
-		<td>类型</td>
-		<td width="8%" class="menuTool"><a class="insert"
-			onclick="$('#contactTable>tbody').append($('#cloneTable>tbody>tr:eq(0)').clone());">添加</a></td>
+		<td>基本信息</td>
+		<td>类型信息</td>
+		<td width="5%" class="menuTool"><a class="insert" onclick="$('#contactTable>tbody').append($('#cloneTable>tbody>tr:eq(0)').clone());"></a></td>
 	</tr>
 </table>
-</form>
 <table id="cloneTable" hidden="hidden">
 	<tr class="mtr">
-		<td><input name="talias" datatype="Char"></td>
-		<td><input name="tname" datatype="Require"></td>
-		<td><select name="ttype">
-				<option value='!Require'>字符串</option>
-				<option value='Require'>字符串(必填)</option>
-				<option value='!Chinese'>中文</option>
-				<option value='Chinese'>中文(必填)</option>
-				<option value='!WebDate'>日期</option>
-				<option value='WebDate'>日期(必填)</option>
-				<option value='!Char'>英、数、下划线</option>
-				<option value='Char'>英、数、下划线(必填)</option>
-				<option value='!IdCard'>身份证号码</option>
-				<option value='IdCard'>身份证号码(必填)</option>
-				<option value='!Mobile'>手机号码</option>
-				<option value='Mobile'>手机号码(必填)</option>
-				<option value='!Money'>金额</option>
-				<option value='Money'>金额(必填)</option>
-				<option value='!Email'>邮件格式</option>
-				<option value='Email'>邮件格式(必填)</option>
-				<option value='!Integer'>纯数字</option>
-				<option value='Integer'>纯数字(必填)</option>
-				<option value='!UnitCode'>纯统一社会信用代码</option>
-				<option value='UnitCode'>纯统一社会信用代码(必填)</option>
-		</select></td>
-		<td><input type="button" class="delete"
-			onclick="$(this).parent().parent().remove();" /></td>
+		<td style="width:120px;">
+			<div class="line"></div>
+			名称：<input type="text" name="talias" style="width:70px;">
+			<div class="line"></div>
+			字段：<input type="text" name="tname" style="width:70px;" placeholder="请输入字母"  onkeyup="this.value=this.value.replace(/[^a-zA-Z]/g,'')">
+			<div class="line"></div>
+		</td>
+		<td class="mtd_tuse form_input">
+			<input type="hidden" value="" />
+			<select name="tuse" onchange="tuseChange(this);">
+				<option value="common">通用</option>
+				<option value="file">文件</option>
+				<option value="dict">字典</option>
+				<option value="extend">扩展</option>
+			</select>
+			<span class="tuse_extend">
+				<input type="button" style="margin:0 5px;" onclick="setTypeInfo(this)" value="设置类型信息" />
+				<span name="info"></span>
+			</span>
+		</td>
+		<td><input type="button" class="delete" onclick="$(this).parent().parent().remove();" /></td>
 	</tr>
 </table>
 </body>

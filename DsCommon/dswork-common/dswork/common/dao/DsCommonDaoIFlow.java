@@ -456,11 +456,11 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						if(oList != null && oList.size() > 0)
 						{
 							IFlowDataRow oRow = toBean(toJson(oList.get(j)),IFlowDataRow.class);
-							nRow.setValue(oRow.getValue());
+							nRow.setTvalue(oRow.getTvalue());
 						}
 						else
 						{
-							nRow.setValue("");
+							nRow.setTvalue("");
 						}
 						list.add(nRow);
 					}
@@ -472,7 +472,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						for (int j = 0; j < oList.size(); j++)
 						{
 							IFlowDataRow row = toBean(toJson(oList.get(j)),IFlowDataRow.class);
-							row.setRwx("001");
+							row.setTrwx("001");
 							list.add(row);
 						}
 					}

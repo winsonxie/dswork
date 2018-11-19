@@ -2,20 +2,11 @@ package dswork.common.model;
 
 public class DsCommonFlowDataRow
 {
-	private String datatype = "";
 	private String tname = "";
 	private String talias = "";
-	private String rwx = "";
-
-	public String getDatatype()
-	{
-		return datatype;
-	}
-
-	public void setDatatype(String datatype)
-	{
-		this.datatype = datatype;
-	}
+	private String tuse = "";
+	private String ttype = "";
+	private String trwx = "";
 
 	public String getTname()
 	{
@@ -37,13 +28,33 @@ public class DsCommonFlowDataRow
 		this.talias = talias;
 	}
 
-	public String getRwx()
+	public String getTuse()
 	{
-		return rwx;
+		return tuse;
 	}
 
-	public void setRwx(String rwx)
+	public void setTuse(String tuse)
 	{
-		this.rwx = rwx;
+		this.tuse = tuse;
+	}
+
+	public String getTtype()
+	{
+		return ttype;
+	}
+
+	public void setTtype(String ttype)
+	{
+		this.ttype = ttype;
+	}
+
+	public String getTrwx()
+	{
+		return trwx;
+	}
+
+	public void setTrwx(String trwx)
+	{
+		this.trwx = trwx;
 	}
 }

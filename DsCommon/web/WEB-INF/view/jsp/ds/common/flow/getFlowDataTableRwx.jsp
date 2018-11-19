@@ -28,13 +28,13 @@ $(function(){
 });
 
 function paintTable(datatable, row){
-	var rwx = row.rwx;
+	var rwx = row.trwx;
 	var r = rwx.substring(0, 1);
 	var w = rwx.substring(1, 2);
 	var x = rwx.substring(2, 3);
 	$("#datatable").append(''
 	+ '<tr><td class="form_title">字段名称</td>'
-	+ '<td class="form_input"><input type="text" name="tname" value="' + row.tname + '" readonly="readonly" /></td>'
+	+ '<td class="form_input"><input type="hidden" name="tname" value="' + row.tname + '" />' + row.tname + '</td>'
 	+ '<td class="form_title">字段权限</td>'
 	+ '<td class="form_input">'
 	+ '<input type="radio" name="' + row.tname + '_rwx" value="4" ' + (r=="4"?"checked":"") + ' />只读 '
@@ -56,7 +56,7 @@ function paintTable(datatable, row){
             	if(i==1){nrwx = "420";}
             	if(i==2){nrwx = "001";}
             }
-            row.rwx = nrwx;
+            row.trwx = nrwx;
             parent.setModel(JSON.stringify(datatable));
          });
 	});

@@ -67,23 +67,26 @@ function updTaskMap(datatable){
 			if(task != ""){
 				task = JSON.parse(task);
 				for (var m = 0; m < table.length; m++) {
-					var dt = table[m];
 					var row = {};
+					var dt = table[m];
 					for (var n = 0; n < task.length; n++) {
-						if(table[m].tname==task[n].tname){
-							row.datatype = task[n].datatype;
-							row.tname = task[n].tname;
-							row.talias = task[n].talias;
-							row.rwx = task[n].rwx;
+						var _dt = task[n];
+						if(dt.tname==_dt.tname){
+							row.tname = _dt.tname;
+							row.talias = _dt.talias;
+							row.tuse = _dt.tuse;
+							row.ttype = _dt.ttype;
+							row.trwx = _dt.trwx;
 							array.push(row);
 							break;
 						}
 						else{
 							if(n == task.length-1){
-								row.datatype = table[m].datatype;
-								row.tname = table[m].tname;
-								row.talias = table[m].talias;
-								row.rwx = "400";
+								row.tname = dt.tname;
+								row.talias = dt.talias;
+								row.tuse = dt.tuse;
+								row.ttype = dt.ttype;
+								row.trwx = "400";
 								array.push(row);
 							}
 							continue;
@@ -97,10 +100,11 @@ function updTaskMap(datatable){
 				for (var m = 0; m < table.length; m++) {
 					var dt = table[m];
 					var row = {};
-					row.datatype = table[m].datatype;
-					row.tname = table[m].tname;
-					row.talias = table[m].talias;
-					row.rwx = "400";
+					row.tname = dt.tname;
+					row.talias = dt.talias;
+					row.tuse = dt.tuse;
+					row.ttype = dt.ttype;
+					row.trwx = "400";
 					array.push(row);
 				}
 				task = array;
@@ -153,7 +157,7 @@ function choose(){
 			updTaskMap(result);
 		}
 	};
-	$jskey.dialog.showChooseKey({id:"chooseSystem", title:"表单结构", args:{url:"getFlowDataTable.htm", data:datatable}, width:"600", height:"450", closable:false});
+	$jskey.dialog.showChooseKey({id:"chooseSystem", title:"表单结构", args:{url:"getFlowDataTable.htm", data:datatable}, width:"800", height:"500", closable:false});
 }
 $(function(){
 	$("#txt_subcount").change(function(){

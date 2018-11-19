@@ -56,6 +56,12 @@ public class DsCommonFlowController extends BaseController
 		return "/ds/common/flow/getFlowDataTableRwx.jsp";
 	}
 	
+	@RequestMapping("/setTypeInfo")
+	public String setTypeInfo()
+	{
+		return "/ds/common/flow/setTypeInfo.jsp";
+	}
+	
 	@RequestMapping("/getFlowDataTable")
 	public String getFlowDataTable()
 	{

@@ -58,10 +58,11 @@ function initTaskMap(datatable){
 	var array = [];
 	for (var i = 0; i < table.length; i++) {
 		var row = {};
-		row.datatype = table[i].datatype;
 		row.tname = table[i].tname;
 		row.talias = table[i].talias;
-		row.rwx = "400";
+		row.tuse = table[i].tuse;
+		row.ttype = table[i].ttype;
+		row.trwx = "400";
 		array.push(row);
 	}
 	taskMap.put("default", JSON.stringify(array));
