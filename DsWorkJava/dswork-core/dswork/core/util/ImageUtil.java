@@ -70,6 +70,7 @@ public class ImageUtil
 				width = w;
 				height = h;
 			}
+			// img = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);// 直接压缩至指定比例
 			// BufferedImage.TYPE_INT_RGB
 			// BufferedImage.SCALE_SMOOTH 的缩略算法生成缩略图片的平滑度的优先级比速度高 生成的图片质量比较好,但速度慢
 			BufferedImage image = new BufferedImage(width, height, BufferedImage.SCALE_SMOOTH);
