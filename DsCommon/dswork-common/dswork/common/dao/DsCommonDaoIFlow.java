@@ -446,8 +446,8 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				newm.setTcount(t.getTcount());
 				newm.setTnext(t.getTnext());
 				List<IFlowDataRow> list = new ArrayList<IFlowDataRow>();
-				List<IFlowDataRow> oList = toBean(datatable!=null?datatable:"", List.class);
-				List<IFlowDataRow> nList = toBean(t.getDatatable()!=null?t.getDatatable().replaceAll("\\\\", ""):"", List.class);
+				List<IFlowDataRow> oList = toBean((datatable!=null&&!"".equals(datatable))?datatable:"", List.class);
+				List<IFlowDataRow> nList = toBean((t.getDatatable()!=null&&!"".equals(t.getDatatable()))?t.getDatatable():"", List.class);
 				if(nList != null && nList.size() > 0)
 				{
 					for (int j = 0; j < nList.size(); j++)
@@ -477,7 +477,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						}
 					}
 				}
-				newm.setDatatable(toJson(list).replaceAll("\"", "\\\\\""));
+				newm.setDatatable(toJson(list));
 				dtSet = toJson(list);
 				if(nextTusers != null)
 				{

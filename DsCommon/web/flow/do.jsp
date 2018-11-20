@@ -7,6 +7,7 @@
 <head>
 <title></title>
 <%@include file="/commons/include/upd.jsp"%>
+<script type="text/javascript" src="/web/js/jskey/jskey_upload.js"></script>
 <style type="text/css">
 body {line-height:2em;}
 </style>
@@ -33,8 +34,8 @@ try
 	request.setAttribute("po", po);
 	java.util.Map<String, String> map = DsFactory.getFlow().getTaskList(po.getFlowid());
 	map.get(po.getTalias());
-	String datatable = po.getDatatable().replaceAll("\\\\", "");
-	List<IFlowDataRow> dt = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(datatable, List.class);
+	com.google.gson.Gson gson = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+	List<IFlowDataRow> dt = gson.fromJson(po.getDatatable(), List.class);
 	request.setAttribute("dt", dt);
 %>
 	流程名称：${po.flowname}<br />
@@ -60,7 +61,6 @@ try
 </form>
 <form id="formdata" method="post" action="">
 <script type="text/javascript">
-var fileArr = [];
 function loaddata(name, value, objectid, type, ename){
 	$.post("${ctx}/common/share/getJsonDict.htm",{name:name, value:value},function(data){
 		var a = eval(data);
@@ -88,100 +88,61 @@ function loaddata(name, value, objectid, type, ename){
 		<%-- ${fn:escapeXml(dt.talias)}：<input name="${fn:escapeXml(dt.tname)}" datatype="${fn:escapeXml(dt.datatype)}" ${fn:escapeXml(dt.rwx=='400'?'readonly':'')} value="${fn:escapeXml(dt.value)}" /><br /> --%>
 		${fn:escapeXml(dt.talias)}：
 		<c:if test="${dt.tuse == 'common'}">
-			<input name="${fn:escapeXml(dt.tname)}" datatype="${fn:escapeXml(dt.ttype)}" ${fn:escapeXml(dt.trwx=='400'?'readonly':'')} value="" /><br />
-			<script type="text/javascript">
-			var tp = "${fn:escapeXml(dt.ttype)}";
-			var tv = "${fn:escapeXml(dt.tvalue)}";
-			var k = "";
-			var v = "";
-			if(tp.indexOf(",") > 0){
-				k = tp.split(",")[0].split(":")[1];
-				v = tp.split(",")[1].split(":")[1];
-			}
-			if(tv == ""){
-				$("[name=tb]").find("[name=${fn:escapeXml(dt.tname)}]").val(v);
-			}
-			else{
-				$("[name=tb]").find("[name=${fn:escapeXml(dt.tname)}]").val("${fn:escapeXml(dt.tvalue)}");
-			}
-			</script>
+			<input type="text" name="${fn:escapeXml(dt.tname)}" datatype="${fn:escapeXml(dt.ttype[0].key)}" ${fn:escapeXml(dt.trwx=='400'?'readonly':'')} value="${fn:escapeXml(dt.tvalue==''?dt.ttype[0].val:dt.tvalue)}" /><br />
 		</c:if>
 		<c:if test="${dt.tuse == 'file'}">
-			<script type="text/javascript">
-				var f = {};
-				f.tuse  = "${fn:escapeXml(dt.tuse)}";
-				f.ttype = "${fn:escapeXml(dt.ttype)}";
-				f.tname = "${fn:escapeXml(dt.tname)}";
-				fileArr.push(f);
-			</script>
-			<input id="id_${fn:escapeXml(dt.tname)}" name="id_${fn:escapeXml(dt.tname)}" type="text" readonly="readonly" />
-			<input id="vid_${fn:escapeXml(dt.tname)}" name="vid_${fn:escapeXml(dt.tname)}" type="hidden"/>
+			<c:if test="${empty dt.tvalue && dt.trwx=='420'}">
+				<script type="text/javascript">
+					var o = new $dswork.upload({io:true, name:"${fn:escapeXml(dt.ttype[0].key)}".toUpperCase(), ext:"${fn:escapeXml(dt.ttype[0].val)}"});
+					$(function(){
+						o.init({id:"id_${fn:escapeXml(dt.tname)}", vid:"vid_${fn:escapeXml(dt.tname)}", ext:"${fn:escapeXml(dt.ttype[0].val)}"});
+					});
+				</script>
+				<input id="id_${fn:escapeXml(dt.tname)}" type="text" readonly="readonly" />
+				<input id="vid_${fn:escapeXml(dt.tname)}" name="${fn:escapeXml(dt.tname)}" type="hidden" value=""/>
+			</c:if>
+			<c:if test="${not empty dt.tvalue || dt.trwx=='400'}">
+				<div>
+				<script type="text/javascript">
+					var name = "${fn:split(dt.tvalue,':')[0]}";
+					if(name.indexOf(".pdf") > 0){
+						var url = "show.jsp?filename=" + name + "&name=" + "${fn:escapeXml(dt.ttype[0].key)}".toUpperCase()
+						document.write('<iframe name="childframe" src="'+url+'" frameBorder=0 style="width:100%;height:500px;" scrolling="no"></iframe>');
+					}
+					else if(name.indexOf(".png") > 0 || name.indexOf(".jpg") > 0){
+						document.write('<img src="/webio/io/down.jsp?name=' + ("${fn:escapeXml(dt.ttype[0].key)}".toUpperCase() + "&f=" + name) + '">');
+					}
+					else{
+						document.write(name);
+					}
+					document.write('<input name="${fn:escapeXml(dt.tname)}" type="hidden" value="${fn:escapeXml(dt.tvalue)}" />')
+				</script>
+				</div>
+			</c:if>
 		</c:if>
 		<c:if test="${dt.tuse == 'dict'}">
 			<span id="chk1"></span>
 			<script type="text/javascript">
-			var tp = "${fn:escapeXml(dt.ttype)}";
-			var k = "";
-			var v = "";
-			if(tp.indexOf(",") > 0){
-				k = tp.split(",")[0].split(":")[1];
-				v = tp.split(",")[1].split(":")[1];
-			}
-			loaddata(k, v, "chk1", "checkbox", "chk_hello");
+				<c:if test="${dt.trwx=='420'}">
+				loaddata("${fn:escapeXml(dt.ttype[0].key)}", ${fn:escapeXml(dt.ttype[0].val)}, "chk1", "radio", "${fn:escapeXml(dt.tname)}");
+				</c:if>
+				<c:if test="${dt.trwx=='400'}">
+				loaddata("${fn:escapeXml(dt.ttype[0].key)}", ${fn:escapeXml(dt.ttype[0].val)}, "chk1", "", "${fn:escapeXml(dt.tname)}");
+				document.write('<input name="${fn:escapeXml(dt.tname)}" type="hidden" value="${fn:escapeXml(dt.tvalue)}" />')
+				</c:if>
+				<c:if test="${dt.trwx=='001'}">
+				document.write('<input name="${fn:escapeXml(dt.tname)}" type="hidden" value="${fn:escapeXml(dt.tvalue)}" />')
+				</c:if>
 			</script>
 		</c:if>
 		<c:if test="${dt.tuse == 'extend'}">
-			<script type="text/javascript">
-				var tp = "${fn:escapeXml(dt.ttype)}";
-				var k = "";
-				var v = "";
-				if(tp.indexOf(",") > 0){
-					k = tp.split(",")[0].split(":")[1];
-					v = tp.split(",")[1].split(":")[1];
-				}
-				var karr = k.split("|");
-				var varr = v.split("|");
-				$.each(karr, function(index, value){
-					document.write(karr[index] + ":" + varr[index] + "，");
-				});
-			</script>
+			<c:forEach items="${dt.ttype}" var="tp" > 
+				<script type="text/javascript">document.write("${tp.key}" + ":" + "${tp.val}" + "，");</script>
+			</c:forEach> 
+			<input name="${fn:escapeXml(dt.tname)}" type="hidden" value="${fn:escapeXml(dt.tvalue)}" />
 		</c:if>
 	</div>
 </c:forEach>
-<script type="text/javascript">
-if(fileArr.length > 0){
-	var script=document.createElement("script");
-	script.type="text/javascript";
-	script.src="/web/js/jskey/jskey_upload.js";
-	document.getElementsByTagName('head')[0].appendChild(script); 
-	var oarr = [];
-	for(var i = 0; i < fileArr.length; i++){
-		var ttype = fileArr[i].ttype;
-		var k = "";
-		var v = "";
-		if(ttype.indexOf(",") > 0){
-			k = ttype.split(",")[0].split(":")[1];
-			v = ttype.split(",")[1].split(":")[1];
-		}
-		oarr[i] = new $dswork.upload({io:true, name:k.toUpperCase(), ext: k});
-	}
-	window.onload = function()
-	{
-		for(var i = 0; i < oarr.length; i++){
-			var ttype = fileArr[i].ttype;
-			var k = "";
-			var v = "";
-			if(ttype.indexOf(",") > 0){
-				k = ttype.split(",")[0].split(":")[1];
-				v = ttype.split(",")[1].split(":")[1];
-			}
-			oarr[i].init({id:"id_" + fileArr[i].tname, vid:"vid_" + fileArr[i].tname, ext:v});
-		}
-	};
-}
-
-
-</script>
 </form>
 <script type="text/javascript">
 var map = new $jskey.Map();
@@ -192,7 +153,7 @@ function getFormData(){
 	var formdata = $("#formdata").serializeArray();
 	$.each(formdata, function(){
 		var m = map.get(this.name);
-		if(m.rwx == "420"){
+		if(m.trwx == "420"){
 			m.tvalue = this.value.replace(/\"/g,"&quot;");
 		}
 		map.put(this.name, m);
@@ -206,7 +167,14 @@ function init(){
 	row.tname  = "${d.tname}";
 	row.talias = "${d.talias}";
 	row.tuse   = "${d.tuse}";
-	row.ttype  = "${d.ttype}";
+	var arr = [];
+	<c:forEach items="${d.ttype}" var="tp">
+	var ttype = {};
+	ttype.key  = "${tp.key}";
+	ttype.val  = "${tp.val}";
+	arr.push(ttype);
+	</c:forEach>
+	row.ttype = arr;
 	row.trwx   = "${d.trwx}";
 	row.tvalue = "";
 	map.put(row.tname, row);
@@ -214,7 +182,7 @@ function init(){
 }
 $(function(){
 	init();
-})
+});
 
 $dswork.readySubmit = function(){
 	getFormData();

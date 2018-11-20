@@ -10,7 +10,6 @@
 $(function(){
 var model = parent.getModel();
 var row = ""
-//console.log("model=" + model);
 if(model != null && model != ""){
 	eval("row = " + model);
 	var tuse = row.tuse;
@@ -22,6 +21,7 @@ if(model != null && model != ""){
 	var $mtd_l = "";
 	if(tuse == "common" || tuse == "file" || tuse == "dict"){
 		$("#contactTable .menuTool").remove();
+		$(".listLogo .menuTool .check").remove();
 		
 		var $mtr = $("<tr></tr>");
 		$mtr.attr("class", "mtr");
@@ -36,9 +36,9 @@ if(model != null && model != ""){
 	
 	var k = "";
 	var v = "";
-	if(ttype.indexOf(",") > 0){
-		k = ttype.split(",")[0].split(":")[1];
-		v = ttype.split(",")[1].split(":")[1];
+	if(ttype != ""){
+		k = ttype[0].key;
+		v = ttype[0].val;
 	}
 	
 	if(row.tuse == "common"){
@@ -51,11 +51,9 @@ if(model != null && model != ""){
 		paintDict($mtd_f, $mtd_l, k, v);
 	}
 	else if(row.tuse == "extend"){
-		if(k != ""){
-			var karr = k.split("|");
-			var varr = v.split("|");
-			$.each(karr, function(index, value){
-				 paintExtend(karr[index], varr[index]);
+		if(ttype != ""){
+			$.each(ttype, function(index, value){
+				paintExtend(ttype[index].key, ttype[index].val);
 			});
 		}
 	}
@@ -78,7 +76,8 @@ function paintExtend(k, v){
 	var $k = $("<input />");
 	$k.attr("type", "text");
 	$k.attr("name", "k");
-	$k.attr("placeholder", "字母、数字");
+	$k.attr("placeholder", "请输入字母或数字");
+	$k.attr("onkeyup", "this.value=this.value.replace(/[^\\w\\.\/]/ig,'')");
 	$k.val(k);
 	$k.appendTo($mtd_f);
 	
@@ -86,7 +85,6 @@ function paintExtend(k, v){
 	var $v = $("<input />");
 	$v.attr("type", "text");
 	$v.attr("name", "v");
-	$v.attr("placeholder", "字母、数字");
 	$v.val(v);
 	$v.appendTo($mtd_s);
 	
@@ -133,7 +131,7 @@ function paintFile($mtd_f, $mtd_l, k, v){
 	$v.attr("name", "v");
 	$v.attr("style", "width:150px;");
 	$v.attr("placeholder", "如：pdf,png,jpg...");
-	$v.attr("onkeyup", "this.value=this.value.replace(/[^a-zA-Z]/g,'')");
+	$v.attr("onkeyup", "this.value=this.value.replace(/[^a-z,A-Z]/g,'')");
 	$v.val(v);
 	$v.appendTo($mtd_l);
 }
@@ -179,62 +177,68 @@ function dataTableSave(){
 	var tuse = row.tuse;
 	var k = $("#contactTable .mtr").find("[name=k]").val();
 	var v = $("#contactTable .mtr").find("[name=v]").val();
+	var tarr = [];
 	if(tuse == "common" || tuse == "file" || tuse == "dict"){
 		if(tuse == "common"){
 			if($("#contactTable .mtr").find("[type=checkbox]").is(':checked')){
 				k = k.replace("!", "");
 			}
 		}
+		var ttype = {};
+		ttype.key = k;
+		ttype.val = v;
+		tarr.push(ttype);
 	}
 	else if(tuse == "extend"){
-		k = "";
-		v = "";
-		var flag = true;
-		var karr = new Array();
-		var msg = "";
-		if($(".listTable [name=k]").length <= 0){
-			alert("请添加key和val值");
-			return;
-		}
-		for (var i = 0; i < $(".listTable [name=k]").length; i++) {
-			karr[i] = $($(".listTable [name=k]")[i]).val();
-		}
-		var arr = karr.sort();
-		for(var i = 0; i < karr.length; i++){
-			if(arr[i] == "" && arr[i] == ""){
-				alert("key值不能为空");
-				return;
-			}
-			if (arr[i] == arr[i+1]){
-				msg += arr[i] + ",";
-				flag = false;
-			}
-		}
-		if(flag){
+		tarr = []
+		if(dataCheck()){
 			$("#contactTable .mtr").find("[name=k]").each(function(){
-				k += $(this).val() + "|";
-				v += $(this).parent().parent().find("[name=v]").val() + "|";
+				var ttype = {};
+				ttype.key = $(this).val();
+				ttype.val = $(this).parent().parent().find("[name=v]").val();
+				tarr.push(ttype);
 			});
-			k = k.substring(0, k.length - 1);
-			v = v.substring(0, v.length - 1);
 		}
 		else{
-			if(msg != ""){
-				msg = "key值" + msg.substring(0, msg.length - 1) + "重复";
-				alert(msg);
-				return;
-			}
+			return;
 		}
 	}
-	var ttype = "k:" + k + ",v:" + v;
-	row.ttype = ttype;
-	
+	row.ttype = tarr;
 	parent.setModel(JSON.stringify(row));
 	//console.log(JSON.stringify(row));
 	parent.$jskey.dialog.close();
 }
-function cancel(){
-	parent.$jskey.dialog.close();
+function cancel(){parent.$jskey.dialog.close();}
+
+function dataCheck(){
+	var flag = true;
+	var karr = new Array();
+	var msg = "";
+	if($(".listTable [name=k]").length <= 0){
+		alert("请添加key和val值");
+		return false;
+	}
+	for (var i = 0; i < $(".listTable [name=k]").length; i++) {
+		karr[i] = $($(".listTable [name=k]")[i]).val();
+	}
+	var arr = karr.sort();
+	for(var i = 0; i < karr.length; i++){
+		if(arr[i] == "" && arr[i] == ""){
+			alert("key值不能为空");
+			return false;
+		}
+		if (arr[i] == arr[i+1]){
+			msg += arr[i] + ",";
+			flag = false;
+		}
+	}
+	if(!flag){
+		if(msg != ""){
+			msg = "key值" + msg.substring(0, msg.length - 1) + "重复";
+			alert(msg);
+		}
+	}
+	return flag;
 }
 </script>
 </head>
@@ -243,6 +247,7 @@ function cancel(){
 	<tr>
 		<td id="titile"></td>
 		<td class="menuTool">
+			<a class="check" id="check" onclick="dataCheck();return false;" href="#">校验信息</a>
 			<a class="save" id="dataTableSave" onclick="dataTableSave();return false;" href="#">确定修改</a>
 			<a class="close" id="close" onclick="cancel()" href="#">取消修改</a>
 		</td>
@@ -259,10 +264,10 @@ function cancel(){
 <table id="cloneTable" hidden="hidden">
 	<tr class="mtr">
 		<td>
-			key：<input type="text" name="k" onkeyup="this.value=this.value.replace(/[^a-zA-Z]/g,'')" placeholder="请输入字母" >
+			key：<input type="text" name="k" onkeyup="this.value=this.value.replace(/[^\w\.\/]/ig,'')" placeholder="请输入字母或数字" >
 		</td>
 		<td>
-			val：<input type="text" name="v" onkeyup="this.value=this.value.replace(/[^a-zA-Z]/g,'')" placeholder="请输入字母">
+			val：<input type="text" name="v">
 		</td>
 		<td><input type="button" class="delete" onclick="$(this).parent().parent().remove();" /></td>
 	</tr>

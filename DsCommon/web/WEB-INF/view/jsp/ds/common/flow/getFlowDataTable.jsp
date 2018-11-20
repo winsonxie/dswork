@@ -11,28 +11,48 @@ $(function(){
 var model = parent.getModel();
 var datatable = ""
 if(model != null && model != ""){
-	eval("datatable = " + model);
-	for(var i=0; i<datatable.length; i++){
-		var tr = "";
-			tr += ''
-				+ '	<tr class="mtr">'
-				+ '		<td style="width:120px;">'
-				+ '         <div class="line"></div>'
-				+ '			名称：<input type="text" name="talias" datatype="Char" style="width:70px;" value="' + datatable[i].talias + '"><br>'
-				+ '         <div class="line"></div>'
-				+ '			字段：<input type="text" name="tname" datatype="Require" style="width:70px;" placeholder="只允许输入字母" onkeyup="this.value=this.value.replace(/[^a-zA-Z]/g,\'\')" value="' + datatable[i].tname + '">'
-				+ '         <div class="line"></div>'
-				+ '		</td>'
-				+ '		<td class="mtd_tuse form_input"></td>'
-				+ '     <td><input type="button" class="delete" onclick="$(this).parent().parent().remove();" /></td>'
-				+ ' </tr>'
-				;
-		$("#contactTable").append(tr);
-		paintMtdTuse($("#contactTable .mtr .mtd_tuse:last"), datatable[i]);
-	}
+	paintMtr(datatable, model);
 }
 
 });
+
+function paintMtr(datatable, model){
+	eval("datatable = " + model);
+	for(var i=0; i<datatable.length; i++){
+		var $mtr = $("<tr></tr>");
+		$mtr.attr("class", "mtr");
+		
+		var $mtd = $("<td></td>")
+		$mtd.attr("style", "width:120px;");
+		$mtd.appendTo($mtr);
+		$("<div class='line'></div>").appendTo($mtd);
+		$("<span>名称：</span>").appendTo($mtd);
+		var $talias = $("<input />");
+		$talias.attr("type", "text");
+		$talias.attr("name", "talias");
+		$talias.attr("style", "width:70px;");
+		$talias.val(datatable[i].talias);
+		$talias.appendTo($mtd);
+		
+		$("<div class='line'></div>").appendTo($mtd);
+		$("<span>字段：</span>").appendTo($mtd);
+		var $tname = $("<input />");
+		$tname.attr("type", "text");
+		$tname.attr("name", "tname");
+		$tname.attr("style", "width:70px;");
+		$tname.attr("placeholder", "只允许输入字母");
+		$tname.attr("onkeyup", "this.value=this.value.replace(/[^a-zA-Z]/g,'')");
+		$tname.val(datatable[i].tname);
+		$tname.appendTo($mtd);
+		$("<div class='line'></div>").appendTo($mtd);
+
+		$('<td class="mtd_tuse form_input"></td>').appendTo($mtr);
+		$('<td><input type="button" class="delete" onclick="$(this).parent().parent().remove();" /></td>').appendTo($mtr);
+		
+		$("#contactTable").append($mtr);
+		paintMtdTuse($("#contactTable .mtr .mtd_tuse:last"), datatable[i]);
+	}
+}
 
 function paintMtdTuse($mtd_tuse, row){
 	var _tuse = row.tuse;
@@ -82,7 +102,6 @@ function setTypeInfo(_obj){
 	}
 	$jskey.dialog.callback = function(){
 		var result = $jskey.dialog.returnValue;
-		//console.log("result=" + result);
 		if(result != null){
 			if(result != data){
 				$(_obj).parent().parent().find("[type=hidden]").val(result);
@@ -115,9 +134,9 @@ function setInfo(tuse, ttype){
 	var k = "";
 	var v = "";
 	var info = "";
-	if(ttype.indexOf(",") > 0){
-		k = ttype.split(",")[0].split(":")[1];
-		v = ttype.split(",")[1].split(":")[1];
+	if(ttype != ""){
+		k = ttype[0].key;
+		v = ttype[0].val;
 	}
 	if(tuse == "common"){
 		info = "校验类型：" + k + (k.indexOf("!") < 0 ? "， 必填" : "") + "，默认值：" + v;
@@ -129,54 +148,15 @@ function setInfo(tuse, ttype){
 		info = "字典引用名：" + k + "，根节点：" + v;
 	}
 	else if(tuse == "extend"){
-		if(k != ""){
-			var karr = k.split("|");
-			var varr = v.split("|");
-			$.each(karr, function(index, value){
-			     info += karr[index] + ":" + varr[index] + "，"
-			});
-		}
+		$.each(ttype, function(index, value){
+			info += ttype[index].key + ":" + ttype[index].val + "，"
+		});
 	}
 	return info;
 }
 
 function dataTableSave(){
-	var flag = true;
-	var talias = new Array();
-	var tname = new Array();
-	var mtalias = "";
-	var mtname = "";
-	for (var i = 0; i < $(".listTable [name='talias']").length; i++) {
-		talias[i] = $($(".listTable [name='talias']")[i]).val();
-		tname[i] = $($(".listTable [name='tname']")[i]).val();
-	}
-	var taarr = talias.sort();
-	var tnarr = tname.sort();
-	for(var i = 0; i < talias.length; i++){
-		if(taarr[i] == "" && tnarr[i] == ""){
-			alert("名称，字段不能为空");
-			return;
-		}
-		else{
-			if(taarr[i] == ""){
-				alert("名称不能为空");
-				return;
-			}
-			if(tnarr[i] == ""){
-				alert("字段不能为空");
-				return;
-			}
-		}
-		if (taarr[i] == taarr[i+1]){
-			mtalias += taarr[i] + ",";
-			flag = false;
-		}
-		if (tnarr[i] == tnarr[i+1]){
-			mtname += tnarr[i] + ",";
-			flag = false;
-		}
-	}
-	if(flag){
+	if(dataCheck()){
 		var array = [];
 		$("#contactTable .mtr").each(function() {
 			var row = $(this).find("input[type=hidden]").val();
@@ -191,7 +171,47 @@ function dataTableSave(){
 		//console.log(JSON.stringify(array));
 		parent.$jskey.dialog.close();
 	}
-	else{
+}
+
+function cancel(){parent.$jskey.dialog.close();}
+
+function dataCheck(){
+	var flag = true;
+	var talias = new Array();
+	var tname = new Array();
+	var mtalias = "";
+	var mtname = "";
+	for (var i = 0; i < $(".listTable [name='talias']").length; i++) {
+		talias[i] = $($(".listTable [name='talias']")[i]).val();
+		tname[i] = $($(".listTable [name='tname']")[i]).val();
+	}
+	var taarr = talias.sort();
+	var tnarr = tname.sort();
+	for(var i = 0; i < talias.length; i++){
+		if(taarr[i] == "" && tnarr[i] == ""){
+			alert("名称，字段不能为空");
+			return false;
+		}
+		else{
+			if(taarr[i] == ""){
+				alert("名称不能为空");
+				return false;
+			}
+			if(tnarr[i] == ""){
+				alert("字段不能为空");
+				return false;
+			}
+		}
+		if (taarr[i] == taarr[i+1]){
+			mtalias += taarr[i] + ",";
+			flag = false;
+		}
+		if (tnarr[i] == tnarr[i+1]){
+			mtname += tnarr[i] + ",";
+			flag = false;
+		}
+	}
+	if(!flag){
 		var msg = "";
 		if(mtalias != ""){
 			msg += "名称" + mtalias.substring(0, mtalias.length - 1) + "重复，";
@@ -201,9 +221,20 @@ function dataTableSave(){
 		}
 		alert(msg);
 	}
+	return flag;
 }
-function cancel(){
-	parent.$jskey.dialog.close();
+
+function setJsonType(){
+	var data = parent.getModel();
+	$jskey.dialog.callback = function(){
+		var result = $jskey.dialog.returnValue;
+		if(result != null){
+			parent.setModel(result);
+			$("#contactTable .mtr").remove();
+			paintMtr(datatable="", result);
+		}
+	};
+	$jskey.dialog.showChooseKey({id:"chooseSystem", title:"类型配置（json）", args:{url:"setJsonType.htm", data:data}, width:"700", height:"400", closable:false});
 }
 </script>
 </head>
@@ -212,6 +243,8 @@ function cancel(){
 	<tr>
 		<td id="focus"></td>
 		<td class="menuTool">
+			<a class="graph" id="graph" onclick="setJsonType();return false;" href="#">类型配置</a>
+			<a class="check" id="check" onclick="dataCheck();return false;" href="#">校验信息</a>
 			<a class="save" id="dataTableSave" onclick="dataTableSave();return false;" href="#">确定修改</a>
 			<a class="close" id="close" onclick="cancel()" href="#">取消修改</a>
 		</td>

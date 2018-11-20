@@ -48,18 +48,24 @@ public class DsCommonFlowController extends BaseController
 	{
 		return "/ds/common/flow/addFlowXML.jsp";
 	}
-
-	// 授权
-	@RequestMapping("/getFlowDataTableRwx")
-	public String getFlowDataTableRwx()
+	
+	@RequestMapping("/setJsonType")
+	public String setJsonType()
 	{
-		return "/ds/common/flow/getFlowDataTableRwx.jsp";
+		return "/ds/common/flow/setJsonType.jsp";
 	}
 	
 	@RequestMapping("/setTypeInfo")
 	public String setTypeInfo()
 	{
 		return "/ds/common/flow/setTypeInfo.jsp";
+	}
+
+	// 授权
+	@RequestMapping("/getFlowDataTableRwx")
+	public String getFlowDataTableRwx()
+	{
+		return "/ds/common/flow/getFlowDataTableRwx.jsp";
 	}
 	
 	@RequestMapping("/getFlowDataTable")
@@ -89,7 +95,7 @@ public class DsCommonFlowController extends BaseController
 					{
 						if(tjsonArr[i].indexOf("\\") < 0)
 						{
-							tjsonArr[i] = tjsonArr[i].replaceAll("\"", "\\\\\"");
+							tjsonArr[i] = tjsonArr[i];
 						}
 						map.put(tkeyArr[i], tjsonArr[i]);
 					}
@@ -196,7 +202,7 @@ public class DsCommonFlowController extends BaseController
 		for (int i = 0; i < taskList.size(); i++)
 		{
 			DsCommonFlowTask task = taskList.get(i);
-			taskMap.put(task.getTalias(), task.getDatatable());
+			taskMap.put(task.getTalias(), task.getDatatable().replaceAll("\"", "\\\\\""));
 		}
 		String datatable = po.getDatatable();
 		if (!"".equals(datatable))
@@ -213,7 +219,6 @@ public class DsCommonFlowController extends BaseController
 	{
 		try
 		{
-
 			Map<String, String> map = new LinkedHashMap<String, String>();
 			String[] tkeyArr = req.getStringArray("tkey");
 			if(tkeyArr.length > 0)
@@ -223,7 +228,7 @@ public class DsCommonFlowController extends BaseController
 				{
 					if(tjsonArr[i].indexOf("\\") < 0)
 					{
-						tjsonArr[i] = tjsonArr[i].replaceAll("\"", "\\\\\"");
+						tjsonArr[i] = tjsonArr[i];
 					}
 					map.put(tkeyArr[i], tjsonArr[i]);
 				}

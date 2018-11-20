@@ -100,7 +100,7 @@ function choose(){
 			initTaskMap(result);
 		}
 	};
-	$jskey.dialog.showChooseKey({id:"chooseSystem", title:"表单结构", args:{url:"getFlowDataTable.htm", data:datatable}, width:"600", height:"450", closable:false});
+	$jskey.dialog.showChooseKey({id:"chooseSystem", title:"表单结构", args:{url:"getFlowDataTable.htm", data:datatable}, width:"800", height:"450", closable:false});
 }
 
 function getRwx(taskkey){return taskMap.get(taskkey);}

@@ -1,12 +1,14 @@
 package dswork.common.model;
 
+import java.util.Map;
+
 public class DsCommonFlowDataRow
 {
-	private String tname = "";
-	private String talias = "";
-	private String tuse = "";
-	private String ttype = "";
-	private String trwx = "";
+	private String tname = "";// 字段名
+	private String talias = "";// 名称
+	private String tuse = "";// 类型， common通用，file文件，dict字典，extend扩展
+	private Map<String, Object>[] ttype;// 类型信息，格式：[{"key":"xxx","val":"xxx"}]
+	private String trwx = "";// 字段权限， 400 只读， 420 编辑，001隐藏
 
 	public String getTname()
 	{
@@ -38,12 +40,12 @@ public class DsCommonFlowDataRow
 		this.tuse = tuse;
 	}
 
-	public String getTtype()
+	public Map<String, Object>[] getTtype()
 	{
 		return ttype;
 	}
 
-	public void setTtype(String ttype)
+	public void setTtype(Map<String, Object>[] ttype)
 	{
 		this.ttype = ttype;
 	}
