@@ -183,6 +183,7 @@ function dataTableSave(){
 			if($("#contactTable .mtr").find("[type=checkbox]").is(':checked')){
 				k = k.replace("!", "");
 			}
+			row.tvalue = v;
 		}
 		var ttype = {};
 		ttype.key = k;

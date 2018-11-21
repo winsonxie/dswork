@@ -77,6 +77,7 @@ function updTaskMap(datatable){
 							row.tuse = _dt.tuse;
 							row.ttype = _dt.ttype;
 							row.trwx = _dt.trwx;
+							row.tvalue = _dt.tvalue;
 							array.push(row);
 							break;
 						}
@@ -87,6 +88,7 @@ function updTaskMap(datatable){
 								row.tuse = dt.tuse;
 								row.ttype = dt.ttype;
 								row.trwx = "400";
+								row.tvalue = dt.tvalue;
 								array.push(row);
 							}
 							continue;
@@ -105,6 +107,7 @@ function updTaskMap(datatable){
 					row.tuse = dt.tuse;
 					row.ttype = dt.ttype;
 					row.trwx = "400";
+					row.tvalue = dt.tvalue;
 					array.push(row);
 				}
 				task = array;

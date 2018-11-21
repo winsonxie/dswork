@@ -9,6 +9,7 @@ public class DsCommonFlowDataRow
 	private String tuse = "";// 类型， common通用，file文件，dict字典，extend扩展
 	private Map<String, Object>[] ttype;// 类型信息，格式：[{"key":"xxx","val":"xxx"}]
 	private String trwx = "";// 字段权限， 400 只读， 420 编辑，001隐藏
+	private String tvalue = "";// 值
 
 	public String getTname()
 	{
@@ -58,5 +59,15 @@ public class DsCommonFlowDataRow
 	public void setTrwx(String trwx)
 	{
 		this.trwx = trwx;
+	}
+
+	public String getTvalue()
+	{
+		return tvalue;
+	}
+
+	public void setTvalue(String tvalue)
+	{
+		this.tvalue = tvalue;
 	}
 }

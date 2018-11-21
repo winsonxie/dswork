@@ -88,7 +88,7 @@ function loaddata(name, value, objectid, type, ename){
 		<%-- ${fn:escapeXml(dt.talias)}：<input name="${fn:escapeXml(dt.tname)}" datatype="${fn:escapeXml(dt.datatype)}" ${fn:escapeXml(dt.rwx=='400'?'readonly':'')} value="${fn:escapeXml(dt.value)}" /><br /> --%>
 		${fn:escapeXml(dt.talias)}：
 		<c:if test="${dt.tuse == 'common'}">
-			<input type="text" name="${fn:escapeXml(dt.tname)}" datatype="${fn:escapeXml(dt.ttype[0].key)}" ${fn:escapeXml(dt.trwx=='400'?'readonly':'')} value="${fn:escapeXml(dt.tvalue==''?dt.ttype[0].val:dt.tvalue)}" /><br />
+			<input type="text" name="${fn:escapeXml(dt.tname)}" datatype="${fn:escapeXml(dt.ttype[0].key)}" ${fn:escapeXml(dt.trwx=='400'?'readonly':'')} value="${fn:escapeXml(dt.tvalue)}" /><br />
 		</c:if>
 		<c:if test="${dt.tuse == 'file'}">
 			<c:if test="${empty dt.tvalue && dt.trwx=='420'}">
@@ -176,7 +176,7 @@ function init(){
 	</c:forEach>
 	row.ttype = arr;
 	row.trwx   = "${d.trwx}";
-	row.tvalue = "";
+	row.tvalue = "${d.tvalue}";
 	map.put(row.tname, row);
 </c:forEach>
 }

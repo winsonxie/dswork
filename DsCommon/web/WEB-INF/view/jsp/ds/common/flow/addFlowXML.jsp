@@ -63,6 +63,7 @@ function initTaskMap(datatable){
 		row.tuse = table[i].tuse;
 		row.ttype = table[i].ttype;
 		row.trwx = "400";
+		row.tvalue = "";
 		array.push(row);
 	}
 	taskMap.put("default", JSON.stringify(array));

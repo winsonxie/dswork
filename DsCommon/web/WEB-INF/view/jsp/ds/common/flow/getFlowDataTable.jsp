@@ -98,6 +98,7 @@ function setTypeInfo(_obj){
 		data.tuse = $(_obj).parent().parent().find("[name=tuse]").val();
 		data.trwx = "400";
 		data.ttype = "";
+		data.tvalue = "";
 		data = JSON.stringify(data);
 	}
 	$jskey.dialog.callback = function(){
@@ -234,7 +235,7 @@ function setJsonType(){
 			paintMtr(datatable="", result);
 		}
 	};
-	$jskey.dialog.showChooseKey({id:"chooseSystem", title:"类型配置（json）", args:{url:"setJsonType.htm", data:data}, width:"700", height:"400", closable:false});
+	$jskey.dialog.showChooseKey({id:"chooseSystem", title:"表结构配置（json）", args:{url:"setJsonType.htm", data:data}, width:"700", height:"400", closable:false});
 }
 </script>
 </head>
@@ -243,7 +244,7 @@ function setJsonType(){
 	<tr>
 		<td id="focus"></td>
 		<td class="menuTool">
-			<a class="graph" id="graph" onclick="setJsonType();return false;" href="#">类型配置</a>
+			<a class="graph" id="graph" onclick="setJsonType();return false;" href="#">表结构配置</a>
 			<a class="check" id="check" onclick="dataCheck();return false;" href="#">校验信息</a>
 			<a class="save" id="dataTableSave" onclick="dataTableSave();return false;" href="#">确定修改</a>
 			<a class="close" id="close" onclick="cancel()" href="#">取消修改</a>
