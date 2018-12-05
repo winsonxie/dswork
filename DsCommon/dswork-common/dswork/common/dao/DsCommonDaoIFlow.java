@@ -5,8 +5,11 @@ package dswork.common.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -334,7 +337,8 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				subusers += "".equals(subusers) ? "," + account + "," : account + ",";
 				if(m.getSubcount() == 0)//会签个数为0时,subcount不需要继续减
 				{
-					this.updateSubFlowWaitingSubusers(m.getId(), subusers);//更新subusers
+					dtSet = updateDataTable(m.getDatatable(), datatable, true);
+					this.updateSubFlowWaitingSubusers(m.getId(), subusers, dtSet);//更新subusers,datatable
 					String cuser = "|," + account + ",";
 					if(m.getTuser().indexOf(cuser) > 0)
 					{
@@ -343,7 +347,8 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				}
 				else
 				{
-					this.updateSubFlowWaiting(m.getId(), subusers);//更新subusers,subcount
+					dtSet = updateDataTable(m.getDatatable(), datatable, true);
+					this.updateSubFlowWaiting(m.getId(), subusers, dtSet);//更新subusers,subcount,datatable
 				}
 				if(m.getSubcount() == 1)
 				{
@@ -445,40 +450,15 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				newm.setTname(t.getTname());
 				newm.setTcount(t.getTcount());
 				newm.setTnext(t.getTnext());
-				List<IFlowDataRow> list = new ArrayList<IFlowDataRow>();
-				List<IFlowDataRow> oList = toBean((datatable!=null&&!"".equals(datatable))?datatable:"", List.class);
-				List<IFlowDataRow> nList = toBean((t.getDatatable()!=null&&!"".equals(t.getDatatable()))?t.getDatatable():"", List.class);
-				if(nList != null && nList.size() > 0)
+				if(m.getSubcount() < 0)
 				{
-					for (int j = 0; j < nList.size(); j++)
-					{
-						IFlowDataRow nRow = toBean(toJson(nList.get(j)),IFlowDataRow.class);
-						if(oList != null && oList.size() > 0)
-						{
-							IFlowDataRow oRow = toBean(toJson(oList.get(j)),IFlowDataRow.class);
-							nRow.setTvalue(oRow.getTvalue());
-						}
-						else
-						{
-							nRow.setTvalue("");
-						}
-						list.add(nRow);
-					}
+					dtSet = updateDataTable(datatable, t.getDatatable(), false);
+					newm.setDatatable(dtSet);
 				}
 				else
 				{
-					if(oList != null && oList.size() > 0)
-					{
-						for (int j = 0; j < oList.size(); j++)
-						{
-							IFlowDataRow row = toBean(toJson(oList.get(j)),IFlowDataRow.class);
-							row.setTrwx("001");
-							list.add(row);
-						}
-					}
+					newm.setDatatable(dtSet);
 				}
-				newm.setDatatable(toJson(list));
-				dtSet = toJson(list);
 				if(nextTusers != null)
 				{
 					String[] s = nextTusers[i].split(",", -1);
@@ -522,20 +502,94 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		}
 		return isEnd;
 	}
+	
+	public String updateDataTable(String oDataTable, String nDataTable, boolean flag)
+	{
+		Map<String, IFlowDataRow> oMap = null;
+		Map<String, IFlowDataRow> nMap = null;
+		List<IFlowDataRow> list = new ArrayList<IFlowDataRow>();
+		List<IFlowDataRow> oList = null;
+		List<IFlowDataRow> nList = null;
+		
+		if(oDataTable != null && !"".equals(oDataTable))
+		{
+			oList = toBean(oDataTable,  List.class);
+			oMap = new HashMap<String, IFlowDataRow>();
+			for (int i = 0; i < oList.size(); i++)
+			{
+				IFlowDataRow row = toBean(toJson(oList.get(i)),IFlowDataRow.class);
+				oMap.put(row.getTname(), row);
+			}
+			
+		}
+		if(nDataTable != null && !"".equals(nDataTable))
+		{
+			nList = toBean(nDataTable,  List.class);
+			nMap = new HashMap<String, IFlowDataRow>();
+			for (int i = 0; i < nList.size(); i++)
+			{
+				IFlowDataRow row = toBean(toJson(nList.get(i)),IFlowDataRow.class);
+				nMap.put(row.getTname(), row);
+			}
+		}
+		if(oMap != null && nMap != null)
+		{
+			//将oMap的val放到nMap中
+			for (Entry<String, IFlowDataRow> et : nMap.entrySet())
+			{
+				IFlowDataRow nrow = nMap.get(et.getKey());
+				if(nrow != null)
+				{
+					if(flag)
+					{
+						nMap.put(et.getKey(), nrow);
+						list.add(nrow);
+					}
+					else 
+					{
+						IFlowDataRow orow = oMap.get(et.getKey());
+						nrow.setTvalue(orow.getTvalue());
+						list.add(nrow);
+					}
+				}
+			}
+		}
+		else if(oMap == null  && nMap != null)
+		{
+			//将nMap直接返回
+			for (Entry<String, IFlowDataRow> et : nMap.entrySet())
+			{
+				list.add(et.getValue());
+			}
+		}
+		else if(oMap != null  && nMap == null)
+		{
+			//将oMap中的trwx全部改为001并返回
+			for (Entry<String, IFlowDataRow> et : oMap.entrySet())
+			{
+				IFlowDataRow v = et.getValue();
+				v.setTrwx("001");
+				list.add(v);
+			}
+		}
+		return toJson(list);
+	}
 
-	public boolean updateSubFlowWaiting(Long id, String subusers)
+	public boolean updateSubFlowWaiting(Long id, String subusers, String datatable)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
 		map.put("subusers", subusers);
+		map.put("datatable", datatable);
 		return executeUpdate("updateSubFlowWaiting", map) > 0 ? true : false;
 	}
 	
-	public boolean updateSubFlowWaitingSubusers(Long id, String subusers)
+	public boolean updateSubFlowWaitingSubusers(Long id, String subusers, String datatable)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
 		map.put("subusers", subusers);
+		map.put("datatable", datatable);
 		return executeUpdate("updateSubFlowWaitingSubusers", map) > 0 ? true : false;
 	}
 	

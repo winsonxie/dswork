@@ -61,4 +61,13 @@ public class DsCommonFlowDao extends BaseDao<DsCommonFlow, Long>
 		map.put("deployid", deployid);
 		executeUpdate("updateDeployid", map);
 	}
+	
+	public void updateDeployidAndTable(Long id, String deployid, String datatable)
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("deployid", deployid);
+		map.put("datatable", datatable);
+		executeUpdate("updateDeployidAndTable", map);
+	}
 }

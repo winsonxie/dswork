@@ -101,11 +101,11 @@
 	update DS_FLOW_PI_WAITING set TUSER=#{tuser}, TUSERS=null where ID=#{id}
 </update>
 <update id="updateSubFlowWaiting">
-	update DS_FLOW_PI_WAITING set SUBCOUNT=SUBCOUNT-1, SUBUSERS=#{subusers}
+	update DS_FLOW_PI_WAITING set SUBCOUNT=SUBCOUNT-1, SUBUSERS=#{subusers}, DATATABLE=#{datatable}
 	where ID=#{id}
 </update>
 <update id="updateSubFlowWaitingSubusers">
-	update DS_FLOW_PI_WAITING set SUBUSERS=#{subusers}
+	update DS_FLOW_PI_WAITING set SUBUSERS=#{subusers}, DATATABLE=#{datatable}
 	where ID=#{id}
 </update>
 <update id="updateFlowUser">
