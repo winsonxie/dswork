@@ -15,7 +15,7 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 <body>
 <table border="0" cellspacing="0" cellpadding="0" class="listLogo">
 	<tr>
-		<td class="title">修改</td>
+		<td class="title">修改<span style="color:#ff0000;font-weight:bold;">（本模块非技术维护人员，请勿操作）</span></td>
 		<td class="menuTool">
 			<a class="save" id="dataFormSave" href="#">保存</a>
 			<a class="back" href="getSystem.htm?page=${fn:escapeXml(param.page)}">返回</a>

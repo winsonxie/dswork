@@ -10,7 +10,7 @@
 <body>
 <table border="0" cellspacing="0" cellpadding="0" class="listLogo">
 	<tr>
-		<td class="title"></td>
+		<td class="title">资源配置<span style="color:#ff0000;font-weight:bold;">（本模块非技术维护人员，请勿操作）</span></td>
 		<td class="menuTool">
 			<a class="save" id="dataFormSave" href="#">保存资源</a>
 		</td>
