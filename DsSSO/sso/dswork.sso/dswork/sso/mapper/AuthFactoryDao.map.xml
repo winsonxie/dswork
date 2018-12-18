@@ -111,6 +111,10 @@
 	      select distinct _uo.ORGID from DS_COMMON_USERORG _uo where _uo.USERID in (
 	        select u.ID from DS_COMMON_USER u where u.ACCOUNT=#{account}
 	      )
+	      union
+	      select u.ORGID from DS_COMMON_USER u where u.ACCOUNT=#{account}
+	      union
+	      select u.ORGPID from DS_COMMON_USER u where u.ACCOUNT=#{account}
 	    )
 	  )
 	)
