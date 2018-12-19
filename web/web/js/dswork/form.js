@@ -4,7 +4,6 @@ $("#dataFormSave").click(function(){
 		$dswork.readySubmit();
 		if($dswork.doAjax){$("#dataForm").ajaxSubmit($dswork.doAjaxOption);}
 		else{$("#dataForm").submit();}
-		return true;
 	}}
 	return false;
 });
