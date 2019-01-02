@@ -1,0 +1,26 @@
+﻿
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui"/>
+<title></title>
+<link rel="stylesheet" type="text/css" href="js/jskey/themes/menu/jskey.menu.css" />
+<script type="text/javascript" src="js/jskey/jskey.menu.js"></script>
+<script type="text/javascript" src="./menu.js"></script>
+</head>
+<body onselectstart="return false;" oncontextmenu="return true;">
+</body>
+<script type="text/javascript">
+	//var jsonData = treedata;
+	//$jskey.menu.root = "";
+	////$jskey.menu.show(jsonData, null);// 可打开多个，jskey.menu.css文件中“.jskeymenu”和“.jskeymenu .cellOpen”的height要从原先的100%改为auto
+	//$jskey.menu.show(jsonData, null);// 只能打开一个<!DOCTYPE html>，jskey.menu.css文件中“.jskeymenu”和“.jskeymenu .cellOpen”的height要从原先的auto改为100%
+	//$jskey.menu.clickBar(0);
+	
+	var jsonData = treedata;
+	$jskey.menu.root = "";
+	$jskey.menu.show(jsonData, false);// 可打开多个
+	// $jskey.menu.show($jskey.menu.format(jsonData, "-5"), false);// 只能打开一个；删掉<!DOCTYPE html>则会其余最会置底；第二个参数是指定根节点id值，默认为0，如：'-5'，-5等
+	$jskey.menu.clickBar(0);
+</script>
+</html>

@@ -1,0 +1,57 @@
+* {filter:expression(document.execCommand("BackgroundImageCache", false, true));}
+* {font-size:12px;}
+html,body {height:100%;width:100%;margin:0px;padding:0px;overflow:hidden;}
+iframe {margin:0;padding:0;border:none;width:100%;height:100%;}
+@font-face {
+	font-family:"dsworkfont";font-weight:normal;font-style:normal;
+	src:url("dsworkfont/dsworkfont.eot");
+	src:url('dsworkfont/dsworkfont.eot?#iefix') format('embedded-opentype'),
+		url('dsworkfont/dsworkfont.woff') format('woff'),
+		url('dsworkfont/dsworkfont.ttf') format('truetype'),
+		url('dsworkfont/dsworkfont.svg#dsworkfont') format('svg');
+}
+a {font-size:12px;cursor:hand;cursor:pointer;text-decoration:none;}
+a:link {color:#eeeeee;}
+a:visited {color:#eeeeee;}
+a:hover {color:#ffffff;}
+
+#titleDIV {z-index:1;top:0;left:0;color:#ffffff;position:absolute;font-weight:bold;font-family:"黑体", "宋体"}
+div.title    {margin-left:20px;line-height:70px;font-size:28px;}
+div.minititle {margin-left:10px;line-height:28px;font-size:14px;}
+
+.topframe {height:76px;width:100%;background-color:#376099;top:0;left:0;overflow:hidden;}
+.topframe img {border:none;margin:0;padding:0;vertical-align:middle;}
+.topframe i,.topframe b{color:#ffffff;font-style:normal;font-weight:normal;display:inline;vertical-align:baseline;text-decoration:inherit;}
+.topframe i {font-size:16px;font-family:'dsworkfont';height:auto;-webkit-font-smoothing:antialiased;-webkit-text-stroke-width:0.2px;-moz-osx-font-smoothing:grayscale;}
+
+.topframe .left {float:left; width:300px;height:100%;background:url(top/left.png)  no-repeat;overflow:hidden;_background:none;_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="style/top/left.png");}
+.topframe .right{float:right;width:300px;height:100%;background:url(top/right.png) no-repeat;overflow:hidden;_background:none;_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="style/top/right.png");text-align:center;}
+.topframe .tool,
+.topframe .minitool{background-color:#6699cc;position:absolute;right:0;height:100%;overflow:hidden;text-align:right;}
+
+.topframe .xtool div{cursor:pointer;background:#376099;height:100%;text-align:center;vertical-align:middle;display:block;float:left;padding:0 5px;}
+.topframe .xtool div:hover{background:#6699cc;}
+.topframe .xtool div img{float:left;}
+.topframe .xtool div i{float:left;}
+.topframe .xtool div b{float:left;font-size:14px;color:#eeeeee;padding:0 3px;font-weight:bold;font-family:"宋体"}
+.topframe .xtool div b:hover{color:#ffffff;}
+
+.topframe .tool div b{display:none;height:70px;line-height:70px;margin:0 12px 0 -12px;}
+.topframe .tool div b.show{display:inline;}
+.topframe .tool div img {margin:20px 12px;}
+.topframe .tool div img.mini {margin:20px -5px;}
+.topframe .tool div i {margin:20px 12px;font-size:32px;}
+.topframe .tool div i.mini {margin:20px -5px;font-size:32px;}
+.topframe .minitool div {padding-left:10px;padding:right:10px;}
+.topframe .minitool div b{display:inline;line-height:26px;}
+.topframe .minitool div img {margin:4px 0 0 0px;}
+.topframe .minitool div i {margin:4px 0 0 0px;font-size:16px;}
+.topframe .minitool div i.mini {margin:4px 0 0 0px;font-size:16px;}
+
+.icon-closeone{background:url(middle/closeone.png) no-repeat;}
+.icon-closeall{background:url(middle/closeall.png) no-repeat;}
+
+.bottomframe {width:100%;height:100%;line-height:25px;color:#ffffff;text-align:center;
+	background-color: #376099;
+}
+.bottomframe .copyRight {font-family:Arial;}
