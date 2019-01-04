@@ -15,7 +15,7 @@ public class IFlowPiData
 	private String talias = "";
 	// 任务名称
 	private String tname = "";
-	// 状态(0已处理,1代办,2挂起,3取消挂起)
+	// 状态(0已处理,1代办,2挂起,3取消挂起,4会签)
 	private Integer status = 0;
 	// 经办人ID
 	private String paccount = "";
@@ -29,6 +29,8 @@ public class IFlowPiData
 	private String memo = "";
 	// 表单数据
 	private String datatable = "";
+	// 数据视图
+	private String dataview = "";
 
 	public Long getId()
 	{
@@ -148,5 +150,15 @@ public class IFlowPiData
 	public void setDatatable(String datatable)
 	{
 		this.datatable = datatable;
+	}
+
+	public String getDataview()
+	{
+		return dataview;
+	}
+
+	public void setDataview(String dataview)
+	{
+		this.dataview = dataview;
 	}
 }

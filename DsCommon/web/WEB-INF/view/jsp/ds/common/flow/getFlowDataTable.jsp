@@ -6,6 +6,10 @@
 <head>
 <title></title>
 <%@include file="/commons/include/addAjax.jsp"%>
+<style type="text/css">
+.listLogo{position:fixed;}
+.listTable{margin:30px 0 0 0;}
+</style>
 <script type="text/javascript">
 $(function(){
 var model = parent.getModel();
@@ -13,7 +17,6 @@ var datatable = ""
 if(model != null && model != ""){
 	paintMtr(datatable, model);
 }
-
 });
 
 function paintMtr(datatable, model){
@@ -237,6 +240,14 @@ function setJsonType(){
 	};
 	$jskey.dialog.showChooseKey({id:"chooseSystem", title:"表结构配置（json）", args:{url:"setJsonType.htm", data:data}, width:"700", height:"400", closable:false});
 }
+
+$(function(){
+	$(window).scrollTop(10);
+	if($(window).scrollTop() > 0){
+		$("#end").css({"display":""});
+    }
+	$(window).scrollTop(0);
+});
 </script>
 </head>
 <body>
@@ -252,12 +263,23 @@ function setJsonType(){
 	</tr>
 </table>
 <div class="line"></div>
-<table border="0" cellspacing="1" cellpadding="0" class="listTable" id="contactTable">
+<table border="0" cellspacing="1" cellpadding="0" class="listTable">
+	<tbody>
 	<tr class="list_title">
 		<td>基本信息</td>
 		<td>类型信息</td>
-		<td width="5%" class="menuTool"><a class="insert" onclick="$('#contactTable>tbody').append($('#cloneTable>tbody>tr:eq(0)').clone());"></a></td>
+		<td width="5%" class="menuTool"><a class="insert" onclick="$('#contactTable').append($('#cloneTable>tbody>tr:eq(0)').clone());"></a></td>
 	</tr>
+	</tbody>
+	<tbody id="contactTable">
+	</tbody>
+	<tbody>
+	<tr class="list_title" id="end" style="display:none;">
+		<td>基本信息</td>
+		<td>类型信息</td>
+		<td width="5%" class="menuTool"><a class="insert" onclick="$('#contactTable').append($('#cloneTable>tbody>tr:eq(0)').clone());"></a></td>
+	</tr>
+	</tbody>
 </table>
 <table id="cloneTable" hidden="hidden">
 	<tr class="mtr">

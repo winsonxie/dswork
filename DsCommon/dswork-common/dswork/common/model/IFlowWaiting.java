@@ -43,7 +43,11 @@ public class IFlowWaiting
 	private String tinterface = "";
 	// 数据结构
 	private String datatable = "";
-
+	// 是否启用待办（-1不启用，0启用）
+	private int tenable = 0;
+	// 数据视图
+	private String dataview = "";
+	
 	public Long getId()
 	{
 		return id;
@@ -232,5 +236,25 @@ public class IFlowWaiting
 	public void setDatatable(String datatable)
 	{
 		this.datatable = datatable;
+	}
+
+	public int getTenable()
+	{
+		return tenable;
+	}
+
+	public void setTenable(int tenable)
+	{
+		this.tenable = tenable;
+	}
+
+	public String getDataview()
+	{
+		return dataview;
+	}
+
+	public void setDataview(String dataview)
+	{
+		this.dataview = dataview;
 	}
 }

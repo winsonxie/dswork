@@ -43,16 +43,16 @@ public class DsCommonFlowController extends BaseController
 	@Autowired
 	private DsCommonFlowService service;
 
-	@RequestMapping("/addFlow1")
-	public String addFlow1()
-	{
-		return "/ds/common/flow/addFlowXML.jsp";
-	}
-	
 	@RequestMapping("/setJsonType")
 	public String setJsonType()
 	{
 		return "/ds/common/flow/setJsonType.jsp";
+	}
+	
+	@RequestMapping("/setTableView")
+	public String setTableView()
+	{
+		return "/ds/common/flow/setTableView.jsp";
 	}
 	
 	@RequestMapping("/setTypeInfo")
@@ -61,7 +61,6 @@ public class DsCommonFlowController extends BaseController
 		return "/ds/common/flow/setTypeInfo.jsp";
 	}
 
-	// 授权
 	@RequestMapping("/getFlowDataTableRwx")
 	public String getFlowDataTableRwx()
 	{
@@ -72,6 +71,12 @@ public class DsCommonFlowController extends BaseController
 	public String getFlowDataTable()
 	{
 		return "/ds/common/flow/getFlowDataTable.jsp";
+	}
+	
+	@RequestMapping("/addFlow1")
+	public String addFlow1()
+	{
+		return "/ds/common/flow/addFlowXML.jsp";
 	}
 
 	@RequestMapping("/addFlow2")
@@ -128,6 +133,7 @@ public class DsCommonFlowController extends BaseController
 								m.setDatatable(map.get(taliasArr[i]));
 								m.setSubcount(subcountArr[i]);
 								m.setSubusers(subusersArr[i]);
+								m.setDataview(po.getDataview());
 								taskList.add(m);
 							}
 						}
@@ -148,6 +154,7 @@ public class DsCommonFlowController extends BaseController
 								m.setDatatable(map.get(node.getAlias()));
 								m.setSubcount(node.getSubcount());
 								m.setSubusers(node.getSubusers());
+								m.setDataview(po.getDataview());
 								taskList.add(m);
 							}
 						}
@@ -257,6 +264,7 @@ public class DsCommonFlowController extends BaseController
 					m.setDatatable(map.get(taliasArr[i]));
 					m.setSubcount(subcountArr[i]);
 					m.setSubusers(subusersArr[i]);
+					m.setDataview(po.getDataview());
 					taskList.add(m);
 				}
 			}
@@ -277,6 +285,7 @@ public class DsCommonFlowController extends BaseController
 					m.setDatatable(map.get(node.getAlias()));
 					m.setSubcount(node.getSubcount());
 					m.setSubusers(node.getSubusers());
+					m.setDataview(po.getDataview());
 					taskList.add(m);
 				}
 			}

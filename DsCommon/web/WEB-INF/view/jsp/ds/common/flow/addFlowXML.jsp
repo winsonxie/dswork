@@ -89,7 +89,7 @@ function rwxDialog(taskkey, data){
 			callback(taskkey, result);
 		}
 	};
-	$jskey.dialog.showChooseKey({id:"chooseSystem", title:"表单授权", args:{url:"getFlowDataTableRwx.htm", data:data}, width:"600", height:"450", closable:false});
+	$jskey.dialog.showChooseKey({id:"chooseSystem", title:"表单授权[" + $("#txt_name").val() + "]", args:{url:"getFlowDataTableRwx.htm", data:data}, width:"600", height:"450", closable:false});
 	return false;
 }
 

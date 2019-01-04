@@ -26,6 +26,8 @@ public class DsCommonFlow
 	private String flowxml = "";
 	// 数据结构
 	private String datatable = "";
+	// 数据视图
+	private String dataview = "";
 	private List<DsCommonFlowTask> taskList = null;
 
 	public Long getId()
@@ -118,9 +120,19 @@ public class DsCommonFlow
 		this.datatable = datatable;
 	}
 
+	public String getDataview()
+	{
+		return dataview;
+	}
+
+	public void setDataview(String dataview)
+	{
+		this.dataview = dataview;
+	}
+
 	public List<DsCommonFlowTask> getTaskList()
 	{
-		if(taskList == null)
+		if (taskList == null)
 		{
 			return new ArrayList<DsCommonFlowTask>();
 		}

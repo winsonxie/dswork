@@ -3,6 +3,7 @@
  */
 package dswork.common.dao;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,6 +14,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.google.gson.reflect.TypeToken;
 
 import dswork.common.model.IFlow;
 import dswork.common.model.IFlowDataRow;
@@ -40,6 +43,11 @@ public class DsCommonDaoIFlow extends MyBatisDao
 	public <T> T toBean(String json, Class<T> classOfT)
 	{
 		return builder.create().fromJson(json, classOfT);
+	}
+	
+	public <T> T toBean(String json, Type type)
+	{
+		return builder.create().fromJson(json, type);
 	}
 	
 	// 此处这样写法是为了让流程的管理可成独立项目运行，不在同一数据库中
@@ -108,12 +116,13 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		executeDelete("deleteFlowWaitingByPiid", piid);
 	}
 
-	private void updateFlowWaiting(Long id, String tstart, String tprev)
+	private void updateFlowWaiting(Long id, String tstart, String tprev, String datatable)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
 		map.put("tstart", tstart);
 		map.put("tprev", tprev);
+		map.put("datatable", datatable);
 		executeUpdate("updateFlowWaiting", map);
 	}
 
@@ -208,7 +217,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		return executeSelectList("queryFlowWaiting", map);
 	}
 
-	public IFlowWaiting saveFlowStart(String alias, String users, String ywlsh, String sblsh, String account, String name, int piDay, boolean isWorkDay)
+	public IFlowWaiting saveFlowStart(String alias, String users, String ywlsh, String sblsh, String account, String name, int piDay, boolean isWorkDay, int tenable)
 	{
 		String time = TimeUtil.getCurrentTime();
 		IFlow flow = this.getFlow(alias);
@@ -253,6 +262,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			m.setTstart(time);
 			m.setTmemo(task.getTmemo());
 			m.setSubcount(task.getSubcount());
+			m.setTenable(tenable);
 			if(task.getSubcount() > -1 && "".equals(task.getSubusers()))
 			{
 				m.setSubusers(",,");
@@ -296,7 +306,17 @@ public class DsCommonDaoIFlow extends MyBatisDao
 
 	public String saveStart(String alias, String users, String ywlsh, String sblsh, String account, String name, int piDay, boolean isWorkDay)
 	{
-		IFlowWaiting w = saveFlowStart(alias, users, ywlsh, sblsh, account, name, piDay, isWorkDay);
+		IFlowWaiting w = saveFlowStart(alias, users, ywlsh, sblsh, account, name, piDay, isWorkDay, 0);
+		if(w != null)
+		{
+			return String.valueOf(w.getPiid());
+		}
+		return "";
+	}
+	
+	public String saveStart(String alias, String users, String ywlsh, String sblsh, String account, String name, int piDay, boolean isWorkDay, int tenable)
+	{
+		IFlowWaiting w = saveFlowStart(alias, users, ywlsh, sblsh, account, name, piDay, isWorkDay, tenable);
 		if(w != null)
 		{
 			return String.valueOf(w.getPiid());
@@ -322,7 +342,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			pd.setTprev(m.getTprev());
 			pd.setTalias(m.getTalias());
 			pd.setTname(m.getTname());
-			pd.setStatus(0);// 状态(0已处理,1代办,2挂起,3取消挂起)
+			pd.setStatus(m.getSubcount()>-1?4:0);// 状态(0已处理,1代办,2挂起,3取消挂起,4会签)
 			pd.setPaccount(account);
 			pd.setPname(name);
 			pd.setPtime(time);
@@ -333,11 +353,11 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			boolean isEnd = false;
 			if(m.getSubcount() > -1)//会签任务
 			{
+				dtSet = updateDataTable(this.getFlowPiByPiid(m.getPiid() + "").getDatatable(), datatable, true);
 				String subusers = m.getSubusers();
 				subusers += "".equals(subusers) ? "," + account + "," : account + ",";
 				if(m.getSubcount() == 0)//会签个数为0时,subcount不需要继续减
 				{
-					dtSet = updateDataTable(m.getDatatable(), datatable, true);
 					this.updateSubFlowWaitingSubusers(m.getId(), subusers, dtSet);//更新subusers,datatable
 					String cuser = "|," + account + ",";
 					if(m.getTuser().indexOf(cuser) > 0)
@@ -347,7 +367,6 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				}
 				else
 				{
-					dtSet = updateDataTable(m.getDatatable(), datatable, true);
 					this.updateSubFlowWaiting(m.getId(), subusers, dtSet);//更新subusers,subcount,datatable
 				}
 				if(m.getSubcount() == 1)
@@ -370,6 +389,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						}
 						else
 						{
+							datatable = updateDataTable(this.getFlowPiByPiid(m.getPiid() + "").getDatatable(), datatable, true);
 							isEnd = exeProcess(waitid, nextTalias, nextTusers, datatable, m, time, isEnd);
 						}
 					}
@@ -432,7 +452,15 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			IFlowWaiting w = this.getFlowWaitingByPiid(m.getPiid(), talias);
 			if(w != null && w.getId().longValue() != 0)
 			{
-				this.updateFlowWaiting(w.getId(), time, w.getTprev() + "," + m.getTalias());// 等待数减1, 上经节点增加一个
+				dtSet = updateDataTable(datatable, w.getDatatable(), false);
+				if(w.getTcount() > 1) 
+				{
+					this.updateFlowWaiting(w.getId(), time, w.getTprev() + "," + m.getTalias(), dtSet);// 等待数减1, 上经节点增加一个
+				}
+				else
+				{
+					this.updateSubFlowWaitingSubusers(w.getId(), w.getSubusers(), dtSet);
+				}
 			}
 			else
 			{
@@ -450,15 +478,8 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				newm.setTname(t.getTname());
 				newm.setTcount(t.getTcount());
 				newm.setTnext(t.getTnext());
-				if(m.getSubcount() < 0)
-				{
-					dtSet = updateDataTable(datatable, t.getDatatable(), false);
-					newm.setDatatable(dtSet);
-				}
-				else
-				{
-					newm.setDatatable(dtSet);
-				}
+				dtSet = updateDataTable(datatable, t.getDatatable(), false);
+				newm.setDatatable(dtSet);
 				if(nextTusers != null)
 				{
 					String[] s = nextTusers[i].split(",", -1);
@@ -513,23 +534,28 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		
 		if(oDataTable != null && !"".equals(oDataTable))
 		{
-			oList = toBean(oDataTable,  List.class);
-			oMap = new HashMap<String, IFlowDataRow>();
-			for (int i = 0; i < oList.size(); i++)
+			oList = toBean(oDataTable,  new TypeToken<List<IFlowDataRow>>(){}.getType());
+			if(oList != null && oList.size() > 0)
 			{
-				IFlowDataRow row = toBean(toJson(oList.get(i)),IFlowDataRow.class);
-				oMap.put(row.getTname(), row);
+				oMap = new HashMap<String, IFlowDataRow>();
+				for (int i = 0; i < oList.size(); i++)
+				{
+					IFlowDataRow row = oList.get(i);
+					oMap.put(row.getTname(), row);
+				}
 			}
-			
 		}
 		if(nDataTable != null && !"".equals(nDataTable))
 		{
-			nList = toBean(nDataTable,  List.class);
-			nMap = new HashMap<String, IFlowDataRow>();
-			for (int i = 0; i < nList.size(); i++)
+			nList = toBean(nDataTable,  new TypeToken<List<IFlowDataRow>>(){}.getType());
+			if(nList != null && nList.size() > 0)
 			{
-				IFlowDataRow row = toBean(toJson(nList.get(i)),IFlowDataRow.class);
-				nMap.put(row.getTname(), row);
+				nMap = new HashMap<String, IFlowDataRow>();
+				for (int i = 0; i < nList.size(); i++)
+				{
+					IFlowDataRow row = nList.get(i);
+					nMap.put(row.getTname(), row);
+				}
 			}
 		}
 		if(oMap != null && nMap != null)
@@ -540,17 +566,26 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				IFlowDataRow nrow = nMap.get(et.getKey());
 				if(nrow != null)
 				{
-					if(flag)
+					IFlowDataRow orow = oMap.get(et.getKey());
+					if(orow != null)
 					{
-						nMap.put(et.getKey(), nrow);
-						list.add(nrow);
+						if(flag)
+						{
+							if(orow.getTvalue().equals(nrow.getTvalue()))
+							{
+								nrow.setTvalue(nrow.getTvalue());
+							}
+							else
+							{
+								nrow.setTvalue(orow.getTvalue() + nrow.getTvalue());
+							}
+						}
+						else
+						{
+							nrow.setTvalue(orow.getTvalue());
+						}
 					}
-					else 
-					{
-						IFlowDataRow orow = oMap.get(et.getKey());
-						nrow.setTvalue(orow.getTvalue());
-						list.add(nrow);
-					}
+					list.add(nrow);
 				}
 			}
 		}
@@ -593,7 +628,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		return executeUpdate("updateSubFlowWaitingSubusers", map) > 0 ? true : false;
 	}
 	
-	public boolean updateFlowUser(Long wid, String olduser, String oldname,String newuser, String newname)
+	public boolean updateFlowTuser(Long wid, String olduser, String oldname,String newuser, String newname)
 	{
 		IFlowWaiting m = this.getFlowWaiting(wid);
 		if(m != null)
@@ -612,7 +647,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				pd.setTprev(m.getTprev());
 				pd.setTalias(m.getTalias());
 				pd.setTname(m.getTname());
-				pd.setStatus(1);// 状态(0已处理,1代办,2挂起,3取消挂起)
+				pd.setStatus(1);// 状态(0已处理,1代办,2挂起,3取消挂起,4会签)
 				pd.setPaccount(olduser);
 				pd.setPname(oldname);
 				pd.setPtime(time);
@@ -620,10 +655,35 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				pd.setMemo("无");
 				pd.setDatatable("[]");
 				executeInsert("insertFlowPiData", pd);
-				executeUpdate("updateFlowUser", map);
+				executeUpdate("updateFlowTuser", map);
 				return true;
 			}
 		}
 		return false;
+	}
+
+	public boolean updateFlowTusers(Long wid, String tusers)
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", wid);
+		map.put("tusers", tusers);
+		return executeUpdate("updateFlowTusers", map) > 0 ? true : false;
+	}
+
+	public boolean updateFlowTuser(Long wid, String tuser, int subcount)
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", wid);
+		map.put("tuser", tuser);
+		map.put("subcount", subcount);
+		return executeUpdate("updateFlowTuser", map) > 0 ? true : false;
+	}
+
+	public boolean updateFlowWaitingTenable(Long wid, String datatable)
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", wid);
+		map.put("datatable", datatable);
+		return executeUpdate("updateFlowWaitingTenable", map) > 0 ? true : false;
 	}
 }

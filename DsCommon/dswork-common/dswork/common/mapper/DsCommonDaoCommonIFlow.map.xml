@@ -32,13 +32,14 @@
 	<result property="subusers" column="SUBUSERS" />
 	<result property="tmemo" column="TMEMO" />
 	<result property="datatable" column="DATATABLE" />
+	<result property="dataview" column="DATAVIEW" />
 </resultMap>
 <select id="selectFlowTask" resultMap="resultFlowTask">
-	select ID, FLOWID, DEPLOYID, TALIAS, TNAME, TCOUNT, TNEXT, TUSERS, SUBCOUNT, SUBUSERS, TMEMO, DATATABLE
+	select ID, FLOWID, DEPLOYID, TALIAS, TNAME, TCOUNT, TNEXT, TUSERS, SUBCOUNT, SUBUSERS, TMEMO, DATATABLE, DATAVIEW
 	from DS_FLOW_TASK where FLOWID=#{flowid} and TALIAS=#{talias}
 </select>
 <select id="queryFlowTask" resultMap="resultFlowTask">
-	select ID, FLOWID, DEPLOYID, TALIAS, TNAME, TCOUNT, TNEXT, TUSERS, SUBCOUNT, SUBUSERS, TMEMO, DATATABLE
+	select ID, FLOWID, DEPLOYID, TALIAS, TNAME, TCOUNT, TNEXT, TUSERS, SUBCOUNT, SUBUSERS, TMEMO, DATATABLE, DATAVIEW
 	from DS_FLOW_TASK where FLOWID=#{flowid}
 </select>
 

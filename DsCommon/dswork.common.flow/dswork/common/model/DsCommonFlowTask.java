@@ -29,6 +29,8 @@ public class DsCommonFlowTask
 	private String tmemo = "";
 	// 数据结构
 	private String datatable = "";
+	// 数据视图
+	private String dataview = "";
 
 	public Long getId()
 	{
@@ -148,5 +150,15 @@ public class DsCommonFlowTask
 	public void setDatatable(String datatable)
 	{
 		this.datatable = datatable;
+	}
+
+	public String getDataview()
+	{
+		return dataview;
+	}
+
+	public void setDataview(String dataview)
+	{
+		this.dataview = dataview;
 	}
 }

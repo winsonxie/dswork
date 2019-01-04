@@ -72,12 +72,12 @@ function updTaskMap(datatable){
 					for (var n = 0; n < task.length; n++) {
 						var _dt = task[n];
 						if(dt.tname==_dt.tname){
-							row.tname = _dt.tname;
-							row.talias = _dt.talias;
-							row.tuse = _dt.tuse;
-							row.ttype = _dt.ttype;
-							row.trwx = _dt.trwx;
-							row.tvalue = _dt.tvalue;
+							row.tname = dt.tname;
+							row.talias = dt.talias;
+							row.tuse = dt.tuse;
+							row.ttype = dt.ttype;
+							row.trwx = dt.trwx;
+							row.tvalue = dt.tvalue;
 							array.push(row);
 							break;
 						}
@@ -139,7 +139,7 @@ function rwxDialog(taskkey, data){
 			callback(taskkey, result);
 		}
 	};
-	$jskey.dialog.showChooseKey({id:"chooseSystem", title:"表单授权", args:{url:"getFlowDataTableRwx.htm", data:data}, width:"600", height:"450", closable:false});
+	$jskey.dialog.showChooseKey({id:"chooseSystem", title:"表单授权[" + $("#txt_name").val() + "]", args:{url:"getFlowDataTableRwx.htm", data:data}, width:"600", height:"450", closable:false});
 	return false;
 }
 
@@ -172,6 +172,16 @@ $(function(){
 		}
 	});
 });
+function setTableView(){
+	var dataview = $("#dataview").val();
+	$jskey.dialog.callback = function(){
+		var result = $jskey.dialog.returnValue;
+		if(result != null){
+			$("#dataview").val(result);
+		}
+	};
+	$jskey.dialog.showChooseKey({id:"chooseSystem", title:"表结构视图", args:{url:"setTableView.htm", data:dataview}, width:"700", height:"400", closable:false});
+}
 </script>
 </head>
 <body>
@@ -202,8 +212,15 @@ $(function(){
 		<input type="button" style="width:200px;" class="button" maxlength="300" value="编辑" onclick="choose()" />
 		</td>
 	</tr>
+	<tr>
+		<td class="form_title">表单视图</td>
+		<td class="form_input">
+		<input type="button" style="width:200px;" class="button" maxlength="300" value="编辑" onclick="setTableView()" />
+		</td>
+	</tr>
 </table>
 <input type="hidden" id="datatable" name="datatable" value="${fn:escapeXml(po.datatable)}" />
+<input type="hidden" id="dataview" name="dataview" value="${fn:escapeXml(po.dataview)}" />
 <input type="hidden" id="flowxml" name="flowxml" value="" />
 <div class="line"></div>
 <table border="0" cellspacing="1" cellpadding="0" class="listTable">
@@ -263,6 +280,9 @@ $(function(){
 </flow>
 </c:if>
 ${po.flowxml}
+</script>
+<script type="text/template" id="dataview">
+${fn:escapeXml(po.dataview)}
 </script>
 </body>
 </html>

@@ -1,16 +1,30 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@page import="dswork.common.DsFactory, dswork.web.MyRequest, dswork.common.model.*, java.util.*"%>
+<%@page import="dswork.common.DsFactory, dswork.web.MyRequest, dswork.common.model.*, java.util.*"%><%
+String msg = "";
+MyRequest req = new MyRequest(request);
+long wid = req.getLong("wid");
+if(wid > 0)
+{
+	IFlowWaiting po = DsFactory.getFlow().getWaiting(wid);
+	request.setAttribute("po", po);
+	request.setAttribute("m", DsFactory.getUtil().getM(po.getDatatable()));
+	/* request.setAttribute("rows", DsFactory.getUtil().getRows(po.getDatatable())); */
+	request.setAttribute("html", DsFactory.getUtil().getHtml(po.getDatatable()));
+	
+	java.util.Map<String, String> map = DsFactory.getFlow().getTaskList(po.getFlowid());
+	request.setAttribute("map", map);
+	String[] arr = po.getTnext().split("\\|", -1);
+	request.setAttribute("arr", arr);
+}
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <title></title>
 <%@include file="/commons/include/upd.jsp"%>
-<script type="text/javascript" src="/web/js/jskey/jskey_upload.js"></script>
-<style type="text/css">
-body {line-height:2em;}
-</style>
+<%@include file="/commons/include/datatable.jsp"%>
 </head>
 <body>
 <table border="0" cellspacing="0" cellpadding="0" class="listLogo">
@@ -23,44 +37,105 @@ body {line-height:2em;}
 	</tr>
 </table>
 <form id="dataForm" method="post" action="doAction.jsp">
-<%
-String msg = "";
-MyRequest req = new MyRequest(request);
-long wid = req.getLong("wid");
-try
-{
-  if(wid > 0){
-	IFlowWaiting po = DsFactory.getFlow().getWaiting(wid);
-	request.setAttribute("po", po);
-	java.util.Map<String, String> map = DsFactory.getFlow().getTaskList(po.getFlowid());
-	map.get(po.getTalias());
-	com.google.gson.Gson gson = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-	List<IFlowDataRow> dt = gson.fromJson(po.getDatatable(), List.class);
-	request.setAttribute("dt", dt);
-%>
-	流程名称：${po.flowname}<br />
-	当前任务：${po.talias}&nbsp;${po.tname}<br />
-	下级任务：
-	<%
-	String[] arr = po.getTnext().split("\\|", -1);
-	for(String s : arr)
-	{
-		%><select name="taskList"><%
-		for(String m : s.split(",", -1)){%><option value="<%=m%>"><%=map.get(m)%></option><%}
-		%></select>&nbsp;<%
-	}
-	%>
-	<br />
-	状态：<label><input type="radio"  name="resultType" value="1" checked="checked" />拟同意</label>
+<table border="0" cellspacing="1" cellpadding="0" class="listTable">
+	<tr>
+		<td class="form_title">流程名称</td>
+		<td class="form_input">${fn:escapeXml(po.flowname)}</td>
+	</tr>
+	<tr>
+		<td class="form_title">当前任务</td>
+		<td class="form_input">${fn:escapeXml(po.tname)}</td>
+	</tr>
+	<tr>
+		<td class="form_title">下一步任务</td>
+		<td class="form_input">
+			<c:forEach items="${arr}" var="n">
+				<select name="taskList">
+					<c:forEach items="${fn:split(n, ',')}" var="m">
+						<option value="${fn:escapeXml(m)}">${fn:escapeXml(map[m])}</option>
+					</c:forEach>
+				</select>
+			</c:forEach>
+		</td>
+	</tr>
+	<tr>
+		<td class="form_title">状态</td>
+		<td class="form_input">
+			<label><input type="radio"  name="resultType" value="1" checked="checked" />拟同意</label>
 		&nbsp;<label><input type="radio"  name="resultType" value="0" />拟拒绝</label>
 		&nbsp;<label><input type="radio"  name="resultType" value="-1" />拟作废</label>
-	<br />
-	意见：<textarea name="resultMsg" style="width:400px;">无</textarea><br />
-<input type="hidden" name="wid" value="<%=wid%>" />
-<input type="hidden" id="datatable" name="datatable" value="" />
+		</td>
+	</tr>
+	<tr>
+		<td class="form_title">意见</td>
+		<td class="form_input">
+			<textarea name="resultMsg" style="width:100%;height:100px;">无</textarea>
+		</td>
+	</tr>
+</table>
+<input type="hidden" name="wid" value="${fn:escapeXml(po.id)}" />
+<input type="hidden" id="datatable" name="datatable" value="${fn:escapeXml(po.datatable)}" />
 </form>
-<form id="formdata" method="post" action="">
+<form id="formdata">
+<%-- ${html} --%>
+<!-- 
+
+ -->
+</form>
+<script id="tpl" type="text/tmpl">
+<c:if test="${po.dataview == ''}">
+<table border="0" cellspacing="1" cellpadding="0" class="listTable">
+{{# var keys = Object.keys(d).sort();}}
+{{# for(var i=0,len=keys.length; i<len; i++){ var row = d[keys[i]]; }}
+	<tr {{ row.trwx=='001'?'style="display:none;"':'' }}>
+		<td class="form_title">{{ row.talias }}</td>
+		<td class="form_input">
+			{{# if(row.tuse == "common"){ }}
+				{{# if(row.trwx == "420"){ }}
+					<input type="{{row.trwx=="001"?"hidden":"text"}}" name="{{row.tname}}" value="{{row.tvalue}}" datatype="{{row.ttype[0].key}}" {{row.trwx=="400"?"readonly":""}} />
+				{{# }else{ }}
+					<input type="{{row.trwx=="001"?"hidden":"text"}}" name="{{row.tname}}" value="{{row.tvalue}}" {{row.trwx=="400"?"readonly":""}} />
+				{{# } }}
+			{{# }else if(row.tuse == "dict"){ }}
+				{{# if(row.trwx == "420"){ }}
+					<span id="{{ row.tname }}"></span>
+					{{# loaddata(row.ttype[0].key, row.ttype[0].val, row.tname, "radio", row.tname); }}
+				{{# }else{ }}
+					<input type="{{row.trwx=="001"?"hidden":"text"}}" name="{{row.tname}}" value="{{row.tvalue}}" {{row.trwx=="400"?"readonly":""}} />
+				{{# } }}
+			{{# }else if(row.tuse == "file"){ }}
+				{{# if(row.trwx == "420"){ }}
+					<input id="id_{{row.tname}}" type="hidden" readonly="readonly" />
+					<input id="vid_{{row.tname}}" name="{{row.tname}}" type="hidden" value="{{row.tvalue}}"/>
+					{{# uploadFile(row);}}
+				{{# }else{ }}
+					<input type="{{row.trwx=="001"?"hidden":"text"}}" name="{{row.tname}}" value="{{row.tvalue}}" {{row.trwx=="400"?"readonly":""}} />
+				{{# } }}
+			{{# }else if(row.tuse == "extend"){ }}
+				<input type="{{row.trwx=="001"?"hidden":"text"}}" name="{{row.tname}}" value="{{row.tvalue}}" {{row.trwx=="400"?"readonly":""}} />
+			{{# } }}
+		</td>
+	</tr>
+{{# } }}
+</table>
+</c:if>
+${po.dataview}
+</script>
 <script type="text/javascript">
+$(function(){
+	var tpl = document.getElementById('tpl').innerHTML;
+	var res = ${m};
+	laytpl(tpl).render(res, function(render){
+	   document.getElementById('formdata').innerHTML = render;
+	   try{$(".form_title").css("width", "20%");}catch(e){}
+	});
+})
+function uploadFile(row){
+	var o = new $dswork.upload({io:true, name:row.ttype[0].key, ext:row.ttype[0].val});
+	$(function(){
+		o.init({id:"id_"+row.tname, vid:"vid_"+row.tname, ext:row.ttype[0].val});
+	})
+}
 function loaddata(name, value, objectid, type, ename){
 	$.post("${ctx}/common/share/getJsonDict.htm",{name:name, value:value},function(data){
 		var a = eval(data);
@@ -82,69 +157,6 @@ function loaddata(name, value, objectid, type, ename){
 		}
 	});
 }
-</script>
-<c:forEach items="${dt}" var="dt">
-	<div ${fn:escapeXml(dt.trwx=='001'?'style=display:none;':'')} name="tb">
-		<%-- ${fn:escapeXml(dt.talias)}：<input name="${fn:escapeXml(dt.tname)}" datatype="${fn:escapeXml(dt.datatype)}" ${fn:escapeXml(dt.rwx=='400'?'readonly':'')} value="${fn:escapeXml(dt.value)}" /><br /> --%>
-		${fn:escapeXml(dt.talias)}：
-		<c:if test="${dt.tuse == 'common'}">
-			<input type="text" name="${fn:escapeXml(dt.tname)}" datatype="${fn:escapeXml(dt.ttype[0].key)}" ${fn:escapeXml(dt.trwx=='400'?'readonly':'')} value="${fn:escapeXml(dt.tvalue)}" /><br />
-		</c:if>
-		<c:if test="${dt.tuse == 'file'}">
-			<c:if test="${empty dt.tvalue && dt.trwx=='420'}">
-				<script type="text/javascript">
-					var o = new $dswork.upload({io:true, name:"${fn:escapeXml(dt.ttype[0].key)}".toUpperCase(), ext:"${fn:escapeXml(dt.ttype[0].val)}"});
-					$(function(){
-						o.init({id:"id_${fn:escapeXml(dt.tname)}", vid:"vid_${fn:escapeXml(dt.tname)}", ext:"${fn:escapeXml(dt.ttype[0].val)}"});
-					});
-				</script>
-				<input id="id_${fn:escapeXml(dt.tname)}" type="text" readonly="readonly" />
-				<input id="vid_${fn:escapeXml(dt.tname)}" name="${fn:escapeXml(dt.tname)}" type="hidden" value=""/>
-			</c:if>
-			<c:if test="${not empty dt.tvalue || dt.trwx=='400'}">
-				<div>
-				<script type="text/javascript">
-					var name = "${fn:split(dt.tvalue,':')[0]}";
-					if(name.indexOf(".pdf") > 0){
-						var url = "show.jsp?filename=" + name + "&name=" + "${fn:escapeXml(dt.ttype[0].key)}".toUpperCase()
-						document.write('<iframe name="childframe" src="'+url+'" frameBorder=0 style="width:100%;height:500px;" scrolling="no"></iframe>');
-					}
-					else if(name.indexOf(".png") > 0 || name.indexOf(".jpg") > 0){
-						document.write('<img src="/webio/io/down.jsp?name=' + ("${fn:escapeXml(dt.ttype[0].key)}".toUpperCase() + "&f=" + name) + '">');
-					}
-					else{
-						document.write(name);
-					}
-					document.write('<input name="${fn:escapeXml(dt.tname)}" type="hidden" value="${fn:escapeXml(dt.tvalue)}" />')
-				</script>
-				</div>
-			</c:if>
-		</c:if>
-		<c:if test="${dt.tuse == 'dict'}">
-			<span id="chk1"></span>
-			<script type="text/javascript">
-				<c:if test="${dt.trwx=='420'}">
-				loaddata("${fn:escapeXml(dt.ttype[0].key)}", ${fn:escapeXml(dt.ttype[0].val)}, "chk1", "radio", "${fn:escapeXml(dt.tname)}");
-				</c:if>
-				<c:if test="${dt.trwx=='400'}">
-				loaddata("${fn:escapeXml(dt.ttype[0].key)}", ${fn:escapeXml(dt.ttype[0].val)}, "chk1", "", "${fn:escapeXml(dt.tname)}");
-				document.write('<input name="${fn:escapeXml(dt.tname)}" type="hidden" value="${fn:escapeXml(dt.tvalue)}" />')
-				</c:if>
-				<c:if test="${dt.trwx=='001'}">
-				document.write('<input name="${fn:escapeXml(dt.tname)}" type="hidden" value="${fn:escapeXml(dt.tvalue)}" />')
-				</c:if>
-			</script>
-		</c:if>
-		<c:if test="${dt.tuse == 'extend'}">
-			<c:forEach items="${dt.ttype}" var="tp" > 
-				<script type="text/javascript">document.write("${tp.key}" + ":" + "${tp.val}" + "，");</script>
-			</c:forEach> 
-			<input name="${fn:escapeXml(dt.tname)}" type="hidden" value="${fn:escapeXml(dt.tvalue)}" />
-		</c:if>
-	</div>
-</c:forEach>
-</form>
-<script type="text/javascript">
 var map = new $jskey.Map();
 var array = [];
 function getFormData(){
@@ -159,6 +171,7 @@ function getFormData(){
 		map.put(this.name, m);
 		array.push(m);
 	});
+	console.log(array)
 	$("#datatable").val(JSON.stringify(array));
 }
 function init(){
@@ -188,14 +201,5 @@ $dswork.readySubmit = function(){
 	getFormData();
 }
 </script>
-
-<%
-	}else{msg = "处理失败";}
-}catch(Exception ex){
-	ex.printStackTrace();
-	msg = "处理失败";
-}%>
-<%=msg%>
-<br />
 </body>
 </html>

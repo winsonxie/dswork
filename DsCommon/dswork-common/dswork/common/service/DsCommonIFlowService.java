@@ -70,6 +70,57 @@ public class DsCommonIFlowService
 		}
 		return "";
 	}
+	
+	/**
+	 * 流程启动
+	 * @param alias 启动流程的标识
+	 * @param ywlsh 业务流水号
+	 * @param caccount 提交人账号
+	 * @param cname 提交人姓名
+	 * @param piDay 时限天数
+	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
+	 * 
+	 * @param taskInterface 接口类（暂时无用）
+	 * @return 流程实例ID
+	 */
+	public String saveStart(String alias, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, int tenable)
+	{
+		try
+		{
+			return dao.saveStart(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, tenable);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
+	/**
+	 * 流程启动
+	 * @param alias 启动流程的标识
+	 * @param users 启动节点任务处理人，如果为null，则使用流程配置中的处理人信息
+	 * @param ywlsh 业务流水号
+	 * @param caccount 提交人账号
+	 * @param cname 提交人姓名
+	 * @param piDay 时限天数
+	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
+	 * 
+	 * @param taskInterface 接口类（暂时无用）
+	 * @return 流程实例ID
+	 */
+	public String saveStart(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, int tenable)
+	{
+		try
+		{
+			return dao.saveStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, tenable);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return "";
+	}
 
 	/**
 	 * 流程启动并返回开始节点待办信息
@@ -84,7 +135,7 @@ public class DsCommonIFlowService
 	 */
 	public IFlowWaiting saveFlowStart(String alias, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
 	{
-		return dao.saveFlowStart(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
+		return dao.saveFlowStart(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, 0);
 	}
 
 	/**
@@ -101,7 +152,7 @@ public class DsCommonIFlowService
 	 */
 	public IFlowWaiting saveFlowStart(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
 	{
-		return dao.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
+		return dao.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, 0);
 	}
 	
 	public void saveStop(String piid)
@@ -217,8 +268,23 @@ public class DsCommonIFlowService
 		dao.deleteFlowPi(Long.parseLong(id));
 	}
 	
-	public boolean updateFlowUser(Long wid, String olduser, String oldname,String newuser, String newname)
+	public boolean updateFlowTuser(Long wid, String olduser, String oldname,String newuser, String newname)
 	{
-		return dao.updateFlowUser(wid, olduser, oldname, newuser, newname);
+		return dao.updateFlowTuser(wid, olduser, oldname, newuser, newname);
+	}
+
+	public boolean updateFlowTuser(Long wid, String tuser, int subcount)
+	{
+		return dao.updateFlowTuser(wid, tuser, subcount);
+	}
+
+	public boolean updateFlowTusers(Long wid, String tusers)
+	{
+		return dao.updateFlowTusers(wid, tusers);
+	}
+
+	public boolean updateFlowWaitingTenable(Long wid, String datatable)
+	{
+		return  dao.updateFlowWaitingTenable(wid, datatable);
 	}
 }

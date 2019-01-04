@@ -63,6 +63,48 @@ public class DsCommonIFlowUtil
 	{
 		return start(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
 	}
+	
+	/**
+	 * 流程启动
+	 * @param alias 启动流程的标识
+	 * @param users 启动节点任务处理人，如果为null，则使用流程配置中的处理人信息
+	 * @param ywlsh 业务流水号
+	 * @param caccount 提交人账号
+	 * @param cname 提交人姓名
+	 * @param piDay 时限天数
+	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
+	 * @param enable 是否启用待办（-1不启用，0启用）
+	 * @return 流程实例ID
+	 */
+	public String start(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, int tenable)
+	{
+		try
+		{
+			init();
+			return dao.saveStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, tenable);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	/**
+	 * 流程启动
+	 * @param alias 启动流程的标识
+	 * @param ywlsh 业务流水号
+	 * @param caccount 提交人账号
+	 * @param cname 提交人姓名
+	 * @param piDay 时限天数
+	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
+	 * @param enable 是否启用待办（-1不启用，0启用）
+	 * @return 流程实例ID
+	 */
+	public String start(String alias, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, int tenable)
+	{
+		return start(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, tenable);
+	}
 
 	/**
 	 * 流程启动并返回开始节点待办信息
@@ -80,7 +122,7 @@ public class DsCommonIFlowUtil
 		try
 		{
 			init();
-			return dao.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
+			return dao.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, 0);
 		}
 		catch(Exception e)
 		{
@@ -350,12 +392,55 @@ public class DsCommonIFlowUtil
 		}
 	}
 	
-	public boolean updateFlowUser(Long wid, String olduser, String oldname,String newuser, String newname)
+	public boolean updateFlowTuser(Long wid, String olduser, String oldname,String newuser, String newname)
 	{
 		try
 		{
 			init();
-			return dao.updateFlowUser(wid, olduser, oldname, newuser, newname);
+			return dao.updateFlowTuser(wid, olduser, oldname, newuser, newname);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	
+	public boolean updateFlowTuser(Long wid, String tuser, int subcount)
+	{
+		try
+		{
+			init();
+			return dao.updateFlowTuser(wid, tuser, subcount);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean updateFlowTusers(Long wid, String tusers)
+	{
+		try
+		{
+			init();
+			return dao.updateFlowTusers(wid, tusers);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean updateFlowWaitingTenable(Long wid, String datatable)
+	{
+		try
+		{
+			init();
+			return dao.updateFlowWaitingTenable(wid, datatable);
 		}
 		catch(Exception e)
 		{

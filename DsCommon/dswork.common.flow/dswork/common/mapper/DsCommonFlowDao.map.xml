@@ -7,9 +7,9 @@
 
 <insert id="insert" parameterType="dswork.common.model.DsCommonFlow">
 	insert into DS_FLOW
-	(ID, CATEGORYID, ALIAS, VNUM, DEPLOYID, NAME, STATUS, FLOWXML, DATATABLE)
+	(ID, CATEGORYID, ALIAS, VNUM, DEPLOYID, NAME, STATUS, FLOWXML, DATATABLE, DATAVIEW)
 	values
-	(#{id}, #{categoryid}, LOWER(#{alias}), #{vnum}, <if test="@Ognl@isEmpty(deployid)">null</if><if test="@Ognl@isNotEmpty(deployid)">#{deployid}</if>, #{name}, #{status}, #{flowxml}, #{datatable})
+	(#{id}, #{categoryid}, LOWER(#{alias}), #{vnum}, <if test="@Ognl@isEmpty(deployid)">null</if><if test="@Ognl@isNotEmpty(deployid)">#{deployid}</if>, #{name}, #{status}, #{flowxml}, #{datatable}, #{dataview})
 </insert>
 
 <delete id="delete">
@@ -21,11 +21,11 @@
 </update>
 
 <update id="updateDeployidAndTable">
-	update DS_FLOW set DEPLOYID=#{deployid}, DATATABLE=#{datatable} where ID=#{id}
+	update DS_FLOW set DEPLOYID=#{deployid}, DATATABLE=#{datatable}, DATAVIEW=#{dataview} where ID=#{id}
 </update>
 
 <update id="update" parameterType="dswork.common.model.DsCommonFlow">
-	update DS_FLOW set NAME=#{name}, FLOWXML=#{flowxml}, DATATABLE=#{datatable} where ID=#{id}
+	update DS_FLOW set NAME=#{name}, FLOWXML=#{flowxml}, DATATABLE=#{datatable}, DATAVIEW=#{dataview} where ID=#{id}
 </update>
 
 <update id="updateStatus" parameterType="dswork.common.model.DsCommonFlow">
@@ -42,10 +42,11 @@
 	<result property="status" column="STATUS" />
 	<result property="flowxml" column="FLOWXML" />
 	<result property="datatable" column="DATATABLE" />
+	<result property="dataview" column="DATAVIEW" />
 </resultMap>
 
 <sql id="columns">
-	ID, CATEGORYID, ALIAS, VNUM, DEPLOYID, NAME, STATUS, FLOWXML, DATATABLE
+	ID, CATEGORYID, ALIAS, VNUM, DEPLOYID, NAME, STATUS, FLOWXML, DATATABLE, DATAVIEW
 </sql>
 
 <sql id="dynamicWhere">
