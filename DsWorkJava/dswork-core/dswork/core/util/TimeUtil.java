@@ -11,7 +11,7 @@ import java.util.Locale;
 public class TimeUtil
 {
 	/**
-	 * 返回当前的时间，格式为：yyyy-MM-dd HH:mm:ss
+	 * Locale.CHINA返回当前的时间，格式为：yyyy-MM-dd HH:mm:ss
 	 * @return String
 	 */
 	public static String getCurrentTime()
@@ -20,7 +20,7 @@ public class TimeUtil
 	}
 
 	/**
-	 * 返回当前的时间，格式为：yyyy-MM-dd
+	 * Locale.CHINA返回当前的时间，格式为：yyyy-MM-dd
 	 * @return String
 	 */
 	public static String getCurrentDate()
@@ -29,7 +29,7 @@ public class TimeUtil
 	}
 
 	/**
-	 * 返回当前的时间
+	 * Locale.CHINA返回当前的时间
 	 * @param format 需要显示的格式化参数，如：yyyy-MM-dd HH:mm:ss
 	 * @return String
 	 */
@@ -41,7 +41,7 @@ public class TimeUtil
 	}
 
 	/**
-	 * 格式化时间
+	 * Locale.CHINA格式化时间
 	 * @param date 需要格式化的时间
 	 * @param format 需要显示的格式化参数，如：yyyy-MM-dd HH:mm:ss
 	 * @return String
@@ -64,7 +64,7 @@ public class TimeUtil
 	}
 
 	/**
-	 * 格式化时间
+	 * Locale.CHINA格式化时间
 	 * @param value 需要格式化的时间字符串
 	 * @param format 对应时间字符串的格式化参数，如：yyyy-MM-dd HH:mm:ss
 	 * @return Date
@@ -87,7 +87,7 @@ public class TimeUtil
 	}
 
 	/**
-	 * 格式化时间，格式为：yyyy-MM-dd HH:mm:ss
+	 * Locale.CHINA格式化时间，格式为：yyyy-MM-dd HH:mm:ss
 	 * @param value 需要格式化的时间字符串，格式为：yyyy-MM-dd HH:mm:ss
 	 * @return Date
 	 */
