@@ -1,0 +1,11 @@
+新项目使用
+	直接引用/web/frame/js目录和/web/frame/style目录
+	复制frame根目录下四个文件，按需修改
+
+更新说明：
+	2019-01-09
+		更新/web/frame/js/jskey/jskey.menu.js
+		更新/web/frame/js/jskey/menu/themes/jskey.menu.css
+		更新/web/frame/js/jskey/menu/themes/img/open.gif
+		更新/web/frame/js/jskey/menu/themes/img/close.gif
+		删除/web/frame/js/jskey/menu/themes/img/page.gif

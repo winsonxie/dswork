@@ -4,10 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui"/>
 <title></title>
-<link rel="stylesheet" type="text/css" href="style/frame.css" />
-<link rel="stylesheet" type="text/css" href="js/easyui/themes/default/layout_panel_tabs.css" />
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/easyui/jquery.layout_panel_tabs.js"></script>
+<link rel="stylesheet" type="text/css" href="/web/frame/style/frame.css" />
+<link rel="stylesheet" type="text/css" href="/web/frame/js/easyui/themes/default/layout_panel_tabs.css" />
+<script type="text/javascript" src="/web/frame/js/jquery.js"></script>
+<script type="text/javascript" src="/web/frame/js/easyui/jquery.layout_panel_tabs.js"></script>
 <style type="text/css">
 .panel-header,.panel-body {border-color: #e0ecff;}
 .layout-split-west{border-right:5px solid #e0ecff;}
@@ -17,9 +17,9 @@ function re(){$('#tt').tabs('resize');}
 function GoDorp(o){
 	var m=document.getElementById("menu");
 	if(m.style.display=="none"){
-		o.title="关闭左边菜单";o.src="style/middle/open.gif";m.style.display="";
+		o.title="关闭左边菜单";o.src="/web/frame/style/middle/open.gif";m.style.display="";
 	}else{
-		o.title="打开左边菜单";o.src="style/middle/close.gif";m.style.display="none";
+		o.title="打开左边菜单";o.src="/web/frame/style/middle/close.gif";m.style.display="none";
 	}
 	re();
 }
