@@ -17,7 +17,7 @@ if(has3){/*三角模式*/
 	i_T  = "&nbsp;";// T
 	i_L  = "&nbsp;";// L
 	i_I  = "&nbsp;";// I
-	document.write('<style type="text/css">.jskeymenu .cell{padding:0 0 0 16px;}.jskeymenu .treenodes i{font-size:12px;margin-right:2px;width:auto;}</style>');
+	document.write('<style type="text/css">.jskeymenu .cell{padding:0 0 0 12px;}.jskeymenu .treenodes i{font-size:12px;margin-right:2px;width:auto;}</style>');
 }
 else{
 	// 加减模式
