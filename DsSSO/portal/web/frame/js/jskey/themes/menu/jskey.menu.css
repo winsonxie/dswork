@@ -1,13 +1,14 @@
 /*IE6背景图片不缓存BUG*/
 * {filter:expression(document.execCommand("BackgroundImageCache", false, true));}
 html {height:100%;margin:0;padding:0;border:none;overflow:auto;}
-body {height:100%;margin:0;padding:0;border:none;font-size:12px;font-weight:bold;background-color:#FEFEFE;text-align:center;overflow:auto;}
+body {height:100%;margin:0;padding:0;border:none;text-align:center;overflow:auto;background-color:#e0ecff;background-color:#fff;}
 body::-webkit-scrollbar {width:4px;}
-body::-webkit-scrollbar-thumb {background-color:#95B8E7;border-radius:2px;}
+body::-webkit-scrollbar-thumb {background-color:#95b8e7;border-radius:2px;}
 body::-webkit-scrollbar-track {background-color:#eeeeee;opacity:0.1;}
 
-a {font-size:12px;}
-td {font-size:12px;}
+table{font-size:14px;font-weight:normal;}
+a {font-size:inherit;}
+td {font-size:inherit;}
 @font-face {
 	font-family:"treefont";
 	src:url("font/tree.eot");/* IE9+ */
@@ -21,60 +22,63 @@ td {font-size:12px;}
 .jskeymenu {width:100%;border:0px;font-family:Helvetica;}/*height:100%由程序设置*/
 
 /*分层菜单的样式设置*/
-.jskeymenu .menuOpen,
-.jskeymenu .menuClose {
-	background-color: #E0ECFF;
+.jskeymenu .menu {
+	/*
+	background-color: #e0ecff;
 	background: -webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
 	background: -moz-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
 	background: -o-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
 	background: linear-gradient(to bottom,#EFF5FF 0,#E0ECFF 100%);
 	background-repeat: repeat-x;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF,endColorstr=#E0ECFF,GradientType=0);
+	*/
 	overflow:hidden;width:100%;height:26px;
-	padding-left:7px;padding-top:2px;cursor:pointer;border:none;
+	padding:2px 0 0 4px;cursor:pointer;border:none;
 	color:#333333;text-align:left;font-weight:bold;
+	/*
 	border-bottom:solid #95B8E7 1px;
+	*/
 }
-.jskeymenu .menuOpen span,
-.jskeymenu .menuClose span {
-	font-family:"treefont";font-size:inherit;font-style:normal;font-weight:normal;outline:0;display:inline-block;margin-right:5px;
-}
-.jskeymenu .cellOpen {width:100%;}/*height:100%由程序设置*/
-.jskeymenu .cellClose {width:100%;height:0%;}
-.jskeymenu .cellContent {width:100%;height:100%;overflow-y:auto;overflow-x:hidden;}
-.jskeymenu .cellContent::-webkit-scrollbar {width:4px;}
-.jskeymenu .cellContent::-webkit-scrollbar-thumb {background-color:#95B8E7;border-radius:2px;}
-.jskeymenu .cellContent::-webkit-scrollbar-track {background-color:#eeeeee;opacity:0.1;}
+.jskeymenu .menu-open{}
+.jskeymenu .menu-close{}
 
-/*QQ式菜单的列表样式设置*/
-/**/
-.jskeymenu .imgdiv {width:99%;cursor:pointer;text-align:left;line-height:20px;margin:5px 0px 0px 3px;font-weight:bold;}
-.jskeymenu .imgdiv img {width:20px;height:20px;border:solid #edf2f8 1px;vertical-align:middle;margin:0px 3px 0px 5px;}
+.jskeymenu .cell{width:100%;}
+.jskeymenu .cell-open {}/*height:100%由程序设置*/
+.jskeymenu .cell-close {height:0%;}
 
-/*QQ式菜单的头像样式设置*/
+.jskeymenu .cell-content {width:100%;height:100%;overflow-y:auto;overflow-x:hidden;}
+.jskeymenu .cell-content::-webkit-scrollbar {width:4px;}
+.jskeymenu .cell-content::-webkit-scrollbar-thumb {background-color:#95b8e7;border-radius:2px;}
+.jskeymenu .cell-content::-webkit-scrollbar-track {background-color:#eeeeee;opacity:0.1;}
+
+.jskeymenu i,
+.jskeymenu span{font-family:"treefont";font-size:inherit;display:inline-block;outline:0;font-weight:normal;font-style:normal;line-height:100%;text-align:left;}
+.jskeymenu .menu i{margin:0 4px 0 0;font-size:12px;}
+.jskeymenu .treenodes {color:#333333;display:block;width:95%;white-space:nowrap;vertical-align:top;text-align:left;padding:0;margin:0;}
+.jskeymenu .treenodes i {color:#333333;font-size:20px;width:18px;}
+.jskeymenu .treenodes:hover i{opacity:1;}
+.jskeymenu .treenode {font-size:inherit;cursor:pointer;display:block;width:95%;height:20px;line-height:100%;padding-left:3px;white-space:nowrap;vertical-align:top;text-align:left;}
+.jskeymenu .treenode .img {border:0px;width:20px;height:20px;vertical-align:text-bottom;}
+.jskeymenu .treenode:hover .img {opacity:1;}
+.jskeymenu .treenodeout {color:#333333;}
+.jskeymenu .treenodeover {color:#ff0000;text-decoration:underline;}
+
 /*
-.jskeymenu .imgdiv {margin-top:5px;width:99%;cursor:pointer;text-align:center;}
-.jskeymenu .imgdiv img {width:32px;height:32px;margin-bottom:2px;display:block;border:solid #FEFEFE 1px;margin:auto;}
-*/
+ <table>
+	<tr><td class="menuOpen/menuClose"><i><span></span></i>name</td></tr>
+	<tr><td class="cellOpen/cellClose">
+		<div class="cellContent">
+			<div class="treenodes">
+				<div class="treenode"></div>
+				<div class="treenodes">
+					<div class="treenode"></div>
+					<div class="treenode"></div>
+				</div>
+			</div>
+		</div>
+	</td></tr>
+ </table>
+ */
 
-/*鼠标移过*/
-.jskeymenu .imgdiv img.imgout {border:solid #FEFEFE 1px;}
-.jskeymenu .outfont {color:#333333;}
-/*鼠标移开*/
-.jskeymenu .imgdiv img.imgover {border:solid #FEFEFE 1px;}
-.jskeymenu .overfont {color:#ff0000;text-decoration:underline;}
 
-/*树状菜单的样式设置*/
-div.treenodes i,
-div.treenode i {font-family:"treefont";color:#000;font-size:22px;line-height:22px;height:22px;width:22px;font-style:normal;font-weight:normal;outline:0;display:inline-block;}
-/*节点块容器*/
-div.treenodes {display:block;width:95%;white-space:nowrap;vertical-align:top;text-align:left;padding:0;margin:0;}
-div.treenodeout, div.treenodeover {font-size:12px;display:inline;}
-div.treenodeout {color:#333333;}
-div.treenodeover {color:#ff0000;}
-/*节点*/
-div.treenode {cursor:pointer;display:block;width:95%;padding-left:3px;white-space:nowrap;vertical-align:top;text-align:left;}
-div.treenode .img {border:0px;width:20px;height:20px;vertical-align:text-bottom;}
-div.treedivout, div.treedivover {height:22px;line-height:22px;font-size:12px;}
-div.treedivout {color:#333333;}
-div.treedivover {color:#333333;}
+
