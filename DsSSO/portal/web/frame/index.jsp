@@ -66,6 +66,8 @@ if(top.location != this.location){top.location = "<%=path %>/frame/index.jsp";}
 </div>
 <div region="south" data-options="border:false" style="height:24px;overflow:hidden;"><div class="bottomframe">
 	<span class="copyRight">&copy;</span>&nbsp;2014-2018&nbsp;249725997@qq.com
+	<img style="display:none;" src="/portal/frame/js/jskey/themes/menu/img/open.gif?version=1" />
+	<img style="display:none;" src="/portal/frame/js/jskey/themes/menu/img/close.gif?version=1" />
 </div></div>
 </body>
 <script type="text/javascript" src="js/easyui/jquery.layout_panel_tabs.js"></script>

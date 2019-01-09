@@ -22,7 +22,7 @@ function init(){
 		treedata[i] = {index:i, id:sys[i].id, name:sys[i].name, img:"", imgOpen:"", url:"", items:[]};
 	}
 	// true置底仅打开一个，false不置底可打开多个，null不置底仅打开一个
-	$jskey.menu.show(treedata, true, "");
+	$jskey.menu.show(treedata, false, "");
 	$jskey.menu.clickBar(0);
 }
 function showSystem(){
