@@ -160,8 +160,9 @@ clickBar:function(c){
 	}
 },
 //用于异步回调，或刷新指定层次菜单
-showNode:function(index, data){
-	try{this.showNodeHTML(index, $jskey.menu.getNodeHtml({name:this.list[index].title, items:data}));}catch(e){};
+showNode:function(index, data, url){
+	url = url || "";
+	try{this.showNodeHTML(index, $jskey.menu.getNodeHtml({name:this.list[index].title, items:data, _root:url}));}catch(e){};
 },
 showNodeHTML:function(index, html){
 	try{this.list[index].html = html;this.$("JskeyMCD_" + index).innerHTML = html;}catch(e){};
@@ -200,9 +201,13 @@ getCellHTML:function(obj, pnodeName, icoString){
 	var len = icoString.length;
 	var items = obj.items;
 	if(items.length == 0){
+		var url = obj.url;
+		if(obj._root != "" && url.indexOf("^") != 0 && url.indexOf("http") != 0 && url.indexOf(obj._root) != 0){
+			url = obj._root + url;
+		}
 		var _img = ((obj.img == null || obj.img == "")?(this.path + "default.gif"):(this.path + obj.img));// 父节点的图标是否由json来决定
 		var _imgOpen = ((obj.imgOpen == null || obj.imgOpen == "")?(this.path + "default.gif"):(this.path + obj.imgOpen));
-		html += "<div class='treenode treenodeout' onmouseover='this.className = \"treenode treenodeover\"' onmouseout='this.className = \"treenode treenodeout\"' ondblclick=\"$jskey.menu.reChangeURL('" + pnodeName + "','" + obj.name + "','" + obj.url + "')\" onclick=\"$jskey.menu.changeURL('" + pnodeName + "','" + obj.name + "','" + obj.url + "')\">";
+		html += "<div class='treenode treenodeout' onmouseover='this.className = \"treenode treenodeover\"' onmouseout='this.className = \"treenode treenodeout\"' ondblclick=\"$jskey.menu.reChangeURL('" + pnodeName + "','" + obj.name + "','" + url + "')\" onclick=\"$jskey.menu.changeURL('" + pnodeName + "','" + obj.name + "','" + url + "')\">";
 		if(len > 0){
 			for(var c = 0;c < len - 1;c++){
 				html += "<i>" + (icoString.charAt(c)=='0' ? i_I : i_N) + "</i>";
@@ -241,6 +246,7 @@ getCellHTML:function(obj, pnodeName, icoString){
 		var tmpHTML = "";//保存子节点HTML
 		for(var i = 0;i < items.length;i++){
 			item = items[i];
+			item._root = obj._root;// 向下传递
 			var icoStr = icoString + ((i == last) ? "1" : "0");
 			tmpHTML += this.getCellHTML(item, pnodeName, icoStr);//这里的pnodeName不变成name
 		}
@@ -267,6 +273,7 @@ getNodeHtml:function(obj){//{name:"",items:[]}
 	html += "<div class='treenodes' id='DIV"+v+"' style='display:;'>";
 	for(var i = 0;i < items.length;i++){
 		item = items[i];
+		item._root = obj._root;// 向下传递
 		childrenHTML += this.getCellHTML(item, obj.name, isTree ? ((i == items.length-1) ? "1" : "0") : "", this.num++);
 		// 增加此功能树节点
 		html += childrenHTML;
@@ -312,13 +319,15 @@ $jskey.menu.jsSrc = "" + document.getElementsByTagName("script")[document.getEle
 //当前js的引用路径
 $jskey.menu.jsPath = $jskey.menu.jsSrc.substring(0, $jskey.menu.jsSrc.lastIndexOf("/"));
 
-$jskey.menu.show = function(items, isHidden){
+$jskey.menu.show = function(items, isHidden, _root){
+	_root = _root || $jskey.menu.root;
 	$jskey.menu.hidden = isHidden;
 	if($jskey.menu.path == "") $jskey.menu.path = $jskey.menu.jsPath + "/themes/menu/ico/";
 	if($jskey.menu.imgPath == "") $jskey.menu.imgPath = $jskey.menu.jsPath + "/themes/menu/img/";
 	$jskey.menu.reset();
 	for(var i = 0;i < items.length;i++){
 		var item = items[i];
+		item._root = _root;
 		var html = $jskey.menu.getNodeHtml(item);
 		$jskey.menu.put(i, item.name, item.id, html);
 	}
@@ -330,11 +339,11 @@ $jskey.menu.changeURL = function(parentname, nodename, url){
 	if(url.indexOf("^") == 0){
 		url = url.substring(1, url.length);
 	}
-	else if($jskey.menu.root != ""){
-		if(url.indexOf("http") != 0 && url.indexOf($jskey.menu.root) != 0){
-			url = $jskey.menu.root + url;
-		}
-	}
+//	else if($jskey.menu.root != ""){
+//		if(url.indexOf("http") != 0 && url.indexOf($jskey.menu.root) != 0){
+//			url = $jskey.menu.root + url;
+//		}
+//	}
 	if(url != ""){try{
 		var s = nodename;//parentname + '-'+nodename;
 		if(parent.$('#tt').tabs('exists', s)){
@@ -361,11 +370,11 @@ $jskey.menu.reChangeURL = function(parentname, nodename, url){
 	if(url.indexOf("^") == 0){
 		url = url.substring(1, url.length);
 	}
-	else if($jskey.menu.root != ""){
-		if(url.indexOf("http") != 0 && url.indexOf($jskey.menu.root) != 0){
-			url = $jskey.menu.root + url;
-		}
-	}
+//	else if($jskey.menu.root != ""){
+//		if(url.indexOf("http") != 0 && url.indexOf($jskey.menu.root) != 0){
+//			url = $jskey.menu.root + url;
+//		}
+//	}
 	if(url != ""){try{
 		var s = nodename;//parentname + '-'+nodename;
 		var tab = null;
