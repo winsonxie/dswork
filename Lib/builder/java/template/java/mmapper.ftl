@@ -70,7 +70,7 @@
 </select>
 
 <select id="queryCount" resultType="int">
-	select count(1) from ${table.name}
+	select count(1) from ${table.nameUpperCase}
 	<include refid="dynamicWhere" />
 </select>
 
