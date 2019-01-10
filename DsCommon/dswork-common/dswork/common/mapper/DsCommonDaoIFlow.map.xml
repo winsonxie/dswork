@@ -151,9 +151,6 @@
 	select <include refid="sqlFlowWaiting" /> from DS_FLOW_PI_WAITING
 	where PIID=#{piid} <if test="@Ognl@isNotEmpty(talias)"> and TALIAS=#{talias}</if>
 </select>
-<select id="queryFlowWaitingTalias" resultType="java.lang.String">
-	select TALIAS from DS_FLOW_PI_WAITING where PIID=#{piid}
-</select>
 <select id="queryFlowWaiting" resultMap="resultFlowWaiting">
 	<include refid="sqlQueryFlowWaiting" />
 </select>

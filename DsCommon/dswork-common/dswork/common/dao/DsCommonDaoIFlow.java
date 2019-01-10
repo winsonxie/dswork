@@ -18,6 +18,7 @@ import com.google.gson.reflect.TypeToken;
 import dswork.common.DsFactory;
 import dswork.common.model.IFlow;
 import dswork.common.model.IFlowDataRow;
+import dswork.common.model.IFlowParam;
 import dswork.common.model.IFlowPi;
 import dswork.common.model.IFlowPiData;
 import dswork.common.model.IFlowTask;
@@ -123,11 +124,6 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		return executeSelectList("selectFlowWaitingByPiid", map);
 	}
 
-	private List<String> queryFlowWaitingTalias(Long piid)
-	{
-		return executeSelectList("queryFlowWaitingTalias", piid);
-	}
-
 	public IFlowPi getFlowPiByPiid(String piid)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -203,7 +199,6 @@ public class DsCommonDaoIFlow extends MyBatisDao
 	{
 		String time = TimeUtil.getCurrentTime();
 		IFlow flow = this.getFlow(alias);
-		DsFactory.getUtil().handleMethod(new IFlowPi(), new IFlowWaiting());
 		long flowid = 0L;
 		if(flow != null)
 		{
@@ -214,6 +209,15 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			IFlowTask task = this.getFlowTask(flowid, "start");
 			IFlowPi pi = new IFlowPi();
 			pi.setId(UniqueId.genUniqueId());
+
+			IFlowParam param = new IFlowParam();
+			param.setFlowid(flowid);
+			param.setPiid(pi.getId());
+			param.setAlias(alias);
+			param.setStart(true);
+			DsFactory.getUtil().handleMethod(param, true);
+			
+			
 			pi.setYwlsh(ywlsh);
 			pi.setSblsh(sblsh);
 			pi.setAlias(alias);
@@ -284,7 +288,14 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				}
 			}
 			this.saveFlowWaiting(m);
-			DsFactory.getUtil().handleMethod(pi, this.queryFlowWaitingByPiid(m.getPiid()), new IFlowPiData());
+			
+//			param.setFlowid(flowid);
+//			param.setDeployid(flow.getDeployid());
+//			param.setPiid(pi.getId());
+//			param.setAlias(alias);
+//			param.setStart(true);
+			param.setProcess(m);
+			DsFactory.getUtil().handleMethod(param, false);
 			return m;
 		}
 		return null;
@@ -312,8 +323,19 @@ public class DsCommonDaoIFlow extends MyBatisDao
 
 	public void saveStop(Long piid)
 	{
+		IFlowParam param = new IFlowParam();
+		//param.setFlowid(flowid);
+		//param.setDeployid(flow.getDeployid());
+		param.setPiid(piid);
+		//param.setAlias(alias);
+		param.setEnd(true);
+		DsFactory.getUtil().handleMethod(param, true);
+		
 		this.deleteFlowWaitingByPiid(piid);
 		this.updateFlowPi(piid, 0, "", dtSet);// 结束
+		
+		DsFactory.getUtil().handleMethod(param, false);
+		
 	}
 
 	public boolean saveProcess(Long waitid, String[] nextTalias, String[] nextTusers, String account, String name, String resultType, String resultMsg, String datatable)
@@ -321,7 +343,13 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		IFlowWaiting m = this.getFlowWaiting(waitid);
 		if(m != null && m.getTcount() <= 1)
 		{
-			DsFactory.getUtil().handleMethod(this.getFlowPiByPiid(m.getPiid() + ""), this.queryFlowWaitingByPiid(m.getPiid()));
+			IFlowParam param = new IFlowParam();
+			param.setPiid(m.getPiid());
+			param.setProcess(m);// 如果被处理了，会导致整个后续程序出现不可预料的错误
+			//param.setFlowid(flowid);
+			//param.setAlias(alias);
+			DsFactory.getUtil().handleMethod(param, true);// 如果m被修改了，会导致整个后续程序出现不可预料的错误
+			
 			String time = TimeUtil.getCurrentTime();
 			IFlowPiData pd = new IFlowPiData();
 			pd.setId(UniqueId.genUniqueId());
@@ -394,36 +422,56 @@ public class DsCommonDaoIFlow extends MyBatisDao
 					isEnd = exeProcess(nextTalias, nextTusers, datatable, m, time, isEnd);
 				}
 			}
+			List<IFlowPiData> pidataList = new ArrayList<IFlowPiData>();
+			pidataList.add(pd);
 			if(isEnd)
 			{
+				param.setEnd(true);// 标记为结束
+				
 				this.deleteFlowWaitingByPiid(m.getPiid());// 已经结束，清空所有待办事项
 				this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
 				
 				// 记录最后一步流向
-				pd.setId(UniqueId.genUniqueId());
-				pd.setTprev(m.getTalias());
-				pd.setTalias("end");
-				executeInsert("insertFlowPiData", pd);
+				IFlowPiData pdend = new IFlowPiData();
+				pdend.setId(UniqueId.genUniqueId());
+				pdend.setPiid(m.getPiid());
+				pdend.setTprev(m.getTalias());
+				pdend.setTalias("end");
+				pdend.setTname("结束");
+				pdend.setStatus(m.getSubcount()>-1?4:0);// 状态(0已处理,1代办,2挂起,3取消挂起,4会签)
+				pdend.setPaccount(account);
+				pdend.setPname(name);
+				pdend.setPtime(time);
+				pdend.setPtype(resultType);
+				pdend.setMemo(resultMsg);
+				pdend.setDatatable(datatable);
+				pdend.setDataview(m.getDataview());
+				pidataList.add(pdend);
+				executeInsert("insertFlowPiData", pdend);
 			}
 			else
 			{
-				List<String> list = this.queryFlowWaitingTalias(m.getPiid());
-				if(list == null || list.size() == 0)
+				List<IFlowWaiting> newWaitList = this.queryFlowWaitingByPiid(m.getPiid());
+				if(newWaitList == null || newWaitList.size() == 0)
 				{
 					this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
+					param.setEnd(true);// 标记为结束
 				}
 				else
 				{
 					StringBuilder sb = new StringBuilder(100);
-					sb.append(list.get(0));
-					for(int i = 1; i < list.size(); i++)
+					sb.append(newWaitList.get(0));
+					for(int i = 1; i < newWaitList.size(); i++)
 					{
-						sb.append(",").append(list.get(i));
+						sb.append(",").append(newWaitList.get(i));
 					}
 					this.updateFlowPi(m.getPiid(), 2, sb.toString(), dtSet);// 处理中
+					param.setWaitingList(newWaitList);
 				}
 			}
-			DsFactory.getUtil().handleMethod(this.getFlowPiByPiid(m.getPiid() + ""), this.queryFlowWaitingByPiid(m.getPiid()), pd);
+			param.setProcess(m);// 如果被处理了，会导致整个后续程序出现不可预料的错误
+			param.setPidataList(pidataList);
+			DsFactory.getUtil().handleMethod(param, false);
 			return true;
 		}
 		else

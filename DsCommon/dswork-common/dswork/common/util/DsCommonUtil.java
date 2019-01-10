@@ -13,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 
 import dswork.common.IFlowHandle;
 import dswork.common.model.IFlowDataRow;
+import dswork.common.model.IFlowParam;
 
 public class DsCommonUtil
 {
@@ -121,29 +122,28 @@ public class DsCommonUtil
 		return sb.toString();
 	}
 	
-	public static void handleMethod(Object... args)
+	public static void handleMethod(IFlowParam param, boolean beforeOrAfter)
 	{
 		try
 		{
-			if(list != null && list.size() > 0)
+			if(beforeOrAfter)
 			{
-				for (Object obj : list)
+				if(list != null && list.size() > 0)
 				{
-					Class<?> c = obj.getClass(); 
-					Method[] methods = c.getMethods();
-					for (Method method : methods) 
+					for (IFlowHandle obj : list)
 					{
-						String param = c.getName() + "." + method.getName() + "(";
-						for (int i = 0; i < args.length; i++)
-						{
-							param += args[i].getClass().getName()+",";
-						}
-						param = param.lastIndexOf(",") > 0 ? (param.substring(0, param.length() - 1) + ")") : (param + ")");
-						if(method.toString().indexOf(param) > 0)
-						{
-							method.invoke(obj, args);
-						}
-			        }
+						obj.exeBefore(param);
+					}
+				}
+			}
+			else
+			{
+				if(list != null && list.size() > 0)
+				{
+					for (IFlowHandle obj : list)
+					{
+						obj.exeAfter(param);
+					}
 				}
 			}
 		}
