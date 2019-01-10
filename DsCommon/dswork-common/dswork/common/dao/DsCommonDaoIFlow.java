@@ -203,7 +203,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 	{
 		String time = TimeUtil.getCurrentTime();
 		IFlow flow = this.getFlow(alias);
-		DsFactory.getUtil().handleMethod(flow);
+		DsFactory.getUtil().handleMethod(new IFlowPi(), new IFlowWaiting());
 		long flowid = 0L;
 		if(flow != null)
 		{
@@ -284,7 +284,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				}
 			}
 			this.saveFlowWaiting(m);
-			DsFactory.getUtil().handleMethod(pi, m);
+			DsFactory.getUtil().handleMethod(pi, this.queryFlowWaitingByPiid(m.getPiid()), new IFlowPiData());
 			return m;
 		}
 		return null;
@@ -319,9 +319,9 @@ public class DsCommonDaoIFlow extends MyBatisDao
 	public boolean saveProcess(Long waitid, String[] nextTalias, String[] nextTusers, String account, String name, String resultType, String resultMsg, String datatable)
 	{
 		IFlowWaiting m = this.getFlowWaiting(waitid);
-		DsFactory.getUtil().handleMethod(m);
 		if(m != null && m.getTcount() <= 1)
 		{
+			DsFactory.getUtil().handleMethod(this.getFlowPiByPiid(m.getPiid() + ""), this.queryFlowWaitingByPiid(m.getPiid()));
 			String time = TimeUtil.getCurrentTime();
 			IFlowPiData pd = new IFlowPiData();
 			pd.setId(UniqueId.genUniqueId());
@@ -396,7 +396,6 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			}
 			if(isEnd)
 			{
-				DsFactory.getUtil().handleMethod(this.getFlowPiByPiid(m.getPiid() + ""));
 				this.deleteFlowWaitingByPiid(m.getPiid());// 已经结束，清空所有待办事项
 				this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
 				
@@ -405,16 +404,13 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				pd.setTprev(m.getTalias());
 				pd.setTalias("end");
 				executeInsert("insertFlowPiData", pd);
-				DsFactory.getUtil().handleMethod(this.getFlowPiByPiid(m.getPiid() + ""), pd);
 			}
 			else
 			{
 				List<String> list = this.queryFlowWaitingTalias(m.getPiid());
 				if(list == null || list.size() == 0)
 				{
-					DsFactory.getUtil().handleMethod(this.getFlowPiByPiid(m.getPiid() + ""));
 					this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
-					DsFactory.getUtil().handleMethod(this.getFlowPiByPiid(m.getPiid() + ""), pd);
 				}
 				else
 				{
@@ -425,9 +421,9 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						sb.append(",").append(list.get(i));
 					}
 					this.updateFlowPi(m.getPiid(), 2, sb.toString(), dtSet);// 处理中
-					DsFactory.getUtil().handleMethod(this.getFlowPiByPiid(m.getPiid() + ""), this.queryFlowWaitingByPiid(m.getPiid()));
 				}
 			}
+			DsFactory.getUtil().handleMethod(this.getFlowPiByPiid(m.getPiid() + ""), this.queryFlowWaitingByPiid(m.getPiid()), pd);
 			return true;
 		}
 		else
@@ -454,7 +450,6 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				{
 					this.updateSubFlowWaitingSubusers(w.getId(), w.getSubusers(), dtSet);
 				}
-				DsFactory.getUtil().handleMethod(m, this.getFlowWaiting(w.getId()));
 			}
 			else
 			{
@@ -511,7 +506,6 @@ public class DsCommonDaoIFlow extends MyBatisDao
 					newm.setTuser("," + t.getSubusers() + ",");
 				}
 				this.saveFlowWaiting(newm);
-				DsFactory.getUtil().handleMethod(m, newm);
 			}
 			if(talias.equals("end"))
 			{
