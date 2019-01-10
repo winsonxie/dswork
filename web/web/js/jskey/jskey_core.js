@@ -1,9 +1,9 @@
 ﻿/**
  * jskey库合集
  * @version 8.8.3
- * @datetime 2018-09-28 13:30
+ * @datetime 2019-01-07 13:30
  * @author skey_chen
- * @copyright 2011-2018 &copy; 249725997@qq.com
+ * @copyright 2011-2019 &copy; 249725997@qq.com
  * @license LGPL-3.0 https://github.com/skeychen/dswork/blob/master/LICENSE
  */
 var $jskey=$jskey||{};
