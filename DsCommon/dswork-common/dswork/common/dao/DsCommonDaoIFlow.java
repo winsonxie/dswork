@@ -6,17 +6,16 @@ package dswork.common.dao;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.google.gson.reflect.TypeToken;
 
+import dswork.common.DsFactory;
 import dswork.common.model.IFlow;
 import dswork.common.model.IFlowDataRow;
 import dswork.common.model.IFlowPi;
@@ -31,24 +30,7 @@ import dswork.core.util.UniqueId;
 @SuppressWarnings("all")
 public class DsCommonDaoIFlow extends MyBatisDao
 {
-	com.google.gson.GsonBuilder builder = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss");
-	
 	private String dtSet = "";
-
-	public String toJson(Object object)
-	{
-		return builder.create().toJson(object);
-	}
-
-	public <T> T toBean(String json, Class<T> classOfT)
-	{
-		return builder.create().fromJson(json, classOfT);
-	}
-	
-	public <T> T toBean(String json, Type type)
-	{
-		return builder.create().fromJson(json, type);
-	}
 	
 	// 此处这样写法是为了让流程的管理可成独立项目运行，不在同一数据库中
 	// #############################################################
@@ -221,6 +203,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 	{
 		String time = TimeUtil.getCurrentTime();
 		IFlow flow = this.getFlow(alias);
+		DsFactory.getUtil().handleMethod(flow);
 		long flowid = 0L;
 		if(flow != null)
 		{
@@ -245,6 +228,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			pi.setCname(name);
 			pi.setPialias("start");
 			pi.setDatatable(task.getDatatable());
+			pi.setDataview(task.getDataview());
 			executeInsert("insertFlowPi", pi);
 			Long piid = pi.getId();
 			IFlowWaiting m = new IFlowWaiting();
@@ -263,6 +247,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			m.setTmemo(task.getTmemo());
 			m.setSubcount(task.getSubcount());
 			m.setTenable(tenable);
+			m.setDataview(task.getDataview());
 			if(task.getSubcount() > -1 && "".equals(task.getSubusers()))
 			{
 				m.setSubusers(",,");
@@ -299,6 +284,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				}
 			}
 			this.saveFlowWaiting(m);
+			DsFactory.getUtil().handleMethod(pi, m);
 			return m;
 		}
 		return null;
@@ -333,6 +319,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 	public boolean saveProcess(Long waitid, String[] nextTalias, String[] nextTusers, String account, String name, String resultType, String resultMsg, String datatable)
 	{
 		IFlowWaiting m = this.getFlowWaiting(waitid);
+		DsFactory.getUtil().handleMethod(m);
 		if(m != null && m.getTcount() <= 1)
 		{
 			String time = TimeUtil.getCurrentTime();
@@ -349,6 +336,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			pd.setPtype(resultType);
 			pd.setMemo(resultMsg);
 			pd.setDatatable(datatable);
+			pd.setDataview(m.getDataview());
 			executeInsert("insertFlowPiData", pd);
 			boolean isEnd = false;
 			if(m.getSubcount() > -1)//会签任务
@@ -362,7 +350,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 					String cuser = "|," + account + ",";
 					if(m.getTuser().indexOf(cuser) > 0)
 					{
-						isEnd = exeProcess(waitid, nextTalias, nextTusers, datatable, m, time, isEnd);
+						isEnd = exeProcess(nextTalias, nextTusers, datatable, m, time, isEnd);
 					}
 				}
 				else
@@ -390,7 +378,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						else
 						{
 							datatable = updateDataTable(this.getFlowPiByPiid(m.getPiid() + "").getDatatable(), datatable, true);
-							isEnd = exeProcess(waitid, nextTalias, nextTusers, datatable, m, time, isEnd);
+							isEnd = exeProcess(nextTalias, nextTusers, datatable, m, time, isEnd);
 						}
 					}
 				}
@@ -403,26 +391,30 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				}
 				else
 				{
-					isEnd = exeProcess(waitid, nextTalias, nextTusers, datatable, m, time, isEnd);
+					isEnd = exeProcess(nextTalias, nextTusers, datatable, m, time, isEnd);
 				}
 			}
 			if(isEnd)
 			{
+				DsFactory.getUtil().handleMethod(this.getFlowPiByPiid(m.getPiid() + ""));
 				this.deleteFlowWaitingByPiid(m.getPiid());// 已经结束，清空所有待办事项
 				this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
-
+				
 				// 记录最后一步流向
 				pd.setId(UniqueId.genUniqueId());
 				pd.setTprev(m.getTalias());
 				pd.setTalias("end");
 				executeInsert("insertFlowPiData", pd);
+				DsFactory.getUtil().handleMethod(this.getFlowPiByPiid(m.getPiid() + ""), pd);
 			}
 			else
 			{
 				List<String> list = this.queryFlowWaitingTalias(m.getPiid());
 				if(list == null || list.size() == 0)
 				{
+					DsFactory.getUtil().handleMethod(this.getFlowPiByPiid(m.getPiid() + ""));
 					this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
+					DsFactory.getUtil().handleMethod(this.getFlowPiByPiid(m.getPiid() + ""), pd);
 				}
 				else
 				{
@@ -433,6 +425,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						sb.append(",").append(list.get(i));
 					}
 					this.updateFlowPi(m.getPiid(), 2, sb.toString(), dtSet);// 处理中
+					DsFactory.getUtil().handleMethod(this.getFlowPiByPiid(m.getPiid() + ""), this.queryFlowWaitingByPiid(m.getPiid()));
 				}
 			}
 			return true;
@@ -443,9 +436,9 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		}
 	}
 
-	private boolean exeProcess(Long waitid, String[] nextTalias, String[] nextTusers, String datatable, IFlowWaiting m, String time, boolean isEnd)
+	private boolean exeProcess(String[] nextTalias, String[] nextTusers, String datatable, IFlowWaiting m, String time, boolean isEnd)
 	{
-		this.deleteFlowWaiting(waitid);// 该待办事项已经处理
+		this.deleteFlowWaiting(m.getId());// 该待办事项已经处理
 		for(int i = 0; i < nextTalias.length; i++)
 		{
 			String talias = nextTalias[i];
@@ -461,6 +454,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				{
 					this.updateSubFlowWaitingSubusers(w.getId(), w.getSubusers(), dtSet);
 				}
+				DsFactory.getUtil().handleMethod(m, this.getFlowWaiting(w.getId()));
 			}
 			else
 			{
@@ -480,6 +474,8 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				newm.setTnext(t.getTnext());
 				dtSet = updateDataTable(datatable, t.getDatatable(), false);
 				newm.setDatatable(dtSet);
+				newm.setTenable(0);
+				newm.setDataview(t.getDataview());
 				if(nextTusers != null)
 				{
 					String[] s = nextTusers[i].split(",", -1);
@@ -515,6 +511,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 					newm.setTuser("," + t.getSubusers() + ",");
 				}
 				this.saveFlowWaiting(newm);
+				DsFactory.getUtil().handleMethod(m, newm);
 			}
 			if(talias.equals("end"))
 			{
@@ -534,7 +531,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		
 		if(oDataTable != null && !"".equals(oDataTable))
 		{
-			oList = toBean(oDataTable,  new TypeToken<List<IFlowDataRow>>(){}.getType());
+			oList = DsFactory.getUtil().toBean(oDataTable,  new TypeToken<List<IFlowDataRow>>(){}.getType());
 			if(oList != null && oList.size() > 0)
 			{
 				oMap = new HashMap<String, IFlowDataRow>();
@@ -547,7 +544,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		}
 		if(nDataTable != null && !"".equals(nDataTable))
 		{
-			nList = toBean(nDataTable,  new TypeToken<List<IFlowDataRow>>(){}.getType());
+			nList = DsFactory.getUtil().toBean(nDataTable,  new TypeToken<List<IFlowDataRow>>(){}.getType());
 			if(nList != null && nList.size() > 0)
 			{
 				nMap = new HashMap<String, IFlowDataRow>();
@@ -607,7 +604,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				list.add(v);
 			}
 		}
-		return toJson(list);
+		return DsFactory.getUtil().toJson(list);
 	}
 
 	public boolean updateSubFlowWaiting(Long id, String subusers, String datatable)

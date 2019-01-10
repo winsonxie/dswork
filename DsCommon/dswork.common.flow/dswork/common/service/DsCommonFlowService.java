@@ -95,14 +95,13 @@ public class DsCommonFlowService
 		if(flow.getVnum() == 0)
 		{
 			flow.setId(UniqueId.genUniqueId());
+			String deployid = flow.getAlias() + "-" + flow.getId();
 			// 把旧的数据处理为发布版本
-			flow.setDeployid("");
+			flow.setDeployid(deployid);
 			flow.setVnum(1);
 			flow.setStatus(1);
 			flowDao.save(flow);// 新的流程
-			String deployid = flow.getAlias() + "-" + flow.getId();
-			flowDao.updateDeployid(flow.getId(), deployid);// 更新刚发布的数据
-			flowDao.updateDeployidAndTable(flowid, deployid, flow.getDatatable());// 更新VNUM为0的deployid为最新发布的id
+			flowDao.updateDeployid(flowid, deployid);// 更新VNUM为0的deployid为最新发布的id
 			List<DsCommonFlowTask> list = taskDao.queryList(flowid);
 			if(list != null && list.size() > 0)
 			{

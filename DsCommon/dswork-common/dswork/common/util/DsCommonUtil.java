@@ -1,5 +1,7 @@
 package dswork.common.util;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,13 +11,36 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import dswork.common.IFlowHandle;
 import dswork.common.model.IFlowDataRow;
 
-public class DsCommonTableUtil
+public class DsCommonUtil
 {
 	private static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 	
+	private static List<IFlowHandle> list = new ArrayList<IFlowHandle>();
+	
+	public static String toJson(Object object)
+	{
+		return gson.toJson(object);
+	}
+
+	public static <T> T toBean(String json, Class<T> classOfT)
+	{
+		return gson.fromJson(json, classOfT);
+	}
+	
+	public static <T> T toBean(String json, Type type)
+	{
+		return gson.fromJson(json, type);
+	}
+	
 	public static String getM(String datatable)
+	{
+		return toJson(getMap(datatable));
+	}
+	
+	public static Map<String, IFlowDataRow> getMap(String datatable)
 	{
 		Map<String, IFlowDataRow> map = new HashMap<String, IFlowDataRow>();
 		if (datatable != null && !"".equals(datatable))
@@ -26,7 +51,7 @@ public class DsCommonTableUtil
 				map.put(row.getTname(), row);
 			}
 		}
-		return gson.toJson(map);
+		return map;
 	}
 
 	/*public static String getRows(String datatable)
@@ -96,4 +121,59 @@ public class DsCommonTableUtil
 		return sb.toString();
 	}
 	
+	public static void handleMethod(Object... args)
+	{
+		try
+		{
+			if(list != null && list.size() > 0)
+			{
+				for (Object obj : list)
+				{
+					Class<?> c = obj.getClass(); 
+					Method[] methods = c.getMethods();
+					for (Method method : methods) 
+					{
+						String param = c.getName() + "." + method.getName() + "(";
+						for (int i = 0; i < args.length; i++)
+						{
+							param += args[i].getClass().getName()+",";
+						}
+						param = param.lastIndexOf(",") > 0 ? (param.substring(0, param.length() - 1) + ")") : (param + ")");
+						if(method.toString().indexOf(param) > 0)
+						{
+							method.invoke(obj, args);
+						}
+			        }
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 直接添加
+	 * @param iflow
+	 */
+	public void setList(IFlowHandle iflow)
+	{
+		list.add(iflow);
+	}
+	
+	/**
+	 * 先清除list在添加
+	 * @param iflow
+	 */
+	public void resetList(IFlowHandle iflow)
+	{
+		list.clear();
+		list.add(iflow);
+	}
+	
+	/*public List<IFlowHandle> getList()
+	{
+		return list;
+	}*/
 }

@@ -20,10 +20,6 @@
 	update DS_FLOW set DEPLOYID=#{deployid} where ID=#{id}
 </update>
 
-<update id="updateDeployidAndTable">
-	update DS_FLOW set DEPLOYID=#{deployid}, DATATABLE=#{datatable}, DATAVIEW=#{dataview} where ID=#{id}
-</update>
-
 <update id="update" parameterType="dswork.common.model.DsCommonFlow">
 	update DS_FLOW set NAME=#{name}, FLOWXML=#{flowxml}, DATATABLE=#{datatable}, DATAVIEW=#{dataview} where ID=#{id}
 </update>

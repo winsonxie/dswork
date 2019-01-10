@@ -273,7 +273,7 @@ public class DsCommonIFlowServiceUtil
 		return service.updateFlowTusers(wid, tusers);
 	}
 	
-	public boolean updateFlowWaitingTenable(Long wid, String datatable)
+	public boolean saveFlow(Long wid, String datatable)
 	{
 		return service.updateFlowWaitingTenable(wid, datatable);
 	}

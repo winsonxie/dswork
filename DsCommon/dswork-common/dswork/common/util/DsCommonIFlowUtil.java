@@ -435,7 +435,7 @@ public class DsCommonIFlowUtil
 		return false;
 	}
 	
-	public boolean updateFlowWaitingTenable(Long wid, String datatable)
+	public boolean saveFlow(Long wid, String datatable)
 	{
 		try
 		{

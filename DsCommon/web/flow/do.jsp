@@ -9,12 +9,14 @@ if(wid > 0)
 {
 	IFlowWaiting po = DsFactory.getFlow().getWaiting(wid);
 	request.setAttribute("po", po);
+	request.setAttribute("map", DsFactory.getUtil().getMap(po.getDatatable()));
+	
 	request.setAttribute("m", DsFactory.getUtil().getM(po.getDatatable()));
 	/* request.setAttribute("rows", DsFactory.getUtil().getRows(po.getDatatable())); */
 	request.setAttribute("html", DsFactory.getUtil().getHtml(po.getDatatable()));
 	
-	java.util.Map<String, String> map = DsFactory.getFlow().getTaskList(po.getFlowid());
-	request.setAttribute("map", map);
+	java.util.Map<String, String> tmap = DsFactory.getFlow().getTaskList(po.getFlowid());
+	request.setAttribute("tmap", tmap);
 	String[] arr = po.getTnext().split("\\|", -1);
 	request.setAttribute("arr", arr);
 }
@@ -52,7 +54,7 @@ if(wid > 0)
 			<c:forEach items="${arr}" var="n">
 				<select name="taskList">
 					<c:forEach items="${fn:split(n, ',')}" var="m">
-						<option value="${fn:escapeXml(m)}">${fn:escapeXml(map[m])}</option>
+						<option value="${fn:escapeXml(m)}">${fn:escapeXml(tmap[m])}</option>
 					</c:forEach>
 				</select>
 			</c:forEach>
@@ -175,21 +177,21 @@ function getFormData(){
 	$("#datatable").val(JSON.stringify(array));
 }
 function init(){
-<c:forEach items="${dt}" var="d">
+<c:forEach items="${map}" var="d">
 	var row = {};
-	row.tname  = "${d.tname}";
-	row.talias = "${d.talias}";
-	row.tuse   = "${d.tuse}";
+	row.tname  = "${d.value.tname}";
+	row.talias = "${d.value.talias}";
+	row.tuse   = "${d.value.tuse}";
 	var arr = [];
-	<c:forEach items="${d.ttype}" var="tp">
+	<c:forEach items="${d.value.ttype}" var="tp">
 	var ttype = {};
 	ttype.key  = "${tp.key}";
 	ttype.val  = "${tp.val}";
 	arr.push(ttype);
 	</c:forEach>
 	row.ttype = arr;
-	row.trwx   = "${d.trwx}";
-	row.tvalue = "${d.tvalue}";
+	row.trwx   = "${d.value.trwx}";
+	row.tvalue = "${d.value.tvalue}";
 	map.put(row.tname, row);
 </c:forEach>
 }

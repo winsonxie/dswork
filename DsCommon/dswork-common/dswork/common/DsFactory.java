@@ -1,7 +1,7 @@
 package dswork.common;
 
 import dswork.common.service.DsCommonIFlowService;
-import dswork.common.util.DsCommonTableUtil;
+import dswork.common.util.DsCommonUtil;
 import dswork.common.util.DsCommonIFlowServiceUtil;
 import dswork.spring.BeanFactory;
 
@@ -21,7 +21,7 @@ public class DsFactory
 	
 	private static DsCommonIFlowServiceUtil factory = null;
 	
-	private static final DsCommonTableUtil table = new DsCommonTableUtil();
+	private static final DsCommonUtil util = new DsCommonUtil();
 	
 	/**
 	 * 相当于service，本身提供事务支持。
@@ -35,8 +35,8 @@ public class DsFactory
 		return factory;
 	}
 	
-	public static DsCommonTableUtil getUtil()
+	public static DsCommonUtil getUtil()
 	{
-		return table;
+		return util;
 	}
 }
