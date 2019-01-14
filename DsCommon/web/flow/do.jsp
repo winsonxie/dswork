@@ -1,7 +1,8 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@page language="java" pageEncoding="UTF-8"%>
+<%@page import="dswork.common.DsFactory, dswork.web.MyRequest, dswork.common.model.*, java.util.*"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@page import="dswork.common.DsFactory, dswork.web.MyRequest, dswork.common.model.*, java.util.*"%><%
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%
 String msg = "";
 MyRequest req = new MyRequest(request);
 long wid = req.getLong("wid");

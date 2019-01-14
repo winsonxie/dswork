@@ -146,12 +146,12 @@ public class DsCommonIFlowUtil
 		return startFlow(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
 	}
 	
-	public void stop(String piid)
+	public void stop(Long flowid, String alias, String piid)
 	{
 		try
 		{
 			init();
-			dao.saveStop(Long.parseLong(piid));
+			dao.saveStop(flowid, alias, Long.parseLong(piid));
 		}
 		catch(Exception e)
 		{

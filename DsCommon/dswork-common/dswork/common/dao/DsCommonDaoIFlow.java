@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -210,13 +211,14 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			IFlowPi pi = new IFlowPi();
 			pi.setId(UniqueId.genUniqueId());
 
-			IFlowParam param = new IFlowParam();
-			param.setFlowid(flowid);
-			param.setPiid(pi.getId());
-			param.setAlias(alias);
-			param.setStart(true);
-			DsFactory.getUtil().handleMethod(param, true);
-			
+			IFlowParam beforeParam = new IFlowParam();
+			IFlowParam afterParam = new IFlowParam();
+			beforeParam.setFlowid(flowid);
+			beforeParam.setPiid(pi.getId());
+			beforeParam.setAlias(alias);
+			beforeParam.setStart(true);
+			BeanUtils.copyProperties(beforeParam, afterParam);//复制
+			DsFactory.getUtil().handleMethod(beforeParam, true);
 			
 			pi.setYwlsh(ywlsh);
 			pi.setSblsh(sblsh);
@@ -290,12 +292,11 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			this.saveFlowWaiting(m);
 			
 //			param.setFlowid(flowid);
-//			param.setDeployid(flow.getDeployid());
 //			param.setPiid(pi.getId());
 //			param.setAlias(alias);
 //			param.setStart(true);
-			param.setProcess(m);
-			DsFactory.getUtil().handleMethod(param, false);
+			afterParam.setProcess(m);
+			DsFactory.getUtil().handleMethod(afterParam, false);
 			return m;
 		}
 		return null;
@@ -321,21 +322,21 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		return "";
 	}
 
-	public void saveStop(Long piid)
+	public void saveStop(Long flowid, String alias, Long piid)
 	{
-		IFlowParam param = new IFlowParam();
-		//param.setFlowid(flowid);
-		//param.setDeployid(flow.getDeployid());
-		param.setPiid(piid);
-		//param.setAlias(alias);
-		param.setEnd(true);
-		DsFactory.getUtil().handleMethod(param, true);
+		IFlowParam beforeParam = new IFlowParam();
+		IFlowParam afterParam = new IFlowParam();
+		beforeParam.setFlowid(flowid);
+		beforeParam.setPiid(piid);
+		beforeParam.setAlias(alias);
+		beforeParam.setEnd(true);
+		BeanUtils.copyProperties(beforeParam, afterParam);//复制
+		DsFactory.getUtil().handleMethod(beforeParam, true);
 		
 		this.deleteFlowWaitingByPiid(piid);
 		this.updateFlowPi(piid, 0, "", dtSet);// 结束
 		
-		DsFactory.getUtil().handleMethod(param, false);
-		
+		DsFactory.getUtil().handleMethod(afterParam, false);
 	}
 
 	public boolean saveProcess(Long waitid, String[] nextTalias, String[] nextTusers, String account, String name, String resultType, String resultMsg, String datatable)
@@ -343,12 +344,17 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		IFlowWaiting m = this.getFlowWaiting(waitid);
 		if(m != null && m.getTcount() <= 1)
 		{
-			IFlowParam param = new IFlowParam();
-			param.setPiid(m.getPiid());
-			param.setProcess(m);// 如果被处理了，会导致整个后续程序出现不可预料的错误
-			//param.setFlowid(flowid);
-			//param.setAlias(alias);
-			DsFactory.getUtil().handleMethod(param, true);// 如果m被修改了，会导致整个后续程序出现不可预料的错误
+			IFlowPi pi = this.getFlowPiByPiid(m.getPiid() + "");
+			IFlowParam beforeParam = new IFlowParam();
+			IFlowParam afterParam = new IFlowParam();
+			IFlowWaiting w = new IFlowWaiting();
+			BeanUtils.copyProperties(m, w);//复制m
+			beforeParam.setPiid(w.getPiid());
+			beforeParam.setProcess(w);
+			beforeParam.setFlowid(w.getFlowid());
+			beforeParam.setAlias(pi.getAlias());
+			BeanUtils.copyProperties(beforeParam, afterParam);//复制
+			DsFactory.getUtil().handleMethod(beforeParam, true);
 			
 			String time = TimeUtil.getCurrentTime();
 			IFlowPiData pd = new IFlowPiData();
@@ -369,7 +375,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			boolean isEnd = false;
 			if(m.getSubcount() > -1)//会签任务
 			{
-				dtSet = updateDataTable(this.getFlowPiByPiid(m.getPiid() + "").getDatatable(), datatable, true);
+				dtSet = updateDataTable(pi.getDatatable(), datatable, true);
 				String subusers = m.getSubusers();
 				subusers += "".equals(subusers) ? "," + account + "," : account + ",";
 				if(m.getSubcount() == 0)//会签个数为0时,subcount不需要继续减
@@ -378,7 +384,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 					String cuser = "|," + account + ",";
 					if(m.getTuser().indexOf(cuser) > 0)
 					{
-						isEnd = exeProcess(nextTalias, nextTusers, datatable, m, time, isEnd);
+						isEnd = exeProcess(nextTalias, nextTusers, datatable, m, time);
 					}
 				}
 				else
@@ -405,8 +411,8 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						}
 						else
 						{
-							datatable = updateDataTable(this.getFlowPiByPiid(m.getPiid() + "").getDatatable(), datatable, true);
-							isEnd = exeProcess(nextTalias, nextTusers, datatable, m, time, isEnd);
+							datatable = updateDataTable(pi.getDatatable(), datatable, true);
+							isEnd = exeProcess(nextTalias, nextTusers, datatable, m, time);
 						}
 					}
 				}
@@ -419,14 +425,14 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				}
 				else
 				{
-					isEnd = exeProcess(nextTalias, nextTusers, datatable, m, time, isEnd);
+					isEnd = exeProcess(nextTalias, nextTusers, datatable, m, time);
 				}
 			}
 			List<IFlowPiData> pidataList = new ArrayList<IFlowPiData>();
 			pidataList.add(pd);
 			if(isEnd)
 			{
-				param.setEnd(true);// 标记为结束
+				afterParam.setEnd(true);// 标记为结束
 				
 				this.deleteFlowWaitingByPiid(m.getPiid());// 已经结束，清空所有待办事项
 				this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
@@ -455,7 +461,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				if(newWaitList == null || newWaitList.size() == 0)
 				{
 					this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
-					param.setEnd(true);// 标记为结束
+					afterParam.setEnd(true);// 标记为结束
 				}
 				else
 				{
@@ -466,12 +472,11 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						sb.append(",").append(newWaitList.get(i));
 					}
 					this.updateFlowPi(m.getPiid(), 2, sb.toString(), dtSet);// 处理中
-					param.setWaitingList(newWaitList);
+					afterParam.setWaitingList(newWaitList);
 				}
 			}
-			param.setProcess(m);// 如果被处理了，会导致整个后续程序出现不可预料的错误
-			param.setPidataList(pidataList);
-			DsFactory.getUtil().handleMethod(param, false);
+			afterParam.setPidataList(pidataList);
+			DsFactory.getUtil().handleMethod(afterParam, false);
 			return true;
 		}
 		else
@@ -480,8 +485,9 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		}
 	}
 
-	private boolean exeProcess(String[] nextTalias, String[] nextTusers, String datatable, IFlowWaiting m, String time, boolean isEnd)
+	private boolean exeProcess(String[] nextTalias, String[] nextTusers, String datatable, IFlowWaiting m, String time)
 	{
+		boolean isEnd = false;
 		this.deleteFlowWaiting(m.getId());// 该待办事项已经处理
 		for(int i = 0; i < nextTalias.length; i++)
 		{

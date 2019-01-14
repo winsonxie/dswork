@@ -1,6 +1,5 @@
 package dswork.common.util;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -126,19 +125,16 @@ public class DsCommonUtil
 	{
 		try
 		{
-			if(beforeOrAfter)
+			if(list != null && list.size() > 0)
 			{
-				if(list != null && list.size() > 0)
+				if(beforeOrAfter)
 				{
 					for (IFlowHandle obj : list)
 					{
 						obj.exeBefore(param);
 					}
 				}
-			}
-			else
-			{
-				if(list != null && list.size() > 0)
+				else
 				{
 					for (IFlowHandle obj : list)
 					{
@@ -159,16 +155,10 @@ public class DsCommonUtil
 	 */
 	public void setList(IFlowHandle iflow)
 	{
-		list.add(iflow);
-	}
-	
-	/**
-	 * 先清除list在添加
-	 * @param iflow
-	 */
-	public void resetList(IFlowHandle iflow)
-	{
-		list.clear();
+		if(list == null)
+		{
+			list = new ArrayList<IFlowHandle>();
+		}
 		list.add(iflow);
 	}
 	

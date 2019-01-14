@@ -152,9 +152,9 @@ public class DsCommonIFlowServiceUtil
 		return service.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
 	}
 	
-	public void stop(String piid)
+	public void stop(Long flowid, String alias, String piid)
 	{
-		service.saveStop(piid);
+		service.saveStop(flowid, alias, piid);
 	}
 
 	/**

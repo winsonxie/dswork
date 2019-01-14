@@ -155,9 +155,9 @@ public class DsCommonIFlowService
 		return dao.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, 0);
 	}
 	
-	public void saveStop(String piid)
+	public void saveStop(Long flowid, String alias, String piid)
 	{
-		dao.saveStop(Long.parseLong(piid));
+		dao.saveStop(flowid, alias, Long.parseLong(piid));
 	}
 
 	/**
