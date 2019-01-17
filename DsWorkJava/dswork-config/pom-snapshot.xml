@@ -22,6 +22,7 @@
 		<dependency><groupId>org.springframework</groupId><artifactId>spring-webmvc</artifactId><scope>provided</scope></dependency>
 		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-core</artifactId><scope>provided</scope></dependency>
 		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-web</artifactId><scope>provided</scope></dependency>
+		<dependency><groupId>commons-dbcp</groupId><artifactId>commons-dbcp</artifactId><scope>provided</scope></dependency>
 	</dependencies>
 
 	<build>
