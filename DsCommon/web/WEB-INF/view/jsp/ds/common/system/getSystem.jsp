@@ -21,7 +21,7 @@ function updSystemStatus(objid, id){
 	return false;
 }
 function updFunc(id){
-	$jskey.dialog.showDialog({url:"../func/getFuncTree.htm?page=${pageModel.currentPage}&systemid=" + id,title:$("#td_n" + id).text(),fit:true,draggable:false});
+	$jskey.dialog.showDialog({url:"../func/getFuncTree.htm?page=${pageModel.currentPage}&systemid=" + id,title:$("#td_n" + id).text()+'<span style="color:#ff0000;font-weight:bold;">（本模块非技术维护人员，请勿操作）</span>',fit:true,draggable:false});
 	return false;
 }
 function updRole(id){
