@@ -7,9 +7,9 @@
 
 <insert id="insert" parameterType="dswork.common.model.DsCommonDict">
 	insert into DS_COMMON_DICT
-	(ID, LABEL, NAME, STATUS, SEQ)
+	(ID, LABEL, NAME, STATUS, SEQ, UPDATETIME)
 	values
-	(#{id}, #{label}, #{name}, #{status}, #{seq})
+	(#{id}, #{label}, #{name}, #{status}, #{seq}, #{updatetime})
 </insert>
 
 <delete id="delete">
@@ -20,7 +20,8 @@
 	update DS_COMMON_DICT set
 		NAME=#{name},
 		LABEL=#{label},
-		SEQ=#{seq}
+		SEQ=#{seq},
+		UPDATETIME=#{updatetime}
 	where ID=#{id}
 </update>
 
@@ -30,9 +31,10 @@
 	<result property="label" column="LABEL" />
 	<result property="status" column="STATUS" />
 	<result property="seq" column="SEQ" />
+	<result property="updatetime" column="UPDATETIME" />
 </resultMap>
 <sql id="columns">
-	ID, LABEL, NAME, STATUS, SEQ
+	ID, LABEL, NAME, STATUS, SEQ, UPDATETIME
 </sql>
 <sql id="dynamicWhere">
 	<where>

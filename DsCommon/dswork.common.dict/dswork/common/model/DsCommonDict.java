@@ -15,6 +15,8 @@ public class DsCommonDict
 	private Integer status = 0;
 	// 排序
 	private Integer seq = 0;
+	// 最后更新时间
+	private long updatetime = 0;
 
 	public Long getId()
 	{
@@ -64,5 +66,15 @@ public class DsCommonDict
 	public void setSeq(Integer seq)
 	{
 		this.seq = seq;
+	}
+
+	public long getUpdatetime()
+	{
+		return updatetime;
+	}
+
+	public void setUpdatetime(long updatetime)
+	{
+		this.updatetime = updatetime;
 	}
 }
