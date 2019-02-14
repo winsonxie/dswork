@@ -45,7 +45,7 @@ $(function(){
 </script>
 </head>
 <body class="easyui-tabs" fit="true">
-<div title="用户授权" style="padding:5px;overflow:hidden;">
+<div title="用户授权" style="padding:5px;">
 <table id="userTable" border="0" cellspacing="1" cellpadding="0" class="listTable">
 	<tr class="list_title">
 		<td>姓名(帐号)</td>
@@ -53,7 +53,7 @@ $(function(){
 	</tr>
 </table>
 </div>
-<div title="岗位授权" style="padding:5px;overflow:hidden;">
+<div title="岗位授权" style="padding:5px;">
 <table id="orgTable" border="0" cellspacing="1" cellpadding="0" class="listTable">
 	<tr class="list_title">
 		<td>岗位名称</td>
