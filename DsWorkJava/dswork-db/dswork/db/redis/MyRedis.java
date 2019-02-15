@@ -20,23 +20,6 @@ public class MyRedis
 	}
 
 	/**
-	 * 设置值
-	 * @param key
-	 * @param value
-	 * @param expire 过期时间，单位：秒
-	 * @return -5：Jedis实例获取失败<br/>
-	 *         OK：操作成功<br/>
-	 *         null：操作失败 操作
-	 */
-	public String set(String key, String value, int expire)
-	{
-		Jedis jedis = redis;
-		String result = jedis.set(key, value);
-		jedis.expire(key, expire);
-		return result;
-	}
-
-	/**
 	 * 获取值
 	 * @param key
 	 * @return 读操作

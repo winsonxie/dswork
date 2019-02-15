@@ -51,4 +51,14 @@ public class RedisUtil
 	{
 		return jedisReadPool.getResource();
 	}
+
+	protected MyRedis getRedis()
+	{
+		return new MyRedis(jedisPool.getResource());
+	}
+
+	protected MyRedis getReadRedis()
+	{
+		return new MyRedis(jedisReadPool.getResource());
+	}
 }
