@@ -18,8 +18,8 @@
 		
 		<property name="initialSize" value="${jdbc.initialSize:1}" />
 		<property name="minIdle" value="${jdbc.minIdle:1}" />
-		<property name="maxIdle" value="${jdbc.maxIdle:50}" />
-		<property name="maxActive" value="${jdbc.maxActive:50}" />
+		<property name="maxIdle" value="${jdbc.maxIdle:64}" />
+		<property name="maxActive" value="${jdbc.maxActive:64}" />
 		<property name="maxWait" value="${jdbc.maxWait:60000}" />
 		
 		<property name="validationQuery" value="${jdbc.validationQuery:select 'x'}" />

@@ -22,6 +22,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-parent"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-sso"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-sso-authfilter"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-db"/>
         <property name="context-root" value="DsWorkJava"/>
         <property name="java-output-path" value="/DsWorkJava/web/WEB-INF/classes"/>
     </wb-module>
