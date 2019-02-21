@@ -42,22 +42,22 @@ public class RedisUtil
 		}
 	}
 
-	protected Jedis getJedis()
+	public Jedis getJedis()
 	{
 		return jedisPool.getResource();
 	}
 
-	protected Jedis getReadJedis()
+	public Jedis getReadJedis()
 	{
 		return jedisReadPool.getResource();
 	}
 
-	protected MyRedis getRedis()
+	public MyRedis getRedis()
 	{
 		return new MyRedis(jedisPool.getResource());
 	}
 
-	protected MyRedis getReadRedis()
+	public MyRedis getReadRedis()
 	{
 		return new MyRedis(jedisReadPool.getResource());
 	}
