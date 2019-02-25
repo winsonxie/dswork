@@ -102,6 +102,7 @@ public class DaoOracle extends Dao
 				switch(col.getDatatype())
 				{
 					case "FLOAT":
+						col.setDefaultvalue("0F");
 						col.setType("float"); break;
 					case "NUMBER":
 					{
@@ -109,12 +110,15 @@ public class DaoOracle extends Dao
 						{
 							if(col.getPrecision() < 11)
 							{
+								col.setDefaultvalue("0");
 								col.setType("int"); break;
 							}
+							col.setDefaultvalue("0L");
 							col.setType("long"); break;
 						}
 						else
 						{
+							col.setDefaultvalue("0F");
 							col.setType("float"); break;
 						}
 					}

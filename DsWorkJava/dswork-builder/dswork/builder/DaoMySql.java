@@ -85,8 +85,8 @@ public class DaoMySql extends Dao
 						col.setDefaultvalue("0");
 						col.setType("int"); break;
 					case "bigint":
-						col.setDefaultvalue("0L");
 						col.setLength(col.getPrecision());
+						col.setDefaultvalue("0L");
 						if("id".equalsIgnoreCase(col.getName()))
 						{
 							col.setType("Long");

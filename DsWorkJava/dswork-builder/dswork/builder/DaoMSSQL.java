@@ -109,9 +109,11 @@ public class DaoMSSQL extends Dao
 					case "int":
 					case "tinyint":
 						col.setLength(col.getPrecision());
+						col.setDefaultvalue("0");
 						col.setType("int"); break;
 					case "bigint":
 						col.setLength(col.getPrecision());
+						col.setDefaultvalue("0L");
 						if("id".equalsIgnoreCase(col.getName()))
 						{
 							col.setType("Long");
@@ -125,6 +127,7 @@ public class DaoMSSQL extends Dao
 					case "smallmoney":
 					case "money":
 						col.setLength(col.getPrecision() + (col.getDigit() > 0 ? col.getDigit() + 1 : col.getDigit()));
+						col.setDefaultvalue("0");
 						col.setType("float"); break;
 					case "decimal":
 					case "numeric":
@@ -134,18 +137,22 @@ public class DaoMSSQL extends Dao
 							col.setLength(col.getPrecision());
 							if(col.getPrecision() < 11)
 							{
+								col.setDefaultvalue("0");
 								col.setType("int"); break;
 							}
+							col.setDefaultvalue("0L");
 							col.setType("long"); break;
 						}
 						else
 						{
 							col.setLength(col.getPrecision() + (col.getDigit() > 0 ? col.getDigit() + 1 : col.getDigit()));
+							col.setDefaultvalue("0F");
 							col.setType("float"); break;
 						}
 					}
 					case "bit":
 						col.setLength(1);
+						col.setDefaultvalue("false");
 						col.setType("boolean"); break;
 					case "smalldatetime":
 					case "datetime":
