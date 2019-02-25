@@ -87,7 +87,7 @@ public class Table
 
 		public void setComment(String comment)
 		{
-			this.comment = comment;
+			this.comment = comment == null ? "" : comment;
 		}
 
 		public long getLength()
