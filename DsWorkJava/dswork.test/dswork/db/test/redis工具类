@@ -1,0 +1,43 @@
+配置好config的连接配置文件,直接使用   RedisUtil中的方法对redis进行操作即可
+
+
+redis安装:
+1. 下载安装包
+weget http://download.redis.io/releases/redis-3.0.0.tar.gz
+
+2. 安装依赖
+yum install gcc tcl -y
+
+3.解压及安装
+tar -zxvf redis-3.0.0.tar.gz
+cd redis-3.0.0
+make
+mkdir -p/usr/hadoopsoft/redis
+make PREFIX=/usr/hadoopsoft/redis install		
+
+
+linux redis的配置文件:   redis_conf下           
+	主从节点  配置3个点    :
+			1.开启dmp,开启aof
+			2.配置好ip,端口
+			3.从节点要     slaveof 127.0.0.1 6379    依赖主节点
+	哨兵监控(可以不加也可开启一个和或多个哨兵) 
+	
+
+	
+redis服务启动方法:  redis-server 配置文件
+启动客户端方法:   redis-cli -h 'ip' -p 'port'
+配置密码: 
+		找到  配置文件   下面的一行
+		#requirepass foobared
+		去掉行前的注释，并修改密码为所需的密码,保存文件
+		requirepass 'mypassword'
+		
+main函数测试:
+		操作RedisUtil中的任意方法即可
+
+
+
+
+
+
