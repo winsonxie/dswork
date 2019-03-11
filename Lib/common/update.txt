@@ -106,4 +106,5 @@
 	dswork修改了dswork.config包，增加了dswork.config.ex配置文件，默认内置集成多数据源时的mybatis配置
 2018-07-12
 	spring升级为4.3.18.release，目前对内置的cxf-2.6.0包有兼容性问题
-
+2019-03-11
+	dswork修改了dswork.web中的MyRequest代码，增加支持application/json和getDatabody相关函数
