@@ -16,6 +16,9 @@ import java.util.regex.Pattern;
 public class MyRequest
 {
 	private HttpServletRequest request;
+	
+	// post的数据流，与Form数据冲突
+	private byte[] databody = null;
 	private Map<String, ArrayList<MyFile>> formFiles;
 	private Map<String, ArrayList<String>> formParams = new LinkedHashMap<String, ArrayList<String>>();
 
@@ -55,7 +58,7 @@ public class MyRequest
 		{
 			try
 			{
-				if(contentType.indexOf("multipart/form-data") != -1)
+				if(contentType.contains("multipart/form-data"))
 				{
 					MyRequestUpload reqUpload = new MyRequestUpload(request);
 					reqUpload.setMaxFileSize(maxFileSize);
@@ -80,7 +83,7 @@ public class MyRequest
 						}
 					}
 				}
-				else if(contentType.indexOf("application/octet-stream") != -1)
+				else if(contentType.contains("application/octet-stream"))
 				{
 					MyRequestUpload reqUpload = new MyRequestUpload(request);
 					reqUpload.setMaxFileSize(maxFileSize);
@@ -89,6 +92,16 @@ public class MyRequest
 					reqUpload.setDeniedFilesList(deniedFilesList);
 					reqUpload.uploadStream();
 					formFiles = reqUpload.getFiles();
+				}
+				else if(contentType.contains("application/json"))
+				{
+					int size = request.getContentLength();// 因为只有一个文件，所以判断单个大小即可
+					databody = new byte[size];
+					int j = 0, k = 0;
+					while(j < size && (k = request.getInputStream().read(databody, j, size - j)) != -1)
+					{
+						j += k;
+					}
 				}
 			}
 			catch(Exception e)
@@ -175,6 +188,23 @@ public class MyRequest
 			}
 		}
 		return urlThisPage.substring(0, urlThisPage.length() - 1);
+	}
+	
+	public String getDatabody()
+	{
+		return getDatabody("UTF-8");
+	}
+	
+	public String getDatabody(String charsetName)
+	{
+		try
+		{
+			return databody == null ? null : new String(databody, charsetName);
+		}
+		catch(Exception e)
+		{
+		}
+		return null;
 	}
 
 	/**
