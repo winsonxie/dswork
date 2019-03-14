@@ -4,21 +4,12 @@ private static final String STR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 java.io.InputStream in = null;
 try
 {
-	String s_name = String.valueOf(request.getParameter("name"));//经由get方式传递过来的文件名
-	// 处理name为纯字母
-	StringBuilder sb = new StringBuilder();
-	char[] arr = s_name.toCharArray();
-	for(int i = 0; i < arr.length; i++){
-		if(STR.indexOf(arr[i]) != -1){
-			sb.append(arr[i]);
-		}
-	}
-	s_name = sb.toString();
+	String s_name = String.valueOf(request.getParameter("name")).replace("/", "").replace("\\", "").replace(".", "");//经由get方式传递过来的文件名
 	String f = String.valueOf(request.getParameter("f")).replace("/", "").replace("\\", "");//经由get方式传递过来的文件名
 	String t = String.valueOf(request.getParameter("t"));//经由get方式传递过来的下载文件名
 	if(s_name.length() > 0 && !s_name.equals("null") && f.length() > 33)// f=****.***
 	{
-		sb.setLength(0);
+		StringBuilder sb = new StringBuilder();
 		String path = sb.append(WebioUtil.PATH)
 				.append("/").append(s_name)
 				.append("/").append(f.substring( 0,  4))//1679616=36^4
