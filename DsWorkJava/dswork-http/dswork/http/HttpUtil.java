@@ -27,6 +27,7 @@ public class HttpUtil
 	private boolean isHttps = false;
 	private int connectTimeout = 10000;
 	private int readTimeout = 30000;
+	private String url = "";
 	private String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.104";
 	private static String boundary = "----WebKitFormBoundaryForDsworkAbcdefg";
 	private static String boundaryContentType = "multipart/form-data; boundary=" + boundary;
@@ -173,6 +174,7 @@ public class HttpUtil
 	 */
 	public HttpUtil create(String url, boolean isHostnameVerifier)
 	{
+		this.url = url;
 		this.clearForm();
 		this.responseCode = 0;// 还原
 		URL c;
@@ -588,5 +590,14 @@ public class HttpUtil
 	public int getResponseCode()
 	{
 		return this.responseCode;
+	}
+	
+	/**
+	 * 返回create中的url地址
+	 * @return String
+	 */
+	public String getUrl()
+	{
+		return url;
 	}
 }
