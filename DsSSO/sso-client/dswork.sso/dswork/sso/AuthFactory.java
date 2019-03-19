@@ -15,25 +15,117 @@ import dswork.sso.model.IFunc;
 import dswork.sso.model.IOrg;
 import dswork.sso.model.ISystem;
 import dswork.sso.model.IUser;
+import dswork.sso.model.JsonResult;
 
 public class AuthFactory
 {
-	static com.google.gson.Gson gson = AuthGlobal.getGson();
 	static String url = "";
 	static Logger log = LoggerFactory.getLogger("dswork.sso");
+	private static String SYSTEM_ALIAS = "";
+	private static String SYSTEM_PASSWORD = "";
+	private static String REDIRECT_URI = "";
+	private static String WEB_URI = "";
+	private static String IGNORE_URL = "";
 	
+
+	public static void initWebConfig(String redirect_uri, String web_uri, String ignoreURL)
+	{
+		REDIRECT_URI = (redirect_uri == null) ? "" : redirect_uri.trim();
+		WEB_URI = web_uri;
+		IGNORE_URL = ignoreURL;
+	}
+
+	public static void initSystemConfig(String systemAlias, String systemPassword)
+	{
+		SYSTEM_ALIAS = systemAlias;
+		SYSTEM_PASSWORD = systemPassword;
+	}
+
 	public static String toJson(Object object)
 	{
-		return gson.toJson(object);
+		return AuthGlobal.gson.toJson(object);
 	}
-	
-	private static StringBuilder getPath(String path)
+
+	public static HttpUtil getHttpForID(String path)
 	{
-		StringBuilder sb = new StringBuilder(30);
-		sb.append(AuthGlobal.getURL()).append("/").append(path).append("?name=").append(AuthGlobal.getName()).append("&pwd=").append(AuthGlobal.getPwd());
-		return sb;
+		return AuthGlobal.getHttp(path).addForm("appid", AuthGlobal.getAppid());
+	}
+
+	public static HttpUtil getHttp(String path)
+	{
+		return getHttpForID(path).addForm("access_token", AuthGlobal.getAccessToken());
+	}
+
+	//////////////////////////////////////////////////////////////////////////////
+	// 用户相关的方法
+	//////////////////////////////////////////////////////////////////////////////
+	/**
+	 * 获取指定用户的基本信息
+	 * @param code 用户授权令牌
+	 * @return JsonResult&lt;IUser&gt;
+	 */
+	public static JsonResult<IUser> getUserAccessToken(String code)
+	{
+		HttpUtil h = getHttp("/user/access_token").addForm("appsecret", AuthGlobal.getAppsecret()).addForm("grant_type", "authorization_code").addForm("code", code);
+		JsonResult<IUser> result = null;
+		String v = "";
+		try
+		{
+			v = h.connect().trim();
+			result = AuthGlobal.gson.fromJson(v, new TypeToken<JsonResult<IUser>>(){}.getType());
+			if(log.isDebugEnabled())
+			{
+				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+		}
+		return result;
+	}
+	/**
+	 * 前端检查用户凭证(access_token)是否还有效
+	 * @param openid 用户标识
+	 * @param access_token 用户授权令牌
+	 * @return JsonResult&lt;String&gt;
+	 */
+	public static JsonResult<String> getUserAuthToken(String openid, String access_token)
+	{
+		HttpUtil h = getHttp("/user/auth_token").addForm("openid", openid).addForm("access_token", access_token);
+		JsonResult<String> result = null;
+		String v = "";
+		try
+		{
+			v = h.connect().trim();
+			result = AuthGlobal.gson.fromJson(v, new TypeToken<JsonResult<IUser>>(){}.getType());
+			if(log.isDebugEnabled())
+			{
+				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+		}
+		return result;
 	}
 	
+	/**
+	 * 前端授权页面
+	 * @param redirect_uri 重定向地址，如果为配置的redirect_uri不为空，则忽略
+	 * @return JsonResult&lt;IUser&gt;
+	 */
+	public static String getUserAuthorize(String redirect_uri)
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(WEB_URI).append("/user/authorize?appid=").append(AuthGlobal.getAppid()).append("&response_type=code&redirect_uri=").append(redirect_uri.length() > 0 ? REDIRECT_URI : redirect_uri);
+		return sb.toString();
+	}
+	
+	
+	
+
 	//////////////////////////////////////////////////////////////////////////////
 	// 权限相关的方法
 	//////////////////////////////////////////////////////////////////////////////
@@ -50,9 +142,10 @@ public class AuthFactory
 		{
 			log.debug("AuthFactory:url=" + u + ", json:" + v);
 		}
-		ISystem m = gson.fromJson(v, ISystem.class);
+		ISystem m = AuthGlobal.gson.fromJson(v, ISystem.class);
 		return m;
 	}
+
 	/**
 	 * 获取用户有权限访问的子系统
 	 * @param userAccount 用户帐号
@@ -66,10 +159,12 @@ public class AuthFactory
 		{
 			log.debug("AuthFactory:url=" + u + ", json:" + v);
 		}
-		List<ISystem> list = gson.fromJson(v, new TypeToken<List<ISystem>>(){}.getType());
+		List<ISystem> list = AuthGlobal.gson.fromJson(v, new TypeToken<List<ISystem>>()
+		{
+		}.getType());
 		return list.toArray(new ISystem[list.size()]);
 	}
-	
+
 	/**
 	 * 获取系统的功能结构
 	 * @param systemAlias 系统标识
@@ -84,10 +179,12 @@ public class AuthFactory
 		{
 			log.debug("AuthFactory:url=" + u + ", json:" + v);
 		}
-		List<IFunc> list = gson.fromJson(v, new TypeToken<List<IFunc>>(){}.getType());
+		List<IFunc> list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IFunc>>()
+		{
+		}.getType());
 		return list.toArray(new IFunc[list.size()]);
 	}
-	
+
 	/**
 	 * 获取用户权限范围内的系统功能结构
 	 * @param systemAlias 系统标识
@@ -103,10 +200,12 @@ public class AuthFactory
 		{
 			log.debug("AuthFactory:url=" + u + ", json:" + v);
 		}
-		List<IFunc> list = gson.fromJson(v, new TypeToken<List<IFunc>>(){}.getType());
+		List<IFunc> list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IFunc>>()
+		{
+		}.getType());
 		return list.toArray(new IFunc[list.size()]);
 	}
-	
+
 	/**
 	 * 获取岗位权限范围内的系统功能结构
 	 * @param systemAlias 系统标识
@@ -122,7 +221,9 @@ public class AuthFactory
 		{
 			log.debug("AuthFactory:url=" + u + ", json:" + v);
 		}
-		List<IFunc> list = gson.fromJson(v, new TypeToken<List<IFunc>>(){}.getType());
+		List<IFunc> list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IFunc>>()
+		{
+		}.getType());
 		return list.toArray(new IFunc[list.size()]);
 	}
 
@@ -142,10 +243,10 @@ public class AuthFactory
 		{
 			log.debug("AuthFactory:url=" + u + ", json:" + v);
 		}
-		IOrg m = gson.fromJson(v, IOrg.class);
+		IOrg m = AuthGlobal.gson.fromJson(v, IOrg.class);
 		return m;
 	}
-	
+
 	/**
 	 * @note 获取下级组织机构(status:2单位,1部门,0岗位)
 	 * @param orgPid 组织机构ID，为0则取顶级
@@ -159,7 +260,9 @@ public class AuthFactory
 		{
 			log.debug("AuthFactory:url=" + u + ", json:" + v);
 		}
-		List<IOrg> list = gson.fromJson(v, new TypeToken<List<IOrg>>(){}.getType());
+		List<IOrg> list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IOrg>>()
+		{
+		}.getType());
 		return list.toArray(new IOrg[list.size()]);
 	}
 
@@ -176,10 +279,12 @@ public class AuthFactory
 		{
 			log.debug("AuthFactory:url=" + u + ", json:" + v);
 		}
-		List<IOrg> list = gson.fromJson(v, new TypeToken<List<IOrg>>(){}.getType());
+		List<IOrg> list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IOrg>>()
+		{
+		}.getType());
 		return list.toArray(new IOrg[list.size()]);
 	}
-	
+
 	/**
 	 * @note 获取指定用户的基本信息
 	 * @param userAccount 用户帐号
@@ -193,10 +298,10 @@ public class AuthFactory
 		{
 			log.debug("AuthFactory:url=" + u + ", json:" + v);
 		}
-		IUser m = gson.fromJson(v, IUser.class);
+		IUser m = AuthGlobal.gson.fromJson(v, IUser.class);
 		return m;
 	}
-	
+
 	/**
 	 * @note 获取岗位下的所有用户
 	 * @param postId 岗位ID
@@ -210,10 +315,12 @@ public class AuthFactory
 		{
 			log.debug("AuthFactory:url=" + u + ", json:" + v);
 		}
-		List<IUser> list = gson.fromJson(v, new TypeToken<List<IUser>>(){}.getType());
+		List<IUser> list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IUser>>()
+		{
+		}.getType());
 		return list.toArray(new IUser[list.size()]);
 	}
-	
+
 	/**
 	 * @note 获取指定单位下的用户，不含子单位
 	 * @param orgPid 单位ID
@@ -227,10 +334,12 @@ public class AuthFactory
 		{
 			log.debug("AuthFactory:url=" + u + ", json:" + v);
 		}
-		List<IUser> list = gson.fromJson(v, new TypeToken<List<IUser>>(){}.getType());
+		List<IUser> list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IUser>>()
+		{
+		}.getType());
 		return list.toArray(new IUser[list.size()]);
 	}
-	
+
 	/**
 	 * @note 获取指定部门下的用户，不含子部门
 	 * @param orgId 部门 ID
@@ -244,10 +353,12 @@ public class AuthFactory
 		{
 			log.debug("AuthFactory:url=" + u + ", json:" + v);
 		}
-		List<IUser> list = gson.fromJson(v, new TypeToken<List<IUser>>(){}.getType());
+		List<IUser> list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IUser>>()
+		{
+		}.getType());
 		return list.toArray(new IUser[list.size()]);
 	}
-	
+
 	/**
 	 * @note 获取指定用户拥有的岗位
 	 * @param userAccount 用户帐号
@@ -261,7 +372,9 @@ public class AuthFactory
 		{
 			log.debug("AuthFactory:url=" + u + ", json:" + v);
 		}
-		List<IOrg> list = gson.fromJson(v, new TypeToken<List<IOrg>>(){}.getType());
+		List<IOrg> list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IOrg>>()
+		{
+		}.getType());
 		return list.toArray(new IOrg[list.size()]);
 	}
 }

@@ -8,80 +8,88 @@ import java.io.Serializable;
 public class IUser implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	// ID
-	private Long id = 0L;
-	// 帐号
-	private String account = "";
-	// // 密码
-	// private String password = "";
-	// 姓名
-	private String name = "";
-	// 手机
-	private String mobile = "";
-	// 电话
-	private String phone = "";
-	// 状态(0,禁止,1,允许)
-	private Integer status = 1;
-	// 电子邮件
-	private String email = "";
-	// 身份证号
-	private String idcard = "";
-	// 工作证号
-	private String workcard = "";
-	// // CA证书的KEY
-	// private String cakey = "";
-	// 创建时间
-	private String createtime = "";
-	// 所属单位
-	private Long orgpid = 0L;
-	// 所属部门
-	private Long orgid = 0L;
-	// 类型
-	private String type = "";
-	// 类型名称
-	private String typename = "";
-	// 类型扩展标识
-	private String exalias = "";
-	// 类型扩展名称
-	private String exname = "";
+	private Long id = 0L;// 主键
+	// private Long bindid = 0L;// 所属来源应用ID
+	private int status = 0;// 状态（0禁用，1启用）
+	// private String openid = "";// openid
+	// private String unionid = "";// unionid
+	private String bm = "";// 唯一标识（可为id或身份证等信息）
+	private String ssqy = "";// 最长12位的区域编码
+	private String name = "";// 姓名
+	private String mobile = "";// 手机
+	private String account = "";// 自定义账号
+	// private String password = "";// 密码
+	private String workcard = "";// 工作证号
+	private int sex = 0;// 性别（0未知，1男，2女）
+	private String country = "";// 国家
+	private String province = "";// 省份
+	private String city = "";// 城市
+	private String avatar = "";// 头像
+	private String idcard = "";// 身份证号
+	private String email = "";// 电子邮件
+	private String phone = "";// 电话
+	private Long orgpid = 0L;// 所属单位
+	private Long orgid = 0L;// 所属部门
+	private String type = "";// 类型
+	private String typename = "";// 类型名称
+	private String exalias = "";// 类型扩展标识
+	private String exname = "";// 类型扩展名称
+	private String createtime = "";// 创建时间
+	private long lasttime = 0L;// 最后更新时间
+
+	public Long getId()
+	{
+		return id;
+	}
 
 	public void setId(Long id)
 	{
 		this.id = id;
 	}
 
-	public Long getId()
+	public int getStatus()
 	{
-		return this.id;
+		return status;
 	}
 
-	public void setAccount(String account)
+	public void setStatus(int status)
 	{
-		this.account = String.valueOf(account).trim();
+		this.status = status;
 	}
 
-	public String getAccount()
+	public String getBm()
 	{
-		return this.account;
+		return bm;
 	}
 
-//	public void setPassword(String password)
-//	{
-//		this.password = password;
-//	}
-//
-//	public String getPassword()
-//	{
-//		return this.password;
-//	}
+	public void setBm(String bm)
+	{
+		this.bm = bm;
+	}
+
+	public String getSsqy()
+	{
+		return ssqy;
+	}
+
+	public void setSsqy(String ssqy)
+	{
+		this.ssqy = ssqy;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
 	public void setName(String name)
 	{
 		this.name = name;
 	}
 
-	public String getName()
+	public String getMobile()
 	{
-		return this.name;
+		return mobile;
 	}
 
 	public void setMobile(String mobile)
@@ -89,49 +97,14 @@ public class IUser implements Serializable
 		this.mobile = mobile;
 	}
 
-	public String getMobile()
+	public String getAccount()
 	{
-		return this.mobile;
+		return account;
 	}
 
-	public void setPhone(String phone)
+	public void setAccount(String account)
 	{
-		this.phone = phone;
-	}
-
-	public String getPhone()
-	{
-		return this.phone;
-	}
-
-	public void setStatus(Integer status)
-	{
-		this.status = (status == null || status.intValue() != 1) ? 0 : 1;
-	}
-
-	public Integer getStatus()
-	{
-		return this.status;
-	}
-
-	public void setEmail(String email)
-	{
-		this.email = email;
-	}
-
-	public String getEmail()
-	{
-		return this.email;
-	}
-
-	public String getIdcard()
-	{
-		return idcard;
-	}
-
-	public void setIdcard(String idcard)
-	{
-		this.idcard = idcard;
+		this.account = account;
 	}
 
 	public String getWorkcard()
@@ -144,23 +117,84 @@ public class IUser implements Serializable
 		this.workcard = workcard;
 	}
 
-//	 public void setCakey(String cakey)
-//	 {
-//	 	this.cakey = cakey;
-//	 }
-//	
-//	 public String getCakey()
-//	 {
-//	 	return this.cakey;
-//	 }
-	public void setCreatetime(String createtime)
+	public int getSex()
 	{
-		this.createtime = createtime;
+		return sex;
 	}
 
-	public String getCreatetime()
+	public void setSex(int sex)
 	{
-		return this.createtime;
+		this.sex = sex;
+	}
+
+	public String getCountry()
+	{
+		return country;
+	}
+
+	public void setCountry(String country)
+	{
+		this.country = country;
+	}
+
+	public String getProvince()
+	{
+		return province;
+	}
+
+	public void setProvince(String province)
+	{
+		this.province = province;
+	}
+
+	public String getCity()
+	{
+		return city;
+	}
+
+	public void setCity(String city)
+	{
+		this.city = city;
+	}
+
+	public String getAvatar()
+	{
+		return avatar;
+	}
+
+	public void setAvatar(String avatar)
+	{
+		this.avatar = avatar;
+	}
+
+	public String getIdcard()
+	{
+		return idcard;
+	}
+
+	public void setIdcard(String idcard)
+	{
+		this.idcard = idcard;
+	}
+
+	public String getEmail()
+	{
+		return email;
+	}
+
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
+
+	public String getPhone()
+	{
+		return phone;
+	}
+
+	public void setPhone(String phone)
+	{
+		this.phone = phone;
 	}
 
 	public Long getOrgpid()
@@ -221,5 +255,25 @@ public class IUser implements Serializable
 	public void setExname(String exname)
 	{
 		this.exname = exname;
+	}
+
+	public String getCreatetime()
+	{
+		return createtime;
+	}
+
+	public void setCreatetime(String createtime)
+	{
+		this.createtime = createtime;
+	}
+
+	public long getLasttime()
+	{
+		return lasttime;
+	}
+
+	public void setLasttime(long lasttime)
+	{
+		this.lasttime = lasttime;
 	}
 }

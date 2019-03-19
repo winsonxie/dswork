@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 public class WebFilter implements Filter
 {
-	static com.google.gson.Gson gson = AuthGlobal.getGson();
+	static com.google.gson.Gson gson = AuthGlobal.gson;
 	static Logger log = LoggerFactory.getLogger("dswork.sso");
 	
 	private static boolean use = false;// 用于判断是否加载sso模块
@@ -36,7 +36,9 @@ public class WebFilter implements Filter
 
 	private final static String DS_SSO_TICKET = "DS_SSO_TICKET";
 	private final static String DS_SSO_CODE = "DS_SSO_CODE";
-	
+
+	private static String appid = "";// 登入页面
+	private static String appsecret = "";// 登入页面
 	private static String thirdLoginURL = "";
 	private static String loginURL = "";// 登入页面
 	private static String logoutURL = "";// 登出页面
@@ -440,7 +442,7 @@ public class WebFilter implements Filter
 			hasSameDoamin = String.valueOf(config.getInitParameter("sameDomain")).trim();
 			ignoreURL = String.valueOf(config.getInitParameter("ignoreURL")).trim();
 		}
-		AuthGlobal.init(ssoURL, ssoName, ssoPassword);
+		AuthGlobalSystem.init(ssoURL, ssoName, ssoPassword);
 		WebFilter.use = true;
 		if("null".equals(systemURL)){systemURL = "";}
 		ignoreURLSet.clear();

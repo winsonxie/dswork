@@ -26,6 +26,7 @@ public class HttpUtil
 	private boolean isHttps = false;
 	private int connectTimeout = 10000;
 	private int readTimeout = 30000;
+	private String url = "";
 	private String userAgent = "Mozilla/5.0 (compatible; MSIE 11; Windows NT 6.1; Win64; x64;)";// Gecko/20150123
 
 	/**
@@ -183,6 +184,7 @@ public class HttpUtil
 	 */
 	public HttpUtil create(String url, boolean isHostnameVerifier)
 	{
+		this.url = url;
 		this.clearForm();
 		URL c;
 		try
@@ -328,5 +330,10 @@ public class HttpUtil
 			form.add(c);
 		}
 		return this;
+	}
+	
+	public String getUrl()
+	{
+		return url;
 	}
 }
