@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.reflect.TypeToken;
 
 import dswork.sso.http.HttpUtil;
+import dswork.sso.model.AccessToken;
+import dswork.sso.model.Authcode;
 import dswork.sso.model.IFunc;
 import dswork.sso.model.IOrg;
 import dswork.sso.model.ISystem;
@@ -41,12 +43,11 @@ public class AuthFactory
 		SYSTEM_PASSWORD = systemPassword;
 	}
 
-	public static String toJson(Object object)
+	private static String toJson(Object object)
 	{
 		return AuthGlobal.gson.toJson(object);
 	}
-
-	public static HttpUtil getHttpForID(String path)
+	private static HttpUtil getHttpForID(String path)
 	{
 		return AuthGlobal.getHttp(path).addForm("appid", AuthGlobal.getAppid());
 	}
@@ -60,19 +61,19 @@ public class AuthFactory
 	// 用户相关的方法
 	//////////////////////////////////////////////////////////////////////////////
 	/**
-	 * 获取指定用户的基本信息
+	 * 后端获取用户凭证(access_token)
 	 * @param code 用户授权令牌
-	 * @return JsonResult&lt;IUser&gt;
+	 * @return JsonResult&lt;AccessToken&gt;
 	 */
-	public static JsonResult<IUser> getUserAccessToken(String code)
+	public static JsonResult<AccessToken> getUserAccessToken(String code)
 	{
 		HttpUtil h = getHttp("/user/access_token").addForm("appsecret", AuthGlobal.getAppsecret()).addForm("grant_type", "authorization_code").addForm("code", code);
-		JsonResult<IUser> result = null;
+		JsonResult<AccessToken> result = null;
 		String v = "";
 		try
 		{
 			v = h.connect().trim();
-			result = AuthGlobal.gson.fromJson(v, new TypeToken<JsonResult<IUser>>(){}.getType());
+			result = AuthGlobal.gson.fromJson(v, new TypeToken<JsonResult<AccessToken>>(){}.getType());
 			if(log.isDebugEnabled())
 			{
 				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
@@ -84,10 +85,11 @@ public class AuthFactory
 		}
 		return result;
 	}
+	
 	/**
 	 * 前端检查用户凭证(access_token)是否还有效
 	 * @param openid 用户标识
-	 * @param access_token 用户授权令牌
+	 * @param access_token 用户凭证
 	 * @return JsonResult&lt;String&gt;
 	 */
 	public static JsonResult<String> getUserAuthToken(String openid, String access_token)
@@ -112,22 +114,112 @@ public class AuthFactory
 	}
 	
 	/**
-	 * 前端授权页面
+	 * 前端授权页面地址
 	 * @param redirect_uri 重定向地址，如果为配置的redirect_uri不为空，则忽略
-	 * @return JsonResult&lt;IUser&gt;
+	 * @return String
 	 */
-	public static String getUserAuthorize(String redirect_uri)
+	public static String getUserAuthorizeURL(String redirect_uri)
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(WEB_URI).append("/user/authorize?appid=").append(AuthGlobal.getAppid()).append("&response_type=code&redirect_uri=").append(redirect_uri.length() > 0 ? REDIRECT_URI : redirect_uri);
+		sb.append(WEB_URI).append("/user/authorize").append("?appid=").append(AuthGlobal.getAppid()).append("&response_type=code&redirect_uri=").append(redirect_uri.length() > 0 ? REDIRECT_URI : redirect_uri);
 		return sb.toString();
 	}
 	
+	/**
+	 * 前端登入认证地址，获取用户授权令牌(code)或用户凭证(access_token)，其中该地址因authtime只有2小时有效，另还需增加grant_type=password|sms
+	 * @param isCode code|token
+	 * @param redirect_uri 重定向地址，如果为配置的redirect_uri不为空，则忽略
+	 * @return String /user/login?appid=应用ID&response_type=code|token&redirect_uri=重定向地址&authtime=超时时间戳&authcode=应用认证码&grant_type=&account=&password=
+	 */
+	public static String getUserLoginURL(boolean isCode, String redirect_uri)
+	{
+		Authcode ac = Authcode.code_create(AuthGlobal.getAppsecret());
+		StringBuilder sb = new StringBuilder();
+		sb.append(WEB_URI).append("/user/login").append("?appid=").append(AuthGlobal.getAppid()).append("&response_type=").append(isCode?"code":"token").append("&redirect_uri=").append(redirect_uri.length() > 0 ? REDIRECT_URI : redirect_uri);
+		sb.append("&authtime=").append(ac.getAuthtime()).append("&authcode=").append(ac.getAuthcode());
+		return sb.toString();
+	}
 	
+	/**
+	 * 前端登出认证地址，即取消用户凭证
+	 * @param openid 用户标识
+	 * @param access_token 用户凭证
+	 * @return String /user/logout?appid=应用ID&openid=用户标识&access_token=用户凭证
+	 */
+	public static String getUserLogoutURL(String openid, String access_token)
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(WEB_URI).append("/user/logout").append("?appid=").append(AuthGlobal.getAppid()).append("&openid=").append(openid).append("&access_token=").append(access_token);
+		return sb.toString();
+	}
 	
+	/**
+	 * 授权后访问重定向地址
+	 * @param code 用户授权令牌
+	 * @return String /user/redirect?appid=应用ID&code=用户授权令牌
+	 */
+	public static String getUserRedirectURL(String code)
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(WEB_URI).append("/user/redirect").append("?appid=").append(AuthGlobal.getAppid()).append("&code=").append(code);
+		return sb.toString();
+	}
+
+	/**
+	 * 前端账户信息
+	 * @param openid 用户标识
+	 * @param access_token 用户凭证
+	 * @return JsonResult&lt;IUser&gt;
+	 */
+	public static JsonResult<IUser> getUserUserinfo(String openid, String access_token)
+	{
+		HttpUtil h = getHttp("/user/userinfo").addForm("openid", openid).addForm("access_token", access_token);
+		JsonResult<IUser> result = null;
+		String v = "";
+		try
+		{
+			v = h.connect().trim();
+			result = AuthGlobal.gson.fromJson(v, new TypeToken<JsonResult<IUser>>(){}.getType());
+			if(log.isDebugEnabled())
+			{
+				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+		}
+		return result;
+	}
+
+	/**
+	 * 前后端发送6位短信验证码
+	 * @param mobile 手机号码
+	 * @return JsonResult&lt;String&gt;
+	 */
+	public static JsonResult<String> getSmsCode(String mobile)
+	{
+		HttpUtil h = getHttp("/sms/code").addForm("access_token", AuthGlobal.getAccessToken()).addForm("mobile", mobile);
+		JsonResult<String> result = null;
+		String v = "";
+		try
+		{
+			v = h.connect().trim();
+			result = AuthGlobal.gson.fromJson(v, new TypeToken<JsonResult<String>>(){}.getType());
+			if(log.isDebugEnabled())
+			{
+				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+		}
+		return result;
+	}
 
 	//////////////////////////////////////////////////////////////////////////////
-	// 权限相关的方法
+	// 统一权限相关的方法
 	//////////////////////////////////////////////////////////////////////////////
 	/**
 	 * 获取子系统信息

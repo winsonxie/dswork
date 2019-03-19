@@ -23,29 +23,9 @@ public class AuthGlobal
 	 */
 	public static final int CODE_400 = 400;
 	/**
-	 * 401：用户未激活
-	 */
-	public static final int CODE_401 = 401;
-	/**
-	 * 402：密码不正确
-	 */
-	public static final int CODE_402 = 402;
-	/**
-	 * 403：用户被禁用
-	 */
-	public static final int CODE_403 = 403;
-	/**
-	 * 404：用户不存在
-	 */
-	public static final int CODE_404 = 404;
-	/**
 	 * 406：验证码无效，access_token无效， CODE无效
 	 */
 	public static final int CODE_406 = 406;
-	/**
-	 * 423：用户被锁定
-	 */
-	public static final int CODE_423 = 423;
 	static Logger log = LoggerFactory.getLogger("dswork.sso");
 	public static com.google.gson.Gson gson = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 	private static String APPID = null;
