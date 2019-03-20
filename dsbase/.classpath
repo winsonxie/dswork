@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="server"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="common"/>
+	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-common"/>
+	<classpathentry kind="src" path="config"/>
+	<classpathentry kind="src" path="dswork.base.dict"/>
+	<classpathentry kind="src" path="dswork.base.flow"/>
+	<classpathentry kind="src" path="dswork.base.rbac"/>
+	<classpathentry kind="src" path="dswork.base.org"/>
+	<classpathentry kind="src" path="dswork.base.org.role"/>
+	<classpathentry kind="src" path="dswork.base.user"/>
+	<classpathentry kind="src" path="dswork.base.user.org"/>
+	<classpathentry kind="src" path="dswork.base.extends"/>
+	<classpathentry kind="src" path="dswork.base.single"/>
+	<classpathentry kind="src" path="dswork.base.table"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JAVAEE">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JAVAWEB">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Lib/database/mysql/mysql-connector-java-5.1.45-bin.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Lib/module/dswork/sso/dswork-sso.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Lib/module/dswork/dswork-flow.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="web/WEB-INF/classes"/>
+</classpath>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="dswork.common.dao.DsCommonDaoCommonIDict">
+
+<resultMap id="resultDict" type="dswork.common.model.IDict">
+	<result property="label" column="LABEL" />
+	<result property="alias" column="ALIAS" />
+	<result property="status" column="STATUS" />
+	<result property="pid" column="PID" />
+</resultMap>
+<select id="getDict" resultMap="resultDict">
+	select LABEL, ALIAS, STATUS from DS_COMMON_DICT_DATA
+	where NAME=#{name} and ALIAS=#{alias} 
+</select>
+<select id="queryDict" resultMap="resultDict">
+	select a.LABEL, a.ALIAS, a.STATUS, b.ALIAS as PID from DS_COMMON_DICT_DATA a
+	left join DS_COMMON_DICT_DATA b on a.PID=b.ID
+	<if test="@Ognl@isNotEmpty(alias)">
+		where a.NAME=#{name} and b.ALIAS=#{alias} 
+	</if>
+	<if test="@Ognl@isEmpty(alias)"> 
+		where a.NAME=#{name} <if test="alias!=null"> and a.PID is null </if>
+	</if>
+	order by a.SEQ, a.ALIAS
+</select>
+
+</mapper>
