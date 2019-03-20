@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="dswork.common.dao.DsCommonSingleUserFuncDao">
+
+<sql id="columns">
+	f.ID, f.PID, f.SYSTEMID, f.NAME, f.ALIAS, f.URI, f.IMG, f.STATUS, f.SEQ, f.MEMO, f.RESOURCES
+</sql>
+
+<resultMap id="result" type="dswork.common.model.DsCommonFunc">
+	<id property="id" column="ID" />
+	<result property="pid" column="PID" />
+	<result property="systemid" column="SYSTEMID" />
+	<result property="name" column="NAME" />
+	<result property="alias" column="ALIAS" />
+	<result property="uri" column="URI" />
+	<result property="img" column="IMG" />
+	<result property="status" column="STATUS" />
+	<result property="seq" column="SEQ" />
+	<result property="memo" column="MEMO" />
+	<result property="resources" column="RESOURCES" />
+</resultMap>
+
+<select id="getFuncBySystemidAndAccount" resultMap="result">
+	select <include refid="columns"/> from DS_COMMON_FUNC f
+	where f.SYSTEMID=#{systemid} and exists
+	(
+		select 'X' from DS_COMMON_ROLEFUNC _rf
+		left join DS_COMMON_ORGROLE _or on _or.ROLEID=_rf.ROLEID
+		left join DS_COMMON_USER u on u.ID=_or.ORGID
+		where _rf.SYSTEMID=#{systemid} and u.ACCOUNT=#{account}
+		and f.ID=_rf.FUNCID
+	)
+	order by f.SEQ asc
+</select>
+
+</mapper>

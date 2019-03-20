@@ -1,0 +1,34 @@
+﻿<html>
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+<div id="svg1" style="width:100%;height:100%;"></div>
+<script type="text/xml" id="flowxml">
+<flow id="value" alias="value" name="">
+<task alias="start" name="开始" color="7BB538" g="73,52,28,28">
+	<line to="task1" color="" p="86,239"></line>
+</task>
+<task alias="task2" name="任务任务任务任务任务任务任务任务任务任务任务2" color="6699CC" g="345,54,100,50">
+	<line to="end" color="" p="560,77"></line>
+	<line to="task3" color="" p=""></line>
+</task>
+<task alias="task1" name="任务任务任务任务任务1" color="6699CC" g="193,213,100,50">
+	<line to="task2" color="" p="244,78"></line>
+</task>
+<task alias="task3" name="任务3" color="6699CC" g="344,215,100,50">
+	<line to="end" color="" p="522,244"></line>
+</task>
+<task alias="end" name="结束" color="FF6666" g="530,148,28,28">
+</task>
+</flow>
+
+</script>
+<script type="text/javascript" src="/web/js/flow/dswork.flow.js"></script>
+<script type="text/javascript">
+	var flow = $dswork.flow.parse(document.getElementById("flowxml").innerHTML);
+	document.getElementById("svg1").innerHTML = flow.toSvg();
+	console.log(flow.toXml(true));
+</script>
+</body>
+</html>

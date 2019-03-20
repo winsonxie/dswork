@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="dswork.common.dao.DsCommonDaoIFlow">
+
+<insert id="insertFlowPi" parameterType="dswork.common.model.IFlowPi">
+	insert into DS_FLOW_PI
+	(ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE, DATAVIEW)
+	values
+	(#{id}, #{ywlsh}, #{sblsh}, #{alias}, #{flowid}, #{deployid}, #{piday}, #{pidaytype}, #{pistart},
+		<if test="@Ognl@isEmpty(piend)">null</if><if test="@Ognl@isNotEmpty(piend)">#{piend}</if>,
+		#{piupstart}, #{piupend}, #{status}, #{caccount}, #{cname}, #{pialias}, #{datatable}, #{dataview})
+</insert>
+<update id="updateFlowPi">
+	update DS_FLOW_PI set STATUS=#{status}<if test="status==0">, PIEND=#{piend}</if>, PIALIAS=#{pialias}, DATATABLE=#{datatable} where ID=#{id}
+</update>
+<resultMap id="resultFlowPi" type="dswork.common.model.IFlowPi">
+	<id property="id" column="ID" />
+	<result property="ywlsh" column="YWLSH" />
+	<result property="sblsh" column="SBLSH" />
+	<result property="alias" column="ALIAS" />
+	<result property="flowid" column="FLOWID" />
+	<result property="deployid" column="DEPLOYID" />
+	<result property="piday" column="PIDAY" />
+	<result property="pidaytype" column="PIDAYTYPE" />
+	<result property="pistart" column="PISTART" />
+	<result property="piend" column="PIEND" />
+	<result property="piupstart" column="PIUPSTART" />
+	<result property="piupend" column="PIUPEND" />
+	<result property="status" column="STATUS" />
+	<result property="caccount" column="CACCOUNT" />
+	<result property="cname" column="CNAME" />
+	<result property="pialias" column="PIALIAS" />
+	<result property="datatable" column="DATATABLE" />
+	<result property="dataview" column="DATAVIEW" />
+</resultMap>
+<select id="queryFlowPi" resultMap="resultFlowPi">
+	select ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE, DATAVIEW
+	from DS_FLOW_PI where YWLSH=#{ywlsh}
+</select>
+<select id="queryFlowPiBySblsh" resultMap="resultFlowPi">
+	select ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE, DATAVIEW
+	from DS_FLOW_PI where SBLSH=#{sblsh}
+</select>
+<select id="queryFlowPiByPiid" resultMap="resultFlowPi">
+	select ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE, DATAVIEW
+	from DS_FLOW_PI where ID=#{piid}
+</select>
+<insert id="insertFlowPiData" parameterType="dswork.common.model.IFlowPiData">
+	insert into DS_FLOW_PI_DATA
+	(ID, PIID, TPREV, TALIAS, TNAME, STATUS, PACCOUNT, PNAME, PTIME, PTYPE, MEMO, DATATABLE, DATAVIEW)
+	values
+	(#{id}, #{piid}, #{tprev}, #{talias}, #{tname}, #{status}, #{paccount}, #{pname}, #{ptime}, #{ptype}, #{memo}, #{datatable}, #{dataview})
+</insert>
+<resultMap id="resultFlowPiData" type="dswork.common.model.IFlowPiData">
+	<id property="id" column="ID" />
+	<result property="piid" column="PIID" />
+	<result property="tprev" column="TPREV" />
+	<result property="talias" column="TALIAS" />
+	<result property="tname" column="TNAME" />
+	<result property="status" column="STATUS" />
+	<result property="paccount" column="PACCOUNT" />
+	<result property="pname" column="PNAME" />
+	<result property="ptime" column="PTIME" />
+	<result property="ptype" column="PTYPE" />
+	<result property="memo" column="MEMO" />
+	<result property="datatable" column="DATATABLE" />
+	<result property="dataview" column="DATAVIEW" />
+</resultMap>
+<select id="queryFlowPiData" resultMap="resultFlowPiData">
+	select ID, PIID, TPREV, TALIAS, TNAME, STATUS, PACCOUNT, PNAME, PTIME, PTYPE, MEMO, DATATABLE, DATAVIEW
+	from DS_FLOW_PI_DATA
+	where PIID=#{piid}
+</select>
+<sql id="sqlFlowWaiting">
+	ID, PIID, YWLSH, SBLSH, FLOWID, FLOWNAME, TALIAS, TNAME, TCOUNT, TPREV, TNEXT, TSTART, TUSER, TUSERS, SUBCOUNT, SUBUSERS, TMEMO, DATATABLE, TENABLE, DATAVIEW
+</sql>
+<insert id="insertFlowWaiting" parameterType="dswork.common.model.IFlowWaiting">
+	insert into DS_FLOW_PI_WAITING
+	(<include refid="sqlFlowWaiting" />)
+	values
+	(#{id}, #{piid}, #{ywlsh}, #{sblsh}, #{flowid}, #{flowname}, #{talias}, #{tname}, #{tcount}, #{tprev}, #{tnext}, #{tstart},
+		<if test="@Ognl@isEmpty(tuser)">null</if><if test="@Ognl@isNotEmpty(tuser)">#{tuser}</if>,
+		<if test="@Ognl@isEmpty(tusers)">null</if><if test="@Ognl@isNotEmpty(tusers)">#{tusers}</if>,
+	#{subcount}, #{subusers}, #{tmemo}, #{datatable}, #{tenable}, #{dataview})
+</insert>
+<delete id="deleteFlowPi">
+	delete from DS_FLOW_PI where ID=#{id}
+</delete>
+<delete id="deleteFlowWaiting">
+	delete from DS_FLOW_PI_WAITING where ID=#{id}
+</delete>
+<delete id="deleteFlowWaitingByPiid">
+	delete from DS_FLOW_PI_WAITING where PIID=#{piid}
+</delete>
+<update id="updateFlowWaiting">
+	update DS_FLOW_PI_WAITING set TCOUNT=TCOUNT-1, TSTART=#{tstart}, TPREV=#{tprev}, DATATABLE=#{datatable} 
+	where ID=#{id} and TCOUNT&gt;1
+</update>
+<update id="updateFlowWaitingUser">
+	update DS_FLOW_PI_WAITING set TUSER=#{tuser}, TUSERS=null where ID=#{id}
+</update>
+<update id="updateSubFlowWaiting">
+	update DS_FLOW_PI_WAITING set SUBCOUNT=SUBCOUNT-1, SUBUSERS=#{subusers}, DATATABLE=#{datatable}
+	where ID=#{id}
+</update>
+<update id="updateSubFlowWaitingSubusers">
+	update DS_FLOW_PI_WAITING set SUBUSERS=#{subusers}, DATATABLE=#{datatable}
+	where ID=#{id}
+</update>
+<update id="updateFlowTuser">
+	update DS_FLOW_PI_WAITING set TUSER=#{tuser}, TUSERS=null, SUBCOUNT=#{subcount}
+	where ID=#{id}
+</update>
+<update id="updateFlowTusers">
+	update DS_FLOW_PI_WAITING set TUSER=null, TUSERS=#{tusers}
+	where ID=#{id}
+</update>
+<update id="updateFlowWaitingTenable">
+	update DS_FLOW_PI_WAITING set TENABLE=0, DATATABLE=#{datatable}
+	where ID=#{id} and TALIAS='start'
+</update>
+<resultMap id="resultFlowWaiting" type="dswork.common.model.IFlowWaiting">
+	<id property="id" column="ID" />
+	<result property="piid" column="PIID" />
+	<result property="ywlsh" column="YWLSH" />
+	<result property="sblsh" column="SBLSH" />
+	<result property="flowid" column="FLOWID" />
+	<result property="flowname" column="FLOWNAME" />
+	<result property="talias" column="TALIAS" />
+	<result property="tname" column="TNAME" />
+	<result property="tcount" column="TCOUNT" />
+	<result property="tprev" column="TPREV" />
+	<result property="tnext" column="TNEXT" />
+	<result property="tstart" column="TSTART" />
+	<result property="tuser" column="TUSER" />
+	<result property="tusers" column="TUSERS" />
+	<result property="subcount" column="SUBCOUNT" />
+	<result property="subusers" column="SUBUSERS" />
+	<result property="tmemo" column="TMEMO" />
+	<result property="datatable" column="DATATABLE" />
+	<result property="tenable" column="TENABLE" />
+	<result property="dataview" column="DATAVIEW" />
+</resultMap>
+<select id="selectFlowWaiting" resultMap="resultFlowWaiting">
+	select <include refid="sqlFlowWaiting" /> from DS_FLOW_PI_WAITING where ID=#{id}
+</select>
+<select id="selectFlowWaitingByPiid" resultMap="resultFlowWaiting">
+	select <include refid="sqlFlowWaiting" /> from DS_FLOW_PI_WAITING
+	where PIID=#{piid} <if test="@Ognl@isNotEmpty(talias)"> and TALIAS=#{talias}</if>
+</select>
+<select id="queryFlowWaiting" resultMap="resultFlowWaiting">
+	<include refid="sqlQueryFlowWaiting" />
+</select>
+<sql id="sqlQueryFlowWaiting">
+	select <include refid="sqlFlowWaiting" /> from DS_FLOW_PI_WAITING
+	where ((TUSER=#{account} and SUBCOUNT &lt; 0) or TUSERS like #{account, typeHandler=LikeTypeHandler} 
+	or ((TUSER like #{account, typeHandler=LikeTypeHandler} or TUSER like '%,,%' ) and SUBCOUNT > -1 
+	and (SUBUSERS not like #{account, typeHandler=LikeTypeHandler} or TUSER like #{tuser, typeHandler=LikeTypeHandler}) )
+	) 
+	and TCOUNT=1 and TENABLE &gt; -1
+</sql>
+</mapper>

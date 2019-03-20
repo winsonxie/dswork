@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="dswork.common.dao.DsCommonOrgRoleDao">
+
+<insert id="insert" parameterType="dswork.common.model.DsCommonOrgRole">
+	insert into DS_COMMON_ORGROLE
+	(ID, ORGID, ROLEID)
+	values
+	(#{id}, #{orgid}, #{roleid})
+</insert>
+
+<delete id="deleteByOrgid">
+	delete from DS_COMMON_ORGROLE where ORGID=#{orgid}
+</delete>
+
+<delete id="deleteByRoleid">
+	delete from DS_COMMON_ORGROLE where ROLEID=#{roleid}
+</delete>
+
+<resultMap id="result" type="dswork.common.model.DsCommonOrgRole">
+	<result property="orgid" column="ORGID" />
+	<result property="roleid" column="ROLEID" />
+	<result property="rolename" column="ROLENAME" />
+	<result property="systemid" column="SYSTEMID" />
+	<result property="systemname" column="SYSTEMNAME" />
+</resultMap>
+
+<select id="query" resultMap="result">
+	select <include refid="dswork.top" />a.ORGID as ORGID, r.ID as ROLEID, r.NAME as ROLENAME, s.ID as SYSTEMID, s.NAME as SYSTEMNAME
+	from DS_COMMON_ORGROLE a
+	left join DS_COMMON_ROLE r on a.ROLEID=r.ID
+	left join DS_COMMON_SYSTEM s on r.SYSTEMID=s.ID
+	where a.ORGID=#{orgid} order by r.SYSTEMID
+</select>
+
+</mapper>
