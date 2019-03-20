@@ -8,16 +8,14 @@ import java.io.Serializable;
 public class IUser implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	private Long id = 0L;// 主键
-	// private Long bindid = 0L;// 所属来源应用ID
+	private long id = 0L;// 主账号id
+	private long sid = 0L;// 实际登录用户id
 	private int status = 0;// 状态（0禁用，1启用）
-	// private String openid = "";// openid
-	// private String unionid = "";// unionid
-	private String bm = "";// 唯一标识（可为id或身份证等信息）
+	private String bm = "";// 用户唯一标识（可为id或身份证等信息，用于标识多个账号是同一个用户）
 	private String ssqy = "";// 最长12位的区域编码
 	private String name = "";// 姓名
 	private String mobile = "";// 手机
-	private String account = "";// 自定义账号
+	private String account = "";// 账号唯一标识串
 	// private String password = "";// 密码
 	private String workcard = "";// 工作证号
 	private int sex = 0;// 性别（0未知，1男，2女）
@@ -28,8 +26,8 @@ public class IUser implements Serializable
 	private String idcard = "";// 身份证号
 	private String email = "";// 电子邮件
 	private String phone = "";// 电话
-	private Long orgpid = 0L;// 所属单位
-	private Long orgid = 0L;// 所属部门
+	private long orgpid = 0L;// 所属单位
+	private long orgid = 0L;// 所属部门
 	private String type = "";// 类型
 	private String typename = "";// 类型名称
 	private String exalias = "";// 类型扩展标识
@@ -37,14 +35,24 @@ public class IUser implements Serializable
 	private String createtime = "";// 创建时间
 	private long lasttime = 0L;// 最后更新时间
 
-	public Long getId()
+	public long getId()
 	{
 		return id;
 	}
 
-	public void setId(Long id)
+	public void setId(long id)
 	{
 		this.id = id;
+	}
+
+	public long getSid()
+	{
+		return sid;
+	}
+
+	public void setSid(long sid)
+	{
+		this.sid = sid;
 	}
 
 	public int getStatus()
@@ -202,7 +210,7 @@ public class IUser implements Serializable
 		return orgpid;
 	}
 
-	public void setOrgpid(Long orgpid)
+	public void setOrgpid(long orgpid)
 	{
 		this.orgpid = orgpid;
 	}
@@ -212,7 +220,7 @@ public class IUser implements Serializable
 		return orgid;
 	}
 
-	public void setOrgid(Long orgid)
+	public void setOrgid(long orgid)
 	{
 		this.orgid = orgid;
 	}
