@@ -27,7 +27,7 @@ public class AuthGlobal
 	 */
 	public static final int CODE_406 = 406;
 	static Logger log = LoggerFactory.getLogger("dswork.sso");
-	public static com.google.gson.Gson gson = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+	public static com.google.gson.Gson gson = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").disableHtmlEscaping().create();
 	private static String APPID = null;
 	private static String APPSECRET = null;
 	private static String APIURL = null;
