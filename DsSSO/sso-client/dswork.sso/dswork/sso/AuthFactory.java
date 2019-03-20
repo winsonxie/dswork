@@ -27,8 +27,9 @@ public class AuthFactory
 	static Logger log = LoggerFactory.getLogger("dswork.sso");
 	private static String SYSTEM_ALIAS = "";
 	private static String SYSTEM_PASSWORD = "";
-	private static String SYSTEM_REDIRECTURI = "";
-	private static String WEB_URI = "";
+	private static String REDIRECT_URI = "";
+	private static String WEB_URL = "";
+	private static String LOGIN_URL = "";
 
 	private static String Md5(String v)
 	{
@@ -59,12 +60,13 @@ public class AuthFactory
 		return "";
 	}
 
-	public static void initConfig(String systemAlias, String systemPassword, String systemRedirectUri, String web_uri)
+	public static void initConfig(String systemAlias, String systemPassword, String redirect_uri, String web_url, String login_url)
 	{
 		SYSTEM_ALIAS = systemAlias;
 		SYSTEM_PASSWORD = Md5(systemPassword);
-		SYSTEM_REDIRECTURI = (systemRedirectUri == null) ? "" : systemRedirectUri.trim();
-		WEB_URI = (web_uri == null) ? "" : web_uri.trim();
+		REDIRECT_URI = (redirect_uri == null) ? "" : redirect_uri;
+		WEB_URL = (web_url == null) ? "" : web_url;
+		LOGIN_URL = (login_url == null) ? "" : login_url;
 	}
 
 	private static HttpUtil getHttpForID(String path)
@@ -80,6 +82,11 @@ public class AuthFactory
 	public static HttpUtil getApiHttp(String path)
 	{
 		return getHttpForID(path).addForm("access_token", AuthGlobal.getAccessToken()).addForm("systemAlias", SYSTEM_ALIAS).addForm("systemPassword", SYSTEM_PASSWORD);
+	}
+	
+	public static String getRedirectUri()
+	{
+		return REDIRECT_URI;
 	}
 
 	private static String getRedirectUri(String source, String redirect_uri)
@@ -162,7 +169,15 @@ public class AuthFactory
 	public static String getUserAuthorizeURL(String redirect_uri)
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(WEB_URI).append("/user/authorize").append("?appid=").append(AuthGlobal.getAppid()).append("&response_type=code&redirect_uri=").append(getRedirectUri(SYSTEM_REDIRECTURI, redirect_uri));
+		if(LOGIN_URL.length() > 0)
+		{
+			sb.append(LOGIN_URL).append(LOGIN_URL.contains("?") ? "&" : "?");
+		}
+		else
+		{
+			sb.append(WEB_URL).append("/user/authorize?response_type=code&");
+		}
+		sb.append("appid=").append(AuthGlobal.getAppid()).append("&redirect_uri=").append(getRedirectUri(REDIRECT_URI, redirect_uri));
 		return sb.toString();
 	}
 
@@ -176,7 +191,7 @@ public class AuthFactory
 	{
 		Authcode ac = Authcode.code_create(AuthGlobal.getAppsecret());
 		StringBuilder sb = new StringBuilder();
-		sb.append(WEB_URI).append("/user/login").append("?appid=").append(AuthGlobal.getAppid()).append("&response_type=").append(isCode ? "code" : "token").append("&redirect_uri=").append(getRedirectUri(SYSTEM_REDIRECTURI, redirect_uri));
+		sb.append(WEB_URL).append("/user/login").append("?appid=").append(AuthGlobal.getAppid()).append("&response_type=").append(isCode ? "code" : "token").append("&redirect_uri=").append(getRedirectUri(REDIRECT_URI, redirect_uri));
 		sb.append("&authtime=").append(ac.getAuthtime()).append("&authcode=").append(ac.getAuthcode());
 		return sb.toString();
 	}
@@ -190,7 +205,7 @@ public class AuthFactory
 	public static String getUserLogoutURL(String openid, String access_token)
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(WEB_URI).append("/user/logout").append("?appid=").append(AuthGlobal.getAppid()).append("&openid=").append(openid).append("&access_token=").append(access_token);
+		sb.append(WEB_URL).append("/user/logout").append("?appid=").append(AuthGlobal.getAppid()).append("&openid=").append(openid).append("&access_token=").append(access_token);
 		return sb.toString();
 	}
 
@@ -202,7 +217,7 @@ public class AuthFactory
 	public static String getUserRedirectURL(String code)
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(WEB_URI).append("/user/redirect").append("?appid=").append(AuthGlobal.getAppid()).append("&code=").append(code);
+		sb.append(WEB_URL).append("/user/redirect").append("?appid=").append(AuthGlobal.getAppid()).append("&code=").append(code);
 		return sb.toString();
 	}
 
@@ -221,7 +236,7 @@ public class AuthFactory
 		}
 		StringBuilder sb = new StringBuilder();
 		// 此处getRedirectUri取反参数
-		sb.append(WEB_URI).append("/user/password").append("?appid=").append(AuthGlobal.getAppid()).append("&openid=").append(openid).append("&access_token=").append(access_token).append("&redirect_uri=").append(getRedirectUri(redirect_uri, SYSTEM_REDIRECTURI));
+		sb.append(WEB_URL).append("/user/password").append("?appid=").append(AuthGlobal.getAppid()).append("&openid=").append(openid).append("&access_token=").append(access_token).append("&redirect_uri=").append(getRedirectUri(redirect_uri, REDIRECT_URI));
 		return sb.toString();
 	}
 

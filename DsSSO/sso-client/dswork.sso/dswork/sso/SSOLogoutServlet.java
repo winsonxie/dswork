@@ -13,28 +13,25 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebServlet(name="WebLogoutServlet", loadOnStartup=1, urlPatterns={"/logout"})
-public class WebLogoutServlet extends HttpServlet
+@WebServlet(name="SSOLogoutServlet", loadOnStartup=2, urlPatterns={"/sso/logout"})
+public class SSOLogoutServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
 	static Logger log = LoggerFactory.getLogger("dswork.sso.logout");
 
-	public WebLogoutServlet()
+	public SSOLogoutServlet()
 	{
 		super();
 	}
-
-	public void destroy()
-	{
-		super.destroy();
-	}
-
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	
+	@Override
+	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		try
 		{
 			HttpSession session = request.getSession();
-			session.removeAttribute(WebFilter.LOGINER);
+			session.removeAttribute(SSOLoginServlet.LOGINER);
+			session.removeAttribute(SSOLoginServlet.TICKET);
 			session.invalidate();
 			String jsoncallback = request.getParameter("jsoncallback").replaceAll("<", "").replaceAll(">", "").replaceAll("\"", "").replaceAll("'", "");
 			PrintWriter out = response.getWriter();
@@ -43,13 +40,7 @@ public class WebLogoutServlet extends HttpServlet
 		catch(Exception ex)
 		{
 			log.error(ex.getMessage());
-			ex.printStackTrace();
 		}
 		return;
-	}
-
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-		doGet(request, response);
 	}
 }
