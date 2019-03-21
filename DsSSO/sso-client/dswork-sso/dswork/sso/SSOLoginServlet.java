@@ -19,43 +19,55 @@ import dswork.sso.model.AccessToken;
 import dswork.sso.model.IUser;
 import dswork.sso.model.JsonResult;
 
-@WebServlet(name="SSOLoginServlet", loadOnStartup=1, urlPatterns={"/sso/login"})
+@WebServlet(name = "SSOLoginServlet", loadOnStartup = 1, urlPatterns =
+{
+		"/sso/login"
+})
 public class SSOLoginServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
 	public static final String LOGINER = "sso.web.loginer";
-	
 	static com.google.gson.Gson gson = AuthGlobal.gson;
 	static Logger log = LoggerFactory.getLogger("dswork.sso");
-	
 	private static Set<String> ignoreURLSet = new HashSet<String>();// 无需验证页面
 
 	public SSOLoginServlet()
 	{
 		super();
 	}
-	
+
 	@Override
 	public void init(ServletConfig config) throws ServletException
 	{
 		super.init(config);
-
 		String configFile = String.valueOf(this.getServletContext().getInitParameter("dsworkSSOConfiguration")).trim();
 		java.util.Properties CONFIG = new java.util.Properties();
 		java.io.InputStream stream = WebFilter.class.getResourceAsStream(configFile);
-		if (stream != null)
+		if(stream != null)
 		{
-			try{CONFIG.load(stream);}
-			catch (Exception e){}
-			finally{try{stream.close();}catch (IOException ioe){}}
+			try
+			{
+				CONFIG.load(stream);
+			}
+			catch(Exception e)
+			{
+			}
+			finally
+			{
+				try
+				{
+					stream.close();
+				}
+				catch(IOException ioe)
+				{
+				}
+			}
 		}
-		
-		String appid,appsecret,apiURL;
+		String appid, appsecret, apiURL;
 		appid = str(CONFIG, "sso.appid", null, "portal");
 		appsecret = str(CONFIG, "sso.appsecret", null, "portal");
 		apiURL = str(CONFIG, "sso.apiURL", null, null);
 		AuthGlobal.runAppConfig(appid, appsecret, apiURL);// 初始化全局设置
-		
 		String systemAlias, systemPassword, redirect_uri, web_url, login_url;
 		systemAlias = str(CONFIG, "sso.systemAlias", "sso.ssoName", "");
 		systemPassword = str(CONFIG, "sso.systemPassword", "sso.ssoPassword", "");
@@ -63,16 +75,24 @@ public class SSOLoginServlet extends HttpServlet
 		web_url = str(CONFIG, "sso.webURL", null, "/sso");
 		login_url = str(CONFIG, "sso.loginURL", null, "");
 		AuthFactory.initConfig(systemAlias, systemPassword, redirect_uri, web_url, login_url);
-		
 		String ignoreURL = str(CONFIG, "sso.ignoreURL", null, "");
 		// ignoreURLSet.clear();
+		ignoreURLSet.add("/sso/login");
+		ignoreURLSet.add("/sso/logout");
+		ignoreURLSet.add("/sso/menu");
 		if(ignoreURL.length() > 0)
 		{
 			String[] values = ignoreURL.split(",");
-			for(String value : values){if(value.trim().length() > 0){ignoreURLSet.add(value.trim());}}
+			for(String value : values)
+			{
+				if(value.trim().length() > 0)
+				{
+					ignoreURLSet.add(value.trim());
+				}
+			}
 		}
 	}
-	
+
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
@@ -111,7 +131,7 @@ public class SSOLoginServlet extends HttpServlet
 		}
 		return;
 	}
-	
+
 	public static boolean refreshUser(HttpSession session, IUser user, String openid, String access_token)
 	{
 		if(user != null)
@@ -130,9 +150,18 @@ public class SSOLoginServlet extends HttpServlet
 
 	public static boolean containsIgnoreURL(String uri)
 	{
-		return ignoreURLSet.contains(uri);
+		java.util.Iterator<String> it = ignoreURLSet.iterator();
+		while(it.hasNext())
+		{
+			String str = it.next();
+			if(uri.startsWith(str))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
-	
+
 	private static String str(java.util.Properties CONFIG, String key, String bakkey, String defaultValue)
 	{
 		String v = CONFIG.getProperty(key);
