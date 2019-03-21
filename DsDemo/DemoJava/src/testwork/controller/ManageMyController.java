@@ -111,8 +111,8 @@ public class ManageMyController extends BaseController
 			Page<Object> page = service.queryPage(namespaceDot + model, pr);
 			map.put("status", 1);
 			map.put("msg", "");
-			map.put("size", page.getTotalCount());
-			map.put("page", page.getCurrentPage());
+			map.put("size", page.getSize());
+			map.put("page", page.getPage());
 			map.put("pagesize", page.getPageSize());
 			map.put("totalpage", page.getTotalPage());
 			List<Object> list = page.getResult();
