@@ -31,7 +31,6 @@ public class SSOLogoutServlet extends HttpServlet
 		{
 			HttpSession session = request.getSession();
 			session.removeAttribute(SSOLoginServlet.LOGINER);
-			session.removeAttribute(SSOLoginServlet.TICKET);
 			session.invalidate();
 			String jsoncallback = request.getParameter("jsoncallback").replaceAll("<", "").replaceAll(">", "").replaceAll("\"", "").replaceAll("'", "");
 			PrintWriter out = response.getWriter();

@@ -23,8 +23,7 @@ import dswork.sso.model.JsonResult;
 public class SSOLoginServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
-	public final static String LOGINER = "sso.web.loginer";
-	public final static String TICKET = "sso.web.ticket";
+	public static final String LOGINER = "sso.web.loginer";
 	
 	static com.google.gson.Gson gson = AuthGlobal.gson;
 	static Logger log = LoggerFactory.getLogger("dswork.sso");
@@ -117,15 +116,14 @@ public class SSOLoginServlet extends HttpServlet
 	{
 		if(user != null)
 		{
+			user.setSsoticket(openid, access_token);
 			session.setAttribute(LOGINER, gson.toJson(user));
-			session.setAttribute(TICKET, openid + "-" + access_token);
 			return true;
 		}
 		else
 		{
 			// 登录不成则退出
 			session.removeAttribute(LOGINER);
-			session.removeAttribute(TICKET);
 			return false;
 		}
 	}

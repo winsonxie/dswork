@@ -26,11 +26,8 @@ public class WebFilter implements Filter
 	
 	private static boolean use = false;// 用于判断是否加载sso模块
 
-	public final static String OPENID = "openid";
-	public final static String ACCESS_TOKEN = "access_token";
-	
 	public final static String LOGINER = SSOLoginServlet.LOGINER;
-	public final static String TICKET = SSOLoginServlet.TICKET;
+	public static final String SSOTICKET = "ssoticket";
 
 	public void init(FilterConfig config) throws ServletException
 	{
@@ -50,65 +47,51 @@ public class WebFilter implements Filter
 		if(log.isDebugEnabled())
 		{
 			log.debug("当前访问地址：" + request.getContextPath() + relativeURI);
-			log.debug(ouser != null ? "当前已登录" + gson.toJson(ouser) : "当前未登录");
+			log.debug(ouser != null ? "当前已登录" + String.valueOf(ouser) : "当前未登录");
 		}
 		
-		// 判断是否有ticket
-		String openid = request.getParameter(OPENID);
-		String access_token = request.getParameter(ACCESS_TOKEN);
 		
-		// 判断是否有ticket，当且仅当两者都有值时才当是
-		if(openid != null && access_token != null && openid.length() > 0 && access_token.length() > 0)// ticket非空,由链接传来ticket
+		
+		String ssoticket = getValueByCookie(request, SSOTICKET);// cookie优先
+		if(ssoticket == null)
 		{
-			// 登录只是从get上传过来的，非get直接忽略
+			ssoticket = request.getParameter(SSOTICKET);// 参数次选优先
 			String qstr = request.getQueryString();
-			if(qstr.contains("openid="+openid) && qstr.contains("access_token="+access_token))
+			if(!qstr.contains("ssoticket="+ssoticket))
 			{
-				if(!validateTicket(session, openid, access_token))// 一样的ticket，这里的session放的ticket不是ssoticket
-				{
-					if(log.isDebugEnabled())
-					{
-						log.debug("ticket不相等，需要更新用户");
-					}
-					try
-					{
-						IUser user = null;
-						JsonResult<IUser> result = AuthFactory.getUserUserinfo(openid, access_token);
-						if(result.getCode() == AuthGlobal.CODE_001)
-						{
-							user = result.getData();
-						}
-						if(SSOLoginServlet.refreshUser(session, user, openid, access_token))
-						{
-							chain.doFilter(request, response);
-							return;
-						}
-					}
-					catch(Exception e)
-					{
-						log.error(e.getMessage());
-					}
-					ouser = null;// 失败清空
-				}
+				ssoticket = null;
 			}
 		}
-		if(ouser != null)// 已登录
+		String[] arr = getOpenidAndToken(ssoticket);
+		if(arr != null)
 		{
-			chain.doFilter(request, response);
-			return;
-		}
-		else
-		{
-			// 也许是门户，尝试从cookie中获取登录信息
-			openid = getValueByCookie(request, OPENID);
-			access_token = getValueByCookie(request, ACCESS_TOKEN);
-			if(openid != null && access_token != null)
+			String openid = arr[0];
+			String access_token = arr[1];
+			IUser user = null;
+			if(ouser != null)
 			{
 				try
 				{
-					
-					
-					IUser user = null;
+					user = gson.fromJson(String.valueOf(ouser), IUser.class);
+					if(!ssoticket.equals(user.getSsoticket()))
+					{
+						ouser = null;// 相等不需要 更新用户
+						if(log.isDebugEnabled())
+						{
+							log.debug("ticket不相等，需要更新用户");
+						}
+					}
+				}
+				catch(Exception e)
+				{
+					log.error(e.getMessage());
+					ouser = null;// 用户数据异常，重新获取
+				}
+			}
+			if(ouser == null)
+			{
+				try
+				{
 					JsonResult<IUser> result = AuthFactory.getUserUserinfo(openid, access_token);
 					if(result.getCode() == AuthGlobal.CODE_001)
 					{
@@ -124,8 +107,16 @@ public class WebFilter implements Filter
 				{
 					log.error(e.getMessage());
 				}
+				ouser = null;// 失败清空
 			}
 		}
+		if(ouser != null)// 已登录
+		{
+			chain.doFilter(request, response);
+			return;
+		}
+		
+		
 		// String relativeURI = request.getRequestURI();// 相对地址
 		// if(request.getContextPath().length() > 0){relativeURI = relativeURI.replaceFirst(request.getContextPath(), "");}
 		if(SSOLoginServlet.containsIgnoreURL(relativeURI))// 判断是否为无需验证页面
@@ -193,17 +184,11 @@ public class WebFilter implements Filter
 	public static void logout(HttpSession session)
 	{
 		session.removeAttribute(LOGINER);
-		session.removeAttribute(TICKET);
 	}
 	
 	public static boolean isUse()
 	{
 		return WebFilter.use;
-	}
-
-	private static boolean validateTicket(HttpSession session, String openid, String access_token)
-	{
-		return (openid + "-" + access_token).equals(session.getAttribute(TICKET));
 	}
 	
 	private static String getValueByCookie(HttpServletRequest request, String name)
@@ -224,5 +209,18 @@ public class WebFilter implements Filter
 			}
 		}
 		return value;
+	}
+	
+	private static String[] getOpenidAndToken(String ssoticket)
+	{
+		if(ssoticket != null && ssoticket.length() > 10)
+		{
+			String[] arr = ssoticket.split("-", 2);
+			if(arr.length == 2)
+			{
+				return arr;
+			}
+		}
+		return null;
 	}
 }
