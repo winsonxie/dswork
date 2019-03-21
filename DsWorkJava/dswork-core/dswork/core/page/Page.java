@@ -12,57 +12,46 @@ public class Page<T> implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private List<T> result = new ArrayList<T>();
-	private int pageSize;
-	private int currentPage;
-	private int lastPage;
-	private int totalCount = 0;
+	private int pagesize;
+	private int page;
+	private int size = 0;
 
 	/**
 	 * 构造函数
 	 * @param currentPage 当前页码
 	 * @param pageSize 一页显示的条数
-	 * @param totalCount 数据总条数
+	 * @param size 数据总条数
 	 */
-	public Page(int currentPage, int pageSize, int totalCount)
+	public Page(int currentPage, int pagesize, int size)
 	{
-		this(currentPage, pageSize, totalCount, new ArrayList<T>(0));
+		this(currentPage, pagesize, size, new ArrayList<T>(0));
 	}
 
 	/**
 	 * 构造函数
-	 * @param currentPage 当前页码
+	 * @param page 当前页码
 	 * @param pageSize 一页显示的条数
 	 * @param totalCount 数据总条数
 	 * @param result 结果集List&lt;T&gt;，其长度不影响计数
 	 */
-	public Page(int currentPage, int pageSize, int totalCount, List<T> result)
+	public Page(int page, int pagesize, int size, List<T> result)
 	{
-		if(pageSize <= 0)
+		if(pagesize <= 0)
 		{
-			throw new IllegalArgumentException("[pageSize] must great than zero");
+			throw new IllegalArgumentException("[pagesize] must great than zero");
 		}
-		this.lastPage = totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1;
-		if(this.lastPage < 1)
+		int lastPage = getTotalPage();
+		this.pagesize = pagesize;
+		if(page < 1)
 		{
-			this.lastPage = 1;
+			page = 1;
 		}
-		this.pageSize = pageSize;
-		if(currentPage <= 1)
+		else if(Integer.MAX_VALUE == page || page > lastPage)
 		{
-			currentPage = 1;
+			page = lastPage;
 		}
-		else if(Integer.MAX_VALUE == currentPage || currentPage > this.lastPage)
-		{
-			currentPage = this.lastPage;
-		}
-//		// 下面这种的话，如果pageSize=0的话，就相当于不分页
-//		if(pageSize == 0)
-//		{
-//			pageNumber = 1;
-//			pageSize = (totalCount <= 0) ? 1 : totalCount;
-//		}
-		this.currentPage = currentPage;
-		this.totalCount = totalCount;
+		this.page = page;
+		this.size = size;
 		setResult(result);
 	}
 
@@ -70,40 +59,9 @@ public class Page<T> implements Serializable
 	 * 取得当前页页码
 	 * @return int
 	 */
-	public int getCurrentPage()
+	public int getPage()
 	{
-		return currentPage;
-	}
-
-	/**
-	 * 得到结果集第一条数据的行编码
-	 * @return int
-	 */
-	public int getFirstResultIndex()
-	{
-		if (pageSize <= 0)
-		{
-			throw new IllegalArgumentException("[pageSize] must great than zero");
-		}
-		return (currentPage - 1) * pageSize;
-	}
-	
-	/**
-	 * 取得数据总页数，也就是最后一页页码
-	 * @return int
-	 */
-	public int getLastPage()
-	{
-		return lastPage;
-	}
-
-	/**
-	 * 取得下一页页码
-	 * @return int
-	 */
-	public int getNextPage()
-	{
-		return currentPage + 1;
+		return page;
 	}
 
 	/**
@@ -112,16 +70,7 @@ public class Page<T> implements Serializable
 	 */
 	public int getPageSize()
 	{
-		return pageSize;
-	}
-
-	/**
-	 * 取得上一页页码
-	 * @return int
-	 */
-	public int getPreviousPage()
-	{
-		return currentPage - 1;
+		return pagesize;
 	}
 
 	/**
@@ -150,9 +99,9 @@ public class Page<T> implements Serializable
 	 * 取得数据总条数，0表示没有数据
 	 * @return int
 	 */
-	public int getTotalCount()
+	public int getSize()
 	{
-		return totalCount;
+		return size;
 	}
 
 	/**
@@ -161,99 +110,11 @@ public class Page<T> implements Serializable
 	 */
 	public int getTotalPage()
 	{
+		int lastPage = size % pagesize == 0 ? size / pagesize : size / pagesize + 1;
+		if(lastPage < 1)
+		{
+			lastPage = 1;
+		}
 		return lastPage;
 	}
-
-	/**
-	 * 是否是首页（第一页），第一页页码为1
-	 * @return boolean
-	 */
-	public boolean isFirstPage()
-	{
-		return currentPage == 1;
-	}
-
-	/**
-	 * 是否有下一页
-	 * @return boolean
-	 */
-	public boolean isHasNextPage()
-	{
-		return lastPage > currentPage;
-	}
-
-	/**
-	 * 是否有上一页
-	 * @return boolean
-	 */
-	public boolean isHasPreviousPage()
-	{
-		return currentPage > 1;
-	}
-
-	/**
-	 * 是否是最后一页
-	 * @return boolean
-	 */
-	public boolean isLastPage()
-	{
-		return currentPage >= lastPage;
-	}
-
-//	/**
-//	 * 取得当前页的首条数据的行编码
-//	 * @return int
-//	 */
-//	public int getThisPageFirstElementNumber()
-//	{
-//		return (currentPage - 1) * pageSize + 1;
-//	}
-//
-//	/**
-//	 * 取得当前页的末条数据的行编码
-//	 * @return int
-//	 */
-//	public int getThisPageLastElementNumber()
-//	{
-//		int fullPage = getThisPageFirstElementNumber() + pageSize - 1;
-//		return totalCount < fullPage ? totalCount : fullPage;
-//	}
-
-//	/**
-//	 * 得到用于多页跳转的页码
-//	 * @return
-//	 */
-//	public List<Integer> getLinkPageNumbers()
-//	{
-//		return generateLinkPageNumbers(getCurrentPage(), getLastPage(), 10);
-//	}
-
-//	private static List<Integer> generateLinkPageNumbers(int currentPageNumber, int lastPageNumber, int count)
-//	{
-//		int avg = count / 2;
-//		int startPageNumber = currentPageNumber - avg;
-//		if (startPageNumber <= 0)
-//		{
-//			startPageNumber = 1;
-//		}
-//		int endPageNumber = startPageNumber + count - 1;
-//		if (endPageNumber > lastPageNumber)
-//		{
-//			endPageNumber = lastPageNumber;
-//		}
-//		if (endPageNumber - startPageNumber < count)
-//		{
-//			startPageNumber = endPageNumber - count;
-//			if (startPageNumber <= 0)
-//			{
-//				startPageNumber = 1;
-//			}
-//		}
-//		List<Integer> result = new ArrayList<Integer>();
-//		for (int i = startPageNumber; i <= endPageNumber; i++)
-//		{
-//			result.add(new Integer(i));
-//		}
-//		return result;
-//	}
 }

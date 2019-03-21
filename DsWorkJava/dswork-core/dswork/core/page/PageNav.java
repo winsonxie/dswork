@@ -133,20 +133,22 @@ public class PageNav<T>
 		StringBuilder sb = new StringBuilder();
 		sb.append(getForm());
 		sb.append("<div class=\"pageview\">");
+		int _lastpage = page.getTotalPage();
+		int _page = page.getPage();
 		if(isViewTotal)
 		{
-			sb.append(" 共").append(page.getTotalCount()).append("条 ");
+			sb.append(" 共").append(page.getSize()).append("条 ");
 		}
 		if(isViewPageInfo)
 		{
-			sb.append(" 第").append(page.getCurrentPage()).append("/").append(page.getTotalPage()).append("页 ");
+			sb.append(" 第").append(_page).append("/").append(_lastpage).append("页 ");
 		}
 		if(isShowLink)
 		{
-			sb.append("<a class=\"first\"" + ((page.getTotalPage() > 1 && page.getCurrentPage() > 1) ? " onclick=\"$jskey.pageview.go('" + pageName+ "','1');return false;\" href=\"#\"" : "") + ">首页</a>&nbsp;");
-			sb.append("<a class=\"prev\"" + ((page.isHasPreviousPage()) ? " onclick=\"$jskey.pageview.go('" + pageName+ "','" + page.getPreviousPage() + "');return false;\" href=\"#\"" : "") + ">上页</a>&nbsp;");
-			sb.append("<a class=\"next\"" + ((page.isHasNextPage()) ? " onclick=\"$jskey.pageview.go('" + pageName+ "','" + page.getNextPage() + "');return false;\" href=\"#\"" : "") + ">下页</a>&nbsp;");
-			sb.append("<a class=\"last\"" + ((page.getTotalPage() > 1 && page.getCurrentPage() < page.getTotalPage()) ? " onclick=\"$jskey.pageview.go('" + pageName+ "','" + page.getTotalPage() + "');return false;\" href=\"#\"" : "") + ">尾页</a>&nbsp;");
+			sb.append("<a class=\"first\"" + ((_lastpage > 1 && _page > 1) ? " onclick=\"$jskey.pageview.go('" + pageName+ "','1');return false;\" href=\"#\"" : "") + ">首页</a>&nbsp;");
+			sb.append("<a class=\"prev\"" + ((_page > 1) ? " onclick=\"$jskey.pageview.go('" + pageName+ "','" + (_page - 1) + "');return false;\" href=\"#\"" : "") + ">上页</a>&nbsp;");
+			sb.append("<a class=\"next\"" + ((_lastpage > _page) ? " onclick=\"$jskey.pageview.go('" + pageName+ "','" + (_page + 1) + "');return false;\" href=\"#\"" : "") + ">下页</a>&nbsp;");
+			sb.append("<a class=\"last\"" + ((_lastpage > 1 && _page < _lastpage) ? " onclick=\"$jskey.pageview.go('" + pageName+ "','" + _lastpage + "');return false;\" href=\"#\"" : "") + ">尾页</a>&nbsp;");
 		}
 		if(isShowJump || isShowJumpSize)
 		{
@@ -154,7 +156,7 @@ public class PageNav<T>
 			String pid = PAGEFORMID + pageName + "_go" + i;
 			if(isShowJump)
 			{
-				sb.append("转到第 <input type=\"text\" class=\"input\" id=\"").append(pid).append("\" value=\"").append(page.getCurrentPage()).append("\" /> 页 ").append("<input type=\"button\" class=\"go\" value=\"GO\" onclick=\"$jskey.pageview.go('").append(pageName).append("', document.getElementById('").append(pid).append("').value);\" />");
+				sb.append("转到第 <input type=\"text\" class=\"input\" id=\"").append(pid).append("\" value=\"").append(_page).append("\" /> 页 ").append("<input type=\"button\" class=\"go\" value=\"GO\" onclick=\"$jskey.pageview.go('").append(pageName).append("', document.getElementById('").append(pid).append("').value);\" />");
 			}
 			if(isShowJumpSize)
 			{
