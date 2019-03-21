@@ -11,14 +11,14 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=DsWorkJava/dswork-core&lt;dswork.core.mybatis.dialect"/>
         <javaElement handleIdentifier="=DsWorkJava/dswork-core&lt;dswork.core"/>
+        <javaElement handleIdentifier="=DsWorkJava/dswork-core&lt;dswork.core.datasource.hibernate4"/>
+        <javaElement handleIdentifier="=DsWorkJava/dswork-core&lt;dswork.core.mybatis.dialect"/>
         <javaElement handleIdentifier="=DsWorkJava/dswork-core&lt;dswork.core.page"/>
+        <javaElement handleIdentifier="=DsWorkJava/dswork-core&lt;dswork.core.util"/>
         <javaElement handleIdentifier="=DsWorkJava/dswork-core&lt;dswork.core.upload"/>
         <javaElement handleIdentifier="=DsWorkJava/dswork-core&lt;dswork.core.datasource"/>
-        <javaElement handleIdentifier="=DsWorkJava/dswork-core&lt;dswork.core.util"/>
         <javaElement handleIdentifier="=DsWorkJava/dswork-core&lt;dswork.core.db"/>
         <javaElement handleIdentifier="=DsWorkJava/dswork-core&lt;dswork.core.mybatis"/>
-        <javaElement handleIdentifier="=DsWorkJava/dswork-core&lt;dswork.core.datasource.hibernate4"/>
     </selectedElements>
 </jardesc>

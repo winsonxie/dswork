@@ -15,6 +15,28 @@ public class PageNav<T>
 	private static String PAGEFORMID = "jskeyPageForm";
 	private String formString = "";
 	private static int[] sizeArray = {1, 5, 10, 15, 20, 50, 100, 200};
+	private String pageName = "page";
+	private String pageSizeName = "pageSizeName";
+	
+	/**
+	 * 构造函数
+	 * @param request HttpServletRequest
+	 * @param pageName
+	 * @param pageSizeName
+	 * @param page Page&lt;T&gt;
+	 */
+	public PageNav(HttpServletRequest request, Page<T> page, String pageName, String pageSizeName)
+	{
+		if(pageName != null && pageName.trim().length() > 0)
+		{
+			this.pageName = pageName;
+		}
+		if(pageSizeName != null && pageSizeName.trim().length() > 0)
+		{
+			this.pageSizeName = pageSizeName;
+		}
+		dox(request, page);
+	}
 
 	/**
 	 * 构造函数
@@ -23,9 +45,17 @@ public class PageNav<T>
 	 */
 	public PageNav(HttpServletRequest request, Page<T> page)
 	{
+		dox(request, page);
+	}
+
+	/**
+	 * 构造函数
+	 * @param request HttpServletRequest
+	 * @param page Page&lt;T&gt;
+	 */
+	private void dox(HttpServletRequest request, Page<T> page)
+	{
 		this.page = page;
-		String pageName = page.getPageName();
-		String pageSizeName = page.getPageSizeName();
 		String formId = PAGEFORMID + pageName;
 		try
 		{
@@ -113,22 +143,22 @@ public class PageNav<T>
 		}
 		if(isShowLink)
 		{
-			sb.append("<a class=\"first\"" + ((page.getTotalPage() > 1 && page.getCurrentPage() > 1) ? " onclick=\"$jskey.pageview.go('" + page.getPageName()+ "','1');return false;\" href=\"#\"" : "") + ">首页</a>&nbsp;");
-			sb.append("<a class=\"prev\"" + ((page.isHasPreviousPage()) ? " onclick=\"$jskey.pageview.go('" + page.getPageName()+ "','" + page.getPreviousPage() + "');return false;\" href=\"#\"" : "") + ">上页</a>&nbsp;");
-			sb.append("<a class=\"next\"" + ((page.isHasNextPage()) ? " onclick=\"$jskey.pageview.go('" + page.getPageName()+ "','" + page.getNextPage() + "');return false;\" href=\"#\"" : "") + ">下页</a>&nbsp;");
-			sb.append("<a class=\"last\"" + ((page.getTotalPage() > 1 && page.getCurrentPage() < page.getTotalPage()) ? " onclick=\"$jskey.pageview.go('" + page.getPageName()+ "','" + page.getTotalPage() + "');return false;\" href=\"#\"" : "") + ">尾页</a>&nbsp;");
+			sb.append("<a class=\"first\"" + ((page.getTotalPage() > 1 && page.getCurrentPage() > 1) ? " onclick=\"$jskey.pageview.go('" + pageName+ "','1');return false;\" href=\"#\"" : "") + ">首页</a>&nbsp;");
+			sb.append("<a class=\"prev\"" + ((page.isHasPreviousPage()) ? " onclick=\"$jskey.pageview.go('" + pageName+ "','" + page.getPreviousPage() + "');return false;\" href=\"#\"" : "") + ">上页</a>&nbsp;");
+			sb.append("<a class=\"next\"" + ((page.isHasNextPage()) ? " onclick=\"$jskey.pageview.go('" + pageName+ "','" + page.getNextPage() + "');return false;\" href=\"#\"" : "") + ">下页</a>&nbsp;");
+			sb.append("<a class=\"last\"" + ((page.getTotalPage() > 1 && page.getCurrentPage() < page.getTotalPage()) ? " onclick=\"$jskey.pageview.go('" + pageName+ "','" + page.getTotalPage() + "');return false;\" href=\"#\"" : "") + ">尾页</a>&nbsp;");
 		}
 		if(isShowJump || isShowJumpSize)
 		{
 			i = (i > 888L)?(0L):(i+1);
-			String pid = PAGEFORMID + page.getPageName() + "_go" + i;
+			String pid = PAGEFORMID + pageName + "_go" + i;
 			if(isShowJump)
 			{
-				sb.append("转到第 <input type=\"text\" class=\"input\" id=\"").append(pid).append("\" value=\"").append(page.getCurrentPage()).append("\" /> 页 ").append("<input type=\"button\" class=\"go\" value=\"GO\" onclick=\"$jskey.pageview.go('").append(page.getPageName()).append("', document.getElementById('").append(pid).append("').value);\" />");
+				sb.append("转到第 <input type=\"text\" class=\"input\" id=\"").append(pid).append("\" value=\"").append(page.getCurrentPage()).append("\" /> 页 ").append("<input type=\"button\" class=\"go\" value=\"GO\" onclick=\"$jskey.pageview.go('").append(pageName).append("', document.getElementById('").append(pid).append("').value);\" />");
 			}
 			if(isShowJumpSize)
 			{
-				sb.append(" 每页 <select onchange=\"$jskey.pageview.go('").append(page.getPageName()).append("',1,this.value);\">");
+				sb.append(" 每页 <select onchange=\"$jskey.pageview.go('").append(pageName).append("',1,this.value);\">");
 				for(int j : sizeArray)
 				{
 					sb.append("<option value=\"").append(j).append((page.getPageSize() == j)?"\" selected=\"selected\">":"\">").append(j).append("</option>");

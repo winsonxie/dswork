@@ -16,8 +16,6 @@ public class Page<T> implements Serializable
 	private int currentPage;
 	private int lastPage;
 	private int totalCount = 0;
-	private String pageName = "page";
-	private String pageSizeName = "pageSize";
 
 	/**
 	 * 构造函数
@@ -109,56 +107,12 @@ public class Page<T> implements Serializable
 	}
 
 	/**
-	 * 取得当前页码的参数名
-	 * @return String，默认值是page
-	 */
-	public String getPageName()
-	{
-		return pageName;
-	}
-
-	/**
-	 * 设置当前页码的参数名，默认值是page
-	 * @param pageName String
-	 */
-	public void setPageName(String pageName)
-	{
-		if (pageName == null || pageName.trim().length() == 0)
-		{
-			throw new IllegalArgumentException("[pageName] must be not null");
-		}
-		this.pageName = pageName.trim().replace("\"", "&quot;").replace("\r", "").replace("\n", "");
-	}
-
-	/**
 	 * 取得一页显示的条数
 	 * @return int
 	 */
 	public int getPageSize()
 	{
 		return pageSize;
-	}
-
-	/**
-	 * 取得一页显示的条数的参数名
-	 * @return String，默认值是pageSize
-	 */
-	public String getPageSizeName()
-	{
-		return pageSizeName;
-	}
-
-	/**
-	 * 设置当前页码的参数名，默认值是pageSize
-	 * @param pageSizeName String
-	 */
-	public void setPageSizeName(String pageSizeName)
-	{
-		if (pageSizeName == null || pageSizeName.trim().length() == 0)
-		{
-			throw new IllegalArgumentException("[pageSizeName] must be not null");
-		}
-		this.pageSizeName = pageSizeName.trim().replace("\"", "&quot;").replace("\r", "").replace("\n", "");
 	}
 
 	/**
