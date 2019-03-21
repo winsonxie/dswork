@@ -159,7 +159,7 @@ public class WebFilter implements Filter
 	/**
 	 * @note 获取指定用户的基本信息
 	 * @param session session
-	 * @return IUser 失败返回空白的Iuser实例，即id为0
+	 * @return IUser 失败返回空白的Iuser实例，即id为-1
 	 */
 	@SuppressWarnings("all")
 	public static IUser getLoginer(HttpSession session)
@@ -175,6 +175,7 @@ public class WebFilter implements Filter
 		if(m == null)
 		{
 			m = new IUser();
+			m.setId(-1L);
 		}
 		return m;
 	}
