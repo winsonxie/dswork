@@ -80,10 +80,18 @@ public class SSOLoginServlet extends HttpServlet
 		try
 		{
 			String code = request.getParameter("code");
-			String redirect_uri = request.getParameter("redirect_uri");
+			String redirect_uri = request.getParameter("redirect_uri");// 需要解码，通常是本项目地址，否则拿不到用户
+			if(redirect_uri == null)
+			{
+				redirect_uri = request.getParameter("service");// 需要解码
+			}
 			if(redirect_uri == null)
 			{
 				redirect_uri = AuthFactory.getRedirectUri();
+			}
+			else
+			{
+				redirect_uri = java.net.URLDecoder.decode(redirect_uri, "UTF-8");
 			}
 			JsonResult<AccessToken> token = AuthFactory.getUserAccessToken(code);
 			if(token.getCode() == AuthGlobal.CODE_001)

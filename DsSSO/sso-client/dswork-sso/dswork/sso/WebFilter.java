@@ -8,6 +8,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -96,6 +97,35 @@ public class WebFilter implements Filter
 			chain.doFilter(request, response);
 			return;
 		}
+		else
+		{
+			// 也许是门户，尝试从cookie中获取登录信息
+			openid = getValueByCookie(request, OPENID);
+			access_token = getValueByCookie(request, ACCESS_TOKEN);
+			if(openid != null && access_token != null)
+			{
+				try
+				{
+					
+					
+					IUser user = null;
+					JsonResult<IUser> result = AuthFactory.getUserUserinfo(openid, access_token);
+					if(result.getCode() == AuthGlobal.CODE_001)
+					{
+						user = result.getData();
+					}
+					if(SSOLoginServlet.refreshUser(session, user, openid, access_token))
+					{
+						chain.doFilter(request, response);
+						return;
+					}
+				}
+				catch(Exception e)
+				{
+					log.error(e.getMessage());
+				}
+			}
+		}
 		// String relativeURI = request.getRequestURI();// 相对地址
 		// if(request.getContextPath().length() > 0){relativeURI = relativeURI.replaceFirst(request.getContextPath(), "");}
 		if(SSOLoginServlet.containsIgnoreURL(relativeURI))// 判断是否为无需验证页面
@@ -174,5 +204,25 @@ public class WebFilter implements Filter
 	private static boolean validateTicket(HttpSession session, String openid, String access_token)
 	{
 		return (openid + "-" + access_token).equals(session.getAttribute(TICKET));
+	}
+	
+	private static String getValueByCookie(HttpServletRequest request, String name)
+	{
+		Cookie cookies[] = request.getCookies();
+		String value = null;
+		if(cookies != null)
+		{
+			Cookie cookie = null;
+			for(int i = 0; i < cookies.length; i++)
+			{
+				cookie = cookies[i];
+				if(cookie.getName().equals(name))
+				{
+					value = cookie.getValue();
+					break;
+				}
+			}
+		}
+		return value;
 	}
 }
