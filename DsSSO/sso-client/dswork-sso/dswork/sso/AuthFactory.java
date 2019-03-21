@@ -67,6 +67,14 @@ public class AuthFactory
 		REDIRECT_URI = (redirect_uri == null) ? "" : redirect_uri;
 		WEB_URL = (web_url == null) ? "" : web_url;
 		LOGIN_URL = (login_url == null) ? "" : login_url;
+		if(LOGIN_URL.length() > 0)
+		{
+			LOGIN_URL = LOGIN_URL + (LOGIN_URL.contains("?") ? "&" : "?");
+		}
+		else
+		{
+			LOGIN_URL = WEB_URL + "/user/authorize?response_type=code&";
+		}
 	}
 
 	private static HttpUtil getHttpForID(String path)
@@ -169,15 +177,15 @@ public class AuthFactory
 	public static String getUserAuthorizeURL(String redirect_uri)
 	{
 		StringBuilder sb = new StringBuilder();
-		if(LOGIN_URL.length() > 0)
-		{
-			sb.append(LOGIN_URL).append(LOGIN_URL.contains("?") ? "&" : "?");
-		}
-		else
-		{
-			sb.append(WEB_URL).append("/user/authorize?response_type=code&");
-		}
-		sb.append("appid=").append(AuthGlobal.getAppid()).append("&redirect_uri=").append(getRedirectUri(REDIRECT_URI, redirect_uri));
+//		if(LOGIN_URL.length() > 0)
+//		{
+//			sb.append(LOGIN_URL).append(LOGIN_URL.contains("?") ? "&" : "?");
+//		}
+//		else
+//		{
+//			sb.append(WEB_URL).append("/user/authorize?response_type=code&");
+//		}
+		sb.append(LOGIN_URL).append("appid=").append(AuthGlobal.getAppid()).append("&redirect_uri=").append(getRedirectUri(REDIRECT_URI, redirect_uri));
 		return sb.toString();
 	}
 
