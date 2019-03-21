@@ -40,8 +40,9 @@ public class Page<T> implements Serializable
 		{
 			throw new IllegalArgumentException("[pagesize] must great than zero");
 		}
-		int lastPage = getTotalPage();
+		this.size = size;
 		this.pagesize = pagesize;
+		int lastPage = getTotalPage();
 		if(page < 1)
 		{
 			page = 1;
@@ -51,7 +52,6 @@ public class Page<T> implements Serializable
 			page = lastPage;
 		}
 		this.page = page;
-		this.size = size;
 		setResult(result);
 	}
 
