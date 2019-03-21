@@ -57,7 +57,7 @@ public class WebFilter implements Filter
 		{
 			ssoticket = request.getParameter(SSOTICKET);// 参数次选优先
 			String qstr = request.getQueryString();
-			if(!qstr.contains("ssoticket="+ssoticket))
+			if(qstr != null && !qstr.contains("ssoticket="+ssoticket))
 			{
 				ssoticket = null;
 			}
