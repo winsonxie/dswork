@@ -87,7 +87,7 @@ public class AuthFactory
 		return getHttpForID(path).addForm("access_token", AuthGlobal.getAccessToken());
 	}
 
-	public static HttpUtil getApiHttp(String path)
+	public static HttpUtil getSystemHttp(String path)
 	{
 		return getHttpForID(path).addForm("access_token", AuthGlobal.getAccessToken()).addForm("systemAlias", SYSTEM_ALIAS).addForm("systemPassword", SYSTEM_PASSWORD);
 	}
@@ -306,7 +306,172 @@ public class AuthFactory
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
-	// 统一权限相关的方法
+	// 组织机构及用户的方法
+	//////////////////////////////////////////////////////////////////////////////
+	/**
+	 * @note 获取组织机构（单位、部门、岗位）
+	 * @param orgId 组织机构ID（单位ID、部门ID、岗位ID）
+	 * @return IOrg
+	 */
+	public static IOrg getOrg(String orgId)
+	{
+		HttpUtil h = getHttp("/api/getOrg").addForm("orgId", orgId);
+		String v = "";
+		IOrg m = null;
+		try
+		{
+			v = h.connect().trim();
+			m = AuthGlobal.gson.fromJson(v, IOrg.class);
+			if(log.isDebugEnabled())
+			{
+				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+		}
+		return m;
+	}
+
+	/**
+	 * @note 获取下级组织机构(status:2单位,1部门,0岗位)
+	 * @param orgPid 组织机构ID，为0则取顶级
+	 * @return IOrg[]
+	 */
+	public static IOrg[] queryOrgByOrgParent(String orgPid)
+	{
+		HttpUtil h = getHttp("/api/queryOrgByOrgParent").addForm("orgPid", orgPid);
+		String v = "";
+		List<IOrg> list = null;
+		try
+		{
+			v = h.connect().trim();
+			list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IOrg>>()
+			{
+			}.getType());
+			if(log.isDebugEnabled())
+			{
+				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+		}
+		return list.toArray(new IOrg[list.size()]);
+	}
+
+	/**
+	 * @note 获取指定用户的基本信息
+	 * @param userAccount 用户帐号
+	 * @return IUser
+	 */
+	public static IUser getUser(String userAccount)
+	{
+		HttpUtil h = getHttp("/api/getUser").addForm("userAccount", userAccount);
+		String v = "";
+		IUser m = null;
+		try
+		{
+			v = h.connect().trim();
+			m = AuthGlobal.gson.fromJson(v, IUser.class);
+			if(log.isDebugEnabled())
+			{
+				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+		}
+		return m;
+	}
+
+	/**
+	 * @note 获取指定用户的基本信息
+	 * @param userOpenid 用户标识
+	 * @return IUser
+	 */
+	public static IUser getUserByOpenid(String userOpenid)
+	{
+		HttpUtil h = getHttp("/api/getUserByOpenid").addForm("userOpenid", userOpenid);
+		String v = "";
+		IUser m = null;
+		try
+		{
+			v = h.connect().trim();
+			m = AuthGlobal.gson.fromJson(v, IUser.class);
+			if(log.isDebugEnabled())
+			{
+				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+		}
+		return m;
+	}
+
+	/**
+	 * @note 获取指定单位下的用户，不含子单位
+	 * @param orgPid 单位ID
+	 * @return IUser[]
+	 */
+	public static IUser[] queryUserByOrgParent(String orgPid)
+	{
+		HttpUtil h = getHttp("/api/queryUserByOrgParent").addForm("orgPid", orgPid);
+		String v = "";
+		List<IUser> list = null;
+		try
+		{
+			v = h.connect().trim();
+			list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IUser>>()
+			{
+			}.getType());
+			if(log.isDebugEnabled())
+			{
+				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+		}
+		return list.toArray(new IUser[list.size()]);
+	}
+
+	/**
+	 * @note 获取指定部门下的用户，不含子部门
+	 * @param orgId 部门 ID
+	 * @return IUser[]
+	 */
+	public static IUser[] queryUserByOrg(String orgId)
+	{
+		HttpUtil h = getHttp("/api/queryUserByOrg").addForm("orgId", orgId);
+		String v = "";
+		List<IUser> list = null;
+		try
+		{
+			v = h.connect().trim();
+			list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IUser>>()
+			{
+			}.getType());
+			if(log.isDebugEnabled())
+			{
+				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+		}
+		return list.toArray(new IUser[list.size()]);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////
+	// 统一权限相关的方法，以下方法需要systemAlias和systemPassword
 	//////////////////////////////////////////////////////////////////////////////
 	/**
 	 * 获取子系统信息
@@ -314,7 +479,7 @@ public class AuthFactory
 	 */
 	public static ISystem getSystem()
 	{
-		HttpUtil h = getApiHttp("/api/getSystem");
+		HttpUtil h = getSystemHttp("/api/getSystem");
 		String v = "";
 		ISystem m = null;
 		try
@@ -340,7 +505,7 @@ public class AuthFactory
 	 */
 	public static ISystem[] getSystemByUser(String userAccount)
 	{
-		HttpUtil h = getApiHttp("/api/getSystemByUser").addForm("userAccount", userAccount);
+		HttpUtil h = getSystemHttp("/api/getSystemByUser").addForm("userAccount", userAccount);
 		String v = "";
 		List<ISystem> list = null;
 		try
@@ -367,7 +532,7 @@ public class AuthFactory
 	 */
 	public static IFunc[] getFunctionBySystem()
 	{
-		HttpUtil h = getApiHttp("/api/getFunctionBySystem");
+		HttpUtil h = getSystemHttp("/api/getFunctionBySystem");
 		String v = "";
 		List<IFunc> list = null;
 		try
@@ -397,7 +562,7 @@ public class AuthFactory
 	 */
 	public static IFunc[] getFunctionByUser(String userAccount)
 	{
-		HttpUtil h = getApiHttp("/api/getFunctionByUser").addForm("userAccount", userAccount);
+		HttpUtil h = getSystemHttp("/api/getFunctionByUser").addForm("userAccount", userAccount);
 		String v = "";
 		List<IFunc> list = null;
 		try
@@ -425,7 +590,7 @@ public class AuthFactory
 	 */
 	public static IFunc[] getFunctionByOrg(String orgId)
 	{
-		HttpUtil h = getApiHttp("/api/getFunctionByOrg").addForm("orgId", orgId);
+		HttpUtil h = getSystemHttp("/api/getFunctionByOrg").addForm("orgId", orgId);
 		String v = "";
 		List<IFunc> list = null;
 		try
@@ -444,170 +609,5 @@ public class AuthFactory
 			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
 		}
 		return list.toArray(new IFunc[list.size()]);
-	}
-
-	//////////////////////////////////////////////////////////////////////////////
-	// 组织机构及用户的方法
-	//////////////////////////////////////////////////////////////////////////////
-	/**
-	 * @note 获取组织机构（单位、部门、岗位）
-	 * @param orgId 组织机构ID（单位ID、部门ID、岗位ID）
-	 * @return IOrg
-	 */
-	public static IOrg getOrg(String orgId)
-	{
-		HttpUtil h = getApiHttp("/api/getOrg").addForm("orgId", orgId);
-		String v = "";
-		IOrg m = null;
-		try
-		{
-			v = h.connect().trim();
-			m = AuthGlobal.gson.fromJson(v, IOrg.class);
-			if(log.isDebugEnabled())
-			{
-				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-			}
-		}
-		catch(Exception e)
-		{
-			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-		}
-		return m;
-	}
-
-	/**
-	 * @note 获取下级组织机构(status:2单位,1部门,0岗位)
-	 * @param orgPid 组织机构ID，为0则取顶级
-	 * @return IOrg[]
-	 */
-	public static IOrg[] queryOrgByOrgParent(String orgPid)
-	{
-		HttpUtil h = getApiHttp("/api/queryOrgByOrgParent").addForm("orgPid", orgPid);
-		String v = "";
-		List<IOrg> list = null;
-		try
-		{
-			v = h.connect().trim();
-			list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IOrg>>()
-			{
-			}.getType());
-			if(log.isDebugEnabled())
-			{
-				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-			}
-		}
-		catch(Exception e)
-		{
-			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-		}
-		return list.toArray(new IOrg[list.size()]);
-	}
-
-	/**
-	 * @note 获取指定用户的基本信息
-	 * @param userAccount 用户帐号
-	 * @return IUser
-	 */
-	public static IUser getUser(String userAccount)
-	{
-		HttpUtil h = getApiHttp("/api/getUser").addForm("userAccount", userAccount);
-		String v = "";
-		IUser m = null;
-		try
-		{
-			v = h.connect().trim();
-			m = AuthGlobal.gson.fromJson(v, IUser.class);
-			if(log.isDebugEnabled())
-			{
-				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-			}
-		}
-		catch(Exception e)
-		{
-			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-		}
-		return m;
-	}
-
-	/**
-	 * @note 获取指定用户的基本信息
-	 * @param userOpenid 用户标识
-	 * @return IUser
-	 */
-	public static IUser getUserByOpenid(String userOpenid)
-	{
-		HttpUtil h = getApiHttp("/api/getUserByOpenid").addForm("userOpenid", userOpenid);
-		String v = "";
-		IUser m = null;
-		try
-		{
-			v = h.connect().trim();
-			m = AuthGlobal.gson.fromJson(v, IUser.class);
-			if(log.isDebugEnabled())
-			{
-				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-			}
-		}
-		catch(Exception e)
-		{
-			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-		}
-		return m;
-	}
-
-	/**
-	 * @note 获取指定单位下的用户，不含子单位
-	 * @param orgPid 单位ID
-	 * @return IUser[]
-	 */
-	public static IUser[] queryUserByOrgParent(String orgPid)
-	{
-		HttpUtil h = getApiHttp("/api/queryUserByOrgParent").addForm("orgPid", orgPid);
-		String v = "";
-		List<IUser> list = null;
-		try
-		{
-			v = h.connect().trim();
-			list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IUser>>()
-			{
-			}.getType());
-			if(log.isDebugEnabled())
-			{
-				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-			}
-		}
-		catch(Exception e)
-		{
-			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-		}
-		return list.toArray(new IUser[list.size()]);
-	}
-
-	/**
-	 * @note 获取指定部门下的用户，不含子部门
-	 * @param orgId 部门 ID
-	 * @return IUser[]
-	 */
-	public static IUser[] queryUserByOrg(String orgId)
-	{
-		HttpUtil h = getApiHttp("/api/queryUserByOrg").addForm("orgId", orgId);
-		String v = "";
-		List<IUser> list = null;
-		try
-		{
-			v = h.connect().trim();
-			list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IUser>>()
-			{
-			}.getType());
-			if(log.isDebugEnabled())
-			{
-				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-			}
-		}
-		catch(Exception e)
-		{
-			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-		}
-		return list.toArray(new IUser[list.size()]);
 	}
 }
