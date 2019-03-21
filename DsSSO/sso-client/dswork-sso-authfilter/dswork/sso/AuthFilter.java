@@ -140,7 +140,7 @@ public class AuthFilter implements Filter
 		}
 		_timer = new Timer(true);
 		// Timer.schedule(TimerTask task, Date date, long period)// 从date开始,每period毫秒执行task.
-		_timer.schedule(_timerTask, 0, SYSTEM_REFRESH);// 从服务器启动开始运行,每period毫秒执行
+		_timer.schedule(_timerTask, 15000L, SYSTEM_REFRESH);// 从服务器启动开始运行,每period毫秒执行
 	}
 
 	public void destroy()

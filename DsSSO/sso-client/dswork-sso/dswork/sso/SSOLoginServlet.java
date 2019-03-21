@@ -19,7 +19,7 @@ import dswork.sso.model.AccessToken;
 import dswork.sso.model.IUser;
 import dswork.sso.model.JsonResult;
 
-@WebServlet(name = "SSOLoginServlet", loadOnStartup = 1, urlPatterns =
+@WebServlet(name = "SSOLoginServlet", loadOnStartup = 9, urlPatterns =
 {
 		"/sso/login"
 })
@@ -67,6 +67,11 @@ public class SSOLoginServlet extends HttpServlet
 		appid = str(CONFIG, "sso.appid", null, "portal");
 		appsecret = str(CONFIG, "sso.appsecret", null, "portal");
 		apiURL = str(CONFIG, "sso.apiURL", null, null);
+		
+
+		System.out.println(appid);
+		System.out.println(appsecret);
+		System.out.println(apiURL);
 		AuthGlobal.runAppConfig(appid, appsecret, apiURL);// 初始化全局设置
 		String systemAlias, systemPassword, redirect_uri, web_url, login_url;
 		systemAlias = str(CONFIG, "sso.systemAlias", "sso.ssoName", "");
@@ -74,6 +79,11 @@ public class SSOLoginServlet extends HttpServlet
 		redirect_uri = str(CONFIG, "sso.redirectURI", "sso.systemURL", "");
 		web_url = str(CONFIG, "sso.webURL", null, "/sso");
 		login_url = str(CONFIG, "sso.loginURL", null, "");
+		System.out.println(systemAlias);
+		System.out.println(systemPassword);
+		System.out.println(redirect_uri);
+		System.out.println(web_url);
+		System.out.println(login_url);
 		AuthFactory.initConfig(systemAlias, systemPassword, redirect_uri, web_url, login_url);
 		String ignoreURL = str(CONFIG, "sso.ignoreURL", null, "");
 		// ignoreURLSet.clear();
