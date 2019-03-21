@@ -65,7 +65,16 @@ public class AuthFilter implements Filter
 			log.info("--AuthFilter定时任务开始执行--");
 			try
 			{
-				refreshSystem();
+				while(AuthGlobal.getAccessToken() == null)
+				{
+					try
+					{
+						refreshSystem();
+					}
+					catch(Exception e)
+					{
+					}
+				}
 			}
 			catch(Exception ex)
 			{

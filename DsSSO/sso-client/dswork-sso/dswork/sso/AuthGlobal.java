@@ -149,7 +149,13 @@ public class AuthGlobal
 			catch(Exception ex)
 			{
 			}
-			_timer.schedule(_tokenTask, 10000L);
+			try
+			{
+				_timer.schedule(_tokenTask, 10000L);
+			}
+			catch(Exception e)
+			{
+			}
 		}
 	};
 
