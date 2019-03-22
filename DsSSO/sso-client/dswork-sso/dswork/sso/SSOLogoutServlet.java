@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebServlet(name="SSOLogoutServlet", loadOnStartup=8, urlPatterns={"/sso/logout"})
+@WebServlet(name="SSOLogoutServlet", loadOnStartup = 2, urlPatterns={"/sso/logout"})
 public class SSOLogoutServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;

@@ -32,6 +32,7 @@ public class WebFilter implements Filter
 	public void init(FilterConfig config) throws ServletException
 	{
 		WebFilter.use = true;
+		AuthWebConfig.loadConfig(config.getServletContext());
 	}
 
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException
@@ -117,7 +118,7 @@ public class WebFilter implements Filter
 		}
 		// String relativeURI = request.getRequestURI();// 相对地址
 		// if(request.getContextPath().length() > 0){relativeURI = relativeURI.replaceFirst(request.getContextPath(), "");}
-		if(SSOLoginServlet.containsIgnoreURL(relativeURI))// 判断是否为无需验证页面
+		if(AuthWebConfig.containsIgnoreURL(relativeURI))// 判断是否为无需验证页面
 		{
 			chain.doFilter(request, response);// 是无需验证页面
 			return;

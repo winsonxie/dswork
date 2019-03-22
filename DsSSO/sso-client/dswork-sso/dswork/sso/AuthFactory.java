@@ -3,9 +3,7 @@
  */
 package dswork.sso;
 
-import java.security.MessageDigest;
 import java.util.List;
-import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,88 +23,36 @@ public class AuthFactory
 {
 	static String url = "";
 	static Logger log = LoggerFactory.getLogger("dswork.sso");
-	private static String SYSTEM_ALIAS = "";
-	private static String SYSTEM_PASSWORD = "";
-	private static String REDIRECT_URI = "";
-	private static String WEB_URL = "";
-	private static String LOGIN_URL = "";
 
-	private static String Md5(String v)
+	private AuthFactory()
 	{
-		if(v != null)
-		{
-			StringBuilder sb = new StringBuilder();
-			try
-			{
-				MessageDigest md = MessageDigest.getInstance("MD5");
-				byte[] digest = md.digest(v.getBytes("UTF-8"));
-				String stmp = "";
-				for(int n = 0; n < digest.length; n++)
-				{
-					stmp = (Integer.toHexString(digest[n] & 0XFF));
-					sb.append((stmp.length() == 1) ? "0" : "").append(stmp);
-				}
-				return sb.toString().toUpperCase(Locale.ENGLISH);
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-			finally
-			{
-				sb = null;
-			}
-		}
-		return "";
-	}
-
-	public static void initConfig(String systemAlias, String systemPassword, String redirect_uri, String web_url, String login_url)
-	{
-		SYSTEM_ALIAS = systemAlias;
-		SYSTEM_PASSWORD = Md5(systemPassword);
-		REDIRECT_URI = (redirect_uri == null) ? "" : redirect_uri;
-		WEB_URL = (web_url == null) ? "" : web_url;
-		LOGIN_URL = (login_url == null) ? "" : login_url;
-		if(LOGIN_URL.length() > 0)
-		{
-			LOGIN_URL = LOGIN_URL + (LOGIN_URL.contains("?") ? "&" : "?");
-		}
-		else
-		{
-			LOGIN_URL = WEB_URL + "/user/authorize?response_type=code&";
-		}
-	}
-
-	private static HttpUtil getHttpForID(String path)
-	{
-		return AuthGlobal.getHttp(path).addForm("appid", AuthGlobal.getAppid());
-	}
-
-	public static HttpUtil getHttp(String path)
-	{
-		return getHttpForID(path).addForm("access_token", AuthGlobal.getAccessToken());
-	}
-
-	public static HttpUtil getSystemHttp(String path)
-	{
-		return getHttpForID(path).addForm("access_token", AuthGlobal.getAccessToken()).addForm("systemAlias", SYSTEM_ALIAS).addForm("systemPassword", SYSTEM_PASSWORD);
 	}
 	
-	public static String getRedirectUri()
-	{
-		return REDIRECT_URI;
-	}
-
-	private static String getRedirectUri(String source, String redirect_uri)
+	public static String getEncodeURL(String url)
 	{
 		try
 		{
-			return java.net.URLEncoder.encode(source.length() > 0 ? source : redirect_uri, "UTF-8");
+			return java.net.URLEncoder.encode(url, "UTF-8");
 		}
 		catch(Exception e)
 		{
 			return "";
 		}
+	}
+	
+	public static String getRedirectURI(String url)
+	{
+		return AuthWebConfig.getSystemRedirectURI().length() > 0 ? AuthWebConfig.getSystemRedirectURI() : url;
+	}
+	
+	public static HttpUtil getAppHttp(String path)
+	{
+		return AuthGlobal.getHttp(path).addForm("access_token", AuthGlobal.getAccessToken());
+	}
+
+	public static HttpUtil getSystemHttp(String path)
+	{
+		return getAppHttp(path).addForm("systemAlias", AuthWebConfig.getSystemAlias()).addForm("systemPassword", AuthWebConfig.getSystemPassword());
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -119,7 +65,7 @@ public class AuthFactory
 	 */
 	public static JsonResult<AccessToken> getUserAccessToken(String code)
 	{
-		HttpUtil h = getHttp("/user/access_token").addForm("appsecret", AuthGlobal.getAppsecret()).addForm("grant_type", "authorization_code").addForm("code", code);
+		HttpUtil h = AuthGlobal.getHttp("/user/access_token").addForm("appsecret", AuthGlobal.getAppSecret()).addForm("grant_type", "authorization_code").addForm("code", code);
 		JsonResult<AccessToken> result = null;
 		String v = "";
 		try
@@ -148,8 +94,37 @@ public class AuthFactory
 	 */
 	public static JsonResult<String> getUserAuthToken(String openid, String access_token)
 	{
-		HttpUtil h = getHttp("/user/auth_token").addForm("openid", openid).addForm("access_token", access_token);
+		HttpUtil h = AuthGlobal.getHttp("/user/auth_token").addForm("openid", openid).addForm("access_token", access_token);
 		JsonResult<String> result = null;
+		String v = "";
+		try
+		{
+			v = h.connect().trim();
+			result = AuthGlobal.gson.fromJson(v, new TypeToken<JsonResult<IUser>>()
+			{
+			}.getType());
+			if(log.isDebugEnabled())
+			{
+				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+		}
+		return result;
+	}
+
+	/**
+	 * 前端账户信息
+	 * @param openid 用户标识
+	 * @param access_token 用户凭证
+	 * @return JsonResult&lt;IUser&gt;
+	 */
+	public static JsonResult<IUser> getUserUserinfo(String openid, String access_token)
+	{
+		HttpUtil h = AuthGlobal.getHttp("/user/userinfo").addForm("openid", openid).addForm("access_token", access_token);
+		JsonResult<IUser> result = null;
 		String v = "";
 		try
 		{
@@ -177,15 +152,9 @@ public class AuthFactory
 	public static String getUserAuthorizeURL(String redirect_uri)
 	{
 		StringBuilder sb = new StringBuilder();
-//		if(LOGIN_URL.length() > 0)
-//		{
-//			sb.append(LOGIN_URL).append(LOGIN_URL.contains("?") ? "&" : "?");
-//		}
-//		else
-//		{
-//			sb.append(WEB_URL).append("/user/authorize?response_type=code&");
-//		}
-		sb.append(LOGIN_URL).append("appid=").append(AuthGlobal.getAppid()).append("&redirect_uri=").append(getRedirectUri(REDIRECT_URI, redirect_uri));
+		sb.append(AuthWebConfig.getSystemLoginURL()).append("appid=").append(AuthGlobal.getAppID()).append("&redirect_uri=");
+		String uri = AuthWebConfig.getSystemWebURL() + "/sso/login?url=" + getEncodeURL(redirect_uri);
+		sb.append(getEncodeURL(uri));
 		return sb.toString();
 	}
 
@@ -197,10 +166,12 @@ public class AuthFactory
 	 */
 	public static String getUserLoginURL(boolean isCode, String redirect_uri)
 	{
-		Authcode ac = Authcode.code_create(AuthGlobal.getAppsecret());
+		Authcode ac = Authcode.code_create(AuthGlobal.getAppSecret());
 		StringBuilder sb = new StringBuilder();
-		sb.append(WEB_URL).append("/user/login").append("?appid=").append(AuthGlobal.getAppid()).append("&response_type=").append(isCode ? "code" : "token").append("&redirect_uri=").append(getRedirectUri(REDIRECT_URI, redirect_uri));
+		sb.append(AuthWebConfig.getSsoWebURL()).append("/user/login").append("?appid=").append(AuthGlobal.getAppID()).append("&response_type=").append(isCode ? "code" : "token");
 		sb.append("&authtime=").append(ac.getAuthtime()).append("&authcode=").append(ac.getAuthcode());
+		String uri = AuthWebConfig.getSystemWebURL() + "/sso/login?url=" + getEncodeURL(redirect_uri);
+		sb.append("&redirect_uri=").append(getEncodeURL(uri));
 		return sb.toString();
 	}
 
@@ -213,7 +184,7 @@ public class AuthFactory
 	public static String getUserLogoutURL(String openid, String access_token)
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(WEB_URL).append("/user/logout").append("?appid=").append(AuthGlobal.getAppid()).append("&openid=").append(openid).append("&access_token=").append(access_token);
+		sb.append(AuthWebConfig.getSsoWebURL()).append("/user/logout").append("?appid=").append(AuthGlobal.getAppID()).append("&openid=").append(openid).append("&access_token=").append(access_token);
 		return sb.toString();
 	}
 
@@ -225,7 +196,7 @@ public class AuthFactory
 	public static String getUserRedirectURL(String code)
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(WEB_URL).append("/user/redirect").append("?appid=").append(AuthGlobal.getAppid()).append("&code=").append(code);
+		sb.append(AuthWebConfig.getSsoWebURL()).append("/user/redirect").append("?appid=").append(AuthGlobal.getAppID()).append("&code=").append(code);
 		return sb.toString();
 	}
 
@@ -233,7 +204,7 @@ public class AuthFactory
 	 * 修改密码地址
 	 * @param openid 用户标识
 	 * @param access_token 用户凭证
-	 * @param redirect_uri 重定向地址，即修改完密码是否需跳转至指定地址，为空则使用默认地址
+	 * @param redirect_uri 重定向地址，即修改完密码需跳转至指定地址，为空则不跳转
 	 * @return String /user/password?appid=应用ID&openid=用户标识&access_token=用户凭证&
 	 */
 	public static String getUserPasswordURL(String openid, String access_token, String redirect_uri)
@@ -243,38 +214,9 @@ public class AuthFactory
 			redirect_uri = "";
 		}
 		StringBuilder sb = new StringBuilder();
-		// 此处getRedirectUri取反参数
-		sb.append(WEB_URL).append("/user/password").append("?appid=").append(AuthGlobal.getAppid()).append("&openid=").append(openid).append("&access_token=").append(access_token).append("&redirect_uri=").append(getRedirectUri(redirect_uri, REDIRECT_URI));
+		sb.append(AuthWebConfig.getSsoWebURL()).append("/user/password").append("?appid=").append(AuthGlobal.getAppID()).append("&openid=").append(openid).append("&access_token=").append(access_token);
+		sb.append("&redirect_uri=").append(getEncodeURL(redirect_uri));
 		return sb.toString();
-	}
-
-	/**
-	 * 前端账户信息
-	 * @param openid 用户标识
-	 * @param access_token 用户凭证
-	 * @return JsonResult&lt;IUser&gt;
-	 */
-	public static JsonResult<IUser> getUserUserinfo(String openid, String access_token)
-	{
-		HttpUtil h = getHttp("/user/userinfo").addForm("openid", openid).addForm("access_token", access_token);
-		JsonResult<IUser> result = null;
-		String v = "";
-		try
-		{
-			v = h.connect().trim();
-			result = AuthGlobal.gson.fromJson(v, new TypeToken<JsonResult<IUser>>()
-			{
-			}.getType());
-			if(log.isDebugEnabled())
-			{
-				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-			}
-		}
-		catch(Exception e)
-		{
-			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-		}
-		return result;
 	}
 
 	/**
@@ -284,7 +226,7 @@ public class AuthFactory
 	 */
 	public static JsonResult<String> getSmsCode(String mobile)
 	{
-		HttpUtil h = getHttp("/sms/code").addForm("access_token", AuthGlobal.getAccessToken()).addForm("mobile", mobile);
+		HttpUtil h = getAppHttp("/sms/code").addForm("mobile", mobile);
 		JsonResult<String> result = null;
 		String v = "";
 		try
@@ -315,7 +257,7 @@ public class AuthFactory
 	 */
 	public static IOrg getOrg(String orgId)
 	{
-		HttpUtil h = getHttp("/api/getOrg").addForm("orgId", orgId);
+		HttpUtil h = getAppHttp("/api/getOrg").addForm("orgId", orgId);
 		String v = "";
 		IOrg m = null;
 		try
@@ -341,7 +283,7 @@ public class AuthFactory
 	 */
 	public static IOrg[] queryOrgByOrgParent(String orgPid)
 	{
-		HttpUtil h = getHttp("/api/queryOrgByOrgParent").addForm("orgPid", orgPid);
+		HttpUtil h = getAppHttp("/api/queryOrgByOrgParent").addForm("orgPid", orgPid);
 		String v = "";
 		List<IOrg> list = null;
 		try
@@ -369,7 +311,7 @@ public class AuthFactory
 	 */
 	public static IUser getUser(String userAccount)
 	{
-		HttpUtil h = getHttp("/api/getUser").addForm("userAccount", userAccount);
+		HttpUtil h = getAppHttp("/api/getUser").addForm("userAccount", userAccount);
 		String v = "";
 		IUser m = null;
 		try
@@ -395,7 +337,7 @@ public class AuthFactory
 	 */
 	public static IUser getUserByOpenid(String userOpenid)
 	{
-		HttpUtil h = getHttp("/api/getUserByOpenid").addForm("userOpenid", userOpenid);
+		HttpUtil h = getAppHttp("/api/getUserByOpenid").addForm("userOpenid", userOpenid);
 		String v = "";
 		IUser m = null;
 		try
@@ -421,7 +363,7 @@ public class AuthFactory
 	 */
 	public static IUser[] queryUserByOrgParent(String orgPid)
 	{
-		HttpUtil h = getHttp("/api/queryUserByOrgParent").addForm("orgPid", orgPid);
+		HttpUtil h = getAppHttp("/api/queryUserByOrgParent").addForm("orgPid", orgPid);
 		String v = "";
 		List<IUser> list = null;
 		try
@@ -449,7 +391,7 @@ public class AuthFactory
 	 */
 	public static IUser[] queryUserByOrg(String orgId)
 	{
-		HttpUtil h = getHttp("/api/queryUserByOrg").addForm("orgId", orgId);
+		HttpUtil h = getAppHttp("/api/queryUserByOrg").addForm("orgId", orgId);
 		String v = "";
 		List<IUser> list = null;
 		try

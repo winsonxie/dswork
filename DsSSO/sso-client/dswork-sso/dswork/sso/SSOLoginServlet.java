@@ -1,8 +1,6 @@
 package dswork.sso;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -19,7 +17,7 @@ import dswork.sso.model.AccessToken;
 import dswork.sso.model.IUser;
 import dswork.sso.model.JsonResult;
 
-@WebServlet(name = "SSOLoginServlet", loadOnStartup = 9, urlPatterns =
+@WebServlet(name = "SSOLoginServlet", loadOnStartup = 1, urlPatterns =
 {
 		"/sso/login"
 })
@@ -29,7 +27,6 @@ public class SSOLoginServlet extends HttpServlet
 	public static final String LOGINER = "sso.web.loginer";
 	static com.google.gson.Gson gson = AuthGlobal.gson;
 	static Logger log = LoggerFactory.getLogger("dswork.sso");
-	private static Set<String> ignoreURLSet = new HashSet<String>();// 无需验证页面
 
 	public SSOLoginServlet()
 	{
@@ -40,67 +37,7 @@ public class SSOLoginServlet extends HttpServlet
 	public void init(ServletConfig config) throws ServletException
 	{
 		super.init(config);
-		String configFile = String.valueOf(this.getServletContext().getInitParameter("dsworkSSOConfiguration")).trim();
-		java.util.Properties CONFIG = new java.util.Properties();
-		java.io.InputStream stream = WebFilter.class.getResourceAsStream(configFile);
-		if(stream != null)
-		{
-			try
-			{
-				CONFIG.load(stream);
-			}
-			catch(Exception e)
-			{
-			}
-			finally
-			{
-				try
-				{
-					stream.close();
-				}
-				catch(IOException ioe)
-				{
-				}
-			}
-		}
-		String appid, appsecret, apiURL;
-		appid = str(CONFIG, "sso.appid", null, "portal");
-		appsecret = str(CONFIG, "sso.appsecret", null, "portal");
-		apiURL = str(CONFIG, "sso.apiURL", null, null);
-		
-
-		System.out.println(appid);
-		System.out.println(appsecret);
-		System.out.println(apiURL);
-		AuthGlobal.runAppConfig(appid, appsecret, apiURL);// 初始化全局设置
-		String systemAlias, systemPassword, redirect_uri, web_url, login_url;
-		systemAlias = str(CONFIG, "sso.systemAlias", "sso.ssoName", "");
-		systemPassword = str(CONFIG, "sso.systemPassword", "sso.ssoPassword", "");
-		redirect_uri = str(CONFIG, "sso.redirectURI", "sso.systemURL", "");
-		web_url = str(CONFIG, "sso.webURL", null, "/sso");
-		login_url = str(CONFIG, "sso.loginURL", null, "");
-		System.out.println(systemAlias);
-		System.out.println(systemPassword);
-		System.out.println(redirect_uri);
-		System.out.println(web_url);
-		System.out.println(login_url);
-		AuthFactory.initConfig(systemAlias, systemPassword, redirect_uri, web_url, login_url);
-		String ignoreURL = str(CONFIG, "sso.ignoreURL", null, "");
-		// ignoreURLSet.clear();
-		ignoreURLSet.add("/sso/login");
-		ignoreURLSet.add("/sso/logout");
-		ignoreURLSet.add("/sso/menu");
-		if(ignoreURL.length() > 0)
-		{
-			String[] values = ignoreURL.split(",");
-			for(String value : values)
-			{
-				if(value.trim().length() > 0)
-				{
-					ignoreURLSet.add(value.trim());
-				}
-			}
-		}
+		AuthWebConfig.loadConfig(config.getServletContext());
 	}
 
 	@Override
@@ -109,28 +46,35 @@ public class SSOLoginServlet extends HttpServlet
 		try
 		{
 			String code = request.getParameter("code");
-			String redirect_uri = request.getParameter("redirect_uri");// 需要解码，通常是本项目地址，否则拿不到用户
-			if(redirect_uri == null)
+			String redirect_uri = null;
+			if(code != null && code.length() > 0)
 			{
-				redirect_uri = request.getParameter("service");// 需要解码
-			}
-			if(redirect_uri == null)
-			{
-				redirect_uri = AuthFactory.getRedirectUri();
-			}
-			else
-			{
-				redirect_uri = java.net.URLDecoder.decode(redirect_uri, "UTF-8");
-			}
-			JsonResult<AccessToken> token = AuthFactory.getUserAccessToken(code);
-			if(token.getCode() == AuthGlobal.CODE_001)
-			{
-				AccessToken t = token.getData();
-				JsonResult<IUser> u = AuthFactory.getUserUserinfo(t.getOpenid(), t.getAccess_token());
-				if(u.getCode() == AuthGlobal.CODE_001)
+				if(AuthWebConfig.getSystemRedirectURI().length() > 0)
 				{
-					refreshUser(request.getSession(), u.getData(), t.getOpenid(), t.getAccess_token());
+					redirect_uri = AuthWebConfig.getSystemRedirectURI();
 				}
+				else
+				{
+					redirect_uri = request.getParameter("url");// 需要解码，通常是本项目地址，否则拿不到用户
+					if(redirect_uri != null)
+					{
+						redirect_uri = java.net.URLDecoder.decode(redirect_uri, "UTF-8");
+					}
+				}
+				JsonResult<AccessToken> token = AuthFactory.getUserAccessToken(code);
+				if(token.getCode() == AuthGlobal.CODE_001)
+				{
+					AccessToken t = token.getData();
+					JsonResult<IUser> u = AuthFactory.getUserUserinfo(t.getOpenid(), t.getAccess_token());
+					if(u.getCode() == AuthGlobal.CODE_001)
+					{
+						refreshUser(request.getSession(), u.getData(), t.getOpenid(), t.getAccess_token());
+					}
+				}
+			}
+			if(redirect_uri == null || redirect_uri.length() == 0)
+			{
+				redirect_uri = "about:blank";
 			}
 			response.sendRedirect(redirect_uri);// 成功失败都跳转
 		}
@@ -156,36 +100,5 @@ public class SSOLoginServlet extends HttpServlet
 			session.removeAttribute(LOGINER);
 			return false;
 		}
-	}
-
-	public static boolean containsIgnoreURL(String uri)
-	{
-		java.util.Iterator<String> it = ignoreURLSet.iterator();
-		while(it.hasNext())
-		{
-			String str = it.next();
-			if(uri.startsWith(str))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private static String str(java.util.Properties CONFIG, String key, String bakkey, String defaultValue)
-	{
-		String v = CONFIG.getProperty(key);
-		if(v == null)
-		{
-			if(bakkey != null)
-			{
-				return str(CONFIG, bakkey, null, defaultValue);
-			}
-			else
-			{
-				return defaultValue;
-			}
-		}
-		return v.trim();
 	}
 }
