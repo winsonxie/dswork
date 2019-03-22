@@ -107,6 +107,7 @@ public class AuthWebConfig
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 		}
 		finally
 		{
@@ -130,7 +131,7 @@ public class AuthWebConfig
 		String ignoreURL = str(C, "sso.system.ignoreURL", null);
 		ignoreURLSet.clear();
 		ignoreURLSet.add("/sso/");
-		if(ignoreURL.length() > 0)
+		if(ignoreURL != null && ignoreURL.length() > 0)
 		{
 			String[] values = ignoreURL.split(",");
 			for(String value : values)
