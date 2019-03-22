@@ -95,20 +95,22 @@ public class AuthWebConfig
 		}
 		String configFile = String.valueOf(context.getInitParameter("dsworkSSOConfiguration")).trim();
 		java.util.Properties C = new java.util.Properties();
-		java.io.InputStream stream = WebFilter.class.getResourceAsStream(configFile);
-		if(stream != null)
+		java.io.InputStream stream = null;
+		try
 		{
-			try
+			stream = WebFilter.class.getResourceAsStream(configFile);
+			if(stream != null)
 			{
 				C.load(stream);
+				isload = true;
 			}
-			catch(Exception e)
-			{
-			}
-			finally
-			{
-				try{stream.close();}catch(Exception ioe){}
-			}
+		}
+		catch(Exception e)
+		{
+		}
+		finally
+		{
+			try{if(stream != null) {stream.close();}}catch(Exception ioe){}
 		}
 		
 		AuthGlobal.initConfig(str(C, "sso.appid", null), str(C, "sso.appsecret", null), str(C, "sso.apiURL", null));// 初始化全局设置
@@ -139,7 +141,6 @@ public class AuthWebConfig
 				}
 			}
 		}
-		isload = true;
 		return true;
 	}
 
