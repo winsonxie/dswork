@@ -111,10 +111,10 @@ public class MyController extends BaseController
 			Page<Object> page = service.queryPage(namespaceDot + model, pr);
 			map.put("status", 1);
 			map.put("msg", "");
-			map.put("size", page.getSize());
+			map.put("totalsize", page.getTotalsize());
 			map.put("page", page.getPage());
-			map.put("pagesize", page.getPageSize());
-			map.put("totalpage", page.getTotalPage());
+			map.put("pagesize", page.getPagesize());
+			map.put("totalpage", page.getTotalpage());
 			List<Object> list = page.getResult();
 			map.put("rows", (list != null && list.size() > 0) ? list : new ArrayList<Object>());
 		}

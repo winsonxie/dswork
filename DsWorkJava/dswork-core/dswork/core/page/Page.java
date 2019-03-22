@@ -14,35 +14,35 @@ public class Page<T> implements Serializable
 	private List<T> result = new ArrayList<T>();
 	private int pagesize;
 	private int page;
-	private int size = 0;
+	private int totalsize = 0;
 
 	/**
 	 * 构造函数
-	 * @param currentPage 当前页码
-	 * @param pageSize 一页显示的条数
-	 * @param size 数据总条数
+	 * @param page 当前页码
+	 * @param pagesize 一页显示的条数
+	 * @param totalsize 数据总条数
 	 */
-	public Page(int currentPage, int pagesize, int size)
+	public Page(int page, int pagesize, int totalsize)
 	{
-		this(currentPage, pagesize, size, new ArrayList<T>(0));
+		this(page, pagesize, totalsize, new ArrayList<T>(0));
 	}
 
 	/**
 	 * 构造函数
 	 * @param page 当前页码
-	 * @param pageSize 一页显示的条数
-	 * @param totalCount 数据总条数
+	 * @param pagesize 一页显示的条数
+	 * @param totalsize 数据总条数
 	 * @param result 结果集List&lt;T&gt;，其长度不影响计数
 	 */
-	public Page(int page, int pagesize, int size, List<T> result)
+	public Page(int page, int pagesize, int totalsize, List<T> result)
 	{
 		if(pagesize <= 0)
 		{
 			throw new IllegalArgumentException("[pagesize] must great than zero");
 		}
-		this.size = size;
+		this.totalsize = totalsize;
 		this.pagesize = pagesize;
-		int lastPage = getTotalPage();
+		int lastPage = getTotalpage();
 		if(page < 1)
 		{
 			page = 1;
@@ -65,10 +65,19 @@ public class Page<T> implements Serializable
 	}
 
 	/**
+	 * 取得当前页页码
+	 * @return int
+	 */
+	public int getCurrentPage()
+	{
+		return page;
+	}
+
+	/**
 	 * 取得一页显示的条数
 	 * @return int
 	 */
-	public int getPageSize()
+	public int getPagesize()
 	{
 		return pagesize;
 	}
@@ -99,18 +108,18 @@ public class Page<T> implements Serializable
 	 * 取得数据总条数，0表示没有数据
 	 * @return int
 	 */
-	public int getSize()
+	public int getTotalsize()
 	{
-		return size;
+		return totalsize;
 	}
 
 	/**
 	 * 取得数据总页数
 	 * @return int
 	 */
-	public int getTotalPage()
+	public int getTotalpage()
 	{
-		int lastPage = size % pagesize == 0 ? size / pagesize : size / pagesize + 1;
+		int lastPage = totalsize % pagesize == 0 ? totalsize / pagesize : totalsize / pagesize + 1;
 		if(lastPage < 1)
 		{
 			lastPage = 1;

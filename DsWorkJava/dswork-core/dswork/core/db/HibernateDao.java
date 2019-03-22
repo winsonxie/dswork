@@ -134,8 +134,8 @@ public abstract class HibernateDao extends HibernateDaoSupport
 				{
 					query.setParameter(i, values[i]);
 				}
-				int index = (page.getPage() - 1) * page.getPageSize();
-				List results = query.setFirstResult(index).setMaxResults(page.getPageSize()).list();
+				int index = (page.getPage() - 1) * page.getPagesize();
+				List results = query.setFirstResult(index).setMaxResults(page.getPagesize()).list();
 				page.setResult(results);
 				return page;
 			}
@@ -159,8 +159,8 @@ public abstract class HibernateDao extends HibernateDaoSupport
 	{
 		int totalCount = HibernateDao.queryCountProcess(criteria.setProjection(Projections.rowCount()).uniqueResult());
 		Page page = new Page(pageRequest.getCurrentPage(), pageRequest.getPageSize(), totalCount);
-		int index = (page.getPage() - 1) * page.getPageSize();
-		List results = criteria.setProjection(null).setFirstResult(index).setMaxResults(page.getPageSize()).list();
+		int index = (page.getPage() - 1) * page.getPagesize();
+		List results = criteria.setProjection(null).setFirstResult(index).setMaxResults(page.getPagesize()).list();
 		page.setResult(results);
 		return page;
 	}
