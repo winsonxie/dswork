@@ -86,7 +86,13 @@ public class WebFilter implements Filter
 					}
 					if(SSOLoginServlet.refreshUser(session, user, openid, access_token))
 					{
-						chain.doFilter(request, response);
+						try
+						{
+							chain.doFilter(request, response);
+						}
+						catch(Exception e)
+						{
+						}
 						return;
 					}
 				}
@@ -99,7 +105,13 @@ public class WebFilter implements Filter
 		}
 		if(ouser != null)// 已登录
 		{
-			chain.doFilter(request, response);
+			try
+			{
+				chain.doFilter(request, response);
+			}
+			catch(Exception e)
+			{
+			}
 			return;
 		}
 		else
@@ -110,7 +122,13 @@ public class WebFilter implements Filter
 		// if(request.getContextPath().length() > 0){relativeURI = relativeURI.replaceFirst(request.getContextPath(), "");}
 		if(AuthWebConfig.containsIgnoreURL(relativeURI))// 判断是否为无需验证页面
 		{
-			chain.doFilter(request, response);// 是无需验证页面
+			try
+			{
+				chain.doFilter(request, response);// 是无需验证页面
+			}
+			catch(Exception e)
+			{
+			}
 			return;
 		}
 		
