@@ -41,7 +41,7 @@
 	<classpathentry kind="lib" path="/Lib/module/lucene/lucene-core-5.5.4.jar"/>
 	<classpathentry kind="lib" path="/Lib/module/template/freemarker-2.3.27.jar"/>
 	<classpathentry kind="lib" path="/Lib/database/mysql/mysql-connector-java-5.1.45-bin.jar"/>
-	<classpathentry kind="lib" path="/Lib/module/commons/commons-pool2-2.6.0.jar"/>
+	<classpathentry kind="lib" path="/Lib/database/redis/commons-pool2-2.6.0.jar"/>
 	<classpathentry kind="lib" path="/Lib/database/redis/jedis-2.9.0.jar"/>
 	<classpathentry kind="output" path="web/WEB-INF/classes"/>
 </classpath>
