@@ -1,6 +1,12 @@
 ﻿﻿<%@page language="java" pageEncoding="UTF-8" import="dswork.sso.model.IUser"%><%
 String path = request.getContextPath();
 IUser user = dswork.sso.WebFilter.getLoginer(session);
+Cookie cookie = new Cookie(dswork.sso.WebFilter.SSOTICKET, user.getSsoticket());
+cookie.setMaxAge(-1);
+cookie.setPath("/");
+cookie.setSecure(false);
+cookie.setHttpOnly(true);
+response.addCookie(cookie);
 %><!DOCTYPE html>
 <html>
 <head>
