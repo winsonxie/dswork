@@ -47,7 +47,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="E:/Workspaces/MySpace/dswork/Lib/common/log/slf4j-api-1.7.25.jar">
+	<classpathentry kind="lib" path="/Lib/common/log/slf4j-api-1.7.25.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
