@@ -24,7 +24,7 @@ var index = 0,count = sys.length;
 var ok = 0;
 var errmsg = "";
 function logoutload(o){
-	var url = o.domainurl + o.rooturl + "/logout?jsoncallback=?";
+	var url = o.domainurl + o.rooturl + "/sso/logout?jsoncallback=?";
 	$("body").append("<div id='x" + o.id + "'>" + o.name + "正在退出！</div>");
 	try{
 	$.ajax({
