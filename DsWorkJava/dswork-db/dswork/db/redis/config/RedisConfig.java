@@ -16,7 +16,7 @@ public class RedisConfig
 	private int maxIdle = 64;// 最大空闲数
 	private int maxTotal = 64;// 最大链接数
 	private int maxWaitMillis = 10000;// 等待可用连接的最大时间
-	private boolean testOnBorrow = true;// 在空闲时检查有效性，默认false
+	private boolean testOnBorrow = true;// 在空闲时检查有效性，默认true
 	private boolean testOnReturn = false;// 在return给pool时，是否提前进行validate操作
 	private boolean testWhileIdle = true;// 在空闲时检查有效性
 	private int minEvictableIdleTimeMillis = 60000; // 连接在池中最小生存的时间
