@@ -19,15 +19,15 @@ ISystem[] arr = AuthFactory.getSystemByUser(user.getAccount());
 <script type="text/javascript">
 if(top.location == this.location){top.location = "${ctx}/index.jsp";}
 var sys = [];
+<%--
 sys[0] = {index:0,data:[],id:0,name:"门户",alias:"",domainurl:"",rooturl:"${ctx}",menuurl:"${ctx}/menu.jsp"};
 <%if(arr != null){for(int i = 0; i < arr.length; i++){%>
 sys[sys.length] = {index:<%=i+1%>,data:[],id:<%=arr[i].getId()%>,name:"<%=arr[i].getName().replaceAll("\"", "\\\\\"")%>",alias:"<%=arr[i].getAlias()%>",domainurl:"<%=arr[i].getDomainurl().replaceAll("\"", "\\\\\"")%>",rooturl:"<%=arr[i].getRooturl().replaceAll("\"", "\\\\\"")%>",menuurl:"<%=arr[i].getMenuurl().replaceAll("\"", "\\\\\"")%>"};
 <%}}%>
-<%--
+--%>
 <%if(arr != null){for(int i = 0; i < arr.length; i++){%>
 sys[sys.length] = {index:<%=i+1%>,data:[],id:<%=arr[i].getId()%>,name:"<%=arr[i].getName().replaceAll("\"", "\\\\\"")%>",alias:"<%=arr[i].getAlias()%>",domainurl:"<%=arr[i].getDomainurl().replaceAll("\"", "\\\\\"")%>",rooturl:"<%=arr[i].getRooturl().replaceAll("\"", "\\\\\"")%>",menuurl:"<%=arr[i].getMenuurl().replaceAll("\"", "\\\\\"")%>"};
 <%}}%>
---%>
 function menuload(o){
 	var url = (o.menuurl.length == 0) ? o.rooturl + "/sso/menu" : o.domainurl + o.menuurl;
 	url += ((url.indexOf("?") == -1)?"?":"&") + "ssoticket=<%=user.getSsoticket()%>" + "&jsoncallback=?";
