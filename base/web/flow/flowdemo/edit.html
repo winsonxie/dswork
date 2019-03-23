@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<link type="text/css" rel="stylesheet" href="edit.css" />
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="/web/js/flow/dswork.flow.js"></script>
+<script type="text/javascript" src="/web/js/flow/dswork.flow.check.js"></script>
+<script type="text/javascript" src="/web/js/flow/dswork.flow.event.js"></script>
+</head>
+<body>
+<div style="margin:0 auto;text-align:left;width:865px;height:68px;border:1px solid #999;">
+	<div style="float:left;width:80px;height:68px;padding:0 8px;">
+		<div style="float:left;width:80px;padding:8px 0;">
+			<input id="btn_edit" type="button" class="button" style="display:none;" value="取消绘线" 
+			/><input id="btn_line" type="button" class="button" value="绘制线路" />
+		</div>
+	</div>
+	<div style="float:left;width:465px;height:68px;padding:0 8px;border-left:1px solid #999;">
+		<div style="float:left;width:385px;padding:8px 0;">
+			<div style="margin-bottom:5px;">
+				标识：<input id="txt_alias" type="text" class="text" style="width:116px;" value="" />&nbsp;
+				用户：<input id="txt_users" type="text" class="text" style="width:180px;" value="" />
+			</div>
+			<div style="margin-bottom:5px;">
+				合并：<input id="txt_count" type="number" min="1" max="100" step="1" class="text" style="width:80px;" value="" />个任务&nbsp;
+				名称：<input id="txt_name" type="text" class="text" style="width:180px;" value="" />
+			</div>
+		</div>
+		<div style="float:left;width:80px;padding:8px 0;">
+			<input id="btn_save" type="button" class="button" value="增改任务" />
+		</div>
+	</div>
+	<div style="float:left;width:75px;height:68px;padding:0 8px;border-left:1px solid #999;">
+		<div style="float:left;width:75px;padding:8px 0;">
+			<div style="margin-bottom:5px;">
+				<select id="txt_forks"><option value="">默认分支</option>
+				<option value="A">分支组A</option>
+				<option value="B">分支组B</option>
+				<option value="C">分支组C</option>
+				<option value="D">分支组D</option>
+				<option value="E">分支组E</option>
+				<option value="F">分支组F</option>
+				<option value="G">分支组G</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div style="float:left;width:80px;height:68px;padding:0 8px;border-left:1px solid #999;">
+		<div style="float:left;width:80px;padding:8px 0;">
+			<input id="btn_delete" type="button" class="button" value="不可操作" />
+		</div>
+	</div>
+	<div style="float:right;width:80px;height:68px;padding:0 8px;border-left:1px solid #999;">
+		<div style="float:left;width:80px;padding:8px 0;">
+			<input id="btn_check" type="button" class="button" value="校验流程" />
+		</div>
+	</div>
+	<div class="clearfix"></div>
+</div>
+<div id="myFlowSVG"></div>
+<script type="text/xml" id="myFlowXML">
+<flow>
+<task alias="start" name="开始" users="admin,user" g="73,52,28,28">
+	<line to="user" p="87,233"></line>
+</task>
+<task alias="user" name="用户确认申请" users="admin" g="165,208,100,50">
+	<line to="sh1" forks="A"></line>
+	<line to="sh2" forks="B"></line>
+	<line to="sh3" forks="B"></line>
+</task>
+<task alias="sh1" name="小组长" users="admin" g="342,126,100,50">
+	<line to="sh"></line>
+</task>
+<task alias="sh2" name="组长A" users="admin" g="342,209,100,50">
+	<line to="sh"></line>
+</task>
+<task alias="sh3" name="组长B" users="admin" g="343,295,100,50">
+	<line to="sh"></line>
+</task>
+<task alias="sh" name="部门经理审核" count="2" users="admin" g="518,209,100,50">
+	<line to="repass"></line>
+	<line to="fs"></line>
+</task>
+<task alias="fs" name="总经理复审" users="admin" g="633,136,100,50">
+	<line to="repass"></line>
+</task>
+<task alias="repass" name="通知申请人" users="admin" g="763,210,100,50">
+	<line to="end"></line>
+</task>
+<task alias="end" name="结束" users="" g="801,72,28,28">
+</task>
+</flow>
+</script>
+</body>
+</html>

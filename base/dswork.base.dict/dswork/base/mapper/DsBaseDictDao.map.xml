@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="dswork.base.dao.DsBaseDictDao">
+
+<insert id="insert" parameterType="dswork.base.model.DsBaseDict">
+	insert into DS_BASE_DICT
+	(ID, LABEL, NAME, LEVEL, RULE, SEQ, UPDATETIME)
+	values
+	(#{id}, #{label}, #{name}, #{level}, #{rule}, #{seq}, #{updatetime})
+</insert>
+
+<delete id="delete">
+	delete from DS_BASE_DICT where ID=#{id}
+</delete>
+
+<update id="update" parameterType="dswork.base.model.DsBaseDict">
+	update DS_BASE_DICT set
+		NAME=#{name},
+		LABEL=#{label},
+		RULE=#{rule},
+		SEQ=#{seq},
+		UPDATETIME=#{updatetime}
+	where ID=#{id}
+</update>
+
+<resultMap id="result" type="dswork.base.model.DsBaseDict">
+	<id property="id" column="ID" />
+	<result property="name" column="NAME" />
+	<result property="label" column="LABEL" />
+	<result property="level" column="LEVEL" />
+	<result property="rule" column="RULE" />
+	<result property="seq" column="SEQ" />
+	<result property="updatetime" column="UPDATETIME" />
+</resultMap>
+<sql id="columns">
+	ID, LABEL, NAME, LEVEL, RULE, SEQ, UPDATETIME
+</sql>
+<sql id="dynamicWhere">
+	<where>
+		<if test="@Ognl@isNotEmpty(label)"> and LABEL like #{label, typeHandler=LikeTypeHandler} </if>
+		<if test="@Ognl@isNotEmpty(level)"> and LEVEL=#{level} </if>
+		<if test="islist == 'true'"> and LEVEL=0 </if>
+		<if test="islist == 'false'"> and LEVEL!=0 </if>
+		
+		<if test="@Ognl@isNotEmpty(name)"> and NAME=#{name} </if>
+		<if test="@Ognl@isNotEmpty(notid)"> and ID!=#{notid} </if>
+	</where>
+</sql>
+<select id="select" resultMap="result">
+	select <include refid="columns" /> from DS_BASE_DICT where ID=#{id}
+</select>
+<select id="selectByName" resultMap="result">
+	select <include refid="columns" /> from DS_BASE_DICT where NAME=#{name}
+</select>
+<select id="query" resultMap="result">
+	select <include refid="dswork.top" /><include refid="columns" /> from DS_BASE_DICT
+	<include refid="dynamicWhere" /> order by SEQ, LABEL
+</select>
+<select id="queryCount" resultType="int">
+	select count(1) from DS_BASE_DICT
+	<include refid="dynamicWhere" />
+</select>
+
+</mapper>

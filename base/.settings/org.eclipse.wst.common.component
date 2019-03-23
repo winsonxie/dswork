@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+	<wb-module deploy-name="base">
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/common"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/config"/>
+        <wb-resource deploy-path="/" source-path="/web" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.dict"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.rbac"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.org"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.org.role"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.user"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.user.org"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.flow"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.extends"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.single"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-common"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.table"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-base"/>
+		<property name="context-root" value="dsbase"/>
+		<property name="java-output-path" value="/base/web/WEB-INF/classes"/>
+	</wb-module>
+</project-modules>

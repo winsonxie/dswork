@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="dswork.base.dao.DsBaseUserDao">
+
+<insert id="insert" parameterType="dswork.base.model.DsBaseUser">
+	insert into DS_BASE_USER
+	(ID, ACCOUNT, PASSWORD, NAME, IDCARD, STATUS, EMAIL, MOBILE, PHONE, CAKEY, WORKCARD, CREATETIME, ORGPID, ORGID, TYPE, TYPENAME, EXALIAS, EXNAME)
+	values
+	(#{id}, LOWER(#{account}), #{password}, #{name}, #{idcard}, #{status}, #{email}, #{mobile}, #{phone}, #{cakey}, #{workcard}, #{createtime}, #{orgpid}, #{orgid}, #{type}, #{typename}, #{exalias}, #{exname})
+</insert>
+
+<delete id="delete">
+	delete from DS_BASE_USER where ID=#{id}
+</delete>
+
+<update id="update" parameterType="dswork.base.model.DsBaseUser">
+	update DS_BASE_USER set
+		NAME=#{name},
+		IDCARD=#{idcard},
+		EMAIL=#{email},
+		MOBILE=#{mobile},
+		PHONE=#{phone},
+		WORKCARD=#{workcard},
+		TYPE=#{type},
+		TYPENAME=#{typename},
+		EXALIAS=#{exalias},
+		EXNAME=#{exname}
+	where ID=#{id}
+</update>
+<update id="updateCakey">
+	update DS_BASE_USER set CAKEY=#{cakey} where ID=#{id}
+</update>
+<update id="updatePassword">
+	update DS_BASE_USER set PASSWORD=#{password} where ID=#{id}
+</update>
+<update id="updateStatus">
+	update DS_BASE_USER set STATUS=#{status} where ID=#{id}
+</update>
+<update id="updateOrg">
+	update DS_BASE_USER set ORGPID=#{orgpid}, ORGID=#{orgid} where ID=#{id}
+</update>
+
+<resultMap id="result" type="dswork.base.model.DsBaseUser">
+	<id property="id" column="ID" />
+	<result property="account" column="ACCOUNT" />
+	<result property="password" column="PASSWORD" />
+	<result property="name" column="NAME" />
+	<result property="idcard" column="IDCARD" />
+	<result property="status" column="STATUS" />
+	<result property="email" column="EMAIL" />
+	<result property="mobile" column="MOBILE" />
+	<result property="phone" column="PHONE" />
+	<result property="cakey" column="CAKEY" />
+	<result property="workcard" column="WORKCARD" />
+	<result property="createtime" column="CREATETIME" />
+	<result property="orgpid" column="ORGPID" />
+	<result property="orgid" column="ORGID" />
+	<result property="orgpname" column="ORGPNAME" />
+	<result property="orgname" column="ORGNAME" />
+	<result property="type" column="TYPE" />
+	<result property="typename" column="TYPENAME" />
+	<result property="exalias" column="EXALIAS" />
+	<result property="exname" column="EXNAME" />
+</resultMap>
+
+<sql id="columns">
+	u.ID, u.ACCOUNT, u.PASSWORD, u.NAME, u.IDCARD, u.STATUS, u.EMAIL, u.MOBILE, u.PHONE, u.CAKEY, u.WORKCARD, u.CREATETIME, u.ORGPID, u.ORGID
+	,upo.NAME as ORGPNAME, uo.NAME as ORGNAME, u.TYPE, u.TYPENAME, u.EXALIAS, u.EXNAME
+</sql>
+
+<sql id="dynamicWhere">
+	<where>
+		<if test="@Ognl@isNotEmpty(account)"> and u.ACCOUNT like #{account, typeHandler=LikeTypeHandler} </if>
+		<if test="@Ognl@isNotEmpty(name)"> and u.NAME like #{name, typeHandler=LikeTypeHandler} </if>
+		<if test="@Ognl@isNotEmpty(mobile)"> and u.MOBILE=#{mobile} </if>
+		<if test="@Ognl@isNotEmpty(status)"> and u.STATUS=#{status} </if>
+		<if test="@Ognl@isNotEmpty(idcard)"> and u.IDCARD=#{idcard} </if>
+		<if test="@Ognl@isNotEmpty(workcard)"> and u.WORKCARD=#{workcard} </if>
+		<if test="@Ognl@isNotEmpty(orgid)"> and u.ORGID=#{orgid} </if>
+		<if test="@Ognl@isNotEmpty(orgpid)"> and u.ORGPID=#{orgpid} </if>
+		<if test="@Ognl@isNotEmpty(type)"> and u.TYPE=#{type} </if>
+		<if test="@Ognl@isNotEmpty(xtype)"> and u.TYPE=#{xtype} </if>
+	</where>
+</sql>
+<sql id="dynamicFrom">
+	from DS_BASE_USER u
+	left join DS_BASE_ORG upo on upo.ID=u.ORGPID
+	left join DS_BASE_ORG uo on uo.ID=u.ORGID
+</sql>
+
+<select id="select" resultMap="result">
+	select <include refid="columns" /> <include refid="dynamicFrom" /> where u.ID=#{id}
+</select>
+
+<select id="getByAccount" resultMap="result">
+	select <include refid="columns" /> <include refid="dynamicFrom" /> where u.ACCOUNT=LOWER(#{account})
+</select>
+
+<select id="query" resultMap="result">
+	select <include refid="columns" /> <include refid="dynamicFrom" />
+	<include refid="dynamicWhere" />
+</select>
+
+<select id="queryCount" resultType="int">
+	select count(1) from DS_BASE_USER u
+	<include refid="dynamicWhere" />
+</select>
+
+</mapper>

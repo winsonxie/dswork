@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="dswork.base.dao.DsBaseDaoCommonIOrg">
+
+<resultMap id="resultOrg" type="dswork.base.model.IOrg">
+	<id property="id" column="ID" />
+	<result property="pid" column="PID" />
+	<result property="name" column="NAME" />
+	<result property="status" column="STATUS" />
+</resultMap>
+<select id="queryOrg" resultMap="resultOrg">
+	select ID, PID, NAME, STATUS from DS_BASE_ORG
+	<where>
+		<if test="@Ognl@isNotEmpty(pid)">
+			<if test="0 &lt; pid"> and PID=#{pid} </if>
+			<if test="0 &gt;= pid"> and PID is null </if>
+		</if>
+		<if test="@Ognl@isNotEmpty(status)"> and STATUS=#{status} </if>
+	</where>
+	order by STATUS desc, SEQ, ID
+</select>
+
+</mapper>

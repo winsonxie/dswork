@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="dswork.base.dao.DsBaseUsertypeDao">
+
+<insert id="insert" parameterType="dswork.base.model.DsBaseUsertype">
+	insert into DS_BASE_USERTYPE
+	(ID, NAME, ALIAS, STATUS, SEQ, MEMO, RESOURCES)
+	values
+	(#{id}, #{name}, LOWER(#{alias}), #{status}, #{seq}, #{memo}, #{resources})
+</insert>
+
+<delete id="delete">
+	delete from DS_BASE_USERTYPE where ID=#{id}
+</delete>
+
+<update id="update" parameterType="dswork.base.model.DsBaseUsertype">
+	update DS_BASE_USERTYPE set
+		NAME=#{name},
+		ALIAS=LOWER(#{alias}),
+		STATUS=#{status},
+		SEQ=#{seq},
+		MEMO=#{memo},
+		RESOURCES=#{resources}
+	where ID=#{id}
+</update>
+<update id="updateSeq">
+	update DS_BASE_USERTYPE set SEQ=#{seq} where ID=#{id}
+</update>
+
+<resultMap id="result" type="dswork.base.model.DsBaseUsertype">
+	<id property="id" column="ID" />
+	<result property="name" column="NAME" />
+	<result property="alias" column="ALIAS" />
+	<result property="status" column="STATUS" />
+	<result property="seq" column="SEQ" />
+	<result property="memo" column="MEMO" />
+	<result property="resources" column="RESOURCES" />
+</resultMap>
+
+<sql id="columns">ID, NAME, ALIAS, STATUS, SEQ, MEMO, RESOURCES</sql>
+	
+<sql id="dynamicWhere">
+	<where>
+		<if test="@Ognl@isNotEmpty(name)"> and NAME like #{name, typeHandler=LikeTypeHandler} </if>
+		<if test="@Ognl@isNotEmpty(alias)"> and ALIAS like #{alias, typeHandler=LikeTypeHandler} </if>
+		<if test="@Ognl@isNotEmpty(xalias)"> and ALIAS=#{xalias} </if>
+	</where>
+</sql>
+
+<select id="select" resultMap="result">
+	select <include refid="columns" /> from DS_BASE_USERTYPE where ID=#{id}
+</select>
+
+<select id="getByAlias" resultMap="result">
+	select <include refid="columns" /> from DS_BASE_USERTYPE where ALIAS=LOWER(#{alias})
+</select>
+
+<select id="query" resultMap="result">
+	select <include refid="columns" /> from DS_BASE_USERTYPE
+	<include refid="dynamicWhere" /> order by SEQ
+</select>
+
+<select id="queryCount" resultType="int">
+	select count(1) from DS_BASE_USERTYPE
+	<include refid="dynamicWhere" />
+</select>
+
+</mapper>

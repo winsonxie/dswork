@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="dswork.base.dao.DsBaseDictDataDao">
+
+<insert id="insert" parameterType="dswork.base.model.DsBaseDictData">
+	insert into DS_BASE_DICT_DATA
+	(ID, PID, LABEL, NAME, MARK, LEVEL, STATUS, SEQ, MEMO)
+	values
+	(#{id}, <if test='@Ognl@isEmpty(pid) or pid=="0"'>null</if><if test='@Ognl@isNotEmpty(pid) and pid!="0"'>#{pid}</if>, #{label}, #{name}, #{mark}, #{level}, #{status}, #{seq}, #{memo})
+</insert>
+
+<delete id="delete">
+	delete from DS_BASE_DICT_DATA where ID=#{id} and NAME=#{name}
+</delete>
+
+<update id="update" parameterType="dswork.base.model.DsBaseDictData">
+	update DS_BASE_DICT_DATA set
+		LABEL=#{label},
+		MEMO=#{memo}
+	where ID=#{id} and NAME=#{name}
+</update>
+<update id="updateName">
+	update DS_BASE_DICT_DATA set NAME=#{newName} where NAME=#{oldName}
+</update>
+<update id="updatePid">
+	update DS_BASE_DICT_DATA set PID=<if test='@Ognl@isEmpty(pid) or pid=="0"'>null</if><if test='@Ognl@isNotEmpty(pid) and pid!="0"'>#{pid}</if> where ID=#{id} and NAME=#{name}
+</update>
+<update id="updateSeq">
+	update DS_BASE_DICT_DATA set SEQ=#{seq} where ID=#{id} and NAME=#{name}
+</update>
+<update id="updateStatus">
+	update DS_BASE_DICT_DATA set STATUS=#{status} where ID=#{id} and NAME=#{name}
+</update>
+
+<resultMap id="result" type="dswork.base.model.DsBaseDictData">
+	<id property="id" column="ID" />
+	<result property="pid" column="PID" />
+	<result property="label" column="LABEL" />
+	<result property="name" column="NAME" />
+	<result property="mark" column="MARK" />
+	<result property="level" column="LEVEL" />
+	<result property="status" column="STATUS" />
+	<result property="seq" column="SEQ" />
+	<result property="memo" column="MEMO" />
+</resultMap>
+<sql id="columns">
+	ID, PID, LABEL, NAME, MARK, LEVEL, STATUS, SEQ, MEMO
+</sql>
+<sql id="dynamicWhere">
+	<where>
+		<if test="@Ognl@isNotEmpty(id)"> and ID like #{id, typeHandler=LikePrefixTypeHandler} </if>
+		<if test="@Ognl@isNotEmpty(name)"> and NAME=#{name} </if>
+		<if test="@Ognl@isNotEmpty(pid)">
+			<if test='pid == "0"'> and PID is null </if>
+			<if test='pid != "0"'> and PID=#{pid} </if>
+		</if>
+		
+		<if test="@Ognl@isNotEmpty(mark)"> and MARK=#{mark} </if>
+		<if test="@Ognl@isNotEmpty(level)"> and LEVEL=#{level} </if>
+		<if test="@Ognl@isNotEmpty(notid)"> and ID!=#{notid} </if>
+		
+		<if test="@Ognl@isNotEmpty(label)"> and LABEL like #{label, typeHandler=LikeTypeHandler} </if>
+	</where>
+</sql>
+<select id="select" resultMap="result">
+	select <include refid="columns" /> from DS_BASE_DICT_DATA where ID=#{id} and NAME=#{name}
+</select>
+<select id="query" resultMap="result">
+	select <include refid="dswork.top" /><include refid="columns" /> from DS_BASE_DICT_DATA
+	<include refid="dynamicWhere" /> order by SEQ, MARK
+</select>
+<select id="queryCount" resultType="int">
+	select count(1) from DS_BASE_DICT_DATA
+	<include refid="dynamicWhere" />
+</select>
+
+</mapper>

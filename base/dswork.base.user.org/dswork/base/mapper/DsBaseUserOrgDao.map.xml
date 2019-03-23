@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="dswork.base.dao.DsBaseUserOrgDao">
+
+<insert id="insert" parameterType="dswork.base.model.DsBaseUserOrg">
+	insert into DS_BASE_USERORG
+	(ID, ORGID, USERID)
+	values
+	(#{id}, #{orgid}, #{userid})
+</insert>
+
+<delete id="deleteByOrgid">
+	delete from DS_BASE_USERORG where ORGID=#{orgid}
+</delete>
+
+<delete id="deleteByUserid">
+	delete from DS_BASE_USERORG where USERID=#{userid}
+</delete>
+
+<resultMap id="result" type="dswork.base.model.DsBaseUserOrg">
+	<result property="orgid" column="ORGID" />
+	<result property="userid" column="USERID" />
+</resultMap>
+
+<select id="query" resultMap="result">
+	select ORGID, USERID from DS_BASE_USERORG
+	<where> 
+		<if test="@Ognl@isNotEmpty(orgid)"> and ORGID=#{orgid} </if>
+		<if test="@Ognl@isNotEmpty(userid)"> and USERID=#{userid} </if>
+	</where>
+</select>
+
+</mapper>

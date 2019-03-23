@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="dswork.base.dao.DsBaseRoleDao">
+
+<insert id="insert" parameterType="dswork.base.model.DsBaseRole">
+	insert into DS_BASE_ROLE
+	(ID, PID, SYSTEMID, NAME, SEQ, MEMO)
+	values
+	(#{id}, <if test="null==pid or 0==pid">null</if><if test="0 &lt; pid">#{pid}</if>, #{systemid}, #{name}, #{seq}, #{memo})
+</insert>
+
+<delete id="delete">
+	delete from DS_BASE_ROLE where ID=#{id}
+</delete>
+
+<update id="update" parameterType="dswork.base.model.DsBaseRole">
+	update DS_BASE_ROLE set
+		NAME=#{name},
+		MEMO=#{memo}
+	where ID=#{id}
+</update>
+<update id="updatePid">
+	update DS_BASE_ROLE set PID=<if test="0&gt;=pid">null</if><if test="0&lt;pid">#{pid}</if> where ID=#{id}
+</update>
+<update id="updateSeq">
+	update DS_BASE_ROLE set SEQ=#{seq} where ID=#{id}
+</update>
+
+<resultMap id="result" type="dswork.base.model.DsBaseRole">
+	<id property="id" column="ID" />
+	<result property="pid" column="PID" />
+	<result property="systemid" column="SYSTEMID" />
+	<result property="name" column="NAME" />
+	<result property="seq" column="SEQ" />
+	<result property="memo" column="MEMO" />
+</resultMap>
+<sql id="columns">
+	ID, PID, SYSTEMID, NAME, SEQ, MEMO
+</sql> 
+<sql id="dynamicWhere">
+	<where>
+		<if test="@Ognl@isNotEmpty(pid)">
+			<if test="0 &lt; pid"> and PID=#{pid} </if>
+			<if test="0 &gt;= pid"> and PID is null </if>
+		</if>
+		<if test="@Ognl@isNotEmpty(systemid)"> and SYSTEMID=#{systemid} </if>
+	</where>
+</sql>
+<select id="select" resultMap="result">
+	select <include refid="columns" /> from DS_BASE_ROLE where ID=#{id}
+</select>
+<select id="query" resultMap="result">
+	select <include refid="columns" /> from DS_BASE_ROLE
+	<include refid="dynamicWhere" /> order by SEQ asc
+</select>
+<select id="queryCount" resultType="int">
+	select count(1) from DS_BASE_ROLE
+	<include refid="dynamicWhere" />
+</select>
+
+<insert id="insertRoleFunc" parameterType="dswork.base.model.DsBaseRoleFunc">
+	insert into DS_BASE_ROLEFUNC
+	(ID, SYSTEMID, ROLEID, FUNCID)
+	values
+	(#{id}, #{systemid}, #{roleid}, #{funcid})
+</insert>
+<delete id="deleteRoleFuncByFuncid">
+	delete from DS_BASE_ROLEFUNC where FUNCID=#{funcid}
+</delete>
+<delete id="deleteRoleFuncByRoleid">
+	delete from DS_BASE_ROLEFUNC where ROLEID=#{roleid}
+</delete>
+<delete id="deleteRoleFuncBySystemid">
+	delete from DS_BASE_ROLEFUNC where SYSTEMID=#{systemid}
+</delete>
+<resultMap id="resultRoleFunc" type="dswork.base.model.DsBaseRoleFunc">
+	<id property="id" column="ID" />
+	<result property="systemid" column="SYSTEMID" />
+	<result property="roleid" column="ROLEID" />
+	<result property="funcid" column="FUNCID" />
+</resultMap>
+<select id="queryRoleFuncByRoleid" resultMap="resultRoleFunc">
+	select ID, SYSTEMID, ROLEID, FUNCID from DS_BASE_ROLEFUNC where ROLEID=#{roleid}
+</select>
+
+</mapper>
