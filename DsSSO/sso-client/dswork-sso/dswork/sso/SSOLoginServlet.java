@@ -17,10 +17,7 @@ import dswork.sso.model.AccessToken;
 import dswork.sso.model.IUser;
 import dswork.sso.model.JsonResult;
 
-@WebServlet(name = "SSOLoginServlet", loadOnStartup = 1, urlPatterns =
-{
-		"/sso/login"
-})
+@WebServlet(name = "SSOLoginServlet", loadOnStartup = 1, urlPatterns = {"/sso/login"})
 public class SSOLoginServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
@@ -56,10 +53,10 @@ public class SSOLoginServlet extends HttpServlet
 				else
 				{
 					redirect_uri = request.getParameter("url");// 需要解码，通常是本项目地址，否则拿不到用户
-					if(redirect_uri != null)
-					{
-						redirect_uri = java.net.URLDecoder.decode(redirect_uri, "UTF-8");
-					}
+//					if(redirect_uri != null)
+//					{
+//						redirect_uri = java.net.URLDecoder.decode(redirect_uri, "UTF-8");
+//					}
 				}
 				JsonResult<AccessToken> token = AuthFactory.getUserAccessToken(code);
 				if(token.getCode() == AuthGlobal.CODE_001)

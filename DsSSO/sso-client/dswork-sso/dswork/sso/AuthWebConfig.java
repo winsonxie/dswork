@@ -75,11 +75,11 @@ public class AuthWebConfig
 		SYSTEM_LOGIN_URL = (sLogin == null) ? "" : sLogin;
 		if(SYSTEM_LOGIN_URL.length() > 0)
 		{
-			SYSTEM_LOGIN_URL = SYSTEM_LOGIN_URL + (SYSTEM_LOGIN_URL.contains("?") ? "&" : "?");
+			SYSTEM_LOGIN_URL = SYSTEM_LOGIN_URL + (SYSTEM_LOGIN_URL.contains("?") ? "&" : "?") + "appid=" + AuthGlobal.getAppID();
 		}
 		else
 		{
-			SYSTEM_LOGIN_URL = SSO_WEB_URL + "/user/authorize?response_type=code&";
+			SYSTEM_LOGIN_URL = SSO_WEB_URL + "/user/authorize?" + "appid=" + AuthGlobal.getAppID() + "&response_type=code";
 		}
 		SYSTEM_REDIRECT_URI = (sRedirect == null) ? "" : sRedirect;
 		SYSTEM_WEB_URL = (sWeb == null) ? "" : sWeb;

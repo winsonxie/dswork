@@ -152,7 +152,7 @@ public class AuthFactory
 	public static String getUserAuthorizeURL(String redirect_uri)
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(AuthWebConfig.getSystemLoginURL()).append("appid=").append(AuthGlobal.getAppID()).append("&redirect_uri=");
+		sb.append(AuthWebConfig.getSystemLoginURL()).append("&redirect_uri=");
 		String uri = AuthWebConfig.getSystemWebURL() + "/sso/login?url=" + getEncodeURL(redirect_uri);
 		sb.append(getEncodeURL(uri));
 		return sb.toString();
