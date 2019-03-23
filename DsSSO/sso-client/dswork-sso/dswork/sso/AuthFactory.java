@@ -3,6 +3,7 @@
  */
 package dswork.sso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -301,7 +302,7 @@ public class AuthFactory
 		{
 			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
 		}
-		return list.toArray(new IOrg[list.size()]);
+		return list == null ? new IOrg[0] : list.toArray(new IOrg[list.size()]);
 	}
 
 	/**
@@ -379,9 +380,10 @@ public class AuthFactory
 		}
 		catch(Exception e)
 		{
+			list = new ArrayList<IUser>();
 			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
 		}
-		return list.toArray(new IUser[list.size()]);
+		return list == null ? new IUser[0] : list.toArray(new IUser[list.size()]);
 	}
 
 	/**
@@ -409,7 +411,7 @@ public class AuthFactory
 		{
 			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
 		}
-		return list.toArray(new IUser[list.size()]);
+		return list == null ? new IUser[0] : list.toArray(new IUser[list.size()]);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -465,7 +467,7 @@ public class AuthFactory
 		{
 			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
 		}
-		return list.toArray(new ISystem[list.size()]);
+		return list == null ? new ISystem[0] : list.toArray(new ISystem[list.size()]);
 	}
 
 	/**
@@ -492,7 +494,7 @@ public class AuthFactory
 		{
 			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
 		}
-		return list.toArray(new IFunc[list.size()]);
+		return list == null ? new IFunc[0] : list.toArray(new IFunc[list.size()]);
 	}
 
 	/**
@@ -522,7 +524,7 @@ public class AuthFactory
 		{
 			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
 		}
-		return list.toArray(new IFunc[list.size()]);
+		return list == null ? new IFunc[0] : list.toArray(new IFunc[list.size()]);
 	}
 
 	/**
@@ -550,6 +552,6 @@ public class AuthFactory
 		{
 			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
 		}
-		return list.toArray(new IFunc[list.size()]);
+		return list == null ? new IFunc[0] : list.toArray(new IFunc[list.size()]);
 	}
 }
