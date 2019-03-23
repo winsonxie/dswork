@@ -73,7 +73,7 @@ public class AuthGlobal
 			if(result.getCode() == CODE_001)
 			{
 				ACCESS_TOKEN = result.getData().getAccess_token();
-				log.error("dswork.sso.AuthGlobal获取unit的access_token成功，成功结果：" + result.getData().getAccess_token());
+				log.info("dswork.sso.AuthGlobal获取unit的access_token成功，成功结果：" + result.getData().getAccess_token());
 			}
 			else
 			{
