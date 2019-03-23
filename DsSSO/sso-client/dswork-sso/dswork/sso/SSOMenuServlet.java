@@ -74,7 +74,7 @@ public class SSOMenuServlet extends HttpServlet
 				{
 					try
 					{
-						JsonResult<IUser> result = AuthFactory.getUserUserinfo(openid, access_token);// 不需要登录，只需要获取
+						JsonResult<IUser> result = AuthFactory.getUserUserinfo(openid, access_token);
 						if(result.getCode() == AuthGlobal.CODE_001)
 						{
 							user = result.getData();
