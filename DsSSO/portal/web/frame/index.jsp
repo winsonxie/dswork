@@ -1,15 +1,6 @@
-﻿﻿<%@page language="java" pageEncoding="UTF-8"%><%
+﻿﻿<%@page language="java" pageEncoding="UTF-8" import="dswork.sso.model.IUser"%><%
 String path = request.getContextPath();
-String obj = dswork.sso.WebFilter.getAccount(session);
-if(obj == null)
-{
-	response.sendRedirect(path + "/logout.jsp");
-	return;
-}
-if(null != request.getParameter("ticket"))
-{
-	response.sendRedirect(path + "/frame/index.jsp");// 去掉ticket的显示
-}
+IUser user = dswork.sso.WebFilter.getLoginer(session);
 %><!DOCTYPE html>
 <html>
 <head>
@@ -38,7 +29,7 @@ if(top.location != this.location){top.location = "<%=path %>/frame/index.jsp";}
 	<div class="left"></div>
 	<div class="right"></div>
 	<div id="toolDiv" class="xtool minitool">
-		<div><i>&#xf1001;</i><b class="show"><%=dswork.sso.WebFilter.getAccount(session) %></b></div>
+		<div><i>&#xf1001;</i><b class="show"><%=user.getName() %></b></div>
 		<div onclick="$('#tt').tabs('select', 0);"       title="切换首页"><i>&#xf1003;</i><b>首页</b></div>
 		<div onclick="reload();"                         title="刷新页面"><i>&#xf1004;</i><b>刷新</b></div>
 		<%--切换系统使用showModalDialog模式，只有在ie模式下，或08-13年间的浏览器可用--%>

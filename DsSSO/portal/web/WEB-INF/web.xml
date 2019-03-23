@@ -17,13 +17,6 @@
 	
 	<context-param><param-name>dsworkSSOConfiguration</param-name><param-value>/config/sso.properties</param-value></context-param>
 
-	<servlet>
-		<servlet-name>websso_logout</servlet-name>
-		<servlet-class>dswork.sso.WebLogoutServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping><servlet-name>websso_logout</servlet-name><url-pattern>/logout</url-pattern></servlet-mapping>
-
 	<filter>
 		<filter-name>websso</filter-name>
 		<filter-class>dswork.sso.WebFilter</filter-class>
