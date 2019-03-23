@@ -8,6 +8,9 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 public class AuthWebConfig
 {
 	private static String str(java.util.Properties C, String key, String bakkey)
@@ -64,6 +67,7 @@ public class AuthWebConfig
 	private static String SYSTEM_PASSWORD = "";
 	private static Set<String> ignoreURLSet = new HashSet<String>();// 无需验证页面
 	private static boolean isload = false;
+	public static final String SSOTICKET = "ssoticket";
 
 	private AuthWebConfig()
 	{
@@ -187,5 +191,49 @@ public class AuthWebConfig
 			}
 		}
 		return false;
+	}
+	
+	public static String[] getSSOTicket(HttpServletRequest request)
+	{
+		String ssoticket = getValueByCookie(request, SSOTICKET);// cookie优先
+		if(ssoticket == null)
+		{
+			ssoticket = request.getParameter(SSOTICKET);// 参数次选优先
+			String qstr = request.getQueryString();
+			if(qstr != null && !qstr.contains("ssoticket="+ssoticket))
+			{
+				ssoticket = null;
+			}
+		}
+		if(ssoticket != null && ssoticket.length() > 10)
+		{
+			String[] arr = ssoticket.split("-", 2);
+			if(arr.length == 2)
+			{
+				arr = new String[]{arr[0], arr[1], ssoticket};
+				return arr;
+			}
+		}
+		return null;
+	}
+	
+	private static String getValueByCookie(HttpServletRequest request, String name)
+	{
+		Cookie cookies[] = request.getCookies();
+		String value = null;
+		if(cookies != null)
+		{
+			Cookie cookie = null;
+			for(int i = 0; i < cookies.length; i++)
+			{
+				cookie = cookies[i];
+				if(cookie.getName().equals(name))
+				{
+					value = cookie.getValue();
+					break;
+				}
+			}
+		}
+		return value;
 	}
 }

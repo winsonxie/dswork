@@ -8,7 +8,6 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -27,7 +26,6 @@ public class WebFilter implements Filter
 	private static boolean use = false;// 用于判断是否加载sso模块
 
 	public final static String LOGINER = SSOLoginServlet.LOGINER;
-	public static final String SSOTICKET = "ssoticket";
 
 	public void init(FilterConfig config) throws ServletException
 	{
@@ -51,19 +49,7 @@ public class WebFilter implements Filter
 			log.debug(ouser != null ? "当前已登录" + String.valueOf(ouser) : "当前未登录");
 		}
 		
-		
-		
-		String ssoticket = getValueByCookie(request, SSOTICKET);// cookie优先
-		if(ssoticket == null)
-		{
-			ssoticket = request.getParameter(SSOTICKET);// 参数次选优先
-			String qstr = request.getQueryString();
-			if(qstr != null && !qstr.contains("ssoticket="+ssoticket))
-			{
-				ssoticket = null;
-			}
-		}
-		String[] arr = getOpenidAndToken(ssoticket);
+		String[] arr = AuthWebConfig.getSSOTicket(request);// 获取是否存在ticket信息
 		if(arr != null)
 		{
 			String openid = arr[0];
@@ -74,7 +60,7 @@ public class WebFilter implements Filter
 				try
 				{
 					user = gson.fromJson(String.valueOf(ouser), IUser.class);
-					if(!ssoticket.equals(user.getSsoticket()))
+					if(!arr[2].equals(user.getSsoticket()))
 					{
 						ouser = null;// 相等不需要 更新用户
 						if(log.isDebugEnabled())
@@ -189,38 +175,5 @@ public class WebFilter implements Filter
 	public static boolean isUse()
 	{
 		return WebFilter.use;
-	}
-	
-	private static String getValueByCookie(HttpServletRequest request, String name)
-	{
-		Cookie cookies[] = request.getCookies();
-		String value = null;
-		if(cookies != null)
-		{
-			Cookie cookie = null;
-			for(int i = 0; i < cookies.length; i++)
-			{
-				cookie = cookies[i];
-				if(cookie.getName().equals(name))
-				{
-					value = cookie.getValue();
-					break;
-				}
-			}
-		}
-		return value;
-	}
-	
-	private static String[] getOpenidAndToken(String ssoticket)
-	{
-		if(ssoticket != null && ssoticket.length() > 10)
-		{
-			String[] arr = ssoticket.split("-", 2);
-			if(arr.length == 2)
-			{
-				return arr;
-			}
-		}
-		return null;
 	}
 }

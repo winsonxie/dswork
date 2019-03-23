@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dswork.sso.model.IUser;
+import dswork.sso.model.JsonResult;
+
 @WebServlet(name="SSOMenuServlet", loadOnStartup = 3, urlPatterns={"/sso/menu"})
 public class SSOMenuServlet extends HttpServlet
 {
@@ -46,22 +49,64 @@ public class SSOMenuServlet extends HttpServlet
 		try
 		{
 			String jsoncallback = String.valueOf(request.getParameter("jsoncallback")).replaceAll("<", "").replaceAll(">", "").replaceAll("\"", "").replaceAll("'", "");
-			String user = String.valueOf(request.getParameter("user"));
+			String[] arr = AuthWebConfig.getSSOTicket(request);// 获取是否存在ticket信息
+			IUser user = null;
+			if(arr != null)
+			{
+				String openid = arr[0];
+				String access_token = arr[1];
+				user = WebFilter.getLoginer(request.getSession());
+				if(user != null)
+				{
+					try
+					{
+						if(!arr[2].equals(user.getSsoticket()))
+						{
+							user = null;
+						}
+					}
+					catch(Exception e)
+					{
+						user = null;
+					}
+				}
+				if(user == null)
+				{
+					try
+					{
+						JsonResult<IUser> result = AuthFactory.getUserUserinfo(openid, access_token);// 不需要登录，只需要获取
+						if(result.getCode() == AuthGlobal.CODE_001)
+						{
+							user = result.getData();
+						}
+						if(!SSOLoginServlet.refreshUser(request.getSession(), user, openid, access_token))
+						{
+							user = null;
+						}
+					}
+					catch(Exception e)
+					{
+					}
+				}
+			}
 			PrintWriter out = response.getWriter();
 			out.print(jsoncallback + "([");
-			// {id:1, pid:0, name:'门户菜单', img:"", imgOpen:"", url:""}
-			// ,{id:2, pid:1, name:'门户首页', img:"", imgOpen:"", url:"/frame/main.jsp"}
-			dswork.sso.model.IFunc[] list = getFuncByUser(user);
-			StringBuilder sb = new StringBuilder(300);
-			if(list != null)
+			if(user != null)
 			{
-				for(dswork.sso.model.IFunc m : list)
+				// {id:1, pid:0, name:'门户菜单', img:"", imgOpen:"", url:""}
+				// ,{id:2, pid:1, name:'门户首页', img:"", imgOpen:"", url:"/frame/main.jsp"}
+				dswork.sso.model.IFunc[] list = getFuncByUser(user.getAccount());
+				StringBuilder sb = new StringBuilder(300);
+				if(list != null)
 				{
-					sb.append(",{id:" + m.getId() + ", pid:" + m.getPid() + ", name:\"" + m.getName() + "\", img:\"\", imgOpen:\"\", url:\"" + m.getUri() + "\"}");
-				}
-				if(list.length > 0)
-				{
-					out.print(sb.substring(1));
+					for(dswork.sso.model.IFunc m : list)
+					{
+						sb.append(",{id:" + m.getId() + ", pid:" + m.getPid() + ", name:\"" + m.getName() + "\", img:\"\", imgOpen:\"\", url:\"" + m.getUri() + "\"}");
+					}
+					if(list.length > 0)
+					{
+						out.print(sb.substring(1));
+					}
 				}
 			}
 			out.print(jsoncallback + "])");
