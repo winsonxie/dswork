@@ -35,8 +35,12 @@ public class AuthGlobal
 	private static String APPSECRET = null;
 	private static String APIURL = null;
 	private static String ACCESS_TOKEN = null;
-	private static HttpUtil http = null;
 	private static boolean https = false;
+	
+	private static HttpUtil getConnectHttp()
+	{
+		return new HttpUtil().create(APIURL + "/unit/access_token", https).addForm("appid", APPID).addForm("appsecret", APPSECRET).addForm("grant_type", "client_credential");
+	}
 
 	private static synchronized JsonResult<AccessToken> getUnitAccessToken(boolean hasMust)// hasMust用于防止为空时，无数请求都去重新获取
 	{
@@ -47,7 +51,7 @@ public class AuthGlobal
 		JsonResult<AccessToken> result = null;
 		try
 		{
-			result = gson.fromJson(http.connect(), (new TypeToken<JsonResult<AccessToken>>()
+			result = gson.fromJson(getConnectHttp().connect(), (new TypeToken<JsonResult<AccessToken>>()
 			{
 			}).getType());
 		}
@@ -55,7 +59,7 @@ public class AuthGlobal
 		{
 			try
 			{
-				result = gson.fromJson(http.connect(), new TypeToken<JsonResult<AccessToken>>()
+				result = gson.fromJson(getConnectHttp().connect(), new TypeToken<JsonResult<AccessToken>>()
 				{
 				}.getType());
 			}
@@ -189,7 +193,6 @@ public class AuthGlobal
 		APPSECRET = appsecret == null ? "portal" : appsecret;
 		APIURL = apiURL == null ? "http://127.0.0.1:8888/sso" : apiURL;
 		https = APIURL.startsWith("https");
-		http = new HttpUtil().create(APIURL + "/unit/access_token", https).addForm("appid", APPID).addForm("appsecret", APPSECRET).addForm("grant_type", "client_credential");
 		_timer.schedule(_tokenTask1, 100L);// 重新启动
 	}
 }
