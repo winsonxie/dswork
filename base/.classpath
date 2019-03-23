@@ -5,16 +5,6 @@
 	<classpathentry kind="src" path="common"/>
 	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-common"/>
 	<classpathentry kind="src" path="config"/>
-	<classpathentry kind="src" path="dswork.base.dict"/>
-	<classpathentry kind="src" path="dswork.base.flow"/>
-	<classpathentry kind="src" path="dswork.base.rbac"/>
-	<classpathentry kind="src" path="dswork.base.org"/>
-	<classpathentry kind="src" path="dswork.base.org.role"/>
-	<classpathentry kind="src" path="dswork.base.user"/>
-	<classpathentry kind="src" path="dswork.base.user.org"/>
-	<classpathentry kind="src" path="dswork.base.extends"/>
-	<classpathentry kind="src" path="dswork.base.single"/>
-	<classpathentry kind="src" path="dswork.base.table"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JAVAEE">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
