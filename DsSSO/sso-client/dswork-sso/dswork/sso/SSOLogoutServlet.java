@@ -32,9 +32,21 @@ public class SSOLogoutServlet extends HttpServlet
 			HttpSession session = request.getSession();
 			session.removeAttribute(SSOLoginServlet.LOGINER);
 			session.invalidate();
-			String jsoncallback = request.getParameter("jsoncallback").replaceAll("<", "").replaceAll(">", "").replaceAll("\"", "").replaceAll("'", "");
+			String jsoncallback = request.getParameter("jsoncallback");
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("application/json;charset=UTF-8");
+			response.setHeader("P3P", "CP=CAO PSA OUR");
+			response.setHeader("Access-Control-Allow-Origin", "*");
 			PrintWriter out = response.getWriter();
-			out.print(jsoncallback + "([])");
+			if(jsoncallback != null)
+			{
+				jsoncallback = jsoncallback.replaceAll("<", "").replaceAll(">", "").replaceAll("\"", "").replaceAll("'", "");
+				out.print(jsoncallback + "([])");
+			}
+			else
+			{
+				response.getWriter().print("{\"code\":1}");// 退出成功
+			}
 		}
 		catch(Exception ex)
 		{
