@@ -102,6 +102,10 @@ public class WebFilter implements Filter
 			chain.doFilter(request, response);
 			return;
 		}
+		else
+		{
+			session.removeAttribute(LOGINER);// 没有用户，清一下session
+		}
 		// String relativeURI = request.getRequestURI();// 相对地址
 		// if(request.getContextPath().length() > 0){relativeURI = relativeURI.replaceFirst(request.getContextPath(), "");}
 		if(AuthWebConfig.containsIgnoreURL(relativeURI))// 判断是否为无需验证页面
