@@ -17,7 +17,7 @@
 <script type="text/javascript">
 if(top.location == this.location){top.location = "${ctx}/index.jsp";}
 var sys = [];
-sys[sys.length] = {index:<%=i+1%>,data:[],id:1,name:"",domainurl:"",rooturl:"/portal",menuurl:"/portal/menu.jsp"};
+sys[sys.length] = {index:0,data:[],id:1,name:"",domainurl:"",rooturl:"/portal",menuurl:"/portal/menu.jsp"};
 <%--
 sys[0] = {index:0,data:[],id:0,name:"门户",alias:"",domainurl:"",rooturl:"${ctx}",menuurl:"${ctx}/menu.jsp"};
 <%if(arr != null){for(int i = 0; i < arr.length; i++){%>
