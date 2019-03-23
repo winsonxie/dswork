@@ -44,6 +44,7 @@ public class SSOLoginServlet extends HttpServlet
 		{
 			String code = request.getParameter("code");
 			String redirect_uri = null;
+			String ssoticket = "";
 			if(code != null && code.length() > 0)
 			{
 				if(AuthWebConfig.getSystemRedirectURI().length() > 0)
@@ -65,13 +66,17 @@ public class SSOLoginServlet extends HttpServlet
 					JsonResult<IUser> u = AuthFactory.getUserUserinfo(t.getOpenid(), t.getAccess_token());
 					if(u.getCode() == AuthGlobal.CODE_001)
 					{
-						refreshUser(request.getSession(), u.getData(), t.getOpenid(), t.getAccess_token());
+						ssoticket = "ssoticket=" + t.getOpenid() + "-" + t.getAccess_token();
 					}
 				}
 			}
 			if(redirect_uri == null || redirect_uri.length() == 0)
 			{
 				redirect_uri = "about:blank";
+			}
+			else if(ssoticket.length() > 0)
+			{
+				redirect_uri = redirect_uri + (redirect_uri.contains("?") ? "&" : "?") + ssoticket;
 			}
 			response.sendRedirect(redirect_uri);// 成功失败都跳转
 		}
