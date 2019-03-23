@@ -30,7 +30,7 @@ public class SSOLogoutServlet extends HttpServlet
 		try
 		{
 			HttpSession session = request.getSession();
-			session.removeAttribute(SSOLoginServlet.LOGINER);
+			session.removeAttribute(WebFilter.LOGINER);
 			session.invalidate();
 			String jsoncallback = request.getParameter("jsoncallback");
 			response.setCharacterEncoding("UTF-8");
