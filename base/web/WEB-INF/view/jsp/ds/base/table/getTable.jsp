@@ -8,11 +8,11 @@
 <%@include file="/commons/include/get.jsp"%>
 <script type="text/javascript">
 $(function(){
-	$dswork.page.menu("delTable.htm", "updTable1.htm", "getTableById.htm", "${pageModel.currentPage}");
+	$dswork.page.menu("delTable.htm", "updTable1.htm", "getTableById.htm", "${pageModel.page}");
 });
 $dswork.doAjax = true;
 $dswork.callback = function(){if($sy.result.type == 1){
-	location.href = "getTable.htm?page=${pageModel.currentPage}";
+	location.href = "getTable.htm?page=${pageModel.page}";
 }};
 </script>
 </head> 
@@ -21,7 +21,7 @@ $dswork.callback = function(){if($sy.result.type == 1){
 	<tr>
 		<td class="title">数据表定义列表</td>
 		<td class="menuTool">
-			<a class="insert" href="addTable1.htm?page=${pageModel.currentPage}">添加</a>
+			<a class="insert" href="addTable1.htm?page=${pageModel.page}">添加</a>
 			<a class="delete" id="listFormDelAll" href="#">删除所选</a>
 		</td>
 	</tr>
@@ -77,7 +77,7 @@ $dswork.callback = function(){if($sy.result.type == 1){
 	</tr>
 </c:forEach>
 </table>
-<input name="page" type="hidden" value="${pageModel.currentPage}" />
+<input name="page" type="hidden" value="${pageModel.page}" />
 </form>
 <table border="0" cellspacing="0" cellpadding="0" class="bottomTable">
 	<tr><td>${pageNav.page}</td></tr>

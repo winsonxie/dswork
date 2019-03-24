@@ -21,11 +21,11 @@ function updSystemStatus(objid, id){
 	return false;
 }
 function updFunc(id){
-	$jskey.dialog.showDialog({url:"../func/getFuncTree.htm?page=${pageModel.currentPage}&systemid=" + id,title:$("#td_n" + id).text()+'<span style="color:#ff0000;font-weight:bold;">（本模块非技术维护人员，请勿操作）</span>',fit:true,draggable:false});
+	$jskey.dialog.showDialog({url:"../func/getFuncTree.htm?page=${pageModel.page}&systemid=" + id,title:$("#td_n" + id).text()+'<span style="color:#ff0000;font-weight:bold;">（本模块非技术维护人员，请勿操作）</span>',fit:true,draggable:false});
 	return false;
 }
 function updRole(id){
-	$jskey.dialog.showDialog({url:"../role/getRoleTree.htm?page=${pageModel.currentPage}&systemid=" + id,title:$("#td_n" + id).text(),fit:true,draggable:false});
+	$jskey.dialog.showDialog({url:"../role/getRoleTree.htm?page=${pageModel.page}&systemid=" + id,title:$("#td_n" + id).text(),fit:true,draggable:false});
 	return false;
 }
 function importFunc(id){
@@ -37,11 +37,11 @@ function updSystemSeq(){
 	return false;
 }
 function updSystemSeqCallback(){
-	location.href = "getSystem.htm?page=${pageModel.currentPage}";
+	location.href = "getSystem.htm?page=${pageModel.page}";
 }
 $dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.type == 1){
-	location.href = "getSystem.htm?page=${pageModel.currentPage}";
+	location.href = "getSystem.htm?page=${pageModel.page}";
 }};
 $dswork.page.join = function(td, menu, id){
 	$(menu).append($('<div iconCls="menuTool-graph">资源管理</div>').bind("click", function(){
@@ -51,7 +51,7 @@ $dswork.page.join = function(td, menu, id){
 	}));
 };
 $(function(){
-	$dswork.page.menu("delSystem.htm", "updSystem1.htm", "getSystemById.htm", "${pageModel.currentPage}");
+	$dswork.page.menu("delSystem.htm", "updSystem1.htm", "getSystemById.htm", "${pageModel.page}");
 	$("#status").bind("change", function(){
 		$("#queryForm").submit();
 	});
@@ -63,7 +63,7 @@ $(function(){
 	<tr>
 		<td class="title">应用系统列表</td>
 		<td class="menuTool">
-			<a class="insert" href="addSystem1.htm?page=${pageModel.currentPage}">添加</a>
+			<a class="insert" href="addSystem1.htm?page=${pageModel.page}">添加</a>
 			<a class="sort" href="#" onclick="updSystemSeq()">排序</a>
 		</td>
 	</tr>
@@ -101,13 +101,13 @@ $(function(){
 			<a class="graph" onclick="return updFunc('${d.id}');" href="#">资源管理</a>
 			<a class="graph" onclick="return importFunc('${d.id}');" href="#">资源配置</a>
 			<a class="user" onclick="return updRole('${d.id}');" href="#">角色管理</a>
-			<a class="update" href="updSystem1.htm?keyIndex=${d.id}&page=${pageModel.currentPage}">修改</a>
-			<a class="delete" href="delSystem.htm?keyIndex=${d.id}&page=${pageModel.currentPage}">删除</a>
+			<a class="update" href="updSystem1.htm?keyIndex=${d.id}&page=${pageModel.page}">修改</a>
+			<a class="delete" href="delSystem.htm?keyIndex=${d.id}&page=${pageModel.page}">删除</a>
 		</td>
 	</tr>
 </c:forEach>
 </table>
-<input name="page" type="hidden" value="${pageModel.currentPage}" />
+<input name="page" type="hidden" value="${pageModel.page}" />
 </form>
 <table border="0" cellspacing="0" cellpadding="0" class="bottomTable">
 	<tr><td>${pageNav.page}</td></tr>
