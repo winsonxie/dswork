@@ -93,6 +93,7 @@ public class ${model}Controller extends BaseController
 	public String get${model}()
 	{
 		Page<${model}> pageModel = service.queryPage(getPageRequest());
+		put("page", pageModel.getPage());
 		put("pageModel", pageModel);
 		put("pageNav", new PageNav<${model}>(request, pageModel));
 		return "${module}/get${model}.jsp";
