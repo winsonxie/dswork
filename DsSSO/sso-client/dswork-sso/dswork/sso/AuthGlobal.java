@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import dswork.sso.http.HttpUtil;
 import dswork.sso.model.AccessToken;
+import dswork.sso.model.IUser;
 import dswork.sso.model.JsonResult;
 
 import com.google.gson.reflect.TypeToken;
@@ -34,7 +35,9 @@ public class AuthGlobal
 	private static String APPID = null;
 	private static String APPSECRET = null;
 	private static String APIURL = null;
-	private static String ACCESS_TOKEN = null;
+	private static String ACCESS_TOKEN = "";
+	private static long ACCESS_TOKEN_TIMEOUT = 0L;
+	private static boolean INIT_ACCESSTOKEN = false;
 	private static boolean https = false;
 	
 	private static HttpUtil getConnectHttp()
@@ -44,7 +47,13 @@ public class AuthGlobal
 
 	private static synchronized JsonResult<AccessToken> getUnitAccessToken(boolean hasMust)// hasMust用于防止为空时，无数请求都去重新获取
 	{
-		if(!hasMust && ACCESS_TOKEN != null)
+		long now = System.currentTimeMillis();
+		// 如果之前获取的已经过期，则直接清空
+		if(ACCESS_TOKEN.length() > 0 && now > ACCESS_TOKEN_TIMEOUT)
+		{
+			ACCESS_TOKEN = "";
+		}
+		if(!hasMust && ACCESS_TOKEN.length() > 0)
 		{
 			return null;// 已经有人查过了，不用再查
 		}
@@ -73,6 +82,7 @@ public class AuthGlobal
 			if(result.getCode() == CODE_001)
 			{
 				ACCESS_TOKEN = result.getData().getAccess_token();
+				ACCESS_TOKEN_TIMEOUT = result.getData().getExpires_in() * 1000 + now;
 				log.info("dswork.sso.AuthGlobal获取unit的access_token成功，成功结果：" + result.getData().getAccess_token());
 			}
 			else
@@ -84,11 +94,12 @@ public class AuthGlobal
 	}
 
 	/**
-	 * 用于强制刷新token，可能是token被动过期
+	 * 一次性用于强制刷新token，可能是token被动过期，或临时需要使用UnitAccessToken
 	 */
-	public static void refreshUnitAccessToken()
+	public static String refreshUnitAccessToken()
 	{
 		getUnitAccessToken(true);
+		return ACCESS_TOKEN;
 	}
 	
 	private static Timer _timer = new Timer(true);
@@ -157,18 +168,56 @@ public class AuthGlobal
 		return APIURL;
 	}
 
+	/**
+	 * 返回unit的access_token，失败返回空“”，如果初始时initAccessToken为false，则永远返回“”
+	 * @return unit的access_token
+	 */
 	public static String getAccessToken()
 	{
-		if(ACCESS_TOKEN == null)
+		if(INIT_ACCESSTOKEN)
 		{
-			getUnitAccessToken(false);
+			if(ACCESS_TOKEN_TIMEOUT < System.currentTimeMillis())
+			{
+				getUnitAccessToken(false);// 需要刷新Unit的access_token
+			}
+		}
+		else
+		{
+			if(ACCESS_TOKEN_TIMEOUT < System.currentTimeMillis())
+			{
+				ACCESS_TOKEN = "";// 过期了
+			}
 		}
 		return ACCESS_TOKEN;
+	}
+	
+	public static boolean getInitAccessToken()
+	{
+		return INIT_ACCESSTOKEN;
 	}
 
 	public static boolean isHttps()
 	{
 		return https;
+	}
+
+	/**
+	 * 一般只初始化一次，且必须初始化
+	 * @param appid
+	 * @param appsecret
+	 * @param apiURL
+	 */
+	public static void initConfig(String appid, String appsecret, String apiURL, boolean initAccessToken)
+	{
+		APPID = appid == null ? "portal" : appid;
+		APPSECRET = appsecret == null ? "portal" : appsecret;
+		APIURL = apiURL == null ? "http://127.0.0.1:8888/sso" : apiURL;
+		https = APIURL.startsWith("https");
+		INIT_ACCESSTOKEN = initAccessToken;
+		if(INIT_ACCESSTOKEN)
+		{
+			_timer.schedule(_tokenTask1, 100L);// 重新启动
+		}
 	}
 
 	/**
@@ -181,18 +230,92 @@ public class AuthGlobal
 		return new HttpUtil().create(new StringBuilder(47).append(getApiURL()).append(path).toString(), isHttps()).addForm("appid", getAppID());
 	}
 
+	//////////////////////////////////////////////////////////////////////////////
+	// 用户相关的方法
+	//////////////////////////////////////////////////////////////////////////////
 	/**
-	 * 一般只初始化一次，且必须初始化
-	 * @param appid
-	 * @param appsecret
-	 * @param apiURL
+	 * 后端获取用户凭证(access_token)
+	 * @param code 用户授权令牌
+	 * @return JsonResult&lt;AccessToken&gt;
 	 */
-	public static void initConfig(String appid, String appsecret, String apiURL)
+	public static JsonResult<AccessToken> getUserAccessToken(String code)
 	{
-		APPID = appid == null ? "portal" : appid;
-		APPSECRET = appsecret == null ? "portal" : appsecret;
-		APIURL = apiURL == null ? "http://127.0.0.1:8888/sso" : apiURL;
-		https = APIURL.startsWith("https");
-		_timer.schedule(_tokenTask1, 100L);// 重新启动
+		HttpUtil h = getHttp("/user/access_token").addForm("appsecret", getAppSecret()).addForm("grant_type", "authorization_code").addForm("code", code);
+		JsonResult<AccessToken> result = null;
+		String v = "";
+		try
+		{
+			v = h.connect().trim();
+			result = gson.fromJson(v, new TypeToken<JsonResult<AccessToken>>()
+			{
+			}.getType());
+			if(log.isDebugEnabled())
+			{
+				log.debug("getUserAccessToken:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("getUserAccessToken:url=" + h.getUrl() + ", json:" + v);
+		}
+		return result;
+	}
+
+	/**
+	 * 前端检查用户凭证(access_token)是否还有效
+	 * @param openid 用户标识
+	 * @param access_token 用户凭证
+	 * @return JsonResult&lt;String&gt;
+	 */
+	public static JsonResult<String> getUserAuthToken(String openid, String access_token)
+	{
+		HttpUtil h = getHttp("/user/auth_token").addForm("openid", openid).addForm("access_token", access_token);
+		JsonResult<String> result = null;
+		String v = "";
+		try
+		{
+			v = h.connect().trim();
+			result = gson.fromJson(v, new TypeToken<JsonResult<IUser>>()
+			{
+			}.getType());
+			if(log.isDebugEnabled())
+			{
+				log.debug("getUserAuthToken:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("getUserAuthToken:url=" + h.getUrl() + ", json:" + v);
+		}
+		return result;
+	}
+
+	/**
+	 * 前端账户信息
+	 * @param openid 用户标识
+	 * @param access_token 用户凭证
+	 * @return JsonResult&lt;IUser&gt;
+	 */
+	public static JsonResult<IUser> getUserUserinfo(String openid, String access_token)
+	{
+		HttpUtil h = getHttp("/user/userinfo").addForm("openid", openid).addForm("access_token", access_token);
+		JsonResult<IUser> result = null;
+		String v = "";
+		try
+		{
+			v = h.connect().trim();
+			result = gson.fromJson(v, new TypeToken<JsonResult<IUser>>()
+			{
+			}.getType());
+			if(log.isDebugEnabled())
+			{
+				log.debug("getUserUserinfo:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("getUserUserinfo:url=" + h.getUrl() + ", json:" + v);
+		}
+		return result;
 	}
 }

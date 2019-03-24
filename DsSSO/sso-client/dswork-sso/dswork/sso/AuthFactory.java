@@ -48,7 +48,19 @@ public class AuthFactory
 	
 	public static HttpUtil getAppHttp(String path)
 	{
-		return AuthGlobal.getHttp(path).addForm("access_token", AuthGlobal.getAccessToken());
+		String token = AuthGlobal.getAccessToken();
+		if(!AuthGlobal.getInitAccessToken())
+		{
+			if(token.length() > 0)
+			{
+				log.warn("sso.initAccessToken=false");
+			}
+			else
+			{
+				log.error("sso.initAccessToken=false");
+			}
+		}
+		return AuthGlobal.getHttp(path).addForm("access_token", token);
 	}
 
 	public static HttpUtil getSystemHttp(String path)
@@ -66,25 +78,7 @@ public class AuthFactory
 	 */
 	public static JsonResult<AccessToken> getUserAccessToken(String code)
 	{
-		HttpUtil h = AuthGlobal.getHttp("/user/access_token").addForm("appsecret", AuthGlobal.getAppSecret()).addForm("grant_type", "authorization_code").addForm("code", code);
-		JsonResult<AccessToken> result = null;
-		String v = "";
-		try
-		{
-			v = h.connect().trim();
-			result = AuthGlobal.gson.fromJson(v, new TypeToken<JsonResult<AccessToken>>()
-			{
-			}.getType());
-			if(log.isDebugEnabled())
-			{
-				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-			}
-		}
-		catch(Exception e)
-		{
-			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-		}
-		return result;
+		return AuthGlobal.getUserAccessToken(code);
 	}
 
 	/**
@@ -95,25 +89,7 @@ public class AuthFactory
 	 */
 	public static JsonResult<String> getUserAuthToken(String openid, String access_token)
 	{
-		HttpUtil h = AuthGlobal.getHttp("/user/auth_token").addForm("openid", openid).addForm("access_token", access_token);
-		JsonResult<String> result = null;
-		String v = "";
-		try
-		{
-			v = h.connect().trim();
-			result = AuthGlobal.gson.fromJson(v, new TypeToken<JsonResult<IUser>>()
-			{
-			}.getType());
-			if(log.isDebugEnabled())
-			{
-				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-			}
-		}
-		catch(Exception e)
-		{
-			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-		}
-		return result;
+		return AuthGlobal.getUserAuthToken(openid, access_token);
 	}
 
 	/**
@@ -124,25 +100,7 @@ public class AuthFactory
 	 */
 	public static JsonResult<IUser> getUserUserinfo(String openid, String access_token)
 	{
-		HttpUtil h = AuthGlobal.getHttp("/user/userinfo").addForm("openid", openid).addForm("access_token", access_token);
-		JsonResult<IUser> result = null;
-		String v = "";
-		try
-		{
-			v = h.connect().trim();
-			result = AuthGlobal.gson.fromJson(v, new TypeToken<JsonResult<IUser>>()
-			{
-			}.getType());
-			if(log.isDebugEnabled())
-			{
-				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-			}
-		}
-		catch(Exception e)
-		{
-			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-		}
-		return result;
+		return AuthGlobal.getUserUserinfo(openid, access_token);
 	}
 
 	/**

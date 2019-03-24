@@ -118,7 +118,8 @@ public class AuthWebConfig
 			try{if(stream != null) {stream.close();}}catch(Exception ioe){}
 		}
 		
-		AuthGlobal.initConfig(str(C, "sso.appid", null), str(C, "sso.appsecret", null), str(C, "sso.apiURL", null));// 初始化全局设置
+		boolean initAccessToken = !"false".equals(String.valueOf(str(C, "sso.initAccessToken", null)));
+		AuthGlobal.initConfig(str(C, "sso.appid", null), str(C, "sso.appsecret", null), str(C, "sso.apiURL", null), initAccessToken);// 初始化全局设置
 
 		String webURL = str(C, "sso.webURL", null);
 		String sLogin = str(C, "sso.system.loginURL", null);
