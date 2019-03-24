@@ -1,0 +1,94 @@
+2019-03-24
+	新版dswork-sso.jar
+	
+	参数说明，有默认值的均可根据实际情况不配置：
+		dswork.sso.AuthGlobal 核心参数
+		
+			sso.appid=                              应用ID，或使用参数名：sso.appID
+			sso.appsecret=                          应用密钥， 或使用参数名：sso.appSecret
+			sso.apiURL=http://127.0.0.1:8888/sso    sso后端调用地址，默认值：http://127.0.0.1:8888/sso
+			sso.initAccessToken=true                是否初始应用access_token，不需要则配置为false，默认值：true
+			
+		dswork.sso.AuthFactory 扩展参数，依赖核心参数
+		
+			sso.webURL=/sso                         前端访问地址，默认值：/sso
+			sso.system.loginURL=/sso/user/authorize 自定义登录地址，默认值：${sso.webURL}/user/authorize
+			sso.system.redirectURI=                 重定向地址，如果配置了，登录后只会返回到此地址，默认值：空字符串
+			sso.system.webURL=contentPath           本系统访问根地址，含contextPath，默认值：contentPath
+			sso.system.alias=                       系统标识，如果不需要用到应用系统及权限相关信息，可不配置
+			sso.system.password=                    系统密钥，如果不需要用到应用系统及权限相关信息，可不配置
+			sso.system.ignoreURL=/sso/              不拦截的相对地址前缀，不含ContextPath，以逗号“,”分隔，默认值：无，但会再配置基础上增加：/sso/
+	
+
+
+一、加入dswork.sso.jar文件（需要slf4j-api的支持，需要gson2.3.1 - gson2.8.5支持）
+
+
+
+二、初始化配置
+	非web项目，仅需要调用dswork.sso.AuthGlobal.initConfig方法，即可使用该类提供的基本接口
+	web项目，配置sso.properties文件位置，文件内容使用参数说明，配置可在web.xml或全局ServletContext中配置，配置后使用AuthFactory类提供的所有方法
+		<context-param>
+			<param-name>dsworkSSOConfiguration</param-name>
+			<param-value>/config/sso.properties</param-value>
+		</context-param>
+
+
+
+	需要在web.xml中增加以下配置，并且需要sso的应用支持，需要开启metadata-complete="false"
+		<filter>
+			<filter-name>websso</filter-name>
+			<filter-class>dswork.sso.WebFilter</filter-class>
+		</filter>
+		<filter-mapping><filter-name>websso</filter-name><url-pattern>/manage/*</url-pattern></filter-mapping>
+	
+	
+	
+	如果不开启metadata-complete="false"，则还需要手动配置以下三个servlet，其中SSOLoginServlet为必须，否则无法登录
+	
+		<servlet><servlet-name>SSOLoginServlet</servlet-name><servlet-class>dswork.sso.SSOLoginServlet</servlet-class></servlet>
+		<servlet-mapping><servlet-name>SSOLoginServlet</servlet-name><url-pattern>/sso/login</url-pattern></servlet-mapping>
+		
+		<servlet><servlet-name>SSOLogoutServlet</servlet-name><servlet-class>dswork.sso.SSOLogoutServlet</servlet-class></servlet>
+		<servlet-mapping><servlet-name>SSOLogoutServlet</servlet-name><url-pattern>/sso/logout</url-pattern></servlet-mapping>
+		
+		<servlet><servlet-name>SSOMenuServlet</servlet-name><servlet-class>dswork.sso.SSOMenuServlet</servlet-class></servlet>
+		<servlet-mapping><servlet-name>SSOMenuServlet</servlet-name><url-pattern>/sso/menu</url-pattern></servlet-mapping>
+
+
+
+三、如果需要，加入dswork.sso.authfilter.jar文件（需要【一、二】的支持，适用于在统一认证平台上，配置是以URI地址作为资源管理的，可用uri作为权限拦截的系统）
+		refreshTime   #系统的全部权限缓存更新间隔，单位毫秒
+		forbiddenPage #无权访问时跳转的地址
+		ignorePage    #逗号隔开不需要权限过滤的页面
+		fixSuffix     #逗号隔开需要进行权限过滤的后缀，不配置则默认全部
+		checkParam    #是否开启参数进行权限配置，false则不过滤参数
+	需要在web.xml中增加以下配置，其中/p/*为需要处理权限验证的地址
+		<filter>
+			<filter-name>DsworkCasAuthFilter</filter-name>
+			<filter-class>dswork.sso.AuthFilter</filter-class>
+			<init-param>
+				<param-name>refreshTime</param-name>
+				<param-value>3600000</param-value>
+			</init-param>
+			<init-param>
+				<param-name>forbiddenPage</param-name>
+				<param-value>/50x.jsp</param-value>
+			</init-param>
+			<init-param>
+				<param-name>ignorePage</param-name>
+				<param-value>/menu.jsp,/m.jsp,/index.jsp,/manage/login.htm</param-value>
+			</init-param>
+			<init-param>
+				<param-name>fixSuffix</param-name>
+				<param-value>jsp,htm</param-value>
+			</init-param>
+			<init-param>
+				<param-name>checkParam</param-name>
+				<param-value>false</param-value>
+			</init-param>
+		</filter>
+		<filter-mapping>
+			<filter-name>DsworkCasAuthFilter</filter-name>
+			<url-pattern>/p/*</url-pattern>
+		</filter-mapping>
