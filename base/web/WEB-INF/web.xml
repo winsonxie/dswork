@@ -9,12 +9,13 @@
 	<session-config><session-timeout>120</session-timeout></session-config>
 	<welcome-file-list><welcome-file>index.jsp</welcome-file></welcome-file-list>
 
-<!-- 	<filter> -->
-<!-- 		<filter-name>websso</filter-name> -->
-<!-- 		<filter-class>dswork.sso.WebFilter</filter-class> -->
-<!-- 	</filter> -->
-<!-- 	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/*</url-pattern></filter-mapping> -->
-<!-- 	<filter-mapping><filter-name>websso</filter-name><url-pattern>/index.jsp</url-pattern></filter-mapping> -->
+	<filter>
+		<filter-name>websso</filter-name>
+		<filter-class>dswork.sso.WebFilter</filter-class>
+	</filter>
+	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/*</url-pattern></filter-mapping>
+	<filter-mapping><filter-name>websso</filter-name><url-pattern>/index.jsp</url-pattern></filter-mapping>
+	
 <!--
 	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/base/dict/*</url-pattern></filter-mapping>
 	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/base/flow/*</url-pattern></filter-mapping>
