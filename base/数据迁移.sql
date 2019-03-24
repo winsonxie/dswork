@@ -253,7 +253,7 @@ update DS_BASE_SYSTEM set MENUURL=concat(ROOTURL, '/sso/menu') where length(ROOT
 INSERT INTO DS_BASE_FUNC (
        ID,PID,SYSTEMID,NAME,ALIAS,        URI,                           IMG,STATUS,SEQ,MEMO,RESOURCES)
 SELECT ID,PID,SYSTEMID,NAME,ALIAS,replace(URI,'/ds/common/','/ds/base/'),IMG,STATUS,SEQ,MEMO,replace(RESOURCES,'/ds/common/','/ds/base/') from DS_COMMON_FUNC;
-
+update DS_BASE_FUNC set URI=replace(URI,'getCommonLogin.jsp','getBaseLogin.jsp') where URI like '%/ds/base/log/getCommonLogin.jsp';
 
 INSERT INTO DS_BASE_ROLE (
        ID,PID,SYSTEMID,NAME,SEQ,MEMO)
