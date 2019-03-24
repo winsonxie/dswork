@@ -1,6 +1,6 @@
 ﻿<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%
 session.removeAttribute(dswork.sso.WebFilter.LOGINER);
-Cookie cookie = new Cookie(dswork.sso.WebFilter.SSOTICKET, user.getSsoticket());
+Cookie cookie = new Cookie(dswork.sso.WebFilter.SSOTICKET, "");
 cookie.setMaxAge(0);
 cookie.setPath("/");
 cookie.setSecure(false);
