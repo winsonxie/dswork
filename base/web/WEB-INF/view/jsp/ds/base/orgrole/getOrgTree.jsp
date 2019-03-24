@@ -20,7 +20,7 @@ $dswork.ztree.click = function(){
 $dswork.ztree.root.name = "组织机构";
 $dswork.ztree.root.id = ${po.id};
 $dswork.ztree.root.status = ${po.status};
-$dswork.ztree.url = function(treeNode){return "${ctx}/base/share/getJsonOrg.htm?pid=" + treeNode.id;};
+$dswork.ztree.url = function(treeNode){return "${ctx}/common/share/getJsonOrg.htm?pid=" + treeNode.id;};
 $dswork.ztree.root.iconSkin = "groups";
 $dswork.ztree.dataFilter = function (treeId, parentNode, data){
 	if(data){for(var i = 0;i < data.length;i++){

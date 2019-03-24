@@ -140,7 +140,7 @@ function uploadFile(row){
 	})
 }
 function loaddata(name, value, objectid, type, ename){
-	$.post("${ctx}/base/share/getJsonDict.htm",{name:name, value:value},function(data){
+	$.post("${ctx}/common/share/getJsonDict.htm",{name:name, value:value},function(data){
 		var a = eval(data);
 		var s = $("#" + objectid);
 		if(type == "checkbox" || type == "radio"){
