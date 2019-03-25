@@ -123,8 +123,8 @@ public abstract class MyDataService<T, PK extends Serializable>
 	{
 		PageRequest pageRequest = new PageRequest();
 		pageRequest.setFilters(map);
-		pageRequest.setCurrentPage(currentPage);
-		pageRequest.setPageSize(pageSize);
+		pageRequest.setPage(currentPage);
+		pageRequest.setPagesize(pageSize);
 		Page<T> page = getMyEntityDao().queryPage(getSqlNamespace() + ".query", pageRequest, getSqlNamespace() + ".queryCount", pageRequest);
 		return page;
 	}

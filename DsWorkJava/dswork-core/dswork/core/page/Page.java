@@ -65,9 +65,10 @@ public class Page<T> implements Serializable
 	}
 
 	/**
-	 * 取得当前页页码
+	 * 取得当前页页码getPage
 	 * @return int
 	 */
+	@Deprecated
 	public int getCurrentPage()
 	{
 		return page;
@@ -83,9 +84,10 @@ public class Page<T> implements Serializable
 	}
 
 	/**
-	 * 取得一页显示的条数
+	 * 取得一页显示的条数getPagesize
 	 * @return int
 	 */
+	@Deprecated
 	public int getPageSize()
 	{
 		return pagesize;
@@ -123,9 +125,10 @@ public class Page<T> implements Serializable
 	}
 
 	/**
-	 * 取得数据总页数
+	 * 取得数据总页数getTotalpage
 	 * @return int
 	 */
+	@Deprecated
 	public int getTotalPage()
 	{
 		int lastPage = totalsize % pagesize == 0 ? totalsize / pagesize : totalsize / pagesize + 1;

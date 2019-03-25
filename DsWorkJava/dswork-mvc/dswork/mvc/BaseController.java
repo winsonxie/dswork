@@ -84,7 +84,7 @@ public class BaseController
 		{
 			pagesize = 10;
 		}
-		pagesize = req.getInt("pageSize", pagesize);
+		pagesize = req.getInt("pagesize", req.getInt("pageSize", pagesize));
 		session.setAttribute(PageSize_SessionName, pagesize);
 		pr.setPageSize(pagesize);
 		return pr;

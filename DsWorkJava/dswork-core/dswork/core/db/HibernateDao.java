@@ -101,8 +101,8 @@ public abstract class HibernateDao extends HibernateDaoSupport
 	 */
 	protected List queryList(Criteria criteria, PageRequest pageRequest)
 	{
-		int first = (pageRequest.getCurrentPage() - 1) * pageRequest.getPageSize();
-		List results = criteria.setProjection(null).setFirstResult(first).setMaxResults(pageRequest.getPageSize()).list();
+		int first = (pageRequest.getPage() - 1) * pageRequest.getPagesize();
+		List results = criteria.setProjection(null).setFirstResult(first).setMaxResults(pageRequest.getPagesize()).list();
 		return results;
 	}
 
@@ -128,7 +128,7 @@ public abstract class HibernateDao extends HibernateDaoSupport
 					query.setParameter(i, values[i]);
 				}
 				int totalCount = HibernateDao.queryCountProcess(query.uniqueResult());
-				Page page = new Page(pageRequest.getCurrentPage(), pageRequest.getPageSize(), totalCount);
+				Page page = new Page(pageRequest.getPage(), pageRequest.getPagesize(), totalCount);
 				query = session.createQuery(hql);
 				for(int i = 0; i < values.length; i++)
 				{
@@ -158,7 +158,7 @@ public abstract class HibernateDao extends HibernateDaoSupport
 	protected Page queryPage(Criteria criteria, PageRequest pageRequest)
 	{
 		int totalCount = HibernateDao.queryCountProcess(criteria.setProjection(Projections.rowCount()).uniqueResult());
-		Page page = new Page(pageRequest.getCurrentPage(), pageRequest.getPageSize(), totalCount);
+		Page page = new Page(pageRequest.getPage(), pageRequest.getPagesize(), totalCount);
 		int index = (page.getPage() - 1) * page.getPagesize();
 		List results = criteria.setProjection(null).setFirstResult(index).setMaxResults(page.getPagesize()).list();
 		page.setResult(results);

@@ -151,7 +151,7 @@ public abstract class MyDataDao extends DaoSupport
 	{
 		if(DataSourceHolder.isNull()){DataSourceHolder.setSlave();}// 没有设置默认使用从库数据源
 		int totalCount = queryCount(statementNameCount, pageRequestCount);
-		Page page = new Page(pageRequest.getCurrentPage(), pageRequest.getPageSize(), totalCount);
+		Page page = new Page(pageRequest.getPage(), pageRequest.getPagesize(), totalCount);
 		// if(page.getTotalCount() <= 0){page.setResult(new ArrayList(0));}else{}//没数据的话不影响性能，而实际上又不可能没有数据
 		int index = (page.getPage() - 1) * page.getPagesize();
 		List list = getSqlSessionTemplate().selectList(statementName, pageRequest.getFilters(), new RowBounds(index, page.getPagesize()));

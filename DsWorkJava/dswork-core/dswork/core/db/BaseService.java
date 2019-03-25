@@ -108,19 +108,19 @@ public abstract class BaseService<T, PK extends Serializable>
 
 	/**
 	 * 得到分页模型
-	 * @param currentPage 当前页码
-	 * @param pageSize 一页显示的条数
+	 * @param page 当前页码
+	 * @param pagesize 一页显示的条数
 	 * @param map 查询参数和条件数据
 	 * @return Page
 	 */
-	public Page<T> queryPage(int currentPage, int pageSize, Map map)
+	public Page<T> queryPage(int page, int pagesize, Map map)
 	{
 		PageRequest request = new PageRequest();
 		request.setFilters(map);
-		request.setCurrentPage(currentPage);
-		request.setPageSize(pageSize);
-		Page<T> page = getEntityDao().queryPage(request);
-		return page;
+		request.setPage(page);
+		request.setPagesize(pagesize);
+		Page<T> pageModel = getEntityDao().queryPage(request);
+		return pageModel;
 	}
 
 	/**

@@ -11,10 +11,10 @@ public class PageRequest implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	private Map<String, Object> filters = null;
-	private int currentPage;
-	private int pageSize;
-	private String pageName = "page";
-	private String pageSizeName = "pageSize";
+	private int page;
+	private int pagesize;
+	//private String pageName = "page";
+	//private String pageSizeName = "pageSize";
 
 	/**
 	 * 构造函数
@@ -35,24 +35,24 @@ public class PageRequest implements Serializable
 
 	/**
 	 * 构造函数
-	 * @param currentPage 当前页码
-	 * @param pageSize 一页显示的条数
+	 * @param page 当前页码
+	 * @param pagesize 一页显示的条数
 	 */
-	public PageRequest(int currentPage, int pageSize)
+	public PageRequest(int page, int pagesize)
 	{
-		this(currentPage, pageSize, null);
+		this(page, pagesize, null);
 	}
 
 	/**
 	 * 构造函数
-	 * @param currentPage 当前页码
-	 * @param pageSize 一页显示的条数
+	 * @param page 当前页码
+	 * @param pagesize 一页显示的条数
 	 * @param filters 条件
 	 */
-	public PageRequest(int currentPage, int pageSize, Map<String, Object> filters)
+	public PageRequest(int page, int pagesize, Map<String, Object> filters)
 	{
-		setCurrentPage(currentPage);
-		setPageSize(pageSize);
+		setPage(page);
+		setPagesize(pagesize);
 		setFilters(filters);
 	}
 
@@ -60,18 +60,38 @@ public class PageRequest implements Serializable
 	 * 取得当前页
 	 * @return int
 	 */
+	public int getPage()
+	{
+		return page;
+	}
+
+	/**
+	 * 取得当前页getPage
+	 * @return int
+	 */
+	@Deprecated
 	public int getCurrentPage()
 	{
-		return currentPage;
+		return getPage();
 	}
 
 	/**
 	 * 设置当前页
 	 * @param currentPage int
 	 */
-	public void setCurrentPage(int currentPage)
+	public void setPage(int page)
 	{
-		this.currentPage = currentPage < 0 ? 1 : currentPage;
+		this.page = page < 0 ? 1 : page;
+	}
+
+	/**
+	 * 设置当前页setPage
+	 * @param page int
+	 */
+	@Deprecated
+	public void setCurrentPage(int page)
+	{
+		setPage(page);
 	}
 
 	/**
@@ -91,58 +111,78 @@ public class PageRequest implements Serializable
 	{
 		this.filters = filters;
 	}
-
-	/**
-	 * 取得当前页码的参数名
-	 * @return String，默认值是page
-	 */
-	public String getPageName()
-	{
-		return String.valueOf(pageName);
-	}
-
-	/**
-	 * 设置当前页码的参数名
-	 * @param pageName 默认值是page
-	 */
-	public void setPageName(String pageName)
-	{
-		this.pageName = pageName;
-	}
+//
+//	/**
+//	 * 取得当前页码的参数名
+//	 * @return String，默认值是page
+//	 */
+//	public String getPageName()
+//	{
+//		return String.valueOf(pageName);
+//	}
+//
+//	/**
+//	 * 设置当前页码的参数名
+//	 * @param pageName 默认值是page
+//	 */
+//	public void setPageName(String pageName)
+//	{
+//		this.pageName = pageName;
+//	}
 
 	/**
 	 * 取得一页显示的条数
 	 * @return int
 	 */
+	public int getPagesize()
+	{
+		return pagesize;
+	}
+
+	/**
+	 * 取得一页显示的条数getPagesize()
+	 * @return int
+	 */
+	@Deprecated
 	public int getPageSize()
 	{
-		return pageSize;
+		return getPagesize();
 	}
 
 	/**
 	 * 设置一页显示的条数
-	 * @param pageSize int
+	 * @param pagesize int
 	 */
-	public void setPageSize(int pageSize)
+	public void setPagesize(int pagesize)
 	{
-		this.pageSize = pageSize < 0 ? 10 : pageSize;
+		this.pagesize = pagesize < 0 ? 10 : pagesize;
 	}
 
 	/**
-	 * 取得一页显示的条数的参数名
-	 * @return String，默认值是pageSize
+	 * 设置一页显示的条数setPagesize
+	 * @param pagesize int
 	 */
-	public String getPageSizeName()
+	@Deprecated
+	public void setPageSize(int pagesize)
 	{
-		return String.valueOf(pageSizeName);
+		setPagesize(pagesize);
 	}
 
-	/**
-	 * 设置一页显示的条数的参数名
-	 * @param pageSizeName 默认值是pageSize
-	 */
-	public void setPageSizeName(String pageSizeName)
-	{
-		this.pageSizeName = pageSizeName;
-	}
+//	/**
+//	 * 取得一页显示的条数的参数名
+//	 * @return String，默认值是pageSize
+//	 */
+//	public String getPageSizeName()
+//	{
+//		return String.valueOf(pageSizeName);
+//	}
+//
+//	/**
+//	 * 设置一页显示的条数的参数名
+//	 * @param pageSizeName 默认值是pageSize
+//	 */
+//	public void setPageSizeName(String pageSizeName)
+//	{
+//		this.pageSizeName = pageSizeName;
+//	}
 }
