@@ -38,7 +38,10 @@ public class DsCommonDaoCommonIFlow extends MyBatisDao
 	
 	public void setSqlSessionTemplateCommon(SqlSessionTemplate sqlSessionTemplate)
 	{
-		System.out.println("======== DsCommonDaoCommonIFlow call setSqlSessionTemplateCommon ========");
+		if(log.isInfoEnabled())
+		{
+			log.info("======== DsCommonDaoCommonIFlow call setSqlSessionTemplateCommon ========");
+		}
 		hasCommon = true;
 		this.sqlSessionTemplateCommon = sqlSessionTemplate;
 	}

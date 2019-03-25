@@ -32,7 +32,10 @@ public class DsCommonDaoCommonIOrg extends MyBatisDao
 	
 	public void setSqlSessionTemplateCommon(SqlSessionTemplate sqlSessionTemplate)
 	{
-		System.out.println("======== DsCommonDaoCommonIOrg call setSqlSessionTemplateCommon ========");
+		if(log.isInfoEnabled())
+		{
+			log.info("======== DsCommonDaoCommonIOrg call setSqlSessionTemplateCommon ========");
+		}
 		hasCommon = true;
 		this.sqlSessionTemplateCommon = sqlSessionTemplate;
 	}
