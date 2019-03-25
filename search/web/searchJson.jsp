@@ -29,8 +29,8 @@ try
 	map.put("status", "1");//success
 	map.put("msg", "success");
 	
-	map.put("size", pageModel.getTotalCount());
-	map.put("page", pageModel.getCurrentPage());
+	map.put("size", pageModel.getTotalSize());
+	map.put("page", pageModel.getPage());
 	map.put("pagesize", pageModel.getPageSize());
 	
 	map.put("totalpage", pageModel.getTotalPage());

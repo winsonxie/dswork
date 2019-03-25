@@ -10,51 +10,51 @@ import java.util.List;
 public class MyPage
 {
 	private List<MyDocument> result = new ArrayList<MyDocument>(0);
-	private int pageSize;
-	private int currentPage;
-	private int lastPage;
-	private int totalCount = 0;
-	private int searchSize = 0;
+	private int pagesize;
+	private int page;
+	private int totalpage;
+	private int totalsize = 0;
+	private int searchsize = 0;
 
 	/**
 	 * 构造函数
-	 * @param currentPage 当前页码
-	 * @param pageSize 一页显示的条数
-	 * @param totalCount 数据总条数
-	 * @param searchSize 搜索命中总条数
+	 * @param page 当前页码
+	 * @param pagesize 一页显示的条数
+	 * @param totalsize 数据总条数
+	 * @param searchsize 搜索命中总条数
 	 */
-	public MyPage(int currentPage, int pageSize, int totalCount, int searchSize)
+	public MyPage(int page, int pagesize, int totalsize, int searchsize)
 	{
-		if(pageSize <= 0)
+		if(pagesize <= 0)
 		{
-			throw new IllegalArgumentException("[pageSize] must great than zero");
+			throw new IllegalArgumentException("[pagesize] must great than zero");
 		}
-		this.lastPage = totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1;
-		if(this.lastPage < 1)
+		if(page <= 1)
 		{
-			this.lastPage = 1;
+			page = 1;
 		}
-		this.pageSize = pageSize;
-		if(currentPage <= 1)
+		this.page = page;
+		this.totalsize = totalsize;
+		this.pagesize = pagesize;
+		this.totalpage = totalsize % pagesize == 0 ? totalsize / pagesize : totalsize / pagesize + 1;
+		if(this.totalpage < 1)
 		{
-			currentPage = 1;
+			this.totalpage = 1;
 		}
-		else if(Integer.MAX_VALUE == currentPage || currentPage > this.lastPage)
+		if(page > 1 && (Integer.MAX_VALUE == page || page > this.totalpage))
 		{
-			currentPage = this.lastPage;
+			this.page = this.totalpage;
 		}
-		this.searchSize = searchSize;
-		this.currentPage = currentPage;
-		this.totalCount = totalCount;
+		this.searchsize = searchsize;
 	}
 
 	/**
 	 * 取得当前页页码
 	 * @return int
 	 */
-	public int getCurrentPage()
+	public int getPage()
 	{
-		return currentPage;
+		return page;
 	}
 
 	/**
@@ -63,11 +63,11 @@ public class MyPage
 	 */
 	public int getFirstResultIndex()
 	{
-		if (pageSize <= 0)
+		if (pagesize <= 0)
 		{
-			throw new IllegalArgumentException("[pageSize] must great than zero");
+			throw new IllegalArgumentException("[pagesize] must great than zero");
 		}
-		return (currentPage - 1) * pageSize;
+		return (page - 1) * pagesize;
 	}
 	
 	/**
@@ -76,7 +76,7 @@ public class MyPage
 	 */
 	public int getLastPage()
 	{
-		return lastPage;
+		return totalpage;
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class MyPage
 	 */
 	public int getNextPage()
 	{
-		return currentPage + 1;
+		return page + 1;
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class MyPage
 	 */
 	public int getPageSize()
 	{
-		return pageSize;
+		return pagesize;
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class MyPage
 	 */
 	public int getPreviousPage()
 	{
-		return currentPage - 1;
+		return page - 1;
 	}
 
 	/**
@@ -134,16 +134,16 @@ public class MyPage
 	 */
 	public int getSearchSize()
 	{
-		return searchSize <= 0 ? 0 : searchSize;
+		return searchsize <= 0 ? 0 : searchsize;
 	}
 
 	/**
 	 * 取得数据总条数，0表示没有数据
 	 * @return int
 	 */
-	public int getTotalCount()
+	public int getTotalSize()
 	{
-		return totalCount;
+		return totalsize;
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class MyPage
 	 */
 	public int getTotalPage()
 	{
-		return lastPage;
+		return totalpage;
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class MyPage
 	 */
 	public boolean isFirstPage()
 	{
-		return currentPage == 1;
+		return page == 1;
 	}
 
 	/**
@@ -170,7 +170,7 @@ public class MyPage
 	 */
 	public boolean isHasNextPage()
 	{
-		return lastPage > currentPage;
+		return totalpage > page;
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class MyPage
 	 */
 	public boolean isHasPreviousPage()
 	{
-		return currentPage > 1;
+		return page > 1;
 	}
 
 	/**
@@ -188,6 +188,6 @@ public class MyPage
 	 */
 	public boolean isLastPage()
 	{
-		return currentPage >= lastPage;
+		return page >= totalpage;
 	}
 }
