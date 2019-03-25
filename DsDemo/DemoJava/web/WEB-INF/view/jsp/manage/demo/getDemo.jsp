@@ -10,15 +10,15 @@
 // 扩展菜单写法
 $dswork.page.join = function(td, menu, id){
 	$(menu).append($('<div iconCls="menuTool-user">自定义</div>').bind("click", function(){
-		location.href = "getDemoById.htm?page=${pageModel.currentPage}&keyIndex=" + id;
+		location.href = "getDemoById.htm?page=${pageModel.page}&keyIndex=" + id;
 	}));
 };
 $(function(){
-	$dswork.page.menu("delDemo.htm", "updDemo1.htm", "getDemoById.htm", "${pageModel.currentPage}");
+	$dswork.page.menu("delDemo.htm", "updDemo1.htm", "getDemoById.htm", "${pageModel.page}");
 });
 $dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.type == 1){
-	location.href = "getDemo.htm?page=${pageModel.currentPage}";
+	location.href = "getDemo.htm?page=${pageModel.page}";
 }};
 </script>
 </head> 
@@ -27,7 +27,7 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 	<tr>
 		<td class="title">样例列表</td>
 		<td class="menuTool">
-			<a class="insert" href="addDemo1.htm?page=${pageModel.currentPage}">添加</a>
+			<a class="insert" href="addDemo1.htm?page=${pageModel.page}">添加</a>
 			<a class="delete" id="listFormDelAll" href="#">删除所选</a>
 		</td>
 	</tr>
@@ -70,7 +70,7 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 	</tr>
 </c:forEach>
 </table>
-<input name="page" type="hidden" value="${pageModel.currentPage}" />
+<input name="page" type="hidden" value="${pageModel.page}" />
 </form>
 <table border="0" cellspacing="0" cellpadding="0" class="bottomTable">
 	<tr><td>${pageNav.page}</td></tr>
