@@ -130,27 +130,27 @@ public class DsBaseExUserService extends BaseService<DsBaseUser, java.lang.Long>
 			map.put(org.getId(), org);
 		}
 
-		int currentPage = pr.getCurrentPage();
-		int pageSize = pr.getPageSize();
-		int firstResultIndex = (currentPage - 1) * pageSize;
-		int lastResultIndex = (currentPage) * pageSize;
+		int page = pr.getPage();
+		int pagesize = pr.getPagesize();
+		int firstResultIndex = (page - 1) * pagesize;
+		int lastResultIndex = (page) * pagesize;
 
-		int count = 0;
+		int totalsize = 0;
 		List<DsBaseUser> result = new ArrayList<DsBaseUser>();
 		for(DsBaseUser u : rawList)
 		{
 			if(map.get(u.getOrgpid()) != null)
 			{
-				count++;
-				if(firstResultIndex < count && count <= lastResultIndex)
+				totalsize++;
+				if(firstResultIndex < totalsize && totalsize <= lastResultIndex)
 				{
 					result.add(u);
 				}
 			}
 		}
-		Page page = new Page(currentPage, pageSize, count);
-		page.setResult(result);
-		return page;
+		Page pageModel = new Page(page, pagesize, totalsize);
+		pageModel.setResult(result);
+		return pageModel;
 	}
 
 	public DsBaseOrg getOrg(Long id)

@@ -41,7 +41,7 @@ public PageRequest getPageRequest(HttpServletRequest request)
 	MyRequest req = new MyRequest(request);
 	PageRequest pr = new PageRequest();
 	pr.setFilters(req.getParameterValueMap(false, false));
-	pr.setCurrentPage(req.getInt("page", 1));
+	pr.setPage(req.getInt("page", 1));
 	try
 	{
 		pagesize = Integer.parseInt(String.valueOf(request.getSession().getAttribute("dswork_session_pagesize")).trim());
@@ -52,7 +52,7 @@ public PageRequest getPageRequest(HttpServletRequest request)
 	}
 	pagesize = req.getInt("pageSize", pagesize);
 	request.getSession().setAttribute("dswork_session_pagesize", pagesize);
-	pr.setPageSize(pagesize);
+	pr.setPagesize(pagesize);
 	return pr;
 }
 %><%
