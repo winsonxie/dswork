@@ -208,11 +208,23 @@ public class AuthWebConfig
 		}
 		if(ssoticket != null && ssoticket.length() > 10)
 		{
-			String[] arr = ssoticket.split("-", 2);
-			if(arr.length == 2)
+			if(ssoticket.startsWith("-"))
 			{
-				arr = new String[]{arr[0], arr[1], ssoticket};
-				return arr;
+				String[] arr = ssoticket.substring(1).split("-", 2);
+				if(arr.length == 2)
+				{
+					arr = new String[]{"-" + arr[0], arr[1], ssoticket};
+					return arr;
+				}
+			}
+			else
+			{
+				String[] arr = ssoticket.split("-", 2);
+				if(arr.length == 2)
+				{
+					arr = new String[]{arr[0], arr[1], ssoticket};
+					return arr;
+				}
 			}
 		}
 		return null;
