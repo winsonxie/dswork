@@ -129,8 +129,8 @@ public class AuthWebConfig
 		{
 			sWeb = context.getContextPath();
 		}
-		String sAlias = str(C, "sso.systemAlias", "sso.ssoName");
-		String sPassword = str(C, "sso.systemPassword", "sso.ssoPassword");
+		String sAlias = str(C, "sso.system.alias", "sso.ssoName");
+		String sPassword = str(C, "sso.system.password", "sso.ssoPassword");
 		initSystemConfig(webURL, sLogin, sRedirect, sWeb, sAlias, sPassword);
 		
 		String ignoreURL = str(C, "sso.system.ignoreURL", null);
