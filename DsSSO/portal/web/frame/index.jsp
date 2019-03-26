@@ -7,6 +7,10 @@ cookie.setPath("/");
 cookie.setSecure(false);
 cookie.setHttpOnly(true);
 response.addCookie(cookie);
+if(request.getQueryString() != null)
+{
+	response.sendRedirect(path + "/frame/index.jsp");
+}
 %><!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +31,6 @@ response.addCookie(cookie);
 <script type="text/javascript" src="js/jquery.js"></script>
 <script language="javascript">
 if(top.location != this.location){top.location = "<%=path %>/frame/index.jsp";}
-if(this.location != "<%=path %>/frame/index.jsp"){this.location = "<%=path %>/frame/index.jsp";}
 </script>
 </head>
 <body class="easyui-layout" fit="true" style="min-width:380px;">
