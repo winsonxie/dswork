@@ -19,6 +19,9 @@
 	</filter>
 	<filter-mapping><filter-name>websso</filter-name><url-pattern>/frame/*</url-pattern></filter-mapping>
 	
+	<servlet><servlet-name>SSOLoginServlet</servlet-name><servlet-class>dswork.sso.SSOLoginServlet</servlet-class></servlet>
+	<servlet-mapping><servlet-name>SSOLoginServlet</servlet-name><url-pattern>/sso/login</url-pattern></servlet-mapping>
+	
 	<error-page><error-code>400</error-code><location>/50x.jsp</location></error-page>
 	<error-page><error-code>404</error-code><location>/50x.jsp</location></error-page>
 	<error-page><error-code>500</error-code><location>/50x.jsp</location></error-page>
