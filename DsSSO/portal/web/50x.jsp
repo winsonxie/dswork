@@ -16,7 +16,6 @@
 <%}else{%>
 <p>很抱歉，您所要的页面目前无权使用。<br/>请确定您有权访问该页面，或稍后再试。</p>
 <%}%>
-
 <p><em>system administrator.</em></p>
 </body>
 </html>
