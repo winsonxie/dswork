@@ -4,7 +4,7 @@
 	dswork.sso.model.ISystem,
 	dswork.sso.model.IUser"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%><c:set var="ctx" value="${pageContext.request.contextPath}" /><%
-IUser user = WebFilter.getAccount(session);
+IUser user = WebFilter.getLoginer(session);
 ISystem[] arr = AuthFactory.getSystemByUser(user.getAccount());
 %>
 <!--<!DOCTYPE html>-->
