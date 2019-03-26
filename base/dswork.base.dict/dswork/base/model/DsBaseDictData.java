@@ -15,7 +15,7 @@ public class DsBaseDictData
 	private String label = "";
 	// 分组标记
 	private String mark = "";
-	// 层级(dict.level>1时可用)
+	// 层级(任意树形时为0,否则等于节点层级)
 	private Integer level = 0;
 	// 状态(1树叉,0树叶)
 	private Integer status = 0;

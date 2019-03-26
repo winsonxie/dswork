@@ -32,9 +32,10 @@ $dswork.callback = function(){
 		<td>备注</td>
 		<td style="width:8%;">操作</td>
 	</tr>
-	<tr class="list">
-		<td><input type="text" name="alias" datatype=${dict.limitedRule?'"Limit" min="${rule}" max="${rule}"':'"Require"'} value="" /><c:if test="${dict.limitedRule}">
-			<span style="font-weight:bold;">长度必须为${rule}个字符</span></c:if></td>
+	<tr class="list"><c:if test="${dict.limitedRule}">
+		<td><input type="text" name="alias" datatype="Limit" min="${rule}" max="${rule}" value="" />
+			<span style="font-weight:bold;">长度必须为${rule}个字符</span></td></c:if><c:if test="${not dict.limitedRule}">
+		<td><input type="text" name="alias" datatype="Char" value="" /></c:if>
 		<td><input type="text" name="label" datatype="Require" maxlength="100" value="" /></td>
 		<td><input type="text" name="memo" maxlength="100" style="width:100px;" value="" /></td>
 		<td class="menuTool"><a class="insert" onclick="$('#contactTable>tbody').append($('#cloneTable>tbody>tr:eq(0)').clone());" href="#">添加项</a></td>
@@ -46,9 +47,10 @@ $dswork.callback = function(){
 </form>
 <div style="display:none;">
 <table id="cloneTable">
-	<tr class="list">
-		<td><input type="text" name="alias" datatype=${dict.limitedRule?'"Limit" min="${rule}" max="${rule}"':'"Require"'} value="" /><c:if test="${dict.limitedRule}">
-			<span style="font-weight:bold;">长度必须为${rule}个字符</span></c:if></td>
+	<tr class="list"><c:if test="${dict.limitedRule}">
+		<td><input type="text" name="alias" datatype="Limit" min="${rule}" max="${rule}" value="" />
+			<span style="font-weight:bold;">长度必须为${rule}个字符</span></td></c:if><c:if test="${not dict.limitedRule}">
+		<td><input type="text" name="alias" datatype="Char" value="" /></c:if>
 		<td><input type="text" name="label" datatype="Require" maxlength="100" value="" /></td>
 		<td><input type="text" name="memo" maxlength="100" style="width:100px;" value="" /></td>
 		<td><input type="button" class="delete" onclick="$dswork.deleteRow(this)" /></td>

@@ -49,7 +49,7 @@ $(function(){
 	$z.load();
 	$("#menu_refresh").click(function(){$z.refreshNode();$z.hideMenu();});
 	$("#menu_add").click(function(){
-		attachUrl("addDictData1.htm?mark=${fn:escapeXml(param.mark)}dictid=${po.id}&&pid=" + $z.getSelectedNode().id);$z.hideMenu();
+		attachUrl("addDictData1.htm?mark=${fn:escapeXml(param.mark)}&dictid=${po.id}&&pid=" + $z.getSelectedNode().id);$z.hideMenu();
 	});
 	$("#menu_upd").click(function(){
 		attachUrl("updDictData1.htm?mark=${fn:escapeXml(param.mark)}&keyIndex=" + $z.getSelectedNode().id);$z.hideMenu();

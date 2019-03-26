@@ -50,7 +50,7 @@ $("#listFormMoveAll").click(function(){
 	<tr>
 		<td class="title">${fn:escapeXml(po.name)}列表</td>
 		<td class="menuTool">
-			<c:if test="${po.level>1 and po.level>level}"><a class="insert" href="addDictData1.htm?mark=${fn:escapeXml(param.mark)}&dictid=${po.id}&pid=${pid}">添加</a></c:if>
+			<c:if test="${po.level>1 and po.level>=level}"><a class="insert" href="addDictData1.htm?mark=${fn:escapeXml(param.mark)}&dictid=${po.id}&pid=${pid}">添加</a></c:if>
 			<c:if test="${po.level<=1}"><a class="insert" href="addDictData1.htm?mark=${fn:escapeXml(param.mark)}&dictid=${po.id}&pid=${pid}">添加</a></c:if>
 			<a class="sort" href="updDictDataSeq1.htm?dictid=${po.id}&pid=${pid}">排序</a>
 			<c:if test="${po.level==0}"><a class="move" id="listFormMoveAll" href="#">移动所选</a></c:if>

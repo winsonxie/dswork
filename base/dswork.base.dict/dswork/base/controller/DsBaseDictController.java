@@ -154,7 +154,11 @@ public class DsBaseDictController extends BaseController
 		if(po.getLevel() > 1)
 		{
 			DsBaseDictData pNode = service.getData(pid, po.getName());
-			put("level", pNode == null ? 0 : pNode.getLevel() + 1);
+			put("level", pNode == null ? 1 : pNode.getLevel() + 1);
+		}
+		else
+		{
+			put("level", po.getLevel());
 		}
 		put("list", list);
 		put("po", po);
@@ -176,7 +180,7 @@ public class DsBaseDictController extends BaseController
 			if(dict.isLimitedRule())
 			{
 				DsBaseDictData pNode = service.getData(pid, dict.getName());
-				put("rule", dict.getRules()[pNode == null ? 0 : pNode.getLevel() + 1]);
+				put("rule", dict.getRules()[pNode == null ? 0 : pNode.getLevel()]);
 			}
 			return "/ds/base/dict/addDictData.jsp";
 		}
@@ -205,7 +209,7 @@ public class DsBaseDictController extends BaseController
 				int level;
 				if(pNode == null)
 				{
-					level = 0;
+					level = 1;
 				}
 				else if(pNode.getLevel() < dict.getLevel())
 				{
@@ -229,7 +233,7 @@ public class DsBaseDictController extends BaseController
 						{
 							po.setId(pid + aliasArr[i]);
 						}
-						if(aliasArr[i].length() != dict.getRules()[level])
+						if(aliasArr[i].length() != dict.getRules()[level - 1])
 						{
 							v++;
 							s += "," + po.getId() + "编码长度非法";
@@ -266,6 +270,7 @@ public class DsBaseDictController extends BaseController
 					po.setMark(mark);
 					po.setLabel(labelArr[i]);
 					po.setMemo(memoArr[i]);
+					po.setLevel(dict.getLevel());
 					po.setStatus(0);
 					po.setName(dict.getName());
 					po.setPid(pid);
