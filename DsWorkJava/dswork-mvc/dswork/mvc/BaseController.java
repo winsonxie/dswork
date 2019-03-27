@@ -75,7 +75,7 @@ public class BaseController
 		}
 		PageRequest pr = new PageRequest();
 		pr.setFilters(req.getParameterValueMap(false, false));
-		pr.setCurrentPage(req.getInt("page", 1));
+		pr.setPage(req.getInt("page", 1));
 		try
 		{
 			pagesize = Integer.parseInt(String.valueOf(session.getAttribute(PageSize_SessionName)).trim());
@@ -86,7 +86,7 @@ public class BaseController
 		}
 		pagesize = req.getInt("pagesize", req.getInt("pageSize", pagesize));
 		session.setAttribute(PageSize_SessionName, pagesize);
-		pr.setPageSize(pagesize);
+		pr.setPagesize(pagesize);
 		return pr;
 	}
 	
