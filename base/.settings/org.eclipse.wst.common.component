@@ -9,11 +9,11 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.org.role"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.user"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.user.org"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.flow"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.extends"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.single"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.base.table"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-common"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork.flow"/>
 		<property name="context-root" value="dsbase"/>
 		<property name="java-output-path" value="/base/web/WEB-INF/classes"/>
 	</wb-module>

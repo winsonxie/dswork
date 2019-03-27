@@ -1,5 +1,5 @@
 <%@page language="java" pageEncoding="UTF-8"%>
-<%@page import="dswork.base.DsFactory, dswork.web.MyRequest, dswork.base.model.*"%>
+<%@page import="dswork.common.DsFactory, dswork.web.MyRequest, dswork.common.model.*"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
