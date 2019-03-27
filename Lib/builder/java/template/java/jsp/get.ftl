@@ -16,11 +16,11 @@ request.setAttribute("param", map);
 <%@include file="/commons/include/get.jsp"%>
 <script type="text/javascript">
 $(function(){
-	$${frame}.page.menu("del${model}.jsp", "upd${model}1.jsp", "get${model}ById.jsp", "${'$'}{pageModel.currentPage}");
+	$${frame}.page.menu("del${model}.jsp", "upd${model}1.jsp", "get${model}ById.jsp", "${'$'}{pageModel.page}");
 });
 $${frame}.doAjax = true;
 $${frame}.callback = function(){if($${frame}.result.type == 1){
-	location.href = "get${model}.jsp?page=${'$'}{pageModel.currentPage}";
+	location.href = "get${model}.jsp?page=${'$'}{pageModel.page}";
 }};
 </script>
 </head> 
@@ -29,7 +29,7 @@ $${frame}.callback = function(){if($${frame}.result.type == 1){
 	<tr>
 		<td class="title">${table.comment}列表</td>
 		<td class="menuTool">
-			<a class="insert" href="add${model}1.jsp?page=${'$'}{pageModel.currentPage}">添加</a>
+			<a class="insert" href="add${model}1.jsp?page=${'$'}{pageModel.page}">添加</a>
 			<a class="delete" id="listFormDelAll" href="#">删除所选</a>
 		</td>
 	</tr>
@@ -67,7 +67,7 @@ $${frame}.callback = function(){if($${frame}.result.type == 1){
 	</tr>
 </c:forEach>
 </table>
-<input name="page" type="hidden" value="${'$'}{pageModel.currentPage}" />
+<input name="page" type="hidden" value="${'$'}{pageModel.page}" />
 </form>
 <table border="0" cellspacing="0" cellpadding="0" class="bottomTable">
 	<tr><td>${'$'}{pageNav.page}</td></tr>
