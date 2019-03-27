@@ -8,7 +8,7 @@
 <%@include file="/commons/include/get.jsp"%>
 <script type="text/javascript">
 $(function(){
-	$dswork.page.menu("delDict.htm", "updDict1.htm?mark=${fn:escapeXml(param.mark)}&islist=${fn:escapeXml(param.islist)}", "", "${pageModel.currentPage}");
+	$dswork.page.menu("delDict.htm", "updDict1.htm?mark=${fn:escapeXml(param.mark)}&islist=${fn:escapeXml(param.islist)}", "", "${pageModel.page}");
 	$("#dataTable>tbody>tr>td.v").each(function(){try{
 		var v = $(this).text();
 		if(v == "0"){v = "树形集合";}
@@ -30,7 +30,7 @@ $dswork.page.join = function(td, menu, id){
 };
 $dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.type == 1){
-	location.href = "getDict.htm?mark=${fn:escapeXml(param.mark)}&islist=${fn:escapeXml(param.islist)}&page=${pageModel.currentPage}";
+	location.href = "getDict.htm?mark=${fn:escapeXml(param.mark)}&islist=${fn:escapeXml(param.islist)}&page=${pageModel.page}";
 }};
 </script>
 </head> 
@@ -39,7 +39,7 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 	<tr>
 		<td class="title">字典列表</td>
 		<td class="menuTool">
-			<a class="insert" href="addDict1.htm?mark=${fn:escapeXml(param.mark)}&islist=${fn:escapeXml(param.islist)}&page=${pageModel.currentPage}">添加</a>
+			<a class="insert" href="addDict1.htm?mark=${fn:escapeXml(param.mark)}&islist=${fn:escapeXml(param.islist)}&page=${pageModel.page}">添加</a>
 			<a class="delete" id="listFormDelAll" href="#">删除所选</a>
 		</td>
 	</tr>
@@ -77,12 +77,12 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 		<td class="v">${d.level}</td>
 		<td class="menuTool">
 			<a class="graph" onclick="return getDictDataTree('${d.id}');" href="#">设置</a>
-			<a class="update" href="updDict1.htm?mark=${fn:escapeXml(param.mark)}&islist=${fn:escapeXml(param.islist)}&keyIndex=${d.id}&page=${pageModel.currentPage}">修改</a>
+			<a class="update" href="updDict1.htm?mark=${fn:escapeXml(param.mark)}&islist=${fn:escapeXml(param.islist)}&keyIndex=${d.id}&page=${pageModel.page}">修改</a>
 		</td>
 	</tr>
 </c:forEach>
 </table>
-<input name="page" type="hidden" value="${pageModel.currentPage}" />
+<input name="page" type="hidden" value="${pageModel.page}" />
 </form>
 <table border="0" cellspacing="0" cellpadding="0" class="bottomTable">
 	<tr><td>${pageNav.page}</td></tr>
