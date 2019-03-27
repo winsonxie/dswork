@@ -101,7 +101,7 @@ public class SSOMenuServlet extends HttpServlet
 				{
 					for(dswork.sso.model.IFunc m : list)
 					{
-						sb.append(",{id:" + m.getId() + ", pid:" + m.getPid() + ", name:\"" + m.getName() + "\", img:\"\", imgOpen:\"\", url:\"" + m.getUri() + "\"}");
+						sb.append(",{id:" + m.getId() + ", pid:" + m.getPid() + ", name:\"" + String.valueOf(m.getName()).trim().replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\\\\\"") + "\", img:\"\", imgOpen:\"\", url:\"" + m.getUri() + "\"}");
 					}
 					if(list.length > 0)
 					{
@@ -109,7 +109,7 @@ public class SSOMenuServlet extends HttpServlet
 					}
 				}
 			}
-			out.print(jsoncallback + "])");
+			out.print("])");
 		}
 		catch(Exception ex)
 		{

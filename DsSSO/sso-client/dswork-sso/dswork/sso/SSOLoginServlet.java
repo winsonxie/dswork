@@ -10,9 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import dswork.sso.model.AccessToken;
 import dswork.sso.model.IUser;
 import dswork.sso.model.JsonResult;
@@ -22,8 +19,7 @@ public class SSOLoginServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
 	public static final String LOGINER = "sso.web.loginer";
-	static com.google.gson.Gson gson = AuthGlobal.gson;
-	static Logger log = LoggerFactory.getLogger("dswork.sso");
+	static org.slf4j.Logger log = AuthGlobal.log;
 
 	public SSOLoginServlet()
 	{
@@ -93,7 +89,7 @@ public class SSOLoginServlet extends HttpServlet
 		if(user != null)
 		{
 			user.setSsoticket(openid, access_token);
-			session.setAttribute(LOGINER, gson.toJson(user));
+			session.setAttribute(LOGINER, AuthGlobal.gson.toJson(user));
 			return true;
 		}
 		else

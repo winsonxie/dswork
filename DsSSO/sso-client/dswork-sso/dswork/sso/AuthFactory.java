@@ -6,9 +6,6 @@ package dswork.sso;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.gson.reflect.TypeToken;
 
 import dswork.sso.http.HttpUtil;
@@ -23,7 +20,7 @@ import dswork.sso.model.JsonResult;
 public class AuthFactory
 {
 	static String url = "";
-	static Logger log = LoggerFactory.getLogger("dswork.sso");
+	static org.slf4j.Logger log = AuthGlobal.log;
 
 	private AuthFactory()
 	{

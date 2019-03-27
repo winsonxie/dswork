@@ -15,17 +15,15 @@ import javax.servlet.http.HttpSession;
 import dswork.sso.model.IUser;
 import dswork.sso.model.JsonResult;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class WebFilter implements Filter
 {
 	static com.google.gson.Gson gson = AuthGlobal.gson;
-	static Logger log = LoggerFactory.getLogger("dswork.sso");
+	static org.slf4j.Logger log = AuthGlobal.log;
 	
 	private static boolean use = false;// 用于判断是否加载sso模块
 
-	public final static String LOGINER = SSOLoginServlet.LOGINER;
+	public static final String LOGINER = SSOLoginServlet.LOGINER;
+	public static final String SSOTICKET = AuthWebConfig.SSOTICKET;
 
 	public void init(FilterConfig config) throws ServletException
 	{

@@ -67,7 +67,7 @@ public class IFunc implements Serializable
 
 	public void setName(String name)
 	{
-		this.name = String.valueOf(name).trim();
+		this.name = String.valueOf(name).trim().replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\\\\\"");
 	}
 
 	public String getName()
