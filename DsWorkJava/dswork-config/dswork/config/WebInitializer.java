@@ -84,7 +84,7 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 		
 		if(c("jdbc.url"))
 		{
-			spring = ",classpath*:/dswork/config/spring/spring-datasource" + (c("jdbc.read.url")?"-rw.xml":".xml") + spring;
+			spring = ",classpath*:/dswork/config/spring/spring-datasource" + (c("jdbc.read.url")?"-rw.xml":".xml") + ",classpath*:/dswork/config/spring/spring-mybatis.xml,classpath*:/dswork/config/spring/spring-project.xml" + spring;
 		}
 		if(c("jdbc.common.dialect.name"))
 		{
@@ -118,7 +118,7 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 			for(i = 1; i < 6; i++){if(mapperArray[i] != null){context.setInitParameter("dswork3.m" + i, mapperArray[i]);}}
 		}
 		
-		context.setInitParameter("contextConfigLocation", "classpath*:/dswork/config/spring/spring-property.xml,classpath*:/dswork/config/spring/spring-mybatis.xml,classpath*:/dswork/config/spring/spring-project.xml" + spring);
+		context.setInitParameter("contextConfigLocation", "classpath*:/dswork/config/spring/spring-property.xml" + spring);
 		spring = null;
 		
 		String[] mapperArray = {null, null, null, null, null, null};
