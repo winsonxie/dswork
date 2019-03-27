@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app metadata-complete="false">
+<web-app version="3.0" metadata-complete="false">
     <filter>
     	<filter-name>encodingFilter</filter-name>
     	<filter-class>dswork.CharacterEncodingFilter</filter-class>
