@@ -9,7 +9,7 @@
 <script type="text/javascript">
 $dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.type == 1){
-	location.href = "getUser.htm?page=${pageModel.currentPage}";
+	location.href = "getUser.htm?page=${pageModel.page}";
 }};
 $dswork.page.join = function(td, menu, id){
 	$(menu).append($('<div iconCls="menuTool-user">修改密码</div>').bind("click", function(event){
@@ -18,7 +18,7 @@ $dswork.page.join = function(td, menu, id){
 };
 $(function(){
 	try{$("#status").val("${fn:escapeXml(param.status)}");}catch(e){}
-	$dswork.page.menu("delUser.htm", "updUser1.htm", "getUserById.htm", "${pageModel.currentPage}");
+	$dswork.page.menu("delUser.htm", "updUser1.htm", "getUserById.htm", "${pageModel.page}");
 });
 function updStatus(objid, id){
 	var obj = $("#" + objid), o = document.getElementById(objid);
@@ -42,7 +42,7 @@ function updStatus(objid, id){
 	<tr>
 		<td class="title">个人列表</td>
 		<td class="menuTool">
-			<a class="insert" href="addUser1.htm?page=${pageModel.currentPage}">添加</a>
+			<a class="insert" href="addUser1.htm?page=${pageModel.page}">添加</a>
 			<a class="delete" id="listFormDelAll" href="#">删除所选</a>
 		</td>
 	</tr>
@@ -91,7 +91,7 @@ function updStatus(objid, id){
 	</tr>
 </c:forEach>
 </table>
-<input name="page" type="hidden" value="${pageModel.currentPage}" />
+<input name="page" type="hidden" value="${pageModel.page}" />
 </form>
 <table border="0" cellspacing="0" cellpadding="0" class="bottomTable">
 	<tr><td>${pageNav.page}</td></tr>

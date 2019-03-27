@@ -9,14 +9,14 @@
 <script type="text/javascript">
 $dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.type == 1){
-	location.href = "getUser.htm?page=${pageModel.currentPage}&qybm=${qybm}";
+	location.href = "getUser.htm?page=${pageModel.page}&qybm=${qybm}";
 }};
 $dswork.page.join = function(td, menu, id){
 	var usertype  = $(td).attr("usertype");
 	if(usertype == null || typeof(usertype)=="undefined"){return true;}
 	if(usertype != "1"){
 		$(menu).append($('<div iconCls="menuTool-user">删除</div>').bind("click", function(event){
-			if(confirm("确认删除吗？")){$dswork.page.del(event, "delUser.htm", id, "${pageModel.currentPage}", td);}
+			if(confirm("确认删除吗？")){$dswork.page.del(event, "delUser.htm", id, "${pageModel.page}", td);}
 		}));
 		$(menu).append($('<div iconCls="menuTool-user">修改密码</div>').bind("click", function(event){
 			location.href = "updUserPassword1.htm?keyIndex=" + id;
@@ -25,7 +25,7 @@ $dswork.page.join = function(td, menu, id){
 };
 $(function(){
 	try{$("#status").val("${fn:escapeXml(param.status)}");}catch(e){}
-	$dswork.page.menu("", "updUser1.htm", "getUserById.htm", "${pageModel.currentPage}");
+	$dswork.page.menu("", "updUser1.htm", "getUserById.htm", "${pageModel.page}");
 });
 function updStatus(objid, id){
 	var obj = $("#" + objid), o = document.getElementById(objid);
@@ -49,7 +49,7 @@ function updStatus(objid, id){
 	<tr>
 		<td class="title">${ssdw}用户列表</td>
 		<td class="menuTool">
-			<a class="insert" href="addUser1.htm?page=${pageModel.currentPage}">添加</a>
+			<a class="insert" href="addUser1.htm?page=${pageModel.page}">添加</a>
 			<a class="delete" id="listFormDelAll" href="#">删除所选</a>
 		</td>
 	</tr>
@@ -98,7 +98,7 @@ function updStatus(objid, id){
 	</tr>
 </c:forEach>
 </table>
-<input name="page" type="hidden" value="${pageModel.currentPage}" />
+<input name="page" type="hidden" value="${pageModel.page}" />
 </form>
 <table border="0" cellspacing="0" cellpadding="0" class="bottomTable">
 	<tr><td>${pageNav.page}</td></tr>

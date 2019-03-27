@@ -16,7 +16,7 @@ $dswork.page.join = function(td, menu, id){
 	}));
 };
 $(function(){
-	$dswork.page.menu("", "", "getEnterpriseById.htm", "${pageModel.currentPage}");
+	$dswork.page.menu("", "", "getEnterpriseById.htm", "${pageModel.page}");
 	$("#status").val("${fn:escapeXml(param.status)}");
 	$("#type").val("${fn:escapeXml(param.type)}");
 	$("#dataTable>tbody>tr>td.status").each(function(){
@@ -25,7 +25,7 @@ $(function(){
 });
 $dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.type == 1){
-	location.href = "getEnterprise.htm?page=${pageModel.currentPage}";
+	location.href = "getEnterprise.htm?page=${pageModel.page}";
 }};
 </script>
 </head> 
@@ -34,7 +34,7 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 	<tr>
 		<td class="title">企业列表</td>
 		<td class="menuTool">
-			<a class="insert" href="addEnterprise1.htm?page=${pageModel.currentPage}">添加</a>
+			<a class="insert" href="addEnterprise1.htm?page=${pageModel.page}">添加</a>
 		</td>
 	</tr>
 </table>
