@@ -182,7 +182,7 @@ public class WebFilter implements Filter
 		if(m == null)
 		{
 			m = new IUser();
-			m.setId(-1L);
+			m.setId(Long.MIN_VALUE);
 		}
 		return m;
 	}
