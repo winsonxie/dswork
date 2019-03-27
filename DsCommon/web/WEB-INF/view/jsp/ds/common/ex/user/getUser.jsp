@@ -9,7 +9,7 @@
 <script type="text/javascript">
 $dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.type == 1){
-	location.href = "getUser.htm?xtype=${fn:escapeXml(param.xtype)}&page=${pageModel.currentPage}";
+	location.href = "getUser.htm?xtype=${fn:escapeXml(param.xtype)}&page=${pageModel.page}";
 }};
 function updStatus(objid, id){
 	var obj = $("#" + objid), o = document.getElementById(objid);
@@ -29,18 +29,18 @@ function updStatus(objid, id){
 $dswork.page.join = function(td, menu, id){
 	if(td.attr("v") != 'true'){
 	$(menu).append($('<div iconCls="menuTool-update">重置密码</div>').bind("click", function(){
-		location.href = "updUserPassword1.htm?xtype=${fn:escapeXml(param.xtype)}&type=${fn:escapeXml(param.type)}&orgpid=${param.orgpid}&orgid=${param.orgid}&page=${pageModel.currentPage}&keyIndex=" + id;
+		location.href = "updUserPassword1.htm?xtype=${fn:escapeXml(param.xtype)}&type=${fn:escapeXml(param.type)}&orgpid=${param.orgpid}&orgid=${param.orgid}&page=${pageModel.page}&keyIndex=" + id;
 	}));
 	$(menu).append($('<div iconCls="menuTool-update">修改</div>').bind("click", function(){
-		location.href = "updUser1.htm?xtype=${fn:escapeXml(param.xtype)}&type=${fn:escapeXml(param.type)}&orgpid=${param.orgpid}&orgid=${param.orgid}&page=${pageModel.currentPage}&keyIndex=" + id;
+		location.href = "updUser1.htm?xtype=${fn:escapeXml(param.xtype)}&type=${fn:escapeXml(param.type)}&orgpid=${param.orgpid}&orgid=${param.orgid}&page=${pageModel.page}&keyIndex=" + id;
 	}));
 	}
 	$(menu).append($('<div iconCls="menuTool-user">调动</div>').bind("click", function(){
-		location.href = "updUserOrg1.htm?xtype=${fn:escapeXml(param.xtype)}&type=${fn:escapeXml(param.type)}&orgpid=${param.orgpid}&orgid=${param.orgid}&page=${pageModel.currentPage}&keyIndex=" + id;
+		location.href = "updUserOrg1.htm?xtype=${fn:escapeXml(param.xtype)}&type=${fn:escapeXml(param.type)}&orgpid=${param.orgpid}&orgid=${param.orgid}&page=${pageModel.page}&keyIndex=" + id;
 	}));
 };
 $(function(){
-	$dswork.page.menu("", "", "getUserById.htm?xtype=${fn:escapeXml(param.xtype)}", "${pageModel.currentPage}");
+	$dswork.page.menu("", "", "getUserById.htm?xtype=${fn:escapeXml(param.xtype)}", "${pageModel.page}");
 	$("#sel_type").bind("change", function(){
 		$("#queryForm").submit();
 	});
@@ -101,15 +101,15 @@ $(function(){
 		<td class="menuTool">
 			<a ${'admin'==d.account?'style="display:none;"':''} id="a_status${status.index}" name="a_status" v="${d.status}" class="${1==d.status?'pause':'start'}" href="#" onclick="return updStatus('a_status${status.index}', '${d.id}');">${1==d.status?'禁用':'启用'}</a>
 			<c:if test="${'admin'!=d.account}">
-				<a class="update" href="updUser1.htm?xtype=${fn:escapeXml(param.xtype)}&type=${fn:escapeXml(param.type)}&orgpid=${param.orgpid}&orgid=${param.orgid}&page=${pageModel.currentPage}&keyIndex=${d.id}">修改</a>
+				<a class="update" href="updUser1.htm?xtype=${fn:escapeXml(param.xtype)}&type=${fn:escapeXml(param.type)}&orgpid=${param.orgpid}&orgid=${param.orgid}&page=${pageModel.page}&keyIndex=${d.id}">修改</a>
 			</c:if>
-			<a class="user" href="updUserOrg1.htm?xtype=${fn:escapeXml(param.xtype)}&type=${fn:escapeXml(param.type)}&orgpid=${param.orgpid}&orgid=${param.orgid}&page=${pageModel.currentPage}&keyIndex=${d.id}">调动</a>
+			<a class="user" href="updUserOrg1.htm?xtype=${fn:escapeXml(param.xtype)}&type=${fn:escapeXml(param.type)}&orgpid=${param.orgpid}&orgid=${param.orgid}&page=${pageModel.page}&keyIndex=${d.id}">调动</a>
 			<c:if test="${'admin'==d.account}"><a class="select" href="getUserById.htm?xtype=${fn:escapeXml(param.xtype)}&keyIndex=${d.id}">明细</a></c:if>
 		</td>
 	</tr>
 </c:forEach>
 </table>
-<input name="page" type="hidden" value="${pageModel.currentPage}" />
+<input name="page" type="hidden" value="${pageModel.page}" />
 <input name="xtype" type="hidden" value="${fn:escapeXml(param.xtype)}" />
 </form>
 <table border="0" cellspacing="0" cellpadding="0" class="bottomTable">
