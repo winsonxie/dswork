@@ -18,7 +18,6 @@ import dswork.core.util.CollectionUtil;
 import testwork.model.Demo;
 import testwork.service.ManageHbmdemoService;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/manage/hbmdemo")// 控制器类名对应url的目录部分(除应用名contextPath)
 public class ManageHbmdemoController extends BaseController
@@ -52,7 +51,7 @@ public class ManageHbmdemoController extends BaseController
 	{
 		try
 		{
-			service.deleteBatch(CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0)));
+			service.deleteBatch(CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0)));
 			print("1");
 		}
 		catch(Exception e)
@@ -65,9 +64,9 @@ public class ManageHbmdemoController extends BaseController
 	@RequestMapping("/updDemo1")
 	public String upd1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
-		put("page", req.getInt("page", 1));
+		put("page", req().getInt("page", 1));
 		return "/manage/demo/updDemo.jsp";
 	}
 
@@ -90,17 +89,17 @@ public class ManageHbmdemoController extends BaseController
 	public String getDemo()
 	{
 		PageRequest pr = getPageRequest();
-		pr.setFilters(req.getParameterValueMap(false, false));
+		pr.setFilters(req().getParameterValueMap(false, false));
 		Page<Demo> pageModel = service.queryPage(pr);
 		put("pageModel", pageModel);
-		put("pageNav", new PageNav<Demo>(request, pageModel));
+		put("pageNav", new PageNav<Demo>(request(), pageModel));
 		return "/manage/demo/getDemo.jsp";
 	}
 
 	@RequestMapping("/getDemoById")
 	public String getDemoById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
 		return "/manage/demo/getDemoById.jsp";
 	}

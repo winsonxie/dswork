@@ -35,9 +35,9 @@ public class ManageMarkController extends BaseController
 	{
 		try
 		{
-			Long demoid = req.getLong("demoid");
+			Long demoid = req().getLong("demoid");
 			List<Mark> list = new ArrayList<Mark>();
-			String[] contentArr = req.getStringArray("content", false);
+			String[] contentArr = req().getStringArray("content", false);
 			for(int i = 0; i < contentArr.length; i++)
 			{
 				Mark m = new Mark();
@@ -67,17 +67,17 @@ public class ManageMarkController extends BaseController
 	public String getDemo()
 	{
 		PageRequest pr = getPageRequest();
-		pr.setFilters(req.getParameterValueMap(false, false));
+		pr.setFilters(req().getParameterValueMap(false, false));
 		Page<Demo> pageModel = service.queryPage(pr);
 		put("pageModel", pageModel);
-		put("pageNav", new PageNav<Demo>(request, pageModel));
+		put("pageNav", new PageNav<Demo>(request(), pageModel));
 		return "/manage/mark/getDemo.jsp";
 	}
 
 	@RequestMapping("/getMark")
 	public String getMark()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
 		put("list", service.queryListMark(id));
 		return "/manage/mark/getMark.jsp";

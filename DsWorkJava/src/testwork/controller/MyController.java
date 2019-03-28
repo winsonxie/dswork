@@ -37,7 +37,7 @@ public class MyController extends BaseController
 		{
 			Object obj;
 			obj = Class.forName(namespaceDot + model).newInstance();
-			req.getFillObject(obj);
+			req().getFillObject(obj);
 			try
 			{
 				obj.getClass().getMethod("setId", String.class).invoke(obj, dswork.core.util.UniqueId.genGuid());
@@ -68,7 +68,7 @@ public class MyController extends BaseController
 		Map<String, Object> map = new HashMap<String, Object>();
 		try
 		{
-			service.deleteBatch(namespaceDot + model, CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0)));
+			service.deleteBatch(namespaceDot + model, CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0)));
 			map.put("status", 1);
 			map.put("msg", "");
 		}
@@ -88,7 +88,7 @@ public class MyController extends BaseController
 		{
 			Object obj;
 			obj = (Class.forName(namespaceDot + model)).newInstance();
-			req.getFillObject(obj);
+			req().getFillObject(obj);
 			service.update(namespaceDot + model, obj);
 			map.put("status", 1);
 			map.put("msg", "");
@@ -152,7 +152,7 @@ public class MyController extends BaseController
 		Map<String, Object> map = new HashMap<String, Object>();
 		try
 		{
-			Long id = req.getLong("keyIndex");
+			Long id = req().getLong("keyIndex");
 			Object po = service.get(namespaceDot + model, id);
 			map.put("status", 1);
 			map.put("msg", "");

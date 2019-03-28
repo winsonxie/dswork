@@ -16,50 +16,88 @@ import dswork.web.MyRequest;
 public class BaseController
 {
 	protected static String PageSize_SessionName = "dswork_session_pagesize";
-	protected HttpServletRequest request;
-	protected HttpServletResponse response;
-	protected HttpSession session;
-	protected MyRequest req;
-	private PrintWriter out;
+	private static final ThreadLocal<HttpServletRequest> request = new ThreadLocal<HttpServletRequest>();
+	private static final ThreadLocal<HttpServletResponse> response = new ThreadLocal<HttpServletResponse>();
+	private static final ThreadLocal<MyRequest> req = new ThreadLocal<MyRequest>();
+	private static final ThreadLocal<PrintWriter> out = new ThreadLocal<PrintWriter>();
+	
 	protected static Logger log = LoggerFactory.getLogger(BaseController.class.getName());
 	
 	@ModelAttribute
 	public void BaseInitialization(HttpServletRequest request, HttpServletResponse response)
 	{
-		this.request = request;
-		this.response = response;
-		this.response.setCharacterEncoding("UTF-8");
-		this.session = request.getSession();
-		this.req = new MyRequest(request);
+		response.setCharacterEncoding("UTF-8");
+		BaseController.request.set(request);
+		BaseController.response.set(response);
+		req.set(new MyRequest(request));
 	}
 	
-	protected void print(Object msg)
+	protected static HttpServletRequest request()
+	{
+		return request.get();
+	}
+	
+	protected static HttpServletResponse response()
+	{
+		return response.get();
+	}
+	
+	protected static HttpSession session()
+	{
+		return request().getSession();
+	}
+	
+	protected static MyRequest req()
+	{
+		return req.get();
+	}
+	
+	protected static void print(Object json)
 	{
 		try
 		{
-			if(out == null)
-			{
-				out = response.getWriter();
-			}
-			out.print(msg);
+			response().setHeader("P3P", "CP=CAO PSA OUR");
+			response().setHeader("Access-Control-Allow-Origin", "*");
+			printDomain(json);
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
-			ex.printStackTrace();
 		}
 	}
 	
-	protected void put(String key, Object obj)
+	/**
+	 * 输出同源json
+	 * @param response
+	 * @param json
+	 */
+	public static void printDomain(Object json)
 	{
-		request.setAttribute(key, obj);
+		try
+		{
+			if(out.get() == null)
+			{
+				out.set(response().getWriter());
+			}
+			response().setCharacterEncoding("UTF-8");
+			response().setContentType("application/json;charset=UTF-8");
+			out.get().print(json == null ? "" : json);
+		}
+		catch(Exception e)
+		{
+		}
+	}
+	
+	protected static void put(String key, Object obj)
+	{
+		request().setAttribute(key, obj);
 	}
 
 	@Deprecated
-	protected void sendRedirect(String url)
+	protected static void sendRedirect(String url)
 	{
 		try
 		{
-			response.sendRedirect(url);
+			response().sendRedirect(url);
 		}
 		catch(Exception ex)
 		{
@@ -67,25 +105,25 @@ public class BaseController
 		}
 	}
 	
-	protected PageRequest getPageRequest(int pagesize)
+	protected static PageRequest getPageRequest(int pagesize)
 	{
 		if(pagesize <= 0)
 		{
 			pagesize = 10;
 		}
 		PageRequest pr = new PageRequest();
-		pr.setFilters(req.getParameterValueMap(false, false));
-		pr.setPage(req.getInt("page", 1));
+		pr.setFilters(req().getParameterValueMap(false, false));
+		pr.setPage(req().getInt("page", 1));
 		try
 		{
-			pagesize = Integer.parseInt(String.valueOf(session.getAttribute(PageSize_SessionName)).trim());
+			pagesize = Integer.parseInt(String.valueOf(session().getAttribute(PageSize_SessionName)).trim());
 		}
 		catch(Exception ex)
 		{
 			pagesize = 10;
 		}
-		pagesize = req.getInt("pagesize", req.getInt("pageSize", pagesize));
-		session.setAttribute(PageSize_SessionName, pagesize);
+		pagesize = req().getInt("pagesize", req().getInt("pageSize", pagesize));
+		session().setAttribute(PageSize_SessionName, pagesize);
 		pr.setPagesize(pagesize);
 		return pr;
 	}
