@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -21,7 +20,6 @@ import dswork.core.util.CollectionUtil;
 import dswork.core.util.UniqueId;
 import dswork.mvc.BaseController;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/ds/common/dict")
 public class DsCommonDictController extends BaseController
@@ -70,7 +68,7 @@ public class DsCommonDictController extends BaseController
 	{
 		try
 		{
-			service.deleteBatch(CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0)));
+			service.deleteBatch(CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0)));
 			print(1);
 		}
 		catch(Exception e)
@@ -84,7 +82,7 @@ public class DsCommonDictController extends BaseController
 	@RequestMapping("/updDict1")
 	public String updDict1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
 		return "/ds/common/dict/updDict.jsp";
 	}
@@ -123,14 +121,14 @@ public class DsCommonDictController extends BaseController
 	{
 		Page<DsCommonDict> pageModel = service.queryPage(getPageRequest());
 		put("pageModel", pageModel);
-		put("pageNav", new PageNav<DsCommonDict>(request, pageModel));
+		put("pageNav", new PageNav<DsCommonDict>(request(), pageModel));
 		return "/ds/common/dict/getDict.jsp";
 	}
 	// 树形管理
 	@RequestMapping("/getDictDataTree")
 	public String getDictDataTree()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
 		return "/ds/common/dict/getDictDataTree.jsp";
 	}
@@ -138,17 +136,17 @@ public class DsCommonDictController extends BaseController
 	@RequestMapping("/getDictDataJson")//ByDictidAndPid
 	public void getDictDataJson()
 	{
-		DsCommonDict po = service.get(req.getLong("dictid")); 
-		List<DsCommonDictData> list = service.queryListData(req.getLong("pid"), po.getName(), new HashMap<String, Object>());
+		DsCommonDict po = service.get(req().getLong("dictid")); 
+		List<DsCommonDictData> list = service.queryListData(req().getLong("pid"), po.getName(), new HashMap<String, Object>());
 		print(list);
 	}
 	// 获得列表
 	@RequestMapping("/getDictData")
 	public String getDictData()
 	{
-		Long pid = req.getLong("pid");
-		DsCommonDict po = service.get(req.getLong("dictid"));
-		Map<String, Object> map = req.getParameterValueMap(false, false);
+		Long pid = req().getLong("pid");
+		DsCommonDict po = service.get(req().getLong("dictid"));
+		Map<String, Object> map = req().getParameterValueMap(false, false);
 		List<DsCommonDictData> list = service.queryListData(pid, po.getName(), map);
 		put("list", list);
 		put("po", po);
@@ -160,8 +158,8 @@ public class DsCommonDictController extends BaseController
 	@RequestMapping("/addDictData1")
 	public String addDsDictData1()
 	{
-		Long dictid = req.getLong("dictid");
-		put("pid", req.getLong("pid"));
+		Long dictid = req().getLong("dictid");
+		put("pid", req().getLong("pid"));
 		put("dict", service.get(dictid));
 		return "/ds/common/dict/addDictData.jsp";
 	}
@@ -170,12 +168,12 @@ public class DsCommonDictController extends BaseController
 	{
 		try
 		{
-			DsCommonDict dict = service.get(req.getLong("dictid"));
-			Long pid = req.getLong("pid");
+			DsCommonDict dict = service.get(req().getLong("dictid"));
+			Long pid = req().getLong("pid");
 			
-			String[] aliasArr = req.getStringArray("alias", false);
-			String[] labelArr = req.getStringArray("label", false);
-			String[] memoArr = req.getStringArray("memo", false);
+			String[] aliasArr = req().getStringArray("alias", false);
+			String[] labelArr = req().getStringArray("label", false);
+			String[] memoArr = req().getStringArray("memo", false);
 
 			int v = 0;String s = "";
 			for(int i = 0; i < aliasArr.length; i++)
@@ -218,7 +216,7 @@ public class DsCommonDictController extends BaseController
 		try
 		{
 			int v = 0;
-			long[] ids = req.getLongArray("keyIndex", 0);
+			long[] ids = req().getLongArray("keyIndex", 0);
 			for(long id : ids)
 			{
 				if(id <= 0)
@@ -248,7 +246,7 @@ public class DsCommonDictController extends BaseController
 	@RequestMapping("/updDictData1")
 	public String updDictData1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.getData(id));
 		return "/ds/common/dict/updDictData.jsp";
 	}
@@ -286,8 +284,8 @@ public class DsCommonDictController extends BaseController
 	@RequestMapping("/updDictDataSeq1")
 	public String updDictDataSeq1()
 	{
-		Long pid = req.getLong("pid");
-		DsCommonDict po = service.get(req.getLong("dictid"));
+		Long pid = req().getLong("pid");
+		DsCommonDict po = service.get(req().getLong("dictid"));
 		List<DsCommonDictData> list = service.queryListData(pid, po.getName(), new HashMap<String, Object>());
 		put("list", list);
 		put("po", po);
@@ -297,7 +295,7 @@ public class DsCommonDictController extends BaseController
 	@RequestMapping("/updDictDataSeq2")
 	public void updDictDataSeq2()
 	{
-		Long[] ids = CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0));
+		Long[] ids = CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0));
 		try
 		{
 			if(ids.length > 0)
@@ -321,15 +319,15 @@ public class DsCommonDictController extends BaseController
 	@RequestMapping("/updDictDataMove1")
 	public String updDictDataMove1()
 	{
-		DsCommonDict po = service.get(req.getLong("dictid"));
+		DsCommonDict po = service.get(req().getLong("dictid"));
 		put("po", po);
 		return "/ds/common/dict/updDictDataMove.jsp";
 	}
 	@RequestMapping("/updDictDataMove2")
 	public void updDictDataMove2()
 	{
-		DsCommonDict po = service.get(req.getLong("dictid"));
-		long pid = req.getLong("pid");
+		DsCommonDict po = service.get(req().getLong("dictid"));
+		long pid = req().getLong("pid");
 		if(pid <= 0)
 		{
 			pid = 0;
@@ -343,7 +341,7 @@ public class DsCommonDictController extends BaseController
 				return;
 			}
 		}
-		Long[] ids = getLongArray(req.getString("ids"));
+		Long[] ids = getLongArray(req().getString("ids"));
 		try
 		{
 			if(ids.length > 0)
@@ -367,7 +365,7 @@ public class DsCommonDictController extends BaseController
 	@RequestMapping("/getDictDataById")
 	public String getDictDataById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.getData(id));
 		return "/ds/common/dict/getDictDataById.jsp";
 	}

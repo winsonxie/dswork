@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,7 +13,6 @@ import dswork.common.model.DsCommonUser;
 import dswork.common.service.DsCommonSingleOrgService;
 import dswork.core.util.CollectionUtil;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/ds/common/single/org")
 public class DsCommonSingleOrgController extends BaseController
@@ -26,7 +24,7 @@ public class DsCommonSingleOrgController extends BaseController
 	@RequestMapping("/addOrg1")
 	public String addOrg1()
 	{
-		long pid = req.getLong("pid");
+		long pid = req().getLong("pid");
 		DsCommonOrg parent = null;
 		if(pid > 0)
 		{
@@ -100,7 +98,7 @@ public class DsCommonSingleOrgController extends BaseController
 		try
 		{
 			int v1 = 0, v2 = 0;
-			long[] ids = req.getLongArray("keyIndex", 0);
+			long[] ids = req().getLongArray("keyIndex", 0);
 			for(long id : ids)
 			{
 				if(id > 0)
@@ -149,7 +147,7 @@ public class DsCommonSingleOrgController extends BaseController
 	@RequestMapping("/updOrg1")
 	public String updOrg1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsCommonOrg po = service.get(id);
 		if(po == null || po.getStatus() == 0)// 为空或者是岗位
 		{
@@ -239,7 +237,7 @@ public class DsCommonSingleOrgController extends BaseController
 	@RequestMapping("/updOrgSeq1")
 	public String updOrgSeq1()
 	{
-		long pid = req.getLong("pid");
+		long pid = req().getLong("pid");
 		List<DsCommonOrg> list = service.queryList(pid);
 		put("list", list);
 		return "/ds/common/single/org/updOrgSeq.jsp";
@@ -248,7 +246,7 @@ public class DsCommonSingleOrgController extends BaseController
 	@RequestMapping("/updOrgSeq2")
 	public void updOrgSeq2()
 	{
-		Long[] ids = CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0));
+		Long[] ids = CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0));
 		try
 		{
 			if(ids.length > 0)
@@ -281,7 +279,7 @@ public class DsCommonSingleOrgController extends BaseController
 	@RequestMapping("/updOrgMove2")
 	public void updOrgMove2()
 	{
-		long pid = req.getLong("pid");
+		long pid = req().getLong("pid");
 		if(pid <= 0)
 		{
 			pid = 0;
@@ -295,7 +293,7 @@ public class DsCommonSingleOrgController extends BaseController
 				return;
 			}
 		}
-		Long[] ids = getLongArray(req.getString("ids"));
+		Long[] ids = getLongArray(req().getString("ids"));
 		try
 		{
 			if(ids.length > 0)
@@ -342,7 +340,7 @@ public class DsCommonSingleOrgController extends BaseController
 	public String getOrg()
 	{
 		Long rootid = getLoginUser().getOrgpid();// 作为限制根节点显示
-		Long pid = req.getLong("pid");
+		Long pid = req().getLong("pid");
 		List<DsCommonOrg> rawList = service.queryList(pid);
 		List<DsCommonOrg> list = new ArrayList<DsCommonOrg>();
 		for(DsCommonOrg po : rawList)
@@ -363,7 +361,7 @@ public class DsCommonSingleOrgController extends BaseController
 	// ByPid
 	public void getOrgJson()
 	{
-		long pid = req.getLong("pid");
+		long pid = req().getLong("pid");
 		print(service.queryList(pid));
 	}
 
@@ -371,7 +369,7 @@ public class DsCommonSingleOrgController extends BaseController
 	@RequestMapping("/getOrgById")
 	public String getOrgById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsCommonOrg po = service.get(id);
 		put("po", po);
 		return "/ds/common/single/org/getOrgById.jsp";
@@ -407,7 +405,7 @@ public class DsCommonSingleOrgController extends BaseController
 
 	private DsCommonUser getLoginUser()
 	{
-		String account = dswork.sso.WebFilter.getAccount(session);
+		String account = dswork.sso.WebFilter.getAccount(session());
 		return service.getUserByAccount(account);
 	}
 }

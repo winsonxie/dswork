@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,7 +21,6 @@ import dswork.flow.MyFlow;
 import dswork.flow.dom.MyNode;
 import dswork.mvc.BaseController;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/ds/common/flow")
 @SuppressWarnings("all")
@@ -92,10 +90,10 @@ public class DsCommonFlowController extends BaseController
 			{
 				DsCommonFlowCategory fc = service.get(po.getCategoryid());
 				Map<String, String> map = new LinkedHashMap<String, String>();
-				String[] tkeyArr = req.getStringArray("tkey");
+				String[] tkeyArr = req().getStringArray("tkey");
 				if(tkeyArr.length > 0)
 				{
-					String[] tjsonArr = req.getStringArray("tjson");
+					String[] tjsonArr = req().getStringArray("tjson");
 					for (int i = 0; i < tkeyArr.length; i++)
 					{
 						if(tjsonArr[i].indexOf("\\") < 0)
@@ -113,14 +111,14 @@ public class DsCommonFlowController extends BaseController
 						List<DsCommonFlowTask> taskList = new ArrayList<DsCommonFlowTask>();
 						if (po.getFlowxml().length() < 50)
 						{
-							String[] taliasArr = req.getStringArray("talias");
-							String[] tnameArr = req.getStringArray("tname");
-							int[] tcountArr = req.getIntArray("tcount", 0);
-							String[] tnextArr = req.getStringArray("tnext");
-							String[] tusersArr = req.getStringArray("tusers");
-							String[] tmemoArr = req.getStringArray("tmemo");
-							int[] subcountArr = req.getIntArray("subcount", -1);
-							String[] subusersArr = req.getStringArray("subusers");
+							String[] taliasArr = req().getStringArray("talias");
+							String[] tnameArr = req().getStringArray("tname");
+							int[] tcountArr = req().getIntArray("tcount", 0);
+							String[] tnextArr = req().getStringArray("tnext");
+							String[] tusersArr = req().getStringArray("tusers");
+							String[] tmemoArr = req().getStringArray("tmemo");
+							int[] subcountArr = req().getIntArray("subcount", -1);
+							String[] subusersArr = req().getStringArray("subusers");
 							for (int i = 0; i < taliasArr.length; i++)
 							{
 								DsCommonFlowTask m = new DsCommonFlowTask();
@@ -184,7 +182,7 @@ public class DsCommonFlowController extends BaseController
 	{
 		try
 		{
-			long[] ids = req.getLongArray("keyIndex", 0);
+			long[] ids = req().getLongArray("keyIndex", 0);
 			for (long id : ids)
 			{
 				service.deleteFlow(id);
@@ -202,7 +200,7 @@ public class DsCommonFlowController extends BaseController
 	@RequestMapping("/updFlow1")
 	public String updFlow1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsCommonFlow po = service.getFlow(id);
 		Map<String, String> taskMap = new HashMap<String, String>();
 		List<DsCommonFlowTask> taskList = po.getTaskList();
@@ -227,10 +225,10 @@ public class DsCommonFlowController extends BaseController
 		try
 		{
 			Map<String, String> map = new LinkedHashMap<String, String>();
-			String[] tkeyArr = req.getStringArray("tkey");
+			String[] tkeyArr = req().getStringArray("tkey");
 			if(tkeyArr.length > 0)
 			{
-				String[] tjsonArr = req.getStringArray("tjson");
+				String[] tjsonArr = req().getStringArray("tjson");
 				for (int i = 0; i < tkeyArr.length; i++)
 				{
 					if(tjsonArr[i].indexOf("\\") < 0)
@@ -244,14 +242,14 @@ public class DsCommonFlowController extends BaseController
 			List<DsCommonFlowTask> taskList = new ArrayList<DsCommonFlowTask>();
 			if (po.getFlowxml().length() < 50)
 			{
-				String[] taliasArr = req.getStringArray("talias");
-				String[] tnameArr = req.getStringArray("tname");
-				int[] tcountArr = req.getIntArray("tcount", 0);
-				String[] tnextArr = req.getStringArray("tnext");
-				String[] tusersArr = req.getStringArray("tusers");
-				String[] tmemoArr = req.getStringArray("tmemo");
-				int[] subcountArr = req.getIntArray("subcount", -1);
-				String[] subusersArr = req.getStringArray("subusers");
+				String[] taliasArr = req().getStringArray("talias");
+				String[] tnameArr = req().getStringArray("tname");
+				int[] tcountArr = req().getIntArray("tcount", 0);
+				String[] tnextArr = req().getStringArray("tnext");
+				String[] tusersArr = req().getStringArray("tusers");
+				String[] tmemoArr = req().getStringArray("tmemo");
+				int[] subcountArr = req().getIntArray("subcount", -1);
+				String[] subusersArr = req().getStringArray("subusers");
 				for (int i = 0; i < taliasArr.length; i++)
 				{
 					DsCommonFlowTask m = new DsCommonFlowTask();
@@ -303,7 +301,7 @@ public class DsCommonFlowController extends BaseController
 	@RequestMapping("/getFlow")
 	public String getFlow()
 	{
-		Long categoryid = req.getLong("categoryid");
+		Long categoryid = req().getLong("categoryid");
 		if (categoryid > 0)
 		{
 			DsCommonFlowCategory po = service.get(categoryid);
@@ -323,7 +321,7 @@ public class DsCommonFlowController extends BaseController
 	@RequestMapping("/getFlowById")
 	public String getFlowById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.getFlow(id));
 		return "/ds/common/flow/getFlowById.jsp";
 	}
@@ -332,8 +330,8 @@ public class DsCommonFlowController extends BaseController
 	@RequestMapping("/updStatus")
 	public void updStatus()
 	{
-		long id = req.getLong("keyIndex");
-		int status = req.getInt("status", -1);
+		long id = req().getLong("keyIndex");
+		int status = req().getInt("status", -1);
 		try
 		{
 			if (status == 0 || status == 1)
@@ -359,7 +357,7 @@ public class DsCommonFlowController extends BaseController
 	{
 		try
 		{
-			Long id = req.getLong("keyIndex");
+			Long id = req().getLong("keyIndex");
 			int i = service.deployFlow(id);
 			print(i == 1 ? 1 : "0:此流程版本不能发布");
 		}
@@ -374,7 +372,7 @@ public class DsCommonFlowController extends BaseController
 	@RequestMapping("/addFlowCategory1")
 	public String addFlowCategory1()
 	{
-		long pid = req.getLong("pid");
+		long pid = req().getLong("pid");
 		DsCommonFlowCategory parent = null;
 		if (pid > 0)
 		{
@@ -425,7 +423,7 @@ public class DsCommonFlowController extends BaseController
 		try
 		{
 			int v = 0;
-			long[] ids = req.getLongArray("keyIndex", 0);
+			long[] ids = req().getLongArray("keyIndex", 0);
 			for (long id : ids)
 			{
 				if (id <= 0)
@@ -455,7 +453,7 @@ public class DsCommonFlowController extends BaseController
 	@RequestMapping("/updFlowCategory1")
 	public String updFlowCategory1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsCommonFlowCategory po = service.get(id);
 		if (null == po)
 		{
@@ -518,7 +516,7 @@ public class DsCommonFlowController extends BaseController
 	@RequestMapping("/updFlowCategorySeq1")
 	public String updFlowCategorySeq1()
 	{
-		long pid = req.getLong("pid");
+		long pid = req().getLong("pid");
 		List<DsCommonFlowCategory> list = service.queryList(pid);
 		put("list", list);
 		return "/ds/common/flow/updFlowCategorySeq.jsp";
@@ -527,7 +525,7 @@ public class DsCommonFlowController extends BaseController
 	@RequestMapping("/updFlowCategorySeq2")
 	public void updFlowCategorySeq2()
 	{
-		Long[] ids = CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0));
+		Long[] ids = CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0));
 		try
 		{
 			if (ids.length > 0)
@@ -551,7 +549,7 @@ public class DsCommonFlowController extends BaseController
 	@RequestMapping("/updFlowCategoryMove1")
 	public String updFlowCategoryMove1()
 	{
-		Long rootid = req.getLong("rootid");// 作为限制根节点显示
+		Long rootid = req().getLong("rootid");// 作为限制根节点显示
 		put("po", (rootid > 0) ? service.get(rootid) : null);
 		put("rootid", rootid);
 		return "/ds/common/flow/updFlowCategoryMove.jsp";
@@ -560,7 +558,7 @@ public class DsCommonFlowController extends BaseController
 	@RequestMapping("/updFlowCategoryMove2")
 	public void updFlowCategoryMove2()
 	{
-		long pid = req.getLong("pid");
+		long pid = req().getLong("pid");
 		if (pid <= 0)
 		{
 			pid = 0;
@@ -574,7 +572,7 @@ public class DsCommonFlowController extends BaseController
 				return;
 			}
 		}
-		Long[] ids = getLongArray(req.getString("ids"));
+		Long[] ids = getLongArray(req().getString("ids"));
 		try
 		{
 			if (ids.length > 0)
@@ -598,7 +596,7 @@ public class DsCommonFlowController extends BaseController
 	@RequestMapping("/getFlowCategoryTree")
 	public String getFlowCategoryTree()
 	{
-		Long rootid = req.getLong("rootid");// 作为限制根节点显示
+		Long rootid = req().getLong("rootid");// 作为限制根节点显示
 		DsCommonFlowCategory po = null;
 		if (rootid > 0)
 		{
@@ -620,8 +618,8 @@ public class DsCommonFlowController extends BaseController
 	@RequestMapping("/getFlowCategory")
 	public String getFlowCategory()
 	{
-		Long rootid = req.getLong("rootid");// 作为限制根节点显示
-		Long pid = req.getLong("pid");
+		Long rootid = req().getLong("rootid");// 作为限制根节点显示
+		Long pid = req().getLong("pid");
 		List<DsCommonFlowCategory> list = service.queryList(pid);
 		put("list", list);
 		put("rootid", rootid);
@@ -634,7 +632,7 @@ public class DsCommonFlowController extends BaseController
 	// ByPid
 	public void getFlowCategoryJson()
 	{
-		long pid = req.getLong("pid");
+		long pid = req().getLong("pid");
 		print(service.queryList(pid));
 	}
 
@@ -642,7 +640,7 @@ public class DsCommonFlowController extends BaseController
 	@RequestMapping("/getFlowCategoryById")
 	public String getFlowCategoryById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsCommonFlowCategory po = service.get(id);
 		put("po", po);
 		return "/ds/common/flow/getFlowCategoryById.jsp";

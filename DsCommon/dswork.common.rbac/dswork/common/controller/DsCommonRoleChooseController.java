@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,7 +18,6 @@ import dswork.core.page.Page;
 import dswork.core.page.PageNav;
 
 //角色
-@Scope("prototype")
 @Controller
 @RequestMapping("/ds/common/rolechoose")
 public class DsCommonRoleChooseController extends BaseController
@@ -33,8 +31,8 @@ public class DsCommonRoleChooseController extends BaseController
 	{
 		Page<DsCommonSystem> pageModel = service.querySystemPage(getPageRequest());
 		put("pageModel", pageModel);
-		put("pageNav", new PageNav<DsCommonSystem>(request, pageModel));
-		long systemid = req.getLong("systemid", -100000000L);//随便给个不会用的参数
+		put("pageNav", new PageNav<DsCommonSystem>(request(), pageModel));
+		long systemid = req().getLong("systemid", -100000000L);//随便给个不会用的参数
 		if(systemid != -100000000L)
 		{
 			put("systemid", systemid);
@@ -46,7 +44,7 @@ public class DsCommonRoleChooseController extends BaseController
 	@RequestMapping("/getRoleTree")
 	public String getRoleTree()
 	{
-		long systemid = req.getLong("systemid", -100000000L);//随便给个不会用的参数
+		long systemid = req().getLong("systemid", -100000000L);//随便给个不会用的参数
 		if(systemid != -100000000L)
 		{
 			put("po", service.getSystem(systemid));
@@ -57,8 +55,8 @@ public class DsCommonRoleChooseController extends BaseController
 	@RequestMapping("/getRoleJson")
 	public void getRoleJson()
 	{
-		long systemid = req.getLong("systemid");
-		long pid = req.getLong("pid");
+		long systemid = req().getLong("systemid");
+		long pid = req().getLong("pid");
 		print(service.queryRoleList(systemid, pid));
 	}
 
@@ -66,7 +64,7 @@ public class DsCommonRoleChooseController extends BaseController
 	@RequestMapping("/getRoleById")
 	public String getRoleById()
 	{
-		Long roleid = req.getLong("roleid");
+		Long roleid = req().getLong("roleid");
 		DsCommonRole po = service.get(roleid);
 		List<DsCommonFunc> list = service.queryFuncList(po.getSystemid());
 		if(null != list && 0 < list.size())

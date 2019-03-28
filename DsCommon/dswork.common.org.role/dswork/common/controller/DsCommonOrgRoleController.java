@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,7 +11,6 @@ import dswork.mvc.BaseController;
 import dswork.common.model.DsCommonOrg;
 import dswork.common.service.DsCommonOrgRoleService;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/ds/common/orgrole")
 public class DsCommonOrgRoleController extends BaseController
@@ -24,7 +22,7 @@ public class DsCommonOrgRoleController extends BaseController
 	@RequestMapping("/getOrgTree")
 	public String getOrgTree()
 	{
-		Long rootid = req.getLong("rootid");// 作为限制根节点显示
+		Long rootid = req().getLong("rootid");// 作为限制根节点显示
 		DsCommonOrg po = null;
 		if(rootid > 0)
 		{
@@ -51,7 +49,7 @@ public class DsCommonOrgRoleController extends BaseController
 	@RequestMapping("/updOrgRole1")
 	public String updOrgRole1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsCommonOrg po = service.get(id);
 		if(null == po)
 		{
@@ -71,7 +69,7 @@ public class DsCommonOrgRoleController extends BaseController
 	{
 		try
 		{
-			Long id = req.getLong("orgid");
+			Long id = req().getLong("orgid");
 			DsCommonOrg po = service.get(id);
 			if(null == po)
 			{
@@ -80,7 +78,7 @@ public class DsCommonOrgRoleController extends BaseController
 			}
 			//if(0 == po.getStatus())// 岗位才可以授权
 			//{
-			String ids = req.getString("roleids", "");
+			String ids = req().getString("roleids", "");
 			List<Long> list = new ArrayList<Long>();
 			if(ids.length() > 0)
 			{

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,7 +23,6 @@ import dswork.core.util.CollectionUtil;
 import dswork.mvc.BaseController;
 
 // 功能
-@Scope("prototype")
 @Controller
 @RequestMapping("/ds/common/func")
 public class DsCommonFuncController extends BaseController
@@ -36,8 +34,8 @@ public class DsCommonFuncController extends BaseController
 	@RequestMapping("/addFunc1")
 	public String addFunc1()
 	{
-		Long systemid = req.getLong("systemid");
-		long pid = req.getLong("pid");
+		Long systemid = req().getLong("systemid");
+		long pid = req().getLong("pid");
 		DsCommonFunc parent = null;
 		if(pid > 0)
 		{
@@ -53,7 +51,7 @@ public class DsCommonFuncController extends BaseController
 		}
 		put("parent", parent);
 		put("systemid", systemid);
-		put("pid", req.getLong("pid"));
+		put("pid", req().getLong("pid"));
 		return "/ds/common/func/addFunc.jsp";
 	}
 
@@ -91,11 +89,11 @@ public class DsCommonFuncController extends BaseController
 			}
 			List<DsCommonRes> list = null;
 			// 权限资源清单
-			String arr_url[] = req.getStringArray("rurl");
+			String arr_url[] = req().getStringArray("rurl");
 			if(0 < arr_url.length)
 			{
 				list = new ArrayList<DsCommonRes>();
-				String arr_param[] = req.getStringArray("rparam");
+				String arr_param[] = req().getStringArray("rparam");
 				if(arr_url.length == arr_param.length)
 				{
 					for(int i = 0; i < arr_url.length; i++)
@@ -133,7 +131,7 @@ public class DsCommonFuncController extends BaseController
 		try
 		{
 			int v = 0;
-			long[] ids = req.getLongArray("keyIndex", 0);
+			long[] ids = req().getLongArray("keyIndex", 0);
 			for(long id : ids)
 			{
 				if(id <= 0)
@@ -165,7 +163,7 @@ public class DsCommonFuncController extends BaseController
 	{
 		try
 		{
-			long id = req.getLong("systemid", 0);
+			long id = req().getLong("systemid", 0);
 			if(0 < id)
 			{
 				service.deleteBySystem(id);
@@ -183,7 +181,7 @@ public class DsCommonFuncController extends BaseController
 	@RequestMapping("/updFunc1")
 	public String updFunc1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsCommonFunc po = service.get(id);
 		if(null == po)
 		{
@@ -253,10 +251,10 @@ public class DsCommonFuncController extends BaseController
 			if(true)// 权限资源清单
 			{
 				list = new ArrayList<DsCommonRes>();
-				String arr_url[] = req.getStringArray("rurl");
+				String arr_url[] = req().getStringArray("rurl");
 				if(0 < arr_url.length)
 				{
-					String arr_param[] = req.getStringArray("rparam");
+					String arr_param[] = req().getStringArray("rparam");
 					if(arr_url.length == arr_param.length)
 					{
 						for(int i = 0; i < arr_url.length; i++)
@@ -297,8 +295,8 @@ public class DsCommonFuncController extends BaseController
 	@RequestMapping("/updFuncSeq1")
 	public String updFuncSeq1()
 	{
-		long systemid = req.getLong("systemid");
-		long pid = req.getLong("pid");
+		long systemid = req().getLong("systemid");
+		long pid = req().getLong("pid");
 		List<DsCommonFunc> list = service.queryList(systemid, pid);
 		put("list", list);
 		return "/ds/common/func/updFuncSeq.jsp";
@@ -307,7 +305,7 @@ public class DsCommonFuncController extends BaseController
 	@RequestMapping("/updFuncSeq2")
 	public void updFuncSeq2()
 	{
-		Long[] ids = CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0));
+		Long[] ids = CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0));
 		try
 		{
 			if(ids.length > 0)
@@ -331,7 +329,7 @@ public class DsCommonFuncController extends BaseController
 	@RequestMapping("/updFuncMove1")
 	public String updFuncMove1()
 	{
-		DsCommonSystem po = service.getSystem(req.getLong("systemid"));
+		DsCommonSystem po = service.getSystem(req().getLong("systemid"));
 		put("po", po);
 		return "/ds/common/func/updFuncMove.jsp";
 	}
@@ -339,8 +337,8 @@ public class DsCommonFuncController extends BaseController
 	@RequestMapping("/updFuncMove2")
 	public void updFuncMove2()
 	{
-		long systemid = req.getLong("systemid");
-		long pid = req.getLong("pid");
+		long systemid = req().getLong("systemid");
+		long pid = req().getLong("pid");
 		if(pid <= 0)
 		{
 			pid = 0;
@@ -354,7 +352,7 @@ public class DsCommonFuncController extends BaseController
 				return;
 			}
 		}
-		Long[] ids = getLongArray(req.getString("ids"));
+		Long[] ids = getLongArray(req().getString("ids"));
 		try
 		{
 			if(ids.length > 0)
@@ -378,7 +376,7 @@ public class DsCommonFuncController extends BaseController
 	@RequestMapping("/getFuncTree")
 	public String getFuncTree()
 	{
-		long systemid = req.getLong("systemid");
+		long systemid = req().getLong("systemid");
 		put("systemid", systemid);
 		return "/ds/common/func/getFuncTree.jsp";
 	}
@@ -387,8 +385,8 @@ public class DsCommonFuncController extends BaseController
 	@RequestMapping("/getFunc")
 	public String getFunc()
 	{
-		long systemid = req.getLong("systemid");
-		Long pid = req.getLong("pid");
+		long systemid = req().getLong("systemid");
+		Long pid = req().getLong("pid");
 		List<DsCommonFunc> list = service.queryList(systemid, pid);
 		put("list", list);
 		put("systemid", systemid);
@@ -400,8 +398,8 @@ public class DsCommonFuncController extends BaseController
 	@RequestMapping("/getFuncJson") // BySystemidAndPid
 	public void getFuncJson()
 	{
-		long systemid = req.getLong("systemid");
-		long pid = req.getLong("pid");
+		long systemid = req().getLong("systemid");
+		long pid = req().getLong("pid");
 		print(service.queryList(systemid, pid));
 	}
 
@@ -409,7 +407,7 @@ public class DsCommonFuncController extends BaseController
 	@RequestMapping("/getFuncById")
 	public String getFuncById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsCommonFunc po = service.get(id);
 		List<DsCommonRes> list = po.getResourcesList();
 		put("po", po);
@@ -421,7 +419,7 @@ public class DsCommonFuncController extends BaseController
 	@RequestMapping("/getFuncEdit1")
 	public String getFuncEdit1()
 	{
-		long systemid = req.getLong("systemid");
+		long systemid = req().getLong("systemid");
 		List<DsCommonFuncView> list = service.queryFuncBySystemid(systemid);
 		Map<String, DsCommonFuncView> map = new HashMap<String, DsCommonFuncView>();
 		List<DsCommonFuncView> rootList = new ArrayList<DsCommonFuncView>();
@@ -451,8 +449,8 @@ public class DsCommonFuncController extends BaseController
 	{
 		try
 		{
-			long systemid = req.getLong("systemid");
-			String menujson = req.getString("menujson");
+			long systemid = req().getLong("systemid");
+			String menujson = req().getString("menujson");
 			menujson = menujson.replace("\n", "");// 去除换行
 			menujson = menujson.replace(" ", "");// 去除空格
 			menujson = menujson.replace("\t", "");// 去除制表符

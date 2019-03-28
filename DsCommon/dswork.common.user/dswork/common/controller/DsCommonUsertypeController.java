@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,7 +22,6 @@ import dswork.common.model.DsCommonUsertype;
 import dswork.common.model.DsCommonUsertypeRes;
 import dswork.common.service.DsCommonUsertypeService;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/ds/common/usertype")
 public class DsCommonUsertypeController extends BaseController
@@ -57,11 +55,11 @@ public class DsCommonUsertypeController extends BaseController
 			}
 			List<DsCommonUsertypeRes> list = null;
 			// 权限资源清单
-			String arr_alias[] = req.getStringArray("ralias");
+			String arr_alias[] = req().getStringArray("ralias");
 			if(0 < arr_alias.length)
 			{
 				list = new ArrayList<DsCommonUsertypeRes>();
-				String arr_name[] = req.getStringArray("rname");
+				String arr_name[] = req().getStringArray("rname");
 				if(arr_alias.length == arr_name.length)
 				{
 					for(int i = 0; i < arr_alias.length; i++)
@@ -100,7 +98,7 @@ public class DsCommonUsertypeController extends BaseController
 	{
 		try
 		{
-			service.deleteBatch(CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0)));
+			service.deleteBatch(CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0)));
 			print(1);
 		}
 		catch (Exception e)
@@ -114,10 +112,10 @@ public class DsCommonUsertypeController extends BaseController
 	@RequestMapping("/updUsertype1")
 	public String updUsertype1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsCommonUsertype po = service.get(id);
 		put("po", po);
-		put("page", req.getInt("page", 1));
+		put("page", req().getInt("page", 1));
 		List<DsCommonUsertypeRes> list = po.getResourcesList();
 		put("list", list);
 		return "/ds/common/usertype/updUsertype.jsp";
@@ -151,11 +149,11 @@ public class DsCommonUsertypeController extends BaseController
 			}
 			List<DsCommonUsertypeRes> list = null;
 			// 权限资源清单
-			String arr_alias[] = req.getStringArray("ralias");
+			String arr_alias[] = req().getStringArray("ralias");
 			if(0 < arr_alias.length)
 			{
 				list = new ArrayList<DsCommonUsertypeRes>();
-				String arr_name[] = req.getStringArray("rname");
+				String arr_name[] = req().getStringArray("rname");
 				if(arr_alias.length == arr_name.length)
 				{
 					for(int i = 0; i < arr_alias.length; i++)
@@ -198,7 +196,7 @@ public class DsCommonUsertypeController extends BaseController
 	@RequestMapping("/updUsertypeSeq2")
 	public void updUsertypeSeq2()
 	{
-		Long[] ids = CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0));
+		Long[] ids = CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0));
 		try
 		{
 			if(ids.length > 0)
@@ -224,7 +222,7 @@ public class DsCommonUsertypeController extends BaseController
 	{
 		Page<DsCommonUsertype> pageModel = service.queryPage(getPageRequest());
 		put("pageModel", pageModel);
-		put("pageNav", new PageNav<DsCommonUsertype>(request, pageModel));
+		put("pageNav", new PageNav<DsCommonUsertype>(request(), pageModel));
 		return "/ds/common/usertype/getUsertype.jsp";
 	}
 
@@ -232,7 +230,7 @@ public class DsCommonUsertypeController extends BaseController
 	@RequestMapping("/getUsertypeById")
 	public String getUsertypeById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
 		return "/ds/common/usertype/getUsertypeById.jsp";
 	}
