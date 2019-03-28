@@ -3,7 +3,6 @@ package dswork.base.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,7 +17,6 @@ import dswork.core.util.TimeUtil;
 import dswork.core.util.UniqueId;
 import dswork.mvc.BaseController;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/ds/base/single/user")
 public class DsBaseSingleUserController extends BaseController
@@ -53,7 +51,7 @@ public class DsBaseSingleUserController extends BaseController
 	@RequestMapping("/addUser1")
 	public String addUser1()
 	{
-		String xtype = req.getString("xtype", "");
+		String xtype = req().getString("xtype", "");
 		if(xtype == null || xtype.length() == 0)
 		{
 			xtype = null;
@@ -118,7 +116,7 @@ public class DsBaseSingleUserController extends BaseController
 	{
 		try
 		{
-			long[] ids = req.getLongArray("keyIndex", 0);
+			long[] ids = req().getLongArray("keyIndex", 0);
 			for(long id : ids)
 			{
 				DsBaseUser po = service.get(id);
@@ -154,14 +152,14 @@ public class DsBaseSingleUserController extends BaseController
 	@RequestMapping("/updUser1")
 	public String updUser1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsBaseUser po = service.get(id);
 		if(!checkOrgid(po.getOrgpid()))
 		{
 			return null;
 		}
 		put("po", po);
-		String xtype = req.getString("xtype", "");
+		String xtype = req().getString("xtype", "");
 		if(xtype == null || xtype.length() == 0)
 		{
 			xtype = null;
@@ -172,7 +170,7 @@ public class DsBaseSingleUserController extends BaseController
 			return null;
 		}
 		put("typeList", list);
-		put("page", req.getInt("page", 1));
+		put("page", req().getInt("page", 1));
 		return "/ds/base/single/user/updUser.jsp";
 	}
 
@@ -206,14 +204,14 @@ public class DsBaseSingleUserController extends BaseController
 	@RequestMapping("/updUserStatus")
 	public void updUserStatus()
 	{
-		long id = req.getLong("keyIndex");
+		long id = req().getLong("keyIndex");
 		DsBaseUser po = service.get(id);
 		if(!checkOrgid(po.getOrgpid()))
 		{
 			print("0:您没有操作该用户的权限！");
 			return;
 		}
-		int status = req.getInt("status", -1);
+		int status = req().getInt("status", -1);
 		try
 		{
 			if(status == 0 || status == 1)
@@ -243,7 +241,7 @@ public class DsBaseSingleUserController extends BaseController
 	@RequestMapping("/updUserOrg1")
 	public String updUserOrg1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		if(id > 0 || id == -1)
 		{
 			DsBaseUser po = service.get(id);
@@ -255,7 +253,7 @@ public class DsBaseSingleUserController extends BaseController
 			put("orgpid", user.getOrgpid());
 			put("orgpname", user.getOrgpname());
 			put("po", po);
-			put("page", req.getInt("page", 1));
+			put("page", req().getInt("page", 1));
 			return "/ds/base/single/user/updUserOrg.jsp";
 		}
 		return null;
@@ -263,7 +261,7 @@ public class DsBaseSingleUserController extends BaseController
 	@RequestMapping("/updUserOrg2")
 	public void updUserOrg2()
 	{
-		DsBaseUser po = service.get(req.getLong("id"));
+		DsBaseUser po = service.get(req().getLong("id"));
 		if(!checkOrgid(po.getOrgpid()))
 		{
 			print("0:您无权修改的该用户的权限！");
@@ -271,9 +269,9 @@ public class DsBaseSingleUserController extends BaseController
 		}
 		try
 		{
-			long id = req.getLong("id");
-			long orgpid = req.getLong("orgpid");
-			long orgid = req.getLong("orgid");
+			long id = req().getLong("id");
+			long orgpid = req().getLong("orgpid");
+			long orgid = req().getLong("orgid");
 			if(!checkOrgid(orgpid))
 			{
 				print("0:您无权将用户调动至该单位！");
@@ -292,7 +290,7 @@ public class DsBaseSingleUserController extends BaseController
 	@RequestMapping("/updUserPassword1")
 	public String updUserPassword1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		if(id > 0)
 		{
 			DsBaseUser po = service.get(id);
@@ -301,7 +299,7 @@ public class DsBaseSingleUserController extends BaseController
 				return null;
 			}
 			put("po", po);
-			put("page", req.getInt("page", 1));
+			put("page", req().getInt("page", 1));
 			return "/ds/base/single/user/updUserPassword.jsp";
 		}
 		return null;
@@ -309,7 +307,7 @@ public class DsBaseSingleUserController extends BaseController
 	@RequestMapping("/updUserPassword2")
 	public void updUserPassword2()
 	{
-		DsBaseUser po = service.get(req.getLong("id"));
+		DsBaseUser po = service.get(req().getLong("id"));
 		if(!checkOrgid(po.getOrgpid()))
 		{
 			print("0:您没有操作该用户的权限！");
@@ -317,8 +315,8 @@ public class DsBaseSingleUserController extends BaseController
 		}
 		try
 		{
-			long id = req.getLong("id");
-			String password = req.getString("password");
+			long id = req().getLong("id");
+			String password = req().getString("password");
 			service.updatePassword(id, password);
 			print(1);
 		}
@@ -334,17 +332,17 @@ public class DsBaseSingleUserController extends BaseController
 	public String getUser()
 	{
 		Page<DsBaseUser> pageModel;
-		if(req.getLong("orgid") > 0)
+		if(req().getLong("orgid") > 0)
 		{
 			pageModel = service.queryPage(getPageRequest());// 部门下的用户
 		}
 		else
 		{
-			pageModel = service.queryPageByOrgpid(getPageRequest(), req.getLong("orgpid"));// 单位下的用户
+			pageModel = service.queryPageByOrgpid(getPageRequest(), req().getLong("orgpid"));// 单位下的用户
 		}
 		put("pageModel", pageModel);
-		put("pageNav", new PageNav<DsBaseUser>(request, pageModel));
-		String xtype = req.getString("xtype", "");
+		put("pageNav", new PageNav<DsBaseUser>(request(), pageModel));
+		String xtype = req().getString("xtype", "");
 		if(xtype == null || xtype.length() == 0)
 		{
 			xtype = null;
@@ -362,7 +360,7 @@ public class DsBaseSingleUserController extends BaseController
 	@RequestMapping("/getUserById")
 	public String getUserById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsBaseUser po = service.get(id);
 		if(!checkOrgid(po.getOrgpid()))
 		{
@@ -374,7 +372,7 @@ public class DsBaseSingleUserController extends BaseController
 
 	private DsBaseUser getLoginUser()
 	{
-		String account = dswork.sso.WebFilter.getAccount(session);
+		String account = dswork.sso.WebFilter.getAccount(session());
 		return service.getByAccount(account);
 	}
 

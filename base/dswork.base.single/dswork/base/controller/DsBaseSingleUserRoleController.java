@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -13,7 +12,6 @@ import dswork.base.model.DsBaseUser;
 import dswork.base.service.DsBaseSingleUserRoleService;
 import dswork.mvc.BaseController;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/ds/base/single/userrole")
 public class DsBaseSingleUserRoleController extends BaseController
@@ -51,7 +49,7 @@ public class DsBaseSingleUserRoleController extends BaseController
 	@RequestMapping("/getUser")
 	public String getUser()
 	{
-		Long pid = req.getLong("pid");
+		Long pid = req().getLong("pid");
 		put("list", service.queryUserList(pid));
 		return "/ds/base/single/userrole/getUser.jsp";
 	}
@@ -59,8 +57,8 @@ public class DsBaseSingleUserRoleController extends BaseController
 	@RequestMapping("/getUserById")
 	public String getUserById()
 	{
-		Long id = req.getLong("id");
-		Long systemid = req.getLong("systemid");
+		Long id = req().getLong("id");
+		Long systemid = req().getLong("systemid");
 		put("po", service.getUser(id));
 		put("list", service.queryOrgRoleList(id, systemid));
 		return "/ds/base/single/userrole/getUserById.jsp";
@@ -70,8 +68,8 @@ public class DsBaseSingleUserRoleController extends BaseController
 	@RequestMapping("/updUserRole1")
 	public String updUserRole1()
 	{
-		Long id = req.getLong("id");
-		Long systemid = req.getLong("systemid");
+		Long id = req().getLong("id");
+		Long systemid = req().getLong("systemid");
 		DsBaseOrg po = service.getOrg(id);
 		if(null == po)
 		{
@@ -91,7 +89,7 @@ public class DsBaseSingleUserRoleController extends BaseController
 	{
 		try
 		{
-			Long id = req.getLong("orgid");
+			Long id = req().getLong("orgid");
 			DsBaseOrg po = service.getOrg(id);
 			if(null == po)
 			{
@@ -100,7 +98,7 @@ public class DsBaseSingleUserRoleController extends BaseController
 			}
 			if(0 == po.getStatus())// 岗位才可以授权
 			{
-				String ids = req.getString("roleids", "");
+				String ids = req().getString("roleids", "");
 				List<Long> list = new ArrayList<Long>();
 				if(ids.length() > 0)
 				{
@@ -126,7 +124,7 @@ public class DsBaseSingleUserRoleController extends BaseController
 
 	private DsBaseUser getLoginUser()
 	{
-		String account = dswork.sso.WebFilter.getAccount(session);
+		String account = dswork.sso.WebFilter.getAccount(session());
 		return service.getUserByAccount(account);
 	}
 }

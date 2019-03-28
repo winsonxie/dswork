@@ -3,7 +3,6 @@ package dswork.base.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,7 +11,6 @@ import dswork.base.model.DsBaseOrg;
 import dswork.base.service.DsBaseOrgService;
 import dswork.core.util.CollectionUtil;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/ds/base/org")
 public class DsBaseOrgController extends BaseController
@@ -24,7 +22,7 @@ public class DsBaseOrgController extends BaseController
 	@RequestMapping("/addOrg1")
 	public String addOrg1()
 	{
-		long pid = req.getLong("pid");
+		long pid = req().getLong("pid");
 		DsBaseOrg parent = null;
 		if(pid > 0)
 		{
@@ -98,7 +96,7 @@ public class DsBaseOrgController extends BaseController
 		try
 		{
 			int v = 0;
-			long[] ids = req.getLongArray("keyIndex", 0);
+			long[] ids = req().getLongArray("keyIndex", 0);
 			for(long id : ids)
 			{
 				if(id <= 0)
@@ -128,7 +126,7 @@ public class DsBaseOrgController extends BaseController
 	@RequestMapping("/updOrg1")
 	public String updOrg1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsBaseOrg po = service.get(id);
 		if(null == po)
 		{
@@ -223,7 +221,7 @@ public class DsBaseOrgController extends BaseController
 	@RequestMapping("/updOrgSeq1")
 	public String updOrgSeq1()
 	{
-		long pid = req.getLong("pid");
+		long pid = req().getLong("pid");
 		List<DsBaseOrg> list = service.queryList(pid);
 		put("list", list);
 		return "/ds/base/org/updOrgSeq.jsp";
@@ -232,7 +230,7 @@ public class DsBaseOrgController extends BaseController
 	@RequestMapping("/updOrgSeq2")
 	public void updOrgSeq2()
 	{
-		Long[] ids = CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0));
+		Long[] ids = CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0));
 		try
 		{
 			if(ids.length > 0)
@@ -256,7 +254,7 @@ public class DsBaseOrgController extends BaseController
 	@RequestMapping("/updOrgMove1")
 	public String updOrgMove1()
 	{
-		Long rootid = req.getLong("rootid");// 作为限制根节点显示
+		Long rootid = req().getLong("rootid");// 作为限制根节点显示
 		put("po", (rootid > 0) ? service.get(rootid) : null);
 		put("rootid", rootid);
 		return "/ds/base/org/updOrgMove.jsp";
@@ -265,7 +263,7 @@ public class DsBaseOrgController extends BaseController
 	@RequestMapping("/updOrgMove2")
 	public void updOrgMove2()
 	{
-		long pid = req.getLong("pid");
+		long pid = req().getLong("pid");
 		if(pid <= 0)
 		{
 			pid = 0;
@@ -284,7 +282,7 @@ public class DsBaseOrgController extends BaseController
 				return;
 			}
 		}
-		Long[] ids = getLongArray(req.getString("ids"));
+		Long[] ids = getLongArray(req().getString("ids"));
 		try
 		{
 			if(ids.length > 0)
@@ -308,7 +306,7 @@ public class DsBaseOrgController extends BaseController
 	@RequestMapping("/getOrgTree")
 	public String getOrgTree()
 	{
-		Long rootid = req.getLong("rootid");// 作为限制根节点显示
+		Long rootid = req().getLong("rootid");// 作为限制根节点显示
 		DsBaseOrg po = null;
 		if(rootid > 0)
 		{
@@ -334,8 +332,8 @@ public class DsBaseOrgController extends BaseController
 	@RequestMapping("/getOrg")
 	public String getOrg()
 	{
-		Long rootid = req.getLong("rootid");// 作为限制根节点显示
-		Long pid = req.getLong("pid");
+		Long rootid = req().getLong("rootid");// 作为限制根节点显示
+		Long pid = req().getLong("pid");
 		List<DsBaseOrg> list = service.queryList(pid);
 		put("list", list);
 		put("rootid", rootid);
@@ -348,7 +346,7 @@ public class DsBaseOrgController extends BaseController
 	// ByPid
 	public void getOrgJson()
 	{
-		long pid = req.getLong("pid");
+		long pid = req().getLong("pid");
 		print(service.queryList(pid));
 	}
 
@@ -356,7 +354,7 @@ public class DsBaseOrgController extends BaseController
 	@RequestMapping("/getOrgById")
 	public String getOrgById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsBaseOrg po = service.get(id);
 		put("po", po);
 		return "/ds/base/org/getOrgById.jsp";

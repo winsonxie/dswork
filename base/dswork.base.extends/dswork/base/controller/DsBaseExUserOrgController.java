@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -13,7 +12,6 @@ import dswork.base.model.DsBaseUser;
 import dswork.base.service.DsBaseExUserOrgService;
 import dswork.mvc.BaseController;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/ds/base/ex/userorg")
 public class DsBaseExUserOrgController extends BaseController
@@ -51,7 +49,7 @@ public class DsBaseExUserOrgController extends BaseController
 	@RequestMapping("/getUserOrg")
 	public String getUserOrg()
 	{
-		Long pid = req.getLong("pid");
+		Long pid = req().getLong("pid");
 		put("pid", pid);
 		put("orgList", service.queryOrgList(pid));
 		put("userList", service.queryUserList(pid));
@@ -61,7 +59,7 @@ public class DsBaseExUserOrgController extends BaseController
 	@RequestMapping("/updSetUser1")
 	public String updSetUser1()
 	{
-		Long id = req.getLong("id");
+		Long id = req().getLong("id");
 		put("list", service.queryListByUserid(id));
 		return "/ds/base/ex/userorg/updSetUser.jsp";
 	}
@@ -70,8 +68,8 @@ public class DsBaseExUserOrgController extends BaseController
 	{
 		try
 		{
-			Long userid = req.getLong("userid");
-			String ids = req.getString("orgids", "");
+			Long userid = req().getLong("userid");
+			String ids = req().getString("orgids", "");
 			List<Long> list = new ArrayList<Long>();
 			if(ids.length() > 0)
 			{
@@ -93,7 +91,7 @@ public class DsBaseExUserOrgController extends BaseController
 	@RequestMapping("/updSetOrg1")
 	public String updSetOrg1()
 	{
-		Long id = req.getLong("id");
+		Long id = req().getLong("id");
 		put("list", service.queryListByOrgid(id));
 		return "/ds/base/ex/userorg/updSetOrg.jsp";
 	}
@@ -102,10 +100,10 @@ public class DsBaseExUserOrgController extends BaseController
 	{
 		try
 		{
-			Long orgid = req.getLong("orgid");
+			Long orgid = req().getLong("orgid");
 			if(orgid > 0)
 			{
-				String ids = req.getString("userids", "");
+				String ids = req().getString("userids", "");
 				List<Long> list = new ArrayList<Long>();
 				if(ids.length() > 0)
 				{
@@ -131,14 +129,14 @@ public class DsBaseExUserOrgController extends BaseController
 
 	private DsBaseUser getLoginUser()
 	{
-		String account = dswork.sso.WebFilter.getAccount(session);
+		String account = dswork.sso.WebFilter.getAccount(session());
 		return service.getUserByAccount(account);
 	}
 
 	@RequestMapping("/getUserById")
 	public String getUserById()
 	{
-		Long id = req.getLong("id");
+		Long id = req().getLong("id");
 		put("po", service.getUser(id));
 		put("list", service.queryOrgListByUserid(id));
 		return "/ds/base/ex/userorg/getUserById.jsp";
@@ -147,7 +145,7 @@ public class DsBaseExUserOrgController extends BaseController
 	@RequestMapping("/getOrgById")
 	public String getOrgById()
 	{
-		Long id = req.getLong("id");
+		Long id = req().getLong("id");
 		put("po", service.getOrg(id));
 		put("list", service.queryUserListByOrgid(id));
 		return "/ds/base/ex/userorg/getOrgById.jsp";
@@ -157,7 +155,7 @@ public class DsBaseExUserOrgController extends BaseController
 	@RequestMapping("/updOrgRole1")
 	public String updOrgRole1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsBaseOrg po = service.getOrg(id);
 		if(null == po)
 		{
@@ -177,7 +175,7 @@ public class DsBaseExUserOrgController extends BaseController
 	{
 		try
 		{
-			Long id = req.getLong("orgid");
+			Long id = req().getLong("orgid");
 			DsBaseOrg po = service.getOrg(id);
 			if(null == po)
 			{
@@ -186,7 +184,7 @@ public class DsBaseExUserOrgController extends BaseController
 			}
 			if(0 == po.getStatus())// 岗位才可以授权
 			{
-				String ids = req.getString("roleids", "");
+				String ids = req().getString("roleids", "");
 				List<Long> list = new ArrayList<Long>();
 				if(ids.length() > 0)
 				{

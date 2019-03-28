@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,9 +22,7 @@ import dswork.core.page.PageNav;
 import dswork.core.util.CollectionUtil;
 import dswork.core.util.UniqueId;
 import dswork.mvc.BaseController;
-import dswork.web.MyRequest;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/ds/base/table")
 public class DsBaseTableController extends BaseController
@@ -56,7 +53,7 @@ public class DsBaseTableController extends BaseController
 				throw new Exception("该类型下的\""+po.getName()+"\"表单已经存在！");
 			}
 			po.setId(UniqueId.genId());
-			po.setDatatable(resolve(req));//解析成json字符串
+			po.setDatatable(resolve());//解析成json字符串
 			service.save(po);
 			print(1);
 		}
@@ -73,7 +70,7 @@ public class DsBaseTableController extends BaseController
 	{
 		try
 		{
-			service.deleteBatch(CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0)));
+			service.deleteBatch(CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0)));
 			print(1);
 		}
 		catch (Exception e)
@@ -87,12 +84,12 @@ public class DsBaseTableController extends BaseController
 	@RequestMapping("/updTable1")
 	public String updTable1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsBaseTable po = service.get(id);
 		put("po", po);
 		put("typeList", service.getCategoryList(null));//所有表单类别
 		put("map",DsBaseTableService.toBean(po.getDatatable(), Map.class));
-		put("page", req.getInt("page", 1));
+		put("page", req().getInt("page", 1));
 		return "/ds/base/table/updTable.jsp";
 	}
 
@@ -101,7 +98,7 @@ public class DsBaseTableController extends BaseController
 	{
 		try
 		{
-			po.setDatatable(resolve(req));//解析表单json
+			po.setDatatable(resolve());//解析表单json
 			service.update(po);
 			print(1);
 		}
@@ -119,7 +116,7 @@ public class DsBaseTableController extends BaseController
 		put("categoryList",service.getCategoryList(null));
 		Page<DsBaseTable> pageModel = service.queryPage(getPageRequest());
 		put("pageModel", pageModel);
-		put("pageNav", new PageNav<DsBaseTable>(request, pageModel));
+		put("pageNav", new PageNav<DsBaseTable>(request(), pageModel));
 		return "/ds/base/table/getTable.jsp";
 	}
 
@@ -127,7 +124,7 @@ public class DsBaseTableController extends BaseController
 	@RequestMapping("/getTableById")
 	public String getTableById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsBaseTable po = service.get(id);
 		String string = po.getDatatable();
 		Map<?, ?> map = DsBaseTableService.toBean(string, Map.class);
@@ -137,10 +134,10 @@ public class DsBaseTableController extends BaseController
 	}
 
 	//解析表单自定义字段成json字符串
-	private String resolve(MyRequest req) {
-		String[] name = req.getStringArray("tname");//自定义字段名称数组
-		String[] info = req.getStringArray("tinfo");//自定义字段说明数组
-		String[] datatype = req.getStringArray("ttype");//自定义字段类型数组
+	private String resolve() {
+		String[] name = req().getStringArray("tname");//自定义字段名称数组
+		String[] info = req().getStringArray("tinfo");//自定义字段说明数组
+		String[] datatype = req().getStringArray("ttype");//自定义字段类型数组
 		Map<String,Map<String, String>> map = new LinkedHashMap<String,Map<String, String>>();
 		if(name!=null&&name.length==info.length&&name.length==datatype.length) {
 			for (int i=0;i<name.length;i++) 
@@ -197,7 +194,7 @@ public class DsBaseTableController extends BaseController
 		try
 		{
 			//判断此类别下是否由表单,有，不允许删除
-			Long[] array = CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0));
+			Long[] array = CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0));
 			for (Long id: array) 
 			{
 				int count = service.queryFromCountByFormTypeId(id);
@@ -221,9 +218,9 @@ public class DsBaseTableController extends BaseController
 	@RequestMapping("/updTableCategory1")
 	public String updTableCategory1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.getCategory(id));
-		put("page", req.getInt("page", 1));
+		put("page", req().getInt("page", 1));
 		return "/ds/base/table/updTableCategory.jsp";
 	}
 
@@ -260,7 +257,7 @@ public class DsBaseTableController extends BaseController
 	{
 		Page<DsBaseTableCategory> pageModel = service.queryPageCategory(getPageRequest());
 		put("pageModel", pageModel);
-		put("pageNav", new PageNav<DsBaseTableCategory>(request, pageModel));
+		put("pageNav", new PageNav<DsBaseTableCategory>(request(), pageModel));
 		return "/ds/base/table/getTableCategory.jsp";
 	}
 
@@ -268,7 +265,7 @@ public class DsBaseTableController extends BaseController
 	@RequestMapping("/getTableCategoryById")
 	public String getTableCategoryById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.getCategory(id));
 		return "/ds/base/table/getTableCategoryById.jsp";
 	}

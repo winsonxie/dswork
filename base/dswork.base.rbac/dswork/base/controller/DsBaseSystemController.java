@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,7 +17,6 @@ import dswork.core.util.UniqueId;
 import dswork.mvc.BaseController;
 
 //应用系统
-@Scope("prototype")
 @Controller
 @RequestMapping("/ds/base/system")
 public class DsBaseSystemController extends BaseController
@@ -69,7 +67,7 @@ public class DsBaseSystemController extends BaseController
 	{
 		try
 		{
-			long systemid = req.getLong("keyIndex", 0);
+			long systemid = req().getLong("keyIndex", 0);
 			int funcCount = service.getCountFuncBySystemid(systemid);
 			int roleCount = service.getCountRoleBySystemid(systemid);
 			if (0 >= funcCount && 0 >= roleCount)
@@ -104,7 +102,7 @@ public class DsBaseSystemController extends BaseController
 	@RequestMapping("/updSystem1")
 	public String updSystem()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
 		return "/ds/base/system/updSystem.jsp";
 	}
@@ -127,8 +125,8 @@ public class DsBaseSystemController extends BaseController
 	@RequestMapping("/updSystemStatus")
 	public void updSystemStatus()
 	{
-		long id = req.getLong("keyIndex");
-		int status = req.getInt("status", -1);
+		long id = req().getLong("keyIndex");
+		int status = req().getInt("status", -1);
 		try
 		{
 			if (status == 0 || status == 1)
@@ -154,7 +152,7 @@ public class DsBaseSystemController extends BaseController
 	{
 		Page<DsBaseSystem> pageModel = service.queryPage(getPageRequest());
 		put("pageModel", pageModel);
-		put("pageNav", new PageNav<DsBaseSystem>(request, pageModel));
+		put("pageNav", new PageNav<DsBaseSystem>(request(), pageModel));
 		return "/ds/base/system/getSystem.jsp";
 	}
 	
@@ -162,7 +160,7 @@ public class DsBaseSystemController extends BaseController
 	@RequestMapping("/getSystemById")
 	public String getSystemById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
 		return "/ds/base/system/getSystemById.jsp";
 	}
@@ -180,7 +178,7 @@ public class DsBaseSystemController extends BaseController
 	@RequestMapping("/updSystemSeq2")
 	public void updSystemSeq2()
 	{
-		Long[] ids = CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0));
+		Long[] ids = CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0));
 		try
 		{
 			if(ids.length > 0)

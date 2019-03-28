@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,7 +11,6 @@ import dswork.mvc.BaseController;
 import dswork.base.model.DsBaseOrg;
 import dswork.base.service.DsBaseUserOrgService;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/ds/base/userorg")
 public class DsBaseUserOrgController extends BaseController
@@ -24,7 +22,7 @@ public class DsBaseUserOrgController extends BaseController
 	@RequestMapping("/getOrgTree")
 	public String getOrgTree()
 	{
-		Long rootid = req.getLong("rootid");// 作为限制根节点显示
+		Long rootid = req().getLong("rootid");// 作为限制根节点显示
 		DsBaseOrg po = null;
 		if(rootid > 0)
 		{
@@ -50,7 +48,7 @@ public class DsBaseUserOrgController extends BaseController
 	@RequestMapping("/getUserOrg")
 	public String getUserOrg()
 	{
-		Long pid = req.getLong("pid");
+		Long pid = req().getLong("pid");
 		put("pid", pid);
 		put("orgList", service.queryOrgList(pid));
 		put("userList", service.queryUserList(pid));
@@ -60,7 +58,7 @@ public class DsBaseUserOrgController extends BaseController
 	@RequestMapping("/updSetUser1")
 	public String updSetUser1()
 	{
-		Long id = req.getLong("id");
+		Long id = req().getLong("id");
 		put("list", service.queryListByUserid(id));
 		return "/ds/base/userorg/updSetUser.jsp";
 	}
@@ -69,8 +67,8 @@ public class DsBaseUserOrgController extends BaseController
 	{
 		try
 		{
-			Long userid = req.getLong("userid");
-			String ids = req.getString("orgids", "");
+			Long userid = req().getLong("userid");
+			String ids = req().getString("orgids", "");
 			List<Long> list = new ArrayList<Long>();
 			if(ids.length() > 0)
 			{
@@ -92,7 +90,7 @@ public class DsBaseUserOrgController extends BaseController
 	@RequestMapping("/updSetOrg1")
 	public String updSetOrg1()
 	{
-		Long id = req.getLong("id");
+		Long id = req().getLong("id");
 		put("list", service.queryListByOrgid(id));
 		return "/ds/base/userorg/updSetOrg.jsp";
 	}
@@ -101,10 +99,10 @@ public class DsBaseUserOrgController extends BaseController
 	{
 		try
 		{
-			Long orgid = req.getLong("orgid");
+			Long orgid = req().getLong("orgid");
 			if(orgid > 0)
 			{
-				String ids = req.getString("userids", "");
+				String ids = req().getString("userids", "");
 				List<Long> list = new ArrayList<Long>();
 				if(ids.length() > 0)
 				{

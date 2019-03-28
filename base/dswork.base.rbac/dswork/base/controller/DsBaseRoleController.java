@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,7 +18,6 @@ import dswork.base.service.DsBaseRoleService;
 import dswork.core.util.CollectionUtil;
 
 //角色
-@Scope("prototype")
 @Controller
 @RequestMapping("/ds/base/role")
 public class DsBaseRoleController extends BaseController
@@ -31,8 +29,8 @@ public class DsBaseRoleController extends BaseController
 	@RequestMapping("/addRole1")
 	public String addRole1()
 	{
-		Long systemid = req.getLong("systemid");
-		long pid = req.getLong("pid");
+		Long systemid = req().getLong("systemid");
+		long pid = req().getLong("pid");
 		DsBaseRole parent = null;
 		if(pid > 0)
 		{
@@ -44,7 +42,7 @@ public class DsBaseRoleController extends BaseController
 		}
 		put("parent", parent);
 		put("systemid", systemid);
-		put("pid", req.getLong("pid"));
+		put("pid", req().getLong("pid"));
 		return "/ds/base/role/addRole.jsp";
 	}
 	@RequestMapping("/addRole2")
@@ -66,11 +64,11 @@ public class DsBaseRoleController extends BaseController
 					return;
 				}
 			}
-			int refresh = req.getInt("refresh", 0);
+			int refresh = req().getInt("refresh", 0);
 			List<DsBaseRoleFunc> list = null;
 			if(refresh == 1)// 需要修改功能权限
 			{
-				Long[] funcids = getLongArray(req.getString("funcids", "").trim());
+				Long[] funcids = getLongArray(req().getString("funcids", "").trim());
 				if(funcids.length > 0)
 				{
 					list = new ArrayList<DsBaseRoleFunc>();
@@ -102,7 +100,7 @@ public class DsBaseRoleController extends BaseController
 		try
 		{
 			int v = 0;
-			long[] ids = req.getLongArray("keyIndex", 0);
+			long[] ids = req().getLongArray("keyIndex", 0);
 			for(long id : ids)
 			{
 				if(id <= 0)
@@ -132,7 +130,7 @@ public class DsBaseRoleController extends BaseController
 	@RequestMapping("/updRole1")
 	public String updRole1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsBaseRole po = service.get(id);
 		if(null == po)
 		{
@@ -171,11 +169,11 @@ public class DsBaseRoleController extends BaseController
 				print("0:操作失败，请刷新重试");
 				return;
 			}
-			int refresh = req.getInt("refresh", 0);
+			int refresh = req().getInt("refresh", 0);
 			List<DsBaseRoleFunc> list = null;
 			if(refresh == 1)// 需要修改功能权限
 			{
-				Long[] funcids = getLongArray(req.getString("funcids", "").trim());
+				Long[] funcids = getLongArray(req().getString("funcids", "").trim());
 				if(funcids.length > 0)
 				{
 					list = new ArrayList<DsBaseRoleFunc>();
@@ -204,8 +202,8 @@ public class DsBaseRoleController extends BaseController
 	@RequestMapping("/updRoleSeq1")
 	public String updRoleSeq1()
 	{
-		long systemid = req.getLong("systemid");
-		long pid = req.getLong("pid");
+		long systemid = req().getLong("systemid");
+		long pid = req().getLong("pid");
 		List<DsBaseRole> list = service.queryList(systemid, pid);
 		put("list", list);
 		return "/ds/base/role/updRoleSeq.jsp";
@@ -213,7 +211,7 @@ public class DsBaseRoleController extends BaseController
 	@RequestMapping("/updRoleSeq2")
 	public void updRoleSeq2()
 	{
-		Long[] ids = CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0));
+		Long[] ids = CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0));
 		try
 		{
 			if(ids.length > 0)
@@ -237,15 +235,15 @@ public class DsBaseRoleController extends BaseController
 	@RequestMapping("/updRoleMove1")
 	public String updRoleMove1()
 	{
-		DsBaseSystem po = service.getSystem(req.getLong("systemid"));
+		DsBaseSystem po = service.getSystem(req().getLong("systemid"));
 		put("po", po);
 		return "/ds/base/role/updRoleMove.jsp";
 	}
 	@RequestMapping("/updRoleMove2")
 	public void updRoleMove2()
 	{
-		long systemid = req.getLong("systemid");
-		long pid = req.getLong("pid");
+		long systemid = req().getLong("systemid");
+		long pid = req().getLong("pid");
 		if(pid <= 0)
 		{
 			pid = 0;
@@ -259,7 +257,7 @@ public class DsBaseRoleController extends BaseController
 				return;
 			}
 		}
-		Long[] ids = getLongArray(req.getString("ids"));
+		Long[] ids = getLongArray(req().getString("ids"));
 		try
 		{
 			if(ids.length > 0)
@@ -283,7 +281,7 @@ public class DsBaseRoleController extends BaseController
 	@RequestMapping("/getRoleTree")
 	public String getRoleTree()
 	{
-		long systemid = req.getLong("systemid");
+		long systemid = req().getLong("systemid");
 		put("systemid", systemid);
 		return "/ds/base/role/getRoleTree.jsp";
 	}
@@ -291,8 +289,8 @@ public class DsBaseRoleController extends BaseController
 	@RequestMapping("/getRole")
 	public String getRole()
 	{
-		long systemid = req.getLong("systemid");
-		Long pid = req.getLong("pid");
+		long systemid = req().getLong("systemid");
+		Long pid = req().getLong("pid");
 		List<DsBaseRole> list = service.queryList(systemid, pid);
 		put("list", list);
 		put("systemid", systemid);
@@ -303,8 +301,8 @@ public class DsBaseRoleController extends BaseController
 	@RequestMapping("/getRoleJson")// BySystemidAndPid
 	public void getRoleJson()
 	{
-		long systemid = req.getLong("systemid");
-		long pid = req.getLong("pid");
+		long systemid = req().getLong("systemid");
+		long pid = req().getLong("pid");
 		print(service.queryList(systemid, pid));
 	}
 
@@ -312,7 +310,7 @@ public class DsBaseRoleController extends BaseController
 	@RequestMapping("/getRoleById")
 	public String getRoleById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsBaseRole po = service.get(id);
 		put("po", po);
 		return "/ds/base/role/getRoleById.jsp";
@@ -350,8 +348,8 @@ public class DsBaseRoleController extends BaseController
 	@RequestMapping("/getRoleFuncJson")// BySystemidAndRoleid
 	public void getRoleFuncJson()
 	{
-		long systemid = req.getLong("systemid");
-		long roleid = req.getLong("roleid");
+		long systemid = req().getLong("systemid");
+		long roleid = req().getLong("roleid");
 		List<DsBaseFunc> list = service.queryFuncList(systemid);
 		if(null != list && 0 < list.size())
 		{
