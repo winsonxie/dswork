@@ -52,13 +52,38 @@ public class BaseController
 		return req.get();
 	}
 	
-	protected static void print(Object json)
+	protected void print(String json)
 	{
 		try
 		{
+			if(out.get() == null)
+			{
+				out.set(response().getWriter());
+			}
 			response().setHeader("P3P", "CP=CAO PSA OUR");
 			response().setHeader("Access-Control-Allow-Origin", "*");
-			printDomain(json);
+			response().setCharacterEncoding("UTF-8");
+			response().setContentType("application/json;charset=UTF-8");
+			out.get().write(json == null ? "" : json);
+		}
+		catch(Exception e)
+		{
+		}
+	}
+	
+	protected void print(Object json)
+	{
+		try
+		{
+			if(out.get() == null)
+			{
+				out.set(response().getWriter());
+			}
+			response().setHeader("P3P", "CP=CAO PSA OUR");
+			response().setHeader("Access-Control-Allow-Origin", "*");
+			response().setCharacterEncoding("UTF-8");
+			response().setContentType("application/json;charset=UTF-8");
+			out.get().write(json == null ? "" : json.toString());
 		}
 		catch(Exception e)
 		{
@@ -70,7 +95,7 @@ public class BaseController
 	 * @param response
 	 * @param json
 	 */
-	public static void printDomain(Object json)
+	public void printDomain(Object json)
 	{
 		try
 		{
@@ -80,20 +105,20 @@ public class BaseController
 			}
 			response().setCharacterEncoding("UTF-8");
 			response().setContentType("application/json;charset=UTF-8");
-			out.get().print(json == null ? "" : json);
+			out.get().write(json == null ? "" : json.toString());
 		}
 		catch(Exception e)
 		{
 		}
 	}
 	
-	protected static void put(String key, Object obj)
+	protected void put(String key, Object obj)
 	{
 		request().setAttribute(key, obj);
 	}
 
 	@Deprecated
-	protected static void sendRedirect(String url)
+	protected void sendRedirect(String url)
 	{
 		try
 		{
@@ -105,7 +130,7 @@ public class BaseController
 		}
 	}
 	
-	protected static PageRequest getPageRequest(int pagesize)
+	protected PageRequest getPageRequest(int pagesize)
 	{
 		if(pagesize <= 0)
 		{
