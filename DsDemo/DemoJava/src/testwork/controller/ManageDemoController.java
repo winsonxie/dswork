@@ -6,7 +6,6 @@
 package testwork.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -17,7 +16,6 @@ import dswork.core.util.CollectionUtil;
 import testwork.model.Demo;
 import testwork.service.ManageDemoService;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/manage/demo")// 控制器类名对应url的目录部分(除应用名contextPath)
 public class ManageDemoController extends BaseController
@@ -53,7 +51,7 @@ public class ManageDemoController extends BaseController
 	{
 		try
 		{
-			service.deleteBatch(CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0)));
+			service.deleteBatch(CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0)));
 			print(1);
 		}
 		catch (Exception e)
@@ -67,9 +65,9 @@ public class ManageDemoController extends BaseController
 	@RequestMapping
 	public String updDemo1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
-		put("page", req.getInt("page", 1));
+		put("page", req().getInt("page", 1));
 		return "/manage/demo/updDemo.jsp";
 	}
 
@@ -93,10 +91,10 @@ public class ManageDemoController extends BaseController
 	public String getDemo()
 	{
 		//PageRequest pr = getPageRequest();
-		//pr.setFilters(req.getParameterValueMap(false, false));
+		//pr.setFilters(req().getParameterValueMap(false, false));
 		Page<Demo> pageModel = service.queryPage(getPageRequest());
 		put("pageModel", pageModel);
-		put("pageNav", new PageNav<Demo>(request, pageModel));
+		put("pageNav", new PageNav<Demo>(request(), pageModel));
 		return "/manage/demo/getDemo.jsp";
 	}
 
@@ -104,7 +102,7 @@ public class ManageDemoController extends BaseController
 	@RequestMapping
 	public String getDemoById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
 		return "/manage/demo/getDemoById.jsp";
 	}

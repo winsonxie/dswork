@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,7 +18,6 @@ import dswork.core.page.Page;
 import dswork.core.page.PageRequest;
 import dswork.core.util.CollectionUtil;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/manage/my")
 public class ManageMimeController extends BaseController
@@ -31,13 +29,13 @@ public class ManageMimeController extends BaseController
 	@RequestMapping("/save")
 	public void save()
 	{
-		String model = req.getString("model");
+		String model = req().getString("model");
 		Map<String, Object> map = new HashMap<String, Object>();
 		try
 		{
 			Object obj;
 			obj = Class.forName(namespaceDot + model).newInstance();
-			req.getFillObject(obj);
+			req().getFillObject(obj);
 			try
 			{
 				obj.getClass().getMethod("setId", String.class).invoke(obj, dswork.core.util.UniqueId.genGuid());
@@ -65,11 +63,11 @@ public class ManageMimeController extends BaseController
 	@RequestMapping("/delete")
 	public void delete()
 	{
-		String model = req.getString("model");
+		String model = req().getString("model");
 		Map<String, Object> map = new HashMap<String, Object>();
 		try
 		{
-			service.deleteBatch(namespaceDot + model, CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0)));
+			service.deleteBatch(namespaceDot + model, CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0)));
 			map.put("status", 1);
 			map.put("msg", "");
 		}
@@ -84,13 +82,13 @@ public class ManageMimeController extends BaseController
 	@RequestMapping("/update")
 	public void update()
 	{
-		String model = req.getString("model");
+		String model = req().getString("model");
 		Map<String, Object> map = new HashMap<String, Object>();
 		try
 		{
 			Object obj;
 			obj = (Class.forName(namespaceDot + model)).newInstance();
-			req.getFillObject(obj);
+			req().getFillObject(obj);
 			service.update(namespaceDot + model, obj);
 			map.put("status", 1);
 			map.put("msg", "");
@@ -106,7 +104,7 @@ public class ManageMimeController extends BaseController
 	@RequestMapping("/page")
 	public void page()
 	{
-		String model = req.getString("model");
+		String model = req().getString("model");
 		Map<String, Object> map = new HashMap<String, Object>();
 		try
 		{
@@ -132,7 +130,7 @@ public class ManageMimeController extends BaseController
 	@RequestMapping("/list")
 	public void list()
 	{
-		String model = req.getString("model");
+		String model = req().getString("model");
 		Map<String, Object> map = new HashMap<String, Object>();
 		try
 		{
@@ -153,11 +151,11 @@ public class ManageMimeController extends BaseController
 	@RequestMapping("/get")
 	public void get()
 	{
-		String model = req.getString("model");
+		String model = req().getString("model");
 		Map<String, Object> map = new HashMap<String, Object>();
 		try
 		{
-			Long id = req.getLong("keyIndex");
+			Long id = req().getLong("keyIndex");
 			Object po = service.get(namespaceDot + model, id);
 			map.put("status", 1);
 			map.put("msg", "");

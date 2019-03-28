@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,6 @@ import dswork.core.page.Page;
 import dswork.core.page.PageRequest;
 import dswork.core.util.CollectionUtil;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/manage/my")
 public class ManageMyController extends BaseController
@@ -37,7 +35,7 @@ public class ManageMyController extends BaseController
 		{
 			Object obj;
 			obj = Class.forName(namespaceDot + model).newInstance();
-			req.getFillObject(obj);
+			req().getFillObject(obj);
 			try
 			{
 				obj.getClass().getMethod("setId", String.class).invoke(obj, dswork.core.util.UniqueId.genGuid());
@@ -68,7 +66,7 @@ public class ManageMyController extends BaseController
 		Map<String, Object> map = new HashMap<String, Object>();
 		try
 		{
-			service.deleteBatch(namespaceDot + model, CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0)));
+			service.deleteBatch(namespaceDot + model, CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0)));
 			map.put("status", 1);
 			map.put("msg", "");
 		}
@@ -88,7 +86,7 @@ public class ManageMyController extends BaseController
 		{
 			Object obj;
 			obj = (Class.forName(namespaceDot + model)).newInstance();
-			req.getFillObject(obj);
+			req().getFillObject(obj);
 			service.update(namespaceDot + model, obj);
 			map.put("status", 1);
 			map.put("msg", "");
@@ -152,7 +150,7 @@ public class ManageMyController extends BaseController
 		Map<String, Object> map = new HashMap<String, Object>();
 		try
 		{
-			Long id = req.getLong("keyIndex");
+			Long id = req().getLong("keyIndex");
 			Object po = service.get(namespaceDot + model, id);
 			map.put("status", 1);
 			map.put("msg", "");
