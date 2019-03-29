@@ -22,6 +22,10 @@ public class BaseController
 	private static final ThreadLocal<PrintWriter> out = new ThreadLocal<PrintWriter>();
 	
 	protected static Logger log = LoggerFactory.getLogger(BaseController.class.getName());
+	private static String JSON = "{\"code\":%d,\"data\":%s,\"msg\":\"%s\"}";
+	private static String JSON_DATA = "{\"code\":%d,\"data\":%s}";
+	private static String JSON_MSG = "{\"code\":%d,\"msg\":\"%s\"}";
+	private static String JSON_CODE = "{\"code\":%d}";
 	
 	@ModelAttribute
 	public void BaseInitialization(HttpServletRequest request, HttpServletResponse response)
@@ -50,6 +54,32 @@ public class BaseController
 	protected static MyRequest req()
 	{
 		return req.get();
+	}
+	
+	protected static String formatJson(int code, String jsonData, String msg)
+	{
+		if(jsonData == null)
+		{
+			if(msg == null)
+			{
+				return String.format(JSON_CODE, code);
+			}
+			else
+			{
+				return String.format(JSON_MSG, code, msg);
+			}
+		}
+		else
+		{
+			if(msg == null)
+			{
+				return String.format(JSON_DATA, code, jsonData);
+			}
+			else
+			{
+				return String.format(JSON, code, jsonData, msg);
+			}
+		}
 	}
 	
 	protected void print(String json)
