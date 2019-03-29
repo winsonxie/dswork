@@ -22,7 +22,6 @@ import dswork.core.page.PageNav;
 import dswork.core.util.CollectionUtil;
 import dswork.core.util.UniqueId;
 import dswork.mvc.BaseController;
-import dswork.web.MyRequest;
 
 @Controller
 @RequestMapping("/ds/common/table")
