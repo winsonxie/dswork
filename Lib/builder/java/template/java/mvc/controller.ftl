@@ -6,7 +6,6 @@
 package ${namespace}.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -17,7 +16,6 @@ import ${frame}.core.util.CollectionUtil;
 import ${namespace}.model.${model};
 import ${namespace}.service.${moduleUpperCamel}Service;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("${module}")
 public class ${moduleUpperCamel}Controller extends BaseController
@@ -53,7 +51,7 @@ public class ${moduleUpperCamel}Controller extends BaseController
 	{
 		try
 		{
-			service.deleteBatch(CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0)));
+			service.deleteBatch(CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0)));
 			print(1);
 		}
 		catch (Exception e)
@@ -67,9 +65,9 @@ public class ${moduleUpperCamel}Controller extends BaseController
 	@RequestMapping
 	public String upd${model}1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
-		put("page", req.getInt("page", 1));
+		put("page", req().getInt("page", 1));
 		return "${module}/upd${model}.jsp";
 	}
 
@@ -94,7 +92,7 @@ public class ${moduleUpperCamel}Controller extends BaseController
 	{
 		Page<${model}> pageModel = service.queryPage(getPageRequest());
 		put("pageModel", pageModel);
-		put("pageNav", new PageNav<${model}>(request, pageModel));
+		put("pageNav", new PageNav<${model}>(request(), pageModel));
 		return "${module}/get${model}.jsp";
 	}
 
@@ -102,7 +100,7 @@ public class ${moduleUpperCamel}Controller extends BaseController
 	@RequestMapping
 	public String get${model}ById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
 		return "${module}/get${model}ById.jsp";
 	}
