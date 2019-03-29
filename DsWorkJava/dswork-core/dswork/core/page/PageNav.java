@@ -16,7 +16,7 @@ public class PageNav<T>
 	private String formString = "";
 	private static int[] sizeArray = {1, 5, 10, 15, 20, 50, 100, 200};
 	private String pageName = "page";
-	private String pagesizeName = "pagesizeName";
+	private String pagesizeName = "pagesize";
 	
 	/**
 	 * 构造函数
