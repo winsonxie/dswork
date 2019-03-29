@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,6 @@ import dswork.core.page.Page;
 import dswork.core.page.PageRequest;
 import dswork.core.util.CollectionUtil;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/manage/my")
 public class MyController extends BaseController

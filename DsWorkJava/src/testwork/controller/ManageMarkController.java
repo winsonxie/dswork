@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,7 +21,6 @@ import testwork.model.Demo;
 import testwork.model.Mark;
 import testwork.service.ManageMarkService;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/manage/mark")// 控制器类名对应url的目录部分(除应用名contextPath)
 public class ManageMarkController extends BaseController
