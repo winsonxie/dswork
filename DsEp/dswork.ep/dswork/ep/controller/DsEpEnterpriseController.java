@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,7 +17,6 @@ import dswork.ep.model.DsEpUser;
 import dswork.ep.service.DsEpEnterpriseService;
 import dswork.mvc.BaseController;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/ep/enterprise")
 public class DsEpEnterpriseController extends BaseController
@@ -51,7 +49,7 @@ public class DsEpEnterpriseController extends BaseController
 				ent.setId(UniqueId.genId());
 				user.setId(ent.getId());
 				
-				user.setName(req.getString("username"));
+				user.setName(req().getString("username"));
 				user.setQybm(ent.getQybm());
 				user.setUsertype(1);// 企业管理员
 				user.setStatus(1);// 正常状态
@@ -71,7 +69,7 @@ public class DsEpEnterpriseController extends BaseController
 	@RequestMapping("/updEnterprise1")
 	public String updEnterprise1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsEpEnterprise po = service.get(id);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("qybm", po.getQybm());
@@ -81,7 +79,7 @@ public class DsEpEnterpriseController extends BaseController
 		{
 			put("po", po);
 			put("admin", userlist.get(0));
-			put("page", req.getInt("page", 1));
+			put("page", req().getInt("page", 1));
 			return "/ep/enterprise/updEnterprise.jsp";
 		}
 		return null;
@@ -92,8 +90,8 @@ public class DsEpEnterpriseController extends BaseController
 	{
 		try
 		{
-			user.setId(req.getLong("userid"));
-			user.setName(req.getString("username"));
+			user.setId(req().getLong("userid"));
+			user.setName(req().getString("username"));
 			service.update(po, user);
 			print(1);
 		}
@@ -110,7 +108,7 @@ public class DsEpEnterpriseController extends BaseController
 	{
 		Page<DsEpEnterprise> pageModel = service.queryPage(getPageRequest());
 		put("pageModel", pageModel);
-		put("pageNav", new PageNav<DsEpEnterprise>(request, pageModel));
+		put("pageNav", new PageNav<DsEpEnterprise>(request(), pageModel));
 		return "/ep/enterprise/getEnterprise.jsp";
 	}
 
@@ -118,7 +116,7 @@ public class DsEpEnterpriseController extends BaseController
 	@RequestMapping("/getEnterpriseById")
 	public String getEnterpriseById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsEpEnterprise po = service.get(id);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("qybm", po.getQybm());
@@ -136,7 +134,7 @@ public class DsEpEnterpriseController extends BaseController
 	@RequestMapping("/updPassword1")
 	public String updPassword1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		String qybm = service.get(id).getQybm();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("usertype", 1); // 1代表管理员

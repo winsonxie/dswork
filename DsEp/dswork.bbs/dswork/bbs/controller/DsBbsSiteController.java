@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -17,7 +16,6 @@ import dswork.bbs.model.DsBbsSite;
 import dswork.bbs.service.DsBbsSiteService;
 import dswork.mvc.BaseController;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/bbs/admin/site")
 public class DsBbsSiteController extends BaseController
@@ -54,7 +52,7 @@ public class DsBbsSiteController extends BaseController
 	{
 		try
 		{
-			Long id = req.getLong("keyIndex", 0);
+			Long id = req().getLong("keyIndex", 0);
 			DsBbsSite po = service.get(id);
 			if(po != null && checkOwn(po.getOwn()))
 			{
@@ -75,7 +73,7 @@ public class DsBbsSiteController extends BaseController
 	@RequestMapping("/updSite1")
 	public String updSite1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
 		return "/bbs/admin/site/updSite.jsp";
 	}
@@ -115,7 +113,7 @@ public class DsBbsSiteController extends BaseController
 	@RequestMapping("/getSiteById")
 	public String getSiteById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
 		return "/bbs/admin/site/getSiteById.jsp";
 	}
@@ -134,6 +132,6 @@ public class DsBbsSiteController extends BaseController
 	
 	private String getOwn()
 	{
-		return common.authown.AuthOwnUtil.getUser(request).getOwn();
+		return common.authown.AuthOwnUtil.getUser(request()).getOwn();
 	}
 }

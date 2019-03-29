@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,7 +15,6 @@ import dswork.bbs.model.DsBbsSite;
 import dswork.bbs.service.DsBbsForumService;
 import dswork.core.page.PageRequest;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/bbs/admin/forum")
 public class DsBbsForumController extends BaseController
@@ -28,7 +26,7 @@ public class DsBbsForumController extends BaseController
 	@RequestMapping("/addForum1")
 	public String addForum1()
 	{
-		Long siteid = req.getLong("siteid");
+		Long siteid = req().getLong("siteid");
 		put("list", queryForum(siteid, 0));
 		return "/bbs/admin/forum/addForum.jsp";
 	}
@@ -63,8 +61,8 @@ public class DsBbsForumController extends BaseController
 	{
 		try
 		{
-			Long siteid = req.getLong("siteid");
-			Long mid = req.getLong("keyIndex", 0);
+			Long siteid = req().getLong("siteid");
+			Long mid = req().getLong("keyIndex", 0);
 			DsBbsForum po = service.get(mid);
 			if(siteid == po.getSiteid())
 			{
@@ -94,8 +92,8 @@ public class DsBbsForumController extends BaseController
 	@RequestMapping("/updForum1")
 	public String updForum1()
 	{
-		Long siteid = req.getLong("siteid");
-		Long id = req.getLong("keyIndex");
+		Long siteid = req().getLong("siteid");
+		Long id = req().getLong("keyIndex");
 		DsBbsForum po = service.get(id);
 		if(siteid == po.getSiteid())
 		{
@@ -139,10 +137,10 @@ public class DsBbsForumController extends BaseController
 	@RequestMapping("/updForumBatch")
 	public void updForumBatch()
 	{
-		Long siteid = req.getLong("siteid");
-		long[] idArr = req.getLongArray("keyIndex", 0);
-		String[] nameArr = req.getStringArray("name", false);
-		int[] seqArr = req.getIntArray("seq", 0);
+		Long siteid = req().getLong("siteid");
+		long[] idArr = req().getLongArray("keyIndex", 0);
+		String[] nameArr = req().getStringArray("name", false);
+		int[] seqArr = req().getIntArray("seq", 0);
 		try
 		{
 			if(checkOwn(siteid))
@@ -166,7 +164,7 @@ public class DsBbsForumController extends BaseController
 	{
 		try
 		{
-			Long id = req.getLong("siteid", -1), siteid = -1L;
+			Long id = req().getLong("siteid", -1), siteid = -1L;
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("own", getOwn());
 			PageRequest rq = new PageRequest(map);
@@ -203,7 +201,7 @@ public class DsBbsForumController extends BaseController
 
 	private List<DsBbsForum> queryForum(long siteid, long excludeId)
 	{
-		Map<String, Object> mapFilters = req.getParameterValueMap(false, false);
+		Map<String, Object> mapFilters = req().getParameterValueMap(false, false);
 		mapFilters.put("siteid", siteid);
 		List<DsBbsForum> clist = service.queryList(mapFilters);
 		Map<Long, DsBbsForum> map = new HashMap<Long, DsBbsForum>();
@@ -305,6 +303,6 @@ public class DsBbsForumController extends BaseController
 	
 	private String getOwn()
 	{
-		return common.authown.AuthOwnUtil.getUser(request).getOwn();
+		return common.authown.AuthOwnUtil.getUser(request()).getOwn();
 	}
 }

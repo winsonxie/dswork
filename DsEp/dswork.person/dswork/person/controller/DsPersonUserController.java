@@ -1,7 +1,6 @@
 package dswork.person.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,7 +15,6 @@ import dswork.person.model.DsPersonUser;
 import dswork.person.service.DsPersonUserService;
 import dswork.mvc.BaseController;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/person/user")
 public class DsPersonUserController extends BaseController
@@ -63,7 +61,7 @@ public class DsPersonUserController extends BaseController
 	{
 		try
 		{
-			service.deleteBatch(CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0)));
+			service.deleteBatch(CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0)));
 			print(1);
 		}
 		catch(Exception e)
@@ -77,9 +75,9 @@ public class DsPersonUserController extends BaseController
 	@RequestMapping("/updUser1")
 	public String updUser1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
-		put("page", req.getInt("page", 1));
+		put("page", req().getInt("page", 1));
 		return "/person/user/updUser.jsp";
 	}
 
@@ -88,7 +86,7 @@ public class DsPersonUserController extends BaseController
 	{
 		try
 		{
-			Long id = req.getLong("id");
+			Long id = req().getLong("id");
 			DsPersonUser user = service.get(id);
 			if(user != null)
 			{
@@ -113,8 +111,8 @@ public class DsPersonUserController extends BaseController
 	@RequestMapping("/updUserStatus")
 	public void updUserStatus()
 	{
-		long id = req.getLong("keyIndex");
-		int status = req.getInt("status", -1);
+		long id = req().getLong("keyIndex");
+		int status = req().getInt("status", -1);
 		try
 		{
 			if(status == 0 || status == 1)
@@ -144,7 +142,7 @@ public class DsPersonUserController extends BaseController
 	@RequestMapping("/updUserPassword1")
 	public String updUserPwd1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsPersonUser user = service.get(id);
 		put("po", user);
 		return "/person/user/updUserPassword.jsp";
@@ -155,7 +153,7 @@ public class DsPersonUserController extends BaseController
 	{
 		try
 		{
-			String oldpassword = req.getString("oldpassword");
+			String oldpassword = req().getString("oldpassword");
 			DsPersonUser user = service.get(po.getId());
 			if(user != null && EncryptUtil.encryptMd5(oldpassword).equals(user.getPassword()))
 			{
@@ -181,7 +179,7 @@ public class DsPersonUserController extends BaseController
 		PageRequest rq = getPageRequest();
 		Page<DsPersonUser> pageModel = service.queryPage(rq);
 		put("pageModel", pageModel);
-		put("pageNav", new PageNav<DsPersonUser>(request, pageModel));
+		put("pageNav", new PageNav<DsPersonUser>(request(), pageModel));
 		return "/person/user/getUser.jsp";
 	}
 
@@ -189,7 +187,7 @@ public class DsPersonUserController extends BaseController
 	@RequestMapping("/getUserById")
 	public String getUserById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
 		return "/person/user/getUserById.jsp";
 	}

@@ -1,7 +1,6 @@
 package dswork.ep.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,7 +17,6 @@ import dswork.ep.model.DsEpUser;
 import dswork.ep.service.DsEpUserService;
 import dswork.mvc.BaseController;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/ep/user")
 public class DsEpUserController extends BaseController
@@ -30,7 +28,7 @@ public class DsEpUserController extends BaseController
 	@RequestMapping("/addUser1")
 	public String addUser1()
 	{
-		String qybm = req.getString("qybm");
+		String qybm = req().getString("qybm");
 		put("qybm", qybm);
 		return "/ep/user/addUser.jsp";
 	}
@@ -46,7 +44,7 @@ public class DsEpUserController extends BaseController
 			}
 			else
 			{
-				Auth user = AuthUtil.getLoginUser(request);
+				Auth user = AuthUtil.getLoginUser(request());
 				po.setId(UniqueId.genId());
 				po.setQybm(user.getQybm());
 				po.setUsertype(0);// 非企业管理员
@@ -69,7 +67,7 @@ public class DsEpUserController extends BaseController
 	{
 		try
 		{
-			service.deleteBatch(CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0)));
+			service.deleteBatch(CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0)));
 			print(1);
 		}
 		catch(Exception e)
@@ -83,9 +81,9 @@ public class DsEpUserController extends BaseController
 	@RequestMapping("/updUser1")
 	public String updUser1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
-		put("page", req.getInt("page", 1));
+		put("page", req().getInt("page", 1));
 		return "/ep/user/updUser.jsp";
 	}
 
@@ -94,7 +92,7 @@ public class DsEpUserController extends BaseController
 	{
 		try
 		{
-			Long id = req.getLong("id");
+			Long id = req().getLong("id");
 			DsEpUser user = service.get(id);
 			if(user != null && checkUser(user.getId()))
 			{
@@ -120,8 +118,8 @@ public class DsEpUserController extends BaseController
 	@RequestMapping("/updUserStatus")
 	public void updUserStatus()
 	{
-		long id = req.getLong("keyIndex");
-		int status = req.getInt("status", -1);
+		long id = req().getLong("keyIndex");
+		int status = req().getInt("status", -1);
 		try
 		{
 			if(status == 0 || status == 1)
@@ -151,7 +149,7 @@ public class DsEpUserController extends BaseController
 	@RequestMapping("/updUserPassword1")
 	public String updUserPwd1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		DsEpUser user = service.get(id);
 		put("po", user);
 		return "/ep/user/updUserPassword.jsp";
@@ -162,7 +160,7 @@ public class DsEpUserController extends BaseController
 	{
 		try
 		{
-			String oldpassword = req.getString("oldpassword");
+			String oldpassword = req().getString("oldpassword");
 			DsEpUser user = service.get(po.getId());
 			if(user != null && EncryptUtil.encryptMd5(oldpassword).equals(user.getPassword()) && checkUser(user.getId()))
 			{
@@ -185,12 +183,12 @@ public class DsEpUserController extends BaseController
 	@RequestMapping("/getUser")
 	public String getUser()
 	{
-		Auth user = AuthUtil.getLoginUser(request);
+		Auth user = AuthUtil.getLoginUser(request());
 		PageRequest rq = getPageRequest();
 		rq.getFilters().put("qybm", user.getQybm());
 		Page<DsEpUser> pageModel = service.queryPage(rq);
 		put("pageModel", pageModel);
-		put("pageNav", new PageNav<DsEpUser>(request, pageModel));
+		put("pageNav", new PageNav<DsEpUser>(request(), pageModel));
 		return "/ep/user/getUser.jsp";
 	}
 
@@ -198,7 +196,7 @@ public class DsEpUserController extends BaseController
 	@RequestMapping("/getUserById")
 	public String getUserById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
 		return "/ep/user/getUserById.jsp";
 	}
@@ -207,7 +205,7 @@ public class DsEpUserController extends BaseController
 	{
 		try
 		{
-			return service.get(userid).getQybm().equals(common.auth.AuthUtil.getLoginUser(request).getQybm());
+			return service.get(userid).getQybm().equals(common.auth.AuthUtil.getLoginUser(request()).getQybm());
 		}
 		catch(Exception ex)
 		{

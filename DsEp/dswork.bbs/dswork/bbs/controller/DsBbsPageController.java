@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +28,6 @@ import dswork.bbs.model.DsBbsPage;
 import dswork.bbs.model.DsBbsSite;
 import dswork.bbs.service.DsBbsPageService;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/bbs/admin/page")
 public class DsBbsPageController extends BaseController
@@ -49,7 +47,7 @@ public class DsBbsPageController extends BaseController
 	{
 		try
 		{
-			Long forumid = req.getLong("forumid");
+			Long forumid = req().getLong("forumid");
 			DsBbsForum m = service.getForum(forumid);
 			DsBbsSite s = service.getSite(m.getSiteid());
 			if(m.getStatus() == 1 && checkOwn(s.getOwn()))
@@ -79,11 +77,11 @@ public class DsBbsPageController extends BaseController
 	{
 		try
 		{
-			Long categoryid = req.getLong("id");
+			Long categoryid = req().getLong("id");
 			DsBbsForum po = service.getForum(categoryid);
 			if(po.getStatus() == 1 && checkOwn(po.getSiteid()))
 			{
-				service.deleteBatch(CollectionUtil.toLongArray(req.getLongArray("keyIndex", 0)));
+				service.deleteBatch(CollectionUtil.toLongArray(req().getLongArray("keyIndex", 0)));
 				print(1);
 				return;
 			}
@@ -100,9 +98,9 @@ public class DsBbsPageController extends BaseController
 	@RequestMapping("/updPage1")
 	public String updPage1()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
-		put("page", req.getInt("page", 1));
+		put("page", req().getInt("page", 1));
 		return "/bbs/admin/page/updPage.jsp";
 	}
 	
@@ -127,7 +125,7 @@ public class DsBbsPageController extends BaseController
 	{
 		try
 		{
-			Long id = req.getLong("siteid", -1), siteid = -1L;
+			Long id = req().getLong("siteid", -1), siteid = -1L;
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("own", getOwn());
 			List<DsBbsSite> siteList = service.queryListSite(map);
@@ -167,17 +165,17 @@ public class DsBbsPageController extends BaseController
 	@RequestMapping("/getPage")
 	public String getPage()
 	{
-		Long forumid = req.getLong("id");
+		Long forumid = req().getLong("id");
 		DsBbsForum m = service.getForum(forumid);
 		if(m.getStatus() == 1 && checkOwn(m.getSiteid()))// 列表
 		{
 			PageRequest rq = getPageRequest();
 			rq.getFilters().put("siteid", m.getSiteid());
 			rq.getFilters().put("forumid", m.getId());
-			rq.getFilters().put("keyvalue", req.getString("keyvalue"));
+			rq.getFilters().put("keyvalue", req().getString("keyvalue"));
 			Page<DsBbsPage> pageModel = service.queryPage(rq);
 			put("pageModel", pageModel);
-			put("pageNav", new PageNav<DsBbsPage>(request, pageModel));
+			put("pageNav", new PageNav<DsBbsPage>(request(), pageModel));
 			put("po", m);
 			return "/bbs/admin/page/getPage.jsp";
 		}
@@ -188,7 +186,7 @@ public class DsBbsPageController extends BaseController
 	@RequestMapping("/getPageById")
 	public String getPageById()
 	{
-		Long id = req.getLong("keyIndex");
+		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
 		return "/bbs/admin/page/getPageById.jsp";
 	}
@@ -196,7 +194,7 @@ public class DsBbsPageController extends BaseController
 
 	private String getRoot()
 	{
-		return request.getSession().getServletContext().getRealPath("/") + "/";
+		return session().getServletContext().getRealPath("/") + "/";
 	}
 	
 	@RequestMapping("/uploadImage")
@@ -204,34 +202,34 @@ public class DsBbsPageController extends BaseController
 	{
 		try
 		{
-			Long forumid = req.getLong("forumid");
+			Long forumid = req().getLong("forumid");
 			DsBbsForum m = service.getForum(forumid);
 			DsBbsSite site = service.getSite(m.getSiteid());
 			if(checkOwn(site.getOwn()))
 			{
 				String ext = "";
-				boolean isHTML5 = "application/octet-stream".equals(request.getContentType());
+				boolean isHTML5 = "application/octet-stream".equals(request().getContentType());
 				byte[] byteArray = null;
 				if(isHTML5)
 				{
-					String header = request.getHeader("Content-Disposition");
+					String header = request().getHeader("Content-Disposition");
 					int iStart = header.indexOf("filename=\"") + 10;
 					int iEnd = header.indexOf("\"", iStart);
 					String fileName = header.substring(iStart, iEnd);
 					int len = fileName.lastIndexOf(".");
 					ext = (len != -1) ? fileName.substring(len + 1) : "";
-					int i = request.getContentLength();
+					int i = request().getContentLength();
 					byteArray = new byte[i];
 					int j = 0;
 					while(j < i)// 获取表单的上传文件
 					{
-						int k = request.getInputStream().read(byteArray, j, i - j);
+						int k = request().getInputStream().read(byteArray, j, i - j);
 						j += k;
 					}
 				}
 				else
 				{
-					MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+					MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request();
 					MultipartFile file = multipartRequest.getFile("filedata");
 					String fileName = file.getOriginalFilename();
 					int len = fileName.lastIndexOf(".");
@@ -243,7 +241,7 @@ public class DsBbsPageController extends BaseController
 					String root = getRoot();
 					String path = "/bbsfile/" + forumid + "/" + TimeUtil.getCurrentTime("yyyyMM") + "/";
 					FileUtil.createFolder(root + path);
-					String webpath = request.getContextPath() + path;
+					String webpath = request().getContextPath() + path;
 					String v = System.currentTimeMillis() + "." + ext.toLowerCase();
 					try
 					{
@@ -341,6 +339,6 @@ public class DsBbsPageController extends BaseController
 	
 	private String getOwn()
 	{
-		return common.authown.AuthOwnUtil.getUser(request).getOwn();
+		return common.authown.AuthOwnUtil.getUser(request()).getOwn();
 	}
 }

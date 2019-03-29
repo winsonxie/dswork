@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,6 @@ import dswork.core.page.Page;
 import dswork.core.page.PageNav;
 import dswork.core.page.PageRequest;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/bbs")
 public class DsBbsController extends BaseController
@@ -36,7 +34,7 @@ public class DsBbsController extends BaseController
 	{
 		try
 		{
-			Long id = req.getLong("siteid", 0);
+			Long id = req().getLong("siteid", 0);
 			DsBbsSite s = service.getSite(id);
 			put("site", s);
 			put("list", queryForum(querySiteForum(id), 0).getList());
@@ -65,7 +63,7 @@ public class DsBbsController extends BaseController
 			rq.getFilters().put("forumid", m.getId());
 			Page<DsBbsPage> pageModel = service.queryPage(rq);
 			put("pageModel", pageModel);
-			put("pageNav", new PageNav<DsBbsPage>(request, pageModel));
+			put("pageNav", new PageNav<DsBbsPage>(request(), pageModel));
 			return "/bbs/forum.jsp";
 		}
 		catch(Exception ex)
@@ -76,7 +74,7 @@ public class DsBbsController extends BaseController
 
 	private List<DsBbsForum> querySiteForum(long siteid)
 	{
-		Map<String, Object> mapFilters = req.getParameterValueMap(false, false);
+		Map<String, Object> mapFilters = req().getParameterValueMap(false, false);
 		mapFilters.put("siteid", siteid);
 		List<DsBbsForum> clist = forumService.queryList(mapFilters);
 		Map<Long, DsBbsForum> map = new HashMap<Long, DsBbsForum>();
