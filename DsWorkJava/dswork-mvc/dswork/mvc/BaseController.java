@@ -58,6 +58,7 @@ public class BaseController
 	
 	protected static String formatJson(int code, String jsonData, String msg)
 	{
+		response().setContentType("application/json;charset=UTF-8");
 		if(jsonData == null)
 		{
 			if(msg == null)
@@ -82,7 +83,7 @@ public class BaseController
 		}
 	}
 	
-	protected void print(String json)
+	protected void print(String value)
 	{
 		try
 		{
@@ -93,15 +94,14 @@ public class BaseController
 			response().setHeader("P3P", "CP=CAO PSA OUR");
 			response().setHeader("Access-Control-Allow-Origin", "*");
 			response().setCharacterEncoding("UTF-8");
-			response().setContentType("application/json;charset=UTF-8");
-			out.get().write(json == null ? "" : json);
+			out.get().write(value == null ? "" : value);
 		}
 		catch(Exception e)
 		{
 		}
 	}
 	
-	protected void print(Object json)
+	protected void print(Object value)
 	{
 		try
 		{
@@ -112,8 +112,7 @@ public class BaseController
 			response().setHeader("P3P", "CP=CAO PSA OUR");
 			response().setHeader("Access-Control-Allow-Origin", "*");
 			response().setCharacterEncoding("UTF-8");
-			response().setContentType("application/json;charset=UTF-8");
-			out.get().write(json == null ? "" : json.toString());
+			out.get().write(value == null ? "" : value.toString());
 		}
 		catch(Exception e)
 		{
@@ -125,7 +124,7 @@ public class BaseController
 	 * @param response
 	 * @param json
 	 */
-	public void printDomain(Object json)
+	public void printDomain(Object value)
 	{
 		try
 		{
@@ -134,8 +133,7 @@ public class BaseController
 				out.set(response().getWriter());
 			}
 			response().setCharacterEncoding("UTF-8");
-			response().setContentType("application/json;charset=UTF-8");
-			out.get().write(json == null ? "" : json.toString());
+			out.get().write(value == null ? "" : value.toString());
 		}
 		catch(Exception e)
 		{
