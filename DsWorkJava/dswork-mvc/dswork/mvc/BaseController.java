@@ -85,12 +85,8 @@ public class BaseController
 	{
 		try
 		{
-			if(out.get() == null)
-			{
-				out.set(response().getWriter());
-			}
 			response().setCharacterEncoding("UTF-8");
-			out.get().print(value == null ? "" : value);
+			response().getWriter().print(value == null ? "" : value);
 		}
 		catch(Exception e)
 		{
@@ -119,31 +115,27 @@ public class BaseController
 		print(value, sameDomain);
 	}
 
-	protected void writeJson(String value)
-	{
-		try
-		{
-			if(out.get() == null)
-			{
-				out.set(response().getWriter());
-			}
-			response().setCharacterEncoding("UTF-8");
-			out.get().write(value == null ? "" : value);
-		}
-		catch(Exception e)
-		{
-		}
-	}
-
-	protected void writeJson(String value, boolean sameDomain)
-	{
-		if(!sameDomain)
-		{
-			response().setHeader("P3P", "CP=CAO PSA OUR");
-			response().setHeader("Access-Control-Allow-Origin", "*");
-		}
-		writeJson(value);
-	}
+//	protected void writeJson(String value)
+//	{
+//		try
+//		{
+//			response().setCharacterEncoding("UTF-8");
+//			response().getWriter().write(value == null ? "" : value);
+//		}
+//		catch(Exception e)
+//		{
+//		}
+//	}
+//
+//	protected void writeJson(String value, boolean sameDomain)
+//	{
+//		if(!sameDomain)
+//		{
+//			response().setHeader("P3P", "CP=CAO PSA OUR");
+//			response().setHeader("Access-Control-Allow-Origin", "*");
+//		}
+//		writeJson(value);
+//	}
 
 	protected void put(String key, Object obj)
 	{
