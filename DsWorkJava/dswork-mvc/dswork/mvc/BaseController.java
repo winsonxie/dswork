@@ -20,13 +20,12 @@ public class BaseController
 	private static final ThreadLocal<HttpServletResponse> response = new ThreadLocal<HttpServletResponse>();
 	private static final ThreadLocal<MyRequest> req = new ThreadLocal<MyRequest>();
 	private static final ThreadLocal<PrintWriter> out = new ThreadLocal<PrintWriter>();
-	
 	protected static Logger log = LoggerFactory.getLogger(BaseController.class.getName());
 	private static String JSON = "{\"code\":%d,\"data\":%s,\"msg\":\"%s\"}";
 	private static String JSON_DATA = "{\"code\":%d,\"data\":%s}";
 	private static String JSON_MSG = "{\"code\":%d,\"msg\":\"%s\"}";
 	private static String JSON_CODE = "{\"code\":%d}";
-	
+
 	@ModelAttribute
 	public void BaseInitialization(HttpServletRequest request, HttpServletResponse response)
 	{
@@ -35,30 +34,29 @@ public class BaseController
 		BaseController.response.set(response);
 		req.set(new MyRequest(request));
 	}
-	
+
 	protected static HttpServletRequest request()
 	{
 		return request.get();
 	}
-	
+
 	protected static HttpServletResponse response()
 	{
 		return response.get();
 	}
-	
+
 	protected static HttpSession session()
 	{
 		return request().getSession();
 	}
-	
+
 	protected static MyRequest req()
 	{
 		return req.get();
 	}
-	
+
 	protected static String formatJson(int code, String jsonData, String msg)
 	{
-		response().setContentType("application/json;charset=UTF-8");
 		if(jsonData == null)
 		{
 			if(msg == null)
@@ -82,25 +80,7 @@ public class BaseController
 			}
 		}
 	}
-	
-	protected void print(String value)
-	{
-		try
-		{
-			if(out.get() == null)
-			{
-				out.set(response().getWriter());
-			}
-			response().setHeader("P3P", "CP=CAO PSA OUR");
-			response().setHeader("Access-Control-Allow-Origin", "*");
-			response().setCharacterEncoding("UTF-8");
-			out.get().write(value == null ? "" : value);
-		}
-		catch(Exception e)
-		{
-		}
-	}
-	
+
 	protected void print(Object value)
 	{
 		try
@@ -109,22 +89,37 @@ public class BaseController
 			{
 				out.set(response().getWriter());
 			}
-			response().setHeader("P3P", "CP=CAO PSA OUR");
-			response().setHeader("Access-Control-Allow-Origin", "*");
 			response().setCharacterEncoding("UTF-8");
-			out.get().write(value == null ? "" : value.toString());
+			out.get().print(value == null ? "" : value);
 		}
 		catch(Exception e)
 		{
 		}
 	}
-	
-	/**
-	 * 输出同源json
-	 * @param response
-	 * @param json
-	 */
-	public void printDomain(Object value)
+
+	protected void print(Object value, boolean sameDomain)
+	{
+		if(!sameDomain)
+		{
+			response().setHeader("P3P", "CP=CAO PSA OUR");
+			response().setHeader("Access-Control-Allow-Origin", "*");
+		}
+		print(value);
+	}
+
+	protected void printJson(String value)
+	{
+		response().setContentType("application/json;charset=UTF-8");
+		print(value);
+	}
+
+	protected void printJson(String value, boolean sameDomain)
+	{
+		response().setContentType("application/json;charset=UTF-8");
+		print(value, sameDomain);
+	}
+
+	protected void writeJson(String value)
 	{
 		try
 		{
@@ -133,13 +128,23 @@ public class BaseController
 				out.set(response().getWriter());
 			}
 			response().setCharacterEncoding("UTF-8");
-			out.get().write(value == null ? "" : value.toString());
+			out.get().write(value == null ? "" : value);
 		}
 		catch(Exception e)
 		{
 		}
 	}
-	
+
+	protected void writeJson(String value, boolean sameDomain)
+	{
+		if(!sameDomain)
+		{
+			response().setHeader("P3P", "CP=CAO PSA OUR");
+			response().setHeader("Access-Control-Allow-Origin", "*");
+		}
+		writeJson(value);
+	}
+
 	protected void put(String key, Object obj)
 	{
 		request().setAttribute(key, obj);
@@ -157,7 +162,7 @@ public class BaseController
 			ex.printStackTrace();
 		}
 	}
-	
+
 	protected PageRequest getPageRequest(int pagesize)
 	{
 		if(pagesize <= 0)
@@ -180,7 +185,7 @@ public class BaseController
 		pr.setPagesize(pagesize);
 		return pr;
 	}
-	
+
 	protected PageRequest getPageRequest()
 	{
 		return getPageRequest(10);
