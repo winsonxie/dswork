@@ -1,7 +1,5 @@
 package dswork.mvc;
 
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,7 +17,6 @@ public class BaseController
 	private static final ThreadLocal<HttpServletRequest> request = new ThreadLocal<HttpServletRequest>();
 	private static final ThreadLocal<HttpServletResponse> response = new ThreadLocal<HttpServletResponse>();
 	private static final ThreadLocal<MyRequest> req = new ThreadLocal<MyRequest>();
-	private static final ThreadLocal<PrintWriter> out = new ThreadLocal<PrintWriter>();
 	protected static Logger log = LoggerFactory.getLogger(BaseController.class.getName());
 	private static String JSON = "{\"code\":%d,\"data\":%s,\"msg\":\"%s\"}";
 	private static String JSON_DATA = "{\"code\":%d,\"data\":%s}";
