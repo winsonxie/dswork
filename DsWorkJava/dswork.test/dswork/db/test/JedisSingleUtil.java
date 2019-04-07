@@ -204,7 +204,7 @@ public class JedisSingleUtil
 		}
 		catch(Exception e)
 		{
-			log.error(String.format("删除key=%s失败：" + e.getMessage(), keys), e);
+			log.error(String.format("删除key=%s失败：" + e.getMessage(), (Object[])keys), e);
 			RedisSingleConfig.returnBrokenResource(jedis);
 		}
 		finally
