@@ -3,6 +3,11 @@ var treedata = [
 	{id:101,name:'Demo', img:"", imgOpen:"", url:'/manage/demo/getDemo.htm', items:[]}
 	,{id:101,name:'Mark', img:"", imgOpen:"", url:'/manage/mark/getDemo.htm', items:[]}
 ]}
+,{id:20, name:"BBS", img:"", imgOpen:"", url:"", items:[
+     {id:21,name:"站点管理", img:"", imgOpen:"", url:'/bbs/admin/site/getSite.htm', items:[]}
+	,{id:22,name:"版块管理", img:"", imgOpen:"", url:'/bbs/admin/forum/getForum.htm', items:[]}
+	,{id:23,name:"主题管理", img:"", imgOpen:"", url:'/bbs/admin/page/getPageTree.htm', items:[]}
+]}
 ,
 {id:110, name:'MyBatis通用模块', img:"", imgOpen:"", url:"", items:[
 	{id:111,name:'通用列表', img:"", imgOpen:"", url:'/manage/my/list/Demo.htm', items:[]}

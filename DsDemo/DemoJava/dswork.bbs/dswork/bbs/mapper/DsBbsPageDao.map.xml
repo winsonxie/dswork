@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="dswork.bbs.dao.DsBbsPageDao">
+
+	<insert id="insert" parameterType="dswork.bbs.model.DsBbsPage">
+		<selectKey resultType="Long" order="AFTER" keyProperty="id">
+			<include refid="common.rowid" />
+		</selectKey>
+		insert into DS_BBS_PAGE
+		(SITEID, FORUMID, USERID, TITLE, URL, SUMMARY, ISESSENCE, ISTOP, METAKEYWORDS, METADESCRIPTION, RELEASEUSER, RELEASETIME, OVERTIME, LASTUSER, LASTTIME, NUMPV, NUMHT, CONTENT)
+		values
+		(#{siteid}, #{forumid}, #{userid}, #{title}, #{url}, #{summary}, #{isessence}, #{istop}, #{metakeywords}, #{metadescription}, #{releaseuser}, #{releasetime}, #{overtime}, #{lastuser}, #{lasttime}, #{numpv}, #{numht}, #{content})
+	</insert>
+
+	<delete id="delete">
+		delete from DS_BBS_PAGE where ID=#{id}
+	</delete>
+
+	<update id="update" parameterType="dswork.bbs.model.DsBbsPage">
+		update DS_BBS_PAGE set
+			TITLE=#{title},
+			URL=#{url},
+			SUMMARY=#{summary},
+			ISESSENCE=#{isessence},
+			ISTOP=#{istop},
+			METAKEYWORDS=#{metakeywords},
+			METADESCRIPTION=#{metadescription},
+			RELEASEUSER=#{releaseuser},
+			RELEASETIME=#{releasetime},
+			OVERTIME=#{overtime},
+			CONTENT=#{content}
+		where ID=#{id}
+	</update>
+
+	<resultMap id="result" type="dswork.bbs.model.DsBbsPage">
+		<id property="id" column="ID" />
+		<result property="siteid" column="SITEID" />
+		<result property="forumid" column="FORUMID" />
+		<result property="userid" column="USERID" />
+		<result property="title" column="TITLE" />
+		<result property="url" column="URL" />
+		<result property="summary" column="SUMMARY" />
+		<result property="isessence" column="ISESSENCE" />
+		<result property="istop" column="ISTOP" />
+		<result property="metakeywords" column="METAKEYWORDS" />
+		<result property="metadescription" column="METADESCRIPTION" />
+		<result property="releaseuser" column="RELEASEUSER" />
+		<result property="releasetime" column="RELEASETIME" />
+		<result property="overtime" column="OVERTIME" />
+		<result property="lastuser" column="LASTUSER" />
+		<result property="lasttime" column="LASTTIME" />
+		<result property="numpv" column="NUMPV" />
+		<result property="numht" column="NUMHT" />
+		<result property="content" column="CONTENT" />
+	</resultMap>
+
+	<sql id="columns">
+		ID, SITEID, FORUMID, USERID, TITLE, URL, SUMMARY, ISESSENCE, ISTOP, METAKEYWORDS, METADESCRIPTION, RELEASEUSER, RELEASETIME, OVERTIME, LASTUSER, LASTTIME, NUMPV, NUMHT, CONTENT
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+		SITEID=#{siteid}
+		<if test="@Ognl@isNotEmpty(forumid)"> and FORUMID=#{forumid} </if>
+		<if test="@Ognl@isNotEmpty(keyvalue)">
+			 and TITLE like #{keyvalue, typeHandler=LikeTypeHandler}
+			 and METAKEYWORDS like #{keyvalue, typeHandler=LikeTypeHandler}
+			 and METADESCRIPTION like #{keyvalue, typeHandler=LikeTypeHandler}
+			 and SUMMARY like #{keyvalue, typeHandler=LikeTypeHandler}
+			 and CONTENT like #{keyvalue, typeHandler=LikeTypeHandler}
+		</if>
+		<if test="@Ognl@isNotEmpty(userid)"> and USERID=#{userid} </if>
+		</where>
+	</sql>
+
+	<select id="select" resultMap="result">
+		select <include refid="columns" /> from DS_BBS_PAGE where ID=#{id}
+	</select>
+
+	<select id="query" resultMap="result">
+		select <include refid="common.top" /><include refid="columns" /> from DS_BBS_PAGE
+		<include refid="dynamicWhere" />
+		order by ISTOP desc, ID desc
+	</select>
+
+	<select id="queryCount" resultType="int">
+		select count(1) from DS_BBS_PAGE
+		<include refid="dynamicWhere" />
+	</select>
+
+</mapper>

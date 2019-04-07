@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="dswork.bbs.dao.DsBbsSiteDao">
+
+<insert id="insert" parameterType="dswork.bbs.model.DsBbsSite">
+	<selectKey resultType="Long" order="AFTER" keyProperty="id">
+		<include refid="common.rowid" />
+	</selectKey>
+	insert into DS_BBS_SITE
+	(OWN, NAME, FOLDER, URL, IMG, VIEWSITE)
+	values
+	(#{own}, #{name}, #{folder}, #{url}, #{img}, #{viewsite})
+</insert>
+
+<delete id="delete">
+	delete from DS_BBS_SITE where ID=#{id}
+</delete>
+
+<update id="update" parameterType="dswork.bbs.model.DsBbsSite">
+	update DS_BBS_SITE set
+		NAME=#{name},
+		URL=#{url},
+		IMG=#{img},
+		VIEWSITE=#{viewsite}
+	where ID=#{id}
+</update>
+
+<resultMap id="result" type="dswork.bbs.model.DsBbsSite">
+	<id property="id" column="ID" />
+	<result property="own" column="OWN" />
+	<result property="name" column="NAME" />
+	<result property="folder" column="FOLDER" />
+	<result property="url" column="URL" />
+	<result property="img" column="IMG" />
+	<result property="viewsite" column="VIEWSITE" />
+</resultMap>
+
+<sql id="columns">
+	ID, OWN, NAME, FOLDER, URL, IMG, VIEWSITE
+</sql>
+
+<sql id="dynamicWhere">
+	<where>
+		<if test="@Ognl@isNotEmpty(own)"> OWN=#{own} </if>
+		<if test="@Ognl@isNotEmpty(name)"> and NAME like #{name, typeHandler=LikeTypeHandler} </if>
+		<if test="@Ognl@isNotEmpty(folder)"> and FOLDER=#{folder} </if>
+	</where>
+</sql>
+
+<select id="select" resultMap="result">
+	select <include refid="columns" /> from DS_BBS_SITE where ID=#{id}
+</select>
+
+<select id="query" resultMap="result">
+	select <include refid="columns" /> from DS_BBS_SITE
+	<include refid="dynamicWhere" />
+</select>
+
+<select id="queryCount" resultType="int">
+	select count(1) from DS_BBS_SITE
+	<include refid="dynamicWhere" />
+</select>
+
+</mapper>

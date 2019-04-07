@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="dswork.bbs.dao.DsBbsForumDao">
+
+<insert id="insert" parameterType="dswork.bbs.model.DsBbsForum">
+	<selectKey resultType="Long" order="AFTER" keyProperty="id">
+		<include refid="common.rowid" />
+	</selectKey>
+	insert into DS_BBS_FORUM
+	(PID, SITEID, NAME, SUMMARY, STATUS, SEQ, VIEWSITE)
+	values
+	(<if test="null==pid or 0&gt;=pid">null</if><if test="0 &lt; pid">#{pid}</if>, #{siteid}, #{name}, #{summary}, #{status}, #{seq}, #{viewsite})
+</insert>
+
+<delete id="delete">
+	delete from DS_BBS_FORUM where ID=#{id}
+</delete>
+
+<update id="update" parameterType="dswork.bbs.model.DsBbsForum">
+	update DS_BBS_FORUM set
+		NAME=#{name},
+		SUMMARY=#{summary},
+		PID=<if test="0==pid">null</if><if test="0 &lt; pid">#{pid}</if>,
+		STATUS=#{status},
+		SEQ=#{seq},
+		VIEWSITE=#{viewsite}
+	where ID=#{id}
+</update>
+
+<update id="updateBatch" parameterType="dswork.bbs.model.DsBbsForum">
+	update DS_BBS_FORUM set
+		NAME=#{name},
+		SUMMARY=#{summary},
+		SEQ=#{seq}
+	where ID=#{id} and SITEID=#{siteid}
+</update>
+
+<resultMap id="result" type="dswork.bbs.model.DsBbsForum">
+	<id property="id" column="ID" />
+	<result property="pid" column="PID" />
+	<result property="siteid" column="SITEID" />
+	<result property="name" column="NAME" />
+		<result property="summary" column="SUMMARY" />
+	<result property="status" column="STATUS" />
+	<result property="seq" column="SEQ" />
+	<result property="viewsite" column="VIEWSITE" />
+</resultMap>
+
+<sql id="columns">
+	ID, PID, SITEID, NAME, SUMMARY, STATUS, SEQ, VIEWSITE
+</sql>
+
+<sql id="dynamicWhere">
+	<where>
+		<if test="@Ognl@isNotEmpty(siteid)"> SITEID=#{siteid} </if>
+		<if test="@Ognl@isNotEmpty(pid)">
+			<if test="0 &lt; pid"> and PID=#{pid} </if>
+			<if test="0 &gt;= pid"> and PID is null </if>
+		</if>
+		<if test="@Ognl@isNotEmpty(status)"> and STATUS=#{status} </if>
+	</where>
+</sql>
+
+<select id="select" resultMap="result">
+	select <include refid="columns" /> from DS_BBS_FORUM where ID=#{id}
+</select>
+
+<select id="query" resultMap="result">
+	select <include refid="common.top" /><include refid="columns" /> from DS_BBS_FORUM
+	<include refid="dynamicWhere" /> order by SEQ, ID
+</select>
+
+<select id="queryCount" resultType="int">
+	select count(1) from DS_BBS_FORUM
+	<include refid="dynamicWhere" />
+</select>
+
+</mapper>
