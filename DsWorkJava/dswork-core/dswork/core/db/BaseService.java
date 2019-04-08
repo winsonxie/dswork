@@ -14,8 +14,8 @@ import dswork.core.page.PageRequest;
  * 服务基础类
  * @author skey
  * @version 3.0
- * @param &lt;T&gt; 对象模型
- * @param &lt;PK&gt; 主键类
+ * @param T &lt;T&gt;对象模型
+ * @param PK &lt;PK&gt;主键类
  */
 @SuppressWarnings("all")
 public abstract class BaseService<T, PK extends Serializable>

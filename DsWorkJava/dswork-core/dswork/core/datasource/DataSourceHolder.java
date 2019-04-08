@@ -46,7 +46,7 @@ public class DataSourceHolder
 	
 	/**
 	 * 判断是否使用主库数据源
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean isMaster()
 	{
@@ -55,7 +55,7 @@ public class DataSourceHolder
 	
 	/**
 	 * 判断是否使用从库数据源
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean isSlave()
 	{
@@ -64,7 +64,7 @@ public class DataSourceHolder
 	
 	/**
 	 * 判断是否没有设置数据源
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean isNull()
 	{

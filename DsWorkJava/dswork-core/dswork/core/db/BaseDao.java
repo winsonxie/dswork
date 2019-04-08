@@ -11,8 +11,8 @@ import dswork.core.page.PageRequest;
  * MyBatis基础Dao类
  * @author skey
  * @version 3.0
- * @param &lt;T&gt; 对象模型
- * @param &lt;PK&gt; 主键类
+ * @param T &lt;T&gt;对象模型
+ * @param PK &lt;PK&gt;主键类
  */
 @SuppressWarnings("all")
 public abstract class BaseDao<T, PK extends Serializable> extends MyBatisDao implements EntityDao<T, PK>
@@ -72,7 +72,7 @@ public abstract class BaseDao<T, PK extends Serializable> extends MyBatisDao imp
 
 	/**
 	 * 不分页查询数据
-	 * @param pageRequest Map&lt;String, Object&gt;查询参数和条件数据
+	 * @param filters Map&lt;String, Object&gt;查询参数和条件数据
 	 * @return List
 	 */
 	public List queryList(Map<String, Object> filters)

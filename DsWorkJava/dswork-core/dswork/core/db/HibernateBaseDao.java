@@ -22,8 +22,8 @@ import dswork.core.page.PageRequest;
  * Hibernate基础Dao类
  * @author skey
  * @version 3.0
- * @param &lt;T&gt; 对象模型
- * @param &lt;PK&gt; 主键类
+ * @param E &lt;E&gt;对象模型
+ * @param PK &lt;PK&gt;主键类
  */
 @SuppressWarnings("all")
 public abstract class HibernateBaseDao<E, PK extends Serializable> extends HibernateDao implements EntityDao<E, PK>
@@ -68,7 +68,7 @@ public abstract class HibernateBaseDao<E, PK extends Serializable> extends Hiber
 
 	/**
 	 * 删除对象
-	 * @param E 需要删除的对象模型
+	 * @param entity 需要删除的对象模型
 	 * @return int
 	 */
 	public int delete(E entity)
@@ -108,7 +108,7 @@ public abstract class HibernateBaseDao<E, PK extends Serializable> extends Hiber
 
 	/**
 	 * 取得实体数据session.get()方法返回实体，会立刻访问数据库，如果没有对应的记录，返回null
-	 * @param PK 如果是单主键的，传入主键数据类型，如果为多主键的，可以用主键类或map
+	 * @param id 如果是单主键的，传入主键数据类型，如果为多主键的，可以用主键类或map
 	 * @return E
 	 */
 	public E get(PK id)
@@ -118,7 +118,7 @@ public abstract class HibernateBaseDao<E, PK extends Serializable> extends Hiber
 	
 	/**
 	 * 根据ID获取对象session.load()方法返回实体或其proxy对象，如果对象不存在，抛出异常
-	 * @param PK 如果是单主键的，传入主键数据类型，如果为多主键的，可以用主键类或map
+	 * @param id 如果是单主键的，传入主键数据类型，如果为多主键的，可以用主键类或map
 	 * @return E
 	 */
 	public E load(PK id)
@@ -128,7 +128,7 @@ public abstract class HibernateBaseDao<E, PK extends Serializable> extends Hiber
 	
 	/**
 	 * 不分页查询数据
-	 * @param filters Map&lt;String, Object&gt;查询参数和条件数据<br />
+	 * @param filters Map&lt;String, Object&gt;查询参数和条件数据<br>
 	 * &nbsp; &nbsp; 需要重写queryParam(Criteria criteria)方法
 	 * @return List&lt;E&gt;
 	 */
@@ -153,7 +153,7 @@ public abstract class HibernateBaseDao<E, PK extends Serializable> extends Hiber
 
 	/**
 	 * 分页查询数据
-	 * @param filters Map&lt;String, Object&gt;查询参数和条件数据<br />
+	 * @param pageRequest PageRequest查询参数和条件数据<br>
 	 * &nbsp; &nbsp; 需要重写queryParam(Criteria criteria)方法
 	 * @return Page
 	 */
@@ -175,7 +175,7 @@ public abstract class HibernateBaseDao<E, PK extends Serializable> extends Hiber
 
 	/**
 	 * 分页查询数据
-	 * @param pageRequest <Map>PageRequest.getFilters()查询参数和条件数据<br />
+	 * @param pageRequest &gt;Map&lt;PageRequest.getFilters()查询参数和条件数据<br>
 	 * &nbsp; &nbsp; 需要重写queryParam(Criteria criteria)方法
 	 * @return Page
 	 */
@@ -202,10 +202,10 @@ public abstract class HibernateBaseDao<E, PK extends Serializable> extends Hiber
 	}
 
 	/**
-	 * 设置查询条件<br />
-	 * &nbsp; &nbsp; criteria.add(Restrictions.eq(propertyName, value))<br />
-	 * &nbsp; &nbsp; criteria.add(Restrictions.like(propertyName, "%" + value + "%"))<br />
-	 * &nbsp; &nbsp; ……<br />
+	 * 设置查询条件<br>
+	 * &nbsp; &nbsp; criteria.add(Restrictions.eq(propertyName, value))<br>
+	 * &nbsp; &nbsp; criteria.add(Restrictions.like(propertyName, "%" + value + "%"))<br>
+	 * &nbsp; &nbsp; ……<br>
 	 * Base类中仅用于queryList(PageRequest)和queryPage(PageRequest)
 	 * @param map 查询参数和条件数据
 	 * @param criteria Criteria对象

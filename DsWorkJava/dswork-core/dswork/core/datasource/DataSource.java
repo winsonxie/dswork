@@ -50,7 +50,7 @@ public class DataSource extends AbstractRoutingDataSource
 
 	/**
 	 * 设置主库数据源
-	 * @return DataSource
+	 * @param masterDataSource 主数据源
 	 */
 	public void setMasterDataSource(javax.sql.DataSource masterDataSource)
 	{
@@ -68,7 +68,7 @@ public class DataSource extends AbstractRoutingDataSource
 
 	/**
 	 * 设置从库数据源
-	 * @return DataSource
+	 * @param slaveDataSource 从数据源
 	 */
 	public void setSlaveDataSource(javax.sql.DataSource slaveDataSource)
 	{

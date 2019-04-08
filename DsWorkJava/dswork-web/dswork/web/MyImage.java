@@ -72,7 +72,7 @@ public class MyImage
 
 	/**
 	 * 获取:字体
-	 * @return
+	 * @return Font
 	 */
 	public Font getFont()
 	{
@@ -85,7 +85,7 @@ public class MyImage
 
 	/**
 	 * 设置:字体
-	 * @param font
+	 * @param font 字体
 	 */
 	public void setFont(Font font)
 	{
@@ -94,7 +94,7 @@ public class MyImage
 
 	/**
 	 * 获取:验证码长度
-	 * @return
+	 * @return int
 	 */
 	public int getLength()
 	{
@@ -103,7 +103,7 @@ public class MyImage
 
 	/**
 	 * 设置:验证码长度
-	 * @param codeLength
+	 * @param length 验证码长度
 	 */
 	public void setLength(int length)
 	{

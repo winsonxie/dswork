@@ -2,9 +2,9 @@ import java.util.Collection;
 import java.util.Map;
 /**
  * Ognl工具类，主要是为了在ognl表达式访问静态方法时可以减少长长的类名称编写 Ognl访问静态方法的表达式为:
- * @class@method(args) 示例使用:
+ * \@class\@method(args) 示例使用:
  * <pre>
- * 	&lt;if test=&quot;@Ognl@isNotEmpty(userId)&quot;&gt;
+ * 	&lt;if test=&quot;\@Ognl\@isNotEmpty(userId)&quot;&gt;
  * 	and user_id = #{userId}
  *  &lt;/if&gt;
  * </pre>
@@ -14,8 +14,8 @@ public class Ognl
 {
 	/**
 	 * 可以用于判断String,Long,Integer,Map,Array,Collection是否为空
-	 * @param o java.lang.Object.
-	 * @return boolean.
+	 * @param o Object
+	 * @return boolean
 	 */
 	public static boolean isEmpty(Object o) throws IllegalArgumentException
 	{
@@ -74,8 +74,8 @@ public class Ognl
 
 	/**
 	 * 可以用于判断String,Long,Integer,Map,Array,Collection是否不为空
-	 * @param o java.lang.Object.
-	 * @return boolean.
+	 * @param o Object
+	 * @return boolean
 	 */
 	public static boolean isNotEmpty(Object o)
 	{
@@ -84,8 +84,8 @@ public class Ognl
 
 	/**
 	 * 可以用于判断是否为数值类型
-	 * @param o java.lang.Object.
-	 * @return boolean.
+	 * @param o Object
+	 * @return boolean
 	 */
 	public static boolean isNumber(Object o)
 	{

@@ -371,7 +371,7 @@ public class HttpUtil
 
 	/**
 	 * 连接并返回网页流
-	 * @param charsetName 对封装的表单的编码设置
+	 * @param upCharsetName 对封装的表单的编码设置
 	 * @return 连接失败返回null
 	 */
 	public InputStream connectStream(String upCharsetName)

@@ -37,9 +37,11 @@
 ../Lib/mybatis/mybatis-3.4.6.jar;
 ../Lib/mybatis/mybatis-spring-1.3.2.jar" 
         	destdir="C:\Users\skey\Desktop\jar\dswork\doc" doctitle="DsWorkJavaAPI" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" 
-        	packagenames="dswork.core.db,dswork.core.mybatis,dswork.core.upload,dswork.core.util,dswork.spring,dswork.core.page,dswork.web,dswork.mvc,dswork.http" 
+        	packagenames="dswork.core.datasource,dswork.core.db,dswork.core.mybatis,dswork.core.upload,dswork.core.util,dswork.spring,dswork.core.page,dswork.web,dswork.mvc,dswork.http" 
         	source="1.5" 
         	sourcefiles="
+dswork-core/dswork/core/datasource/DataSource.java,
+dswork-core/dswork/core/datasource/DataSourceHolder.java,
 dswork-core/dswork/core/db/BaseDao.java,
 dswork-core/dswork/core/db/BaseService.java,
 dswork-core/dswork/core/db/EntityDao.java,

@@ -34,7 +34,7 @@ public class BaseController
 
 	/**
 	 * 获取线程安全的HttpServletRequest
-	 * @return
+	 * @return HttpServletRequest
 	 */
 	protected static HttpServletRequest request()
 	{
@@ -43,7 +43,7 @@ public class BaseController
 
 	/**
 	 * 获取线程安全的HttpServletResponse
-	 * @return
+	 * @return HttpServletResponse
 	 */
 	protected static HttpServletResponse response()
 	{
@@ -52,7 +52,7 @@ public class BaseController
 
 	/**
 	 * 获取线程安全的HttpSession
-	 * @return
+	 * @return HttpSession
 	 */
 	protected static HttpSession session()
 	{
@@ -61,7 +61,7 @@ public class BaseController
 
 	/**
 	 * 获取线程安全的MyRequest
-	 * @return
+	 * @return MyRequest
 	 */
 	protected static MyRequest req()
 	{
@@ -103,7 +103,7 @@ public class BaseController
 
 	/**
 	 * getWriter().print打印信息
-	 * @param value
+	 * @param value 输出值
 	 */
 	protected void print(Object value)
 	{
@@ -119,7 +119,7 @@ public class BaseController
 
 	/**
 	 * getWriter().print打印信息
-	 * @param value
+	 * @param value 输出值
 	 * @param sameDomain true为同域，false时添加"P3P":"CP=CAO PSA OUR"和"Access-Control-Allow-Origin":"*"
 	 */
 	protected void print(Object value, boolean sameDomain)
@@ -134,7 +134,7 @@ public class BaseController
 
 	/**
 	 * getWriter().print打印信息，并设置"application/json;charset=UTF-8"
-	 * @param value
+	 * @param value 输出值
 	 */
 	protected void printJson(String value)
 	{
@@ -144,7 +144,7 @@ public class BaseController
 
 	/**
 	 * getWriter().print打印信息，并设置"application/json;charset=UTF-8"
-	 * @param value
+	 * @param value 输出值
 	 * @param sameDomain true为同域，false时添加"P3P":"CP=CAO PSA OUR"和"Access-Control-Allow-Origin":"*"
 	 */
 	protected void printJson(String value, boolean sameDomain)
@@ -187,7 +187,7 @@ public class BaseController
 
 	/**
 	 * 已过期，不建议使用
-	 * @param url
+	 * @param url URL地址
 	 */
 	@Deprecated
 	protected void sendRedirect(String url)

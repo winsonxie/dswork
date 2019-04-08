@@ -21,10 +21,9 @@ public class PageNav<T>
 	/**
 	 * 构造函数
 	 * @param request HttpServletRequest
-	 * @param pageModel
-	 * @param pageName
-	 * @param pagesizeName
-	 * @param page Page&lt;T&gt;
+	 * @param pageModel Page实例
+	 * @param pageName 当前页码表单名
+	 * @param pagesizeName 当页数据条数表单名
 	 */
 	public PageNav(HttpServletRequest request, Page<T> pageModel, String pageName, String pagesizeName)
 	{
@@ -102,6 +101,7 @@ public class PageNav<T>
 
 	/**
 	 * 输出表单
+	 * @return String
 	 */
 	public String getForm()
 	{
@@ -115,6 +115,7 @@ public class PageNav<T>
 
 	/**
 	 * 显示默认的翻页效果
+	 * @return String
 	 */
 	public String getPage()
 	{
@@ -128,6 +129,7 @@ public class PageNav<T>
 	 * @param isShowLink 是否翻页
 	 * @param isShowJump 是否支持跳转
 	 * @param isShowJumpSize 是否支持定制记录数
+	 * @return String
 	 */
 	public String getPage(boolean isViewTotal, boolean isViewPageInfo, boolean isShowLink, boolean isShowJump, boolean isShowJumpSize)
 	{

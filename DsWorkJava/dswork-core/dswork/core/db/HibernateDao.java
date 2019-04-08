@@ -71,7 +71,7 @@ public abstract class HibernateDao extends HibernateDaoSupport
 
 	/**
 	 * 创建Criteria对象
-	 * @param criterions 可变条件Restrictions<br />
+	 * @param criterions 可变条件Restrictions<br>
 	 * &nbsp; &nbsp; criteria.add(Restrictions.eq(propertyName, value));
 	 * @return Criteria
 	 */

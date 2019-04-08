@@ -77,7 +77,7 @@ public class PageRequest implements Serializable
 
 	/**
 	 * 设置当前页
-	 * @param currentPage int
+	 * @param page int
 	 */
 	public void setPage(int page)
 	{
