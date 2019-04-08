@@ -1694,7 +1694,7 @@
 		// 中国香港
 		_ID_HK:function(v)
 		{
-			if(!(/^([A-Z]{1})\d{6}((\([0-9A]{1}\))|([0-9A]{1}))$/.test(v)))
+			if(!(/^([A-Z]{1})\d{6}\(([0-9A]{1})\)$/.test(v)))
 			{
 				return false;
 			}
@@ -1705,7 +1705,7 @@
 			var i5 = v.charCodeAt(4) - 48;
 			var i6 = v.charCodeAt(5) - 48;
 			var i7 = v.charCodeAt(6) - 48;
-			var i8 = v.charCodeAt(v.indexOf("(")==7?8:7);
+			var i8 = v.charCodeAt(8);
 			i8 = i8 - (i8 == 65 ? 55: 48);
 			var _iSum = i1*8 + i2*7 + i3*6 + i4*5 + i5*4 +i6*3 + i7*2 + i8;
 			if(_iSum%11 != 0)
