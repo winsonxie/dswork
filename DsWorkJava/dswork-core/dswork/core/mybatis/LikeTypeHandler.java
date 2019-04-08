@@ -7,6 +7,10 @@ import java.sql.SQLException;
 
 import org.apache.ibatis.type.JdbcType;
 
+/**
+ * sql匹配，即'%parameter%'
+ * @author skey
+ */
 @SuppressWarnings("all")
 public class LikeTypeHandler extends org.apache.ibatis.type.BaseTypeHandler
 {

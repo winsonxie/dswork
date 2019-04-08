@@ -24,7 +24,7 @@ public class BaseController
 	private static String JSON_CODE = "{\"code\":%d}";
 
 	@ModelAttribute
-	public void BaseInitialization(HttpServletRequest request, HttpServletResponse response)
+	private void BaseInitialization(HttpServletRequest request, HttpServletResponse response)
 	{
 		response.setCharacterEncoding("UTF-8");
 		BaseController.request.set(request);
@@ -32,26 +32,49 @@ public class BaseController
 		req.set(new MyRequest(request));
 	}
 
+	/**
+	 * 获取线程安全的HttpServletRequest
+	 * @return
+	 */
 	protected static HttpServletRequest request()
 	{
 		return request.get();
 	}
 
+	/**
+	 * 获取线程安全的HttpServletResponse
+	 * @return
+	 */
 	protected static HttpServletResponse response()
 	{
 		return response.get();
 	}
 
+	/**
+	 * 获取线程安全的HttpSession
+	 * @return
+	 */
 	protected static HttpSession session()
 	{
 		return request().getSession();
 	}
 
+	/**
+	 * 获取线程安全的MyRequest
+	 * @return
+	 */
 	protected static MyRequest req()
 	{
 		return req.get();
 	}
-
+	
+	/**
+	 * 格式标准json：{code:int,data:object,msg:String}
+	 * @param code 必要值
+	 * @param jsonData 可选值，可对json对象或json数组
+	 * @param msg 可选值，字符串
+	 * @return json字符串
+	 */
 	protected static String formatJson(int code, String jsonData, String msg)
 	{
 		if(jsonData == null)
@@ -78,6 +101,10 @@ public class BaseController
 		}
 	}
 
+	/**
+	 * getWriter().print打印信息
+	 * @param value
+	 */
 	protected void print(Object value)
 	{
 		try
@@ -90,6 +117,11 @@ public class BaseController
 		}
 	}
 
+	/**
+	 * getWriter().print打印信息
+	 * @param value
+	 * @param sameDomain true为同域，false时添加"P3P":"CP=CAO PSA OUR"和"Access-Control-Allow-Origin":"*"
+	 */
 	protected void print(Object value, boolean sameDomain)
 	{
 		if(!sameDomain)
@@ -100,12 +132,21 @@ public class BaseController
 		print(value);
 	}
 
+	/**
+	 * getWriter().print打印信息，并设置"application/json;charset=UTF-8"
+	 * @param value
+	 */
 	protected void printJson(String value)
 	{
 		response().setContentType("application/json;charset=UTF-8");
 		print(value);
 	}
 
+	/**
+	 * getWriter().print打印信息，并设置"application/json;charset=UTF-8"
+	 * @param value
+	 * @param sameDomain true为同域，false时添加"P3P":"CP=CAO PSA OUR"和"Access-Control-Allow-Origin":"*"
+	 */
 	protected void printJson(String value, boolean sameDomain)
 	{
 		response().setContentType("application/json;charset=UTF-8");
@@ -134,11 +175,20 @@ public class BaseController
 //		writeJson(value);
 //	}
 
+	/**
+	 * 往HttpServletRequest设置Attribute
+	 * @param key 键
+	 * @param obj 值
+	 */
 	protected void put(String key, Object obj)
 	{
 		request().setAttribute(key, obj);
 	}
 
+	/**
+	 * 已过期，不建议使用
+	 * @param url
+	 */
 	@Deprecated
 	protected void sendRedirect(String url)
 	{
@@ -152,6 +202,11 @@ public class BaseController
 		}
 	}
 
+	/**
+	 * 获取封装reqeust请求，并结合session存储pagesize
+	 * @param pagesize 指定pagesize
+	 * @return PageRequest
+	 */
 	protected PageRequest getPageRequest(int pagesize)
 	{
 		if(pagesize <= 0)
@@ -175,6 +230,10 @@ public class BaseController
 		return pr;
 	}
 
+	/**
+	 * 获取封装reqeust请求，并结合session存储pagesize，且pagesize初始化为10
+	 * @return PageRequest
+	 */
 	protected PageRequest getPageRequest()
 	{
 		return getPageRequest(10);

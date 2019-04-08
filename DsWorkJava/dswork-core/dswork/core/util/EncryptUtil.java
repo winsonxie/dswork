@@ -24,6 +24,8 @@ public class EncryptUtil
 {
 	/**
 	 * 随机生成密钥对
+	 * @param keysize 512-2048
+	 * @return KeyPair
 	 */
 	public static KeyPair genKeyPair(int keysize)
 	{
