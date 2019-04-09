@@ -332,26 +332,23 @@ public class HttpUtil
 		try
 		{
 			connectDoing(upCharsetName);
-			if(this.responseCode >= 200 && this.responseCode < 300)
+			connectAfter();
+			BufferedReader in = null;
+			in = new BufferedReader(new InputStreamReader(http.getInputStream(), downCharsetName));
+			String temp = in.readLine();
+			while(temp != null)
 			{
-				connectAfter();
-				BufferedReader in = null;
-				in = new BufferedReader(new InputStreamReader(http.getInputStream(), downCharsetName));
-				String temp = in.readLine();
-				while(temp != null)
+				if(result != null)
 				{
-					if(result != null)
-					{
-						result += temp;
-					}
-					else
-					{
-						result = temp;
-					}
-					temp = in.readLine();
+					result += temp;
 				}
-				in.close();
+				else
+				{
+					result = temp;
+				}
+				temp = in.readLine();
 			}
+			in.close();
 		}
 		catch(Exception e)
 		{
@@ -379,11 +376,8 @@ public class HttpUtil
 		try
 		{
 			connectDoing(upCharsetName);
-			if(this.responseCode >= 200 && this.responseCode < 300)
-			{
-				connectAfter();
-				return http.getInputStream();
-			}
+			connectAfter();
+			return http.getInputStream();
 		}
 		catch(Exception e)
 		{
