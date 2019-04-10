@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class AuthWebConfig
 {
+	public static boolean use = false;
 	private static String str(java.util.Properties C, String key, String bakkey)
 	{
 		String v = C.getProperty(key);
@@ -89,6 +90,7 @@ public class AuthWebConfig
 		SYSTEM_WEB_URL = (sWeb == null) ? "" : sWeb;
 		SYSTEM_ALIAS = sAlias == null ? "" : sAlias;
 		SYSTEM_PASSWORD = sPassword == null ? "" : Md5(sPassword);
+		use = true;
 	}
 	
 	public static synchronized boolean loadConfig(javax.servlet.ServletContext context)

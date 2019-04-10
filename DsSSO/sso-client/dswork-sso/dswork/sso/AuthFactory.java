@@ -378,6 +378,10 @@ public class AuthFactory
 	 */
 	public static ISystem getSystem()
 	{
+		if(!AuthWebConfig.use)
+		{
+			return null;
+		}
 		HttpUtil h = getSystemHttp("/api/getSystem");
 		String v = "";
 		ISystem m = null;
@@ -404,35 +408,11 @@ public class AuthFactory
 	 */
 	public static ISystem[] getSystemByUser(String userAccount)
 	{
+		if(!AuthWebConfig.use)
+		{
+			return new ISystem[0];
+		}
 		HttpUtil h = getSystemHttp("/api/getSystemByUser").addForm("userAccount", userAccount);
-		String v = "";
-		List<ISystem> list = null;
-		try
-		{
-			v = h.connect().trim();
-			list = AuthGlobal.gson.fromJson(v, new TypeToken<List<ISystem>>()
-			{
-			}.getType());
-			if(log.isDebugEnabled())
-			{
-				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-			}
-		}
-		catch(Exception e)
-		{
-			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
-		}
-		return list == null ? new ISystem[0] : list.toArray(new ISystem[list.size()]);
-	}
-
-	/**
-	 * 获取用户有权限访问的子系统
-	 * @param userAccount 用户帐号
-	 * @return ISystem[]
-	 */
-	public static ISystem[] getSystemByUser(String systemAlias, String systemPassword, String userAccount)
-	{
-		HttpUtil h = getAppHttp("/api/getSystemByUser").addForm("systemAlias", systemAlias).addForm("systemPassword", systemPassword).addForm("userAccount", userAccount);
 		String v = "";
 		List<ISystem> list = null;
 		try
@@ -459,7 +439,43 @@ public class AuthFactory
 	 */
 	public static IFunc[] getFunctionBySystem()
 	{
+		if(!AuthWebConfig.use)
+		{
+			return new IFunc[0];
+		}
 		HttpUtil h = getSystemHttp("/api/getFunctionBySystem");
+		String v = "";
+		List<IFunc> list = null;
+		try
+		{
+			v = h.connect().trim();
+			list = AuthGlobal.gson.fromJson(v, new TypeToken<List<IFunc>>()
+			{
+			}.getType());
+			if(log.isDebugEnabled())
+			{
+				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+		}
+		return list == null ? new IFunc[0] : list.toArray(new IFunc[list.size()]);
+	}
+
+	/**
+	 * 获取用户权限范围内的系统功能结构
+	 * @param userAccount 用户帐号
+	 * @return IFunc[]
+	 */
+	public static IFunc[] getFunctionByUser(String userAccount)
+	{
+		if(!AuthWebConfig.use)
+		{
+			return new IFunc[0];
+		}
+		HttpUtil h = getSystemHttp("/api/getFunctionByUser").addForm("userAccount", userAccount);
 		String v = "";
 		List<IFunc> list = null;
 		try
@@ -487,9 +503,13 @@ public class AuthFactory
 	 * @param userAccount 用户帐号
 	 * @return IFunc[]
 	 */
-	public static IFunc[] getFunctionByUser(String userAccount)
+	public static IFunc[] getFunctionByUser(String systemAlias, String systemPassword, String userAccount)
 	{
-		HttpUtil h = getSystemHttp("/api/getFunctionByUser").addForm("userAccount", userAccount);
+		if(!AuthWebConfig.use)
+		{
+			return new IFunc[0];
+		}
+		HttpUtil h = getAppHttp("/api/getFunctionByUser").addForm("systemAlias", systemAlias).addForm("systemPassword", systemPassword).addForm("userAccount", userAccount);
 		String v = "";
 		List<IFunc> list = null;
 		try
@@ -517,6 +537,10 @@ public class AuthFactory
 	 */
 	public static IFunc[] getFunctionByOrg(String orgId)
 	{
+		if(!AuthWebConfig.use)
+		{
+			return new IFunc[0];
+		}
 		HttpUtil h = getSystemHttp("/api/getFunctionByOrg").addForm("orgId", orgId);
 		String v = "";
 		List<IFunc> list = null;
