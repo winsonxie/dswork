@@ -426,6 +426,34 @@ public class AuthFactory
 	}
 
 	/**
+	 * 获取用户有权限访问的子系统
+	 * @param userAccount 用户帐号
+	 * @return ISystem[]
+	 */
+	public static ISystem[] getSystemByUser(String systemAlias, String systemPassword, String userAccount)
+	{
+		HttpUtil h = getAppHttp("/api/getSystemByUser").addForm("systemAlias", systemAlias).addForm("systemPassword", systemPassword).addForm("userAccount", userAccount);
+		String v = "";
+		List<ISystem> list = null;
+		try
+		{
+			v = h.connect().trim();
+			list = AuthGlobal.gson.fromJson(v, new TypeToken<List<ISystem>>()
+			{
+			}.getType());
+			if(log.isDebugEnabled())
+			{
+				log.debug("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("AuthFactory:url=" + h.getUrl() + ", json:" + v);
+		}
+		return list == null ? new ISystem[0] : list.toArray(new ISystem[list.size()]);
+	}
+
+	/**
 	 * 获取系统的功能结构
 	 * @return IFunc[]
 	 */
