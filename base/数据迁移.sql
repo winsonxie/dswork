@@ -244,8 +244,9 @@ INSERT INTO DS_BASE_SYSTEM (
        ID,NAME,ALIAS,PASSWORD,DOMAINURL,ROOTURL,MENUURL,STATUS,SEQ,MEMO)
 SELECT ID,NAME,ALIAS,PASSWORD,DOMAINURL,ROOTURL,MENUURL,STATUS,SEQ,MEMO from DS_COMMON_SYSTEM;
 
-update DS_BASE_SYSTEM set ALIAS='base', ROOTURL=replace(ROOTURL,'DsCommon','base'), MENUURL=replace(MENUURL,'DsCommon','base') where ALIAS='DsCommon';
-update DS_BASE_SYSTEM set MENUURL=concat(ROOTURL, '/sso/menu') where length(ROOTURL) > 0 and length(MENUURL) > 0;
+update DS_BASE_SYSTEM set ALIAS='!portal'  where ALIAS='portal';
+update DS_BASE_SYSTEM set ALIAS='base', ROOTURL=replace(ROOTURL,'DsCommon','base') where ALIAS='DsCommon';
+update DS_BASE_SYSTEM set MENUURL='' where length(MENUURL) > 0;
 
 INSERT INTO DS_BASE_FUNC (
        ID,PID,SYSTEMID,NAME,ALIAS,        URI,                           IMG,STATUS,SEQ,MEMO,RESOURCES)
