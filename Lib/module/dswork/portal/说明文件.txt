@@ -52,10 +52,6 @@
 		<servlet><servlet-name>SSOLogoutServlet</servlet-name><servlet-class>dswork.sso.SSOLogoutServlet</servlet-class></servlet>
 		<servlet-mapping><servlet-name>SSOLogoutServlet</servlet-name><url-pattern>/sso/logout</url-pattern></servlet-mapping>
 		
-		<servlet><servlet-name>SSOMenuServlet</servlet-name><servlet-class>dswork.sso.SSOMenuServlet</servlet-class></servlet>
-		<servlet-mapping><servlet-name>SSOMenuServlet</servlet-name><url-pattern>/sso/menu</url-pattern></servlet-mapping>
-
-
 
 三、如果需要，加入dswork.sso.authfilter.jar文件（需要【一、二】的支持，适用于在统一认证平台上，配置是以URI地址作为资源管理的，可用uri作为权限拦截的系统）
 		refreshTime   #系统的全部权限缓存更新间隔，单位毫秒
