@@ -1,6 +1,7 @@
 ﻿<%@page language="java" pageEncoding="UTF-8" import="dswork.sso.model.IUser"%><%
 String path = request.getContextPath();
 IUser user = dswork.sso.WebFilter.getLoginer(session);
+String appid = dswork.sso.AuthGlobal.getAppID();
 Cookie cookie = new Cookie(dswork.sso.WebFilter.SSOTICKET, user.getSsoticket());
 cookie.setMaxAge(-1);
 cookie.setPath("/");
@@ -44,7 +45,7 @@ if(top.location != this.location){top.location = "<%=path %>/frame/index.jsp";}
 		<div onclick="reload();"                         title="刷新页面"><i>&#xf1004;</i><b>刷新</b></div>
 		<%--切换系统使用showModalDialog模式，只有在ie模式下，或08-13年间的浏览器可用--%>
 		<%--<div onclick="document.getElementById('leftFrame').contentWindow.showSystem();" title="切换系统"><i>&#xf1009;</i><b>切换系统</b></div>--%>
-		<%--<div onclick="window.open('<%=dswork.sso.WebFilter.getPasswordURL("/portal")%>');" title="修改密码"><i>&#xf1002;</i><b>修改密码</b></div>--%>
+		<div onclick="window.open('/sso/user/update/password.jsp?appid=<%=appid%>&ssoticket=<%=user.getSsoticket()%>');" title="修改密码"><i>&#xf1002;</i><b>修改密码</b></div>
 		<div onclick="top.location.href='<%=path %>/logout.jsp';" title="退出"><i>&#xf1005;</i><b>退出</b></div>
 		<div onclick="doDraw();" title="" id="vwin"><i id="fontscreen" class="mini">&#xf1021;</i></div>
 	</div>
