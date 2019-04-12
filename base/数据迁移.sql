@@ -8,7 +8,7 @@ CREATE TABLE DS_BASE_UNIT (
   APPID varchar(256) COMMENT '应用ID',
   APPSECRET varchar(256) COMMENT '应用秘钥',
   RETURNURL varchar(1024) COMMENT '回调地址',
-  TYPE int(1) COMMENT '类型(0非第三方,1第三方)',
+  TYPE bigint(18) COMMENT '标记，值相同的为同一个APP',
   CREATETIME varchar(19) COMMENT '创建时间',
   LASTTIME bigint(18) COMMENT '最后更新时间',
   MEMO varchar(1024) COMMENT '备注说明',
@@ -216,16 +216,16 @@ CREATE TABLE DS_BASE_DICT  (
 
 DROP TABLE IF EXISTS DS_BASE_DICT_DATA;
 CREATE TABLE DS_BASE_DICT_DATA  (
-  ID varchar(18) NOT NULL COMMENT '主键',
-  PID varchar(18) COMMENT '上级ID(本表,所属字典项)',
-  NAME varchar(180) NOT NULL COMMENT '引用名',
+  NAME varchar(180) NOT NULL COMMENT '主键引用名',
+  ID varchar(18) NOT NULL COMMENT '主键标识',
+  PID varchar(18) COMMENT '上级标识(本表,所属标识)',
   LABEL varchar(300) COMMENT '名称',
   MARK varchar(128) COMMENT '标记',
   LEVEL int(10) COMMENT '层级',
   STATUS int(1) COMMENT '状态(1树叉,0树叶)',
   SEQ bigint(18) COMMENT '排序',
   MEMO varchar(300) COMMENT '备注',
-  PRIMARY KEY (ID, NAME)
+  PRIMARY KEY (NAME, ID)
 ) COMMENT = '字典项';
 
 INSERT INTO DS_BASE_LOGIN (
@@ -282,8 +282,8 @@ INSERT INTO DS_BASE_DICT (
 SELECT ID,NAME,LABEL,    1,SEQ,1 from DS_COMMON_DICT where STATUS=0;
 
 INSERT INTO DS_BASE_DICT_DATA (
-       ID,     PID,      NAME,  LABEL,  STATUS,  SEQ,  MEMO, LEVEL)
-SELECT a.ALIAS,b.ALIAS,a.NAME,a.LABEL,a.STATUS,a.SEQ,a.MEMO, 0 from DS_COMMON_DICT_DATA a LEFT JOIN DS_COMMON_DICT_DATA b ON b.ID=a.PID;
+         NAME,ID,     PID,      LABEL,  STATUS,  SEQ,  MEMO, LEVEL)
+SELECT a.NAME,a.ALIAS,b.ALIAS,a.LABEL,a.STATUS,a.SEQ,a.MEMO, 0 from DS_COMMON_DICT_DATA a LEFT JOIN DS_COMMON_DICT_DATA b ON b.ID=a.PID;
 
 update DS_BASE_DICT_DATA set LEVEL=1 where NAME in (select NAME from DS_BASE_DICT where LEVEL=1);
 
