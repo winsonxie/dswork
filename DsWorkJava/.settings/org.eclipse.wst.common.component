@@ -19,7 +19,6 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-web"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-webio"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-ee"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-parent"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-sso"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-sso-authfilter"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-db"/>
