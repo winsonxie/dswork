@@ -7,9 +7,9 @@
 
 <insert id="insert" parameterType="dswork.base.model.DsBaseDict">
 	insert into DS_BASE_DICT
-	(ID, LABEL, NAME, LEVEL, RULE, SEQ, UPDATETIME)
+	(ID, LABEL, NAME, LEVEL, RULE, SEQ, LASTTIME)
 	values
-	(#{id}, #{label}, #{name}, #{level}, #{rule}, #{seq}, #{updatetime})
+	(#{id}, #{label}, #{name}, #{level}, #{rule}, #{seq}, #{lasttime})
 </insert>
 
 <delete id="delete">
@@ -22,7 +22,7 @@
 		LABEL=#{label},
 		RULE=#{rule},
 		SEQ=#{seq},
-		UPDATETIME=#{updatetime}
+		LASTTIME=ifnull(LASTTIME, 0)+1
 	where ID=#{id}
 </update>
 
@@ -33,10 +33,10 @@
 	<result property="level" column="LEVEL" />
 	<result property="rule" column="RULE" />
 	<result property="seq" column="SEQ" />
-	<result property="updatetime" column="UPDATETIME" />
+	<result property="lasttime" column="LASTTIME" />
 </resultMap>
 <sql id="columns">
-	ID, LABEL, NAME, LEVEL, RULE, SEQ, UPDATETIME
+	ID, LABEL, NAME, LEVEL, RULE, SEQ, LASTTIME
 </sql>
 <sql id="dynamicWhere">
 	<where>

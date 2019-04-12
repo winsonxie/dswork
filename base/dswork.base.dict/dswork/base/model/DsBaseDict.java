@@ -18,7 +18,7 @@ public class DsBaseDict
 	// 排序
 	private Integer seq = 0;
 	// 最后更新时间
-	private long updatetime = 0;
+	private long lasttime = 0;
 
 	public Long getId()
 	{
@@ -111,14 +111,14 @@ public class DsBaseDict
 		this.seq = seq;
 	}
 
-	public long getUpdatetime()
+	public long getLasttime()
 	{
-		return updatetime;
+		return lasttime;
 	}
 
-	public void setUpdatetime(long updatetime)
+	public void setLasttime(long lasttime)
 	{
-		this.updatetime = updatetime;
+		this.lasttime = lasttime;
 	}
 
 	public boolean isLimitedRule()
