@@ -24,7 +24,7 @@
 		
 		<property name="validationQuery" value="${jdbc.common.validationQuery:select 'x'}" />
 		<property name="testWhileIdle" value="${jdbc.common.testWhileIdle:true}" />
-		<property name="testOnBorrow" value="${jdbc.common.testOnBorrow:false}" />
+		<property name="testOnBorrow" value="${jdbc.common.testOnBorrow:true}" />
 		<property name="testOnReturn" value="${jdbc.common.testOnReturn:false}" />
 		
 		<property name="poolPreparedStatements" value="${jdbc.common.poolPreparedStatements:false}" />
