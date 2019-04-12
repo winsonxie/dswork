@@ -7,21 +7,22 @@ dswork-jdbc
 dswork-ognl
 dswork-spring
 dswork-web
+dswork-db
 
 dswork-config 依赖dswork-core和dswork-web
 dswork-mvc 依赖dswork-core和dswork-web
 
 dswork-flow
 dswork-sso
-dswork-sso-authfilter 依赖dswork-sso
+#dswork-sso-authfilter 依赖dswork-sso
 
 
 
-dswork-cs cs环境，依赖dswork-core和dswork-spring
+#dswork-cs cs环境，依赖dswork-core和dswork-spring
 
 dswork-java    pom非jar，cs环境
 dswork-javaweb pom非jar，bs环境
 
-dswork-common  在DsCommon项目中，依赖dswork-javaweb和dswork-flow
+#dswork-common  在DsCommon项目中，依赖dswork-javaweb和dswork-flow
 
 dswork-ee 非发布，依赖tomcat-embed

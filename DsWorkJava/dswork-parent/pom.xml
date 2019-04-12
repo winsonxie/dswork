@@ -75,12 +75,12 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<v.log4j>2.3</v.log4j>
-		<v.slf4j>1.7.25</v.slf4j>
-		<v.spring>4.3.18.RELEASE</v.spring>
+		<v.slf4j>1.7.26</v.slf4j>
+		<v.spring>4.3.23.RELEASE</v.spring>
 		<v.mybatis>3.4.6</v.mybatis>
 		<v.mybatis.spring>1.3.2</v.mybatis.spring>
 		<v.gson>2.8.5</v.gson>
-		<v.dswork>8.8.3</v.dswork>
+		<v.dswork>8.8.4</v.dswork>
 	</properties>
 	
 	<dependencyManagement>
