@@ -22,7 +22,7 @@
 		LABEL=#{label},
 		RULE=#{rule},
 		SEQ=#{seq},
-		LASTTIME=ifnull(LASTTIME, 0)+1
+		LASTTIME=#{lasttime}
 	where ID=#{id}
 </update>
 
