@@ -314,7 +314,7 @@ public class AuthGlobal
 		}
 		catch(Exception e)
 		{
-			log.error("getUserUserinfo:url=" + h.getUrl() + ", json:" + v);
+			log.error("getUserUserinfo:url=" + h.getUrl() + ", json:" + v + ", msg=" + e.getMessage());
 		}
 		return result;
 	}
