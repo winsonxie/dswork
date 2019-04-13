@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class IUser implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	private long id = 0L;// 主账号id
+	private Long id = 0L;// 主账号id
 	private long sid = 0L;// 实际登录用户id
 	private int status = 0;// 状态（0禁用，1启用）
 	private String bm = "";// 用户唯一标识（可为id或身份证等信息，用于标识多个账号是同一个用户）
@@ -26,8 +26,8 @@ public class IUser implements Serializable
 	private String idcard = "";// 身份证号
 	private String email = "";// 电子邮件
 	private String phone = "";// 电话
-	private long orgpid = 0L;// 所属单位
-	private long orgid = 0L;// 所属部门
+	private Long orgpid = 0L;// 所属单位
+	private Long orgid = 0L;// 所属部门
 	private String type = "";// 类型
 	private String typename = "";// 类型名称
 	private String exalias = "";// 类型扩展标识
@@ -37,12 +37,12 @@ public class IUser implements Serializable
 	private String ssoticket = "";// openid-access_token
 	private String data = "";// 用于存放自定义对象的json值
 
-	public long getId()
+	public Long getId()
 	{
 		return id;
 	}
 
-	public void setId(long id)
+	public void setId(Long id)
 	{
 		this.id = id;
 	}
@@ -212,7 +212,7 @@ public class IUser implements Serializable
 		return orgpid;
 	}
 
-	public void setOrgpid(long orgpid)
+	public void setOrgpid(Long orgpid)
 	{
 		this.orgpid = orgpid;
 	}
@@ -222,7 +222,7 @@ public class IUser implements Serializable
 		return orgid;
 	}
 
-	public void setOrgid(long orgid)
+	public void setOrgid(Long orgid)
 	{
 		this.orgid = orgid;
 	}
