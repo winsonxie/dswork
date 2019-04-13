@@ -44,7 +44,7 @@
 	
 	
 	
-	如果不开启metadata-complete="false"，则还需要手动配置以下三个servlet，其中SSOLoginServlet为必须，否则无法登录
+	如果不开启metadata-complete="false"，则还需要手动配置以下两个servlet，其中SSOLoginServlet为登录后根据code登录，门户模式不需要
 	
 		<servlet><servlet-name>SSOLoginServlet</servlet-name><servlet-class>dswork.sso.SSOLoginServlet</servlet-class></servlet>
 		<servlet-mapping><servlet-name>SSOLoginServlet</servlet-name><url-pattern>/sso/login</url-pattern></servlet-mapping>
