@@ -7,10 +7,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -22,25 +20,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dswork.sso.model.IFunc;
-import dswork.sso.model.IRes;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import dswork.sso.model.IFunc;
+import dswork.sso.model.IRes;
 
 @SuppressWarnings("unchecked")
 public class AuthFilter implements Filter
 {
 	static Logger log = LoggerFactory.getLogger("dswork.sso");
-	//private static Long SYSTEM_REFRESH = AuthFactory.getToLong(KEY_SYSTEM_REFRESH, 60000);// 当前系统的全部权限缓存更新间隔1000(1秒)|60000(1分钟)|3600000(1小时)|86400000(1天)
+	// private static Long SYSTEM_REFRESH = AuthFactory.getToLong(KEY_SYSTEM_REFRESH, 60000);//
+	// 当前系统的全部权限缓存更新间隔1000(1秒)|60000(1分钟)|3600000(1小时)|86400000(1天)
 	private static Set<String> PAGE_IGNORE = new HashSet<String>();// 无需验证页面
 	private static String CHECK_FIX;// 需要过滤的后缀名
 	private static boolean isCheckAllFix;// 是否需要过滤所有后缀名
 	private static boolean isCheckParam;// 是否需要验证参数
 	private static Map<String, List<IRes>> resMap = new HashMap<String, List<IRes>>();// 只存放url作为key值
 	private static long refreshTime = 0L;
-	private static long  SYSTEM_REFRESH = 0L;
+	private static long SYSTEM_REFRESH = 0L;
 	private static String PAGE_NOACCESS;// 跳转到无权限提示页面
+	private static int execution = 0;
 
 	private static void splitToSet(String str, Set<String> set)
 	{
@@ -57,31 +57,19 @@ public class AuthFilter implements Filter
 		}
 	}
 
-	private static Timer _timer = null;
-	private static TimerTask _timerTask = new TimerTask()
-	{
-		public void run()
-		{
-			log.info("--AuthFilter定时任务开始执行--");
-			try
-			{
-				refreshSystem();
-			}
-			catch(Exception ex)
-			{
-				log.error(ex.getMessage());
-			}
-		}
-	};
 	private static void refreshSystem()
 	{
+		if(execution == 1)
+		{
+			return;
+		}
+		execution = 1;
 		if(System.currentTimeMillis() > refreshTime)// 初始时refreshPermissionTime为0，肯定会执行
 		{
 			boolean isFailure = true;
 			try
 			{
 				Map<String, List<IRes>> _resMap = new HashMap<String, List<IRes>>();
-				
 				IFunc[] funcArray = AuthFactory.getFunctionBySystem();// 初始化该系统已配置的全部功能
 				if(funcArray != null)// 读得到数据，结果集也可以为0
 				{
@@ -105,7 +93,7 @@ public class AuthFilter implements Filter
 					}
 					resMap.clear();
 					resMap.putAll(_resMap);
-					refreshTime += System.currentTimeMillis() + SYSTEM_REFRESH;
+					refreshTime = System.currentTimeMillis() + SYSTEM_REFRESH;
 					isFailure = false;
 				}
 			}
@@ -113,12 +101,19 @@ public class AuthFilter implements Filter
 			{
 				ex.printStackTrace();
 			}
-			if(isFailure)// funcArray为null或异常（cxf为null时抛出异常）
+			try
 			{
-				resMap.clear();
-				resMap.put("dswork_null_key", new ArrayList<IRes>());// 读取出错，随便放一个nullkey，让它不为空，避免读不到信息时权限验证被越
+				if(isFailure)// funcArray为null或异常（cxf为null时抛出异常）
+				{
+					resMap.clear();
+					resMap.put("dswork_null_key", new ArrayList<IRes>());// 读取出错，随便放一个nullkey，让它不为空，避免读不到信息时权限验证被越
+				}
+			}
+			catch(Exception e)
+			{
 			}
 		}
+		execution = 0;
 	}
 
 	public void init(FilterConfig config) throws ServletException
@@ -138,9 +133,6 @@ public class AuthFilter implements Filter
 		{
 			isCheckAllFix = true;
 		}
-		_timer = new Timer(true);
-		// Timer.schedule(TimerTask task, Date date, long period)// 从date开始,每period毫秒执行task.
-		_timer.schedule(_timerTask, 0, SYSTEM_REFRESH);// 从服务器启动开始运行,每period毫秒执行
 	}
 
 	public void destroy()
@@ -207,7 +199,8 @@ public class AuthFilter implements Filter
 		{
 			return false;
 		}
-		//refreshSystem();// 刷新数据
+		refreshSystem();
+		// refreshSystem();// 刷新数据
 		if(resMap.get("dswork_null_key") != null)
 		{
 			return false;// 读不到权限数据
@@ -273,10 +266,10 @@ public class AuthFilter implements Filter
 		}
 		return true;
 	}
-
 	private final static String KEY_SESSIONFUNC = "dswork.cas.func";// 存放在session中用户岗位信息的key
 	private final static String KEY_SESSIONFUNC_ACCOUNT = "dswork.cas.func.account";// 存放在session中用户岗位信息的key
 	// 获取用户有权限访问的资源
+
 	private static Map<String, List<IRes>> getUserRes(String userAccount, HttpSession session)
 	{
 		Map<String, List<IRes>> userResMap = new HashMap<String, List<IRes>>();
@@ -345,14 +338,6 @@ public class AuthFilter implements Filter
 		}
 		return null;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 
 	private static final String getString(Object v)
 	{
@@ -362,32 +347,35 @@ public class AuthFilter implements Filter
 		}
 		return null;
 	}
+
 	private static final long getToLong(String value, long defaultValue)
 	{
 		try
 		{
 			return Long.parseLong(getString(value));
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			return defaultValue;
 		}
 	}
+
 	private static final String getToString(String value, String defaultValue)
 	{
 		try
 		{
 			String str = getString(value);
-			if (str != null)
+			if(str != null)
 			{
 				return str;
 			}
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 		}
 		return defaultValue;
 	}
+
 	private static final boolean getToBoolean(String value, boolean defaultValue)
 	{
 		try
@@ -402,7 +390,7 @@ public class AuthFilter implements Filter
 				return Boolean.FALSE;
 			}
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 		}
 		return defaultValue;

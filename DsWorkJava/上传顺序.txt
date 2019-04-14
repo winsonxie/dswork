@@ -1,13 +1,13 @@
 dswork-parent 主要pom，所有模块均依赖它
 
 dswork-core
+dswork-db
 dswork-html
 dswork-http
 dswork-jdbc
 dswork-ognl
 dswork-spring
 dswork-web
-dswork-db
 
 dswork-config 依赖dswork-core和dswork-web
 dswork-mvc 依赖dswork-core和dswork-web

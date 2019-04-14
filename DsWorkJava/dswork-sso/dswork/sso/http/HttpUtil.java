@@ -7,10 +7,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,88 +17,251 @@ import org.slf4j.LoggerFactory;
 /**
  * 封装http请求
  * @author skey
- * @version 2.0x
+ * @version 1.0
  */
 public class HttpUtil
 {
 	static Logger log = LoggerFactory.getLogger(HttpUtil.class.getName());
 	private HttpURLConnection http;
 	private boolean isHttps = false;
-	private String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64)";// Gecko/20150123
-	private List<NameValue> form = new ArrayList<NameValue>();// 表单项
+	private int connectTimeout = 10000;
+	private int readTimeout = 30000;
+	private String url = "";
+	private String userAgent = "Mozilla/5.0 (compatible; MSIE 11; Windows NT 6.1; Win64; x64;)";// Gecko/20150123
 
-	public HttpUtil addForm(String name, String value)
+	/**
+	 * 返回当前是否https请求
+	 * @return boolean
+	 */
+	public boolean isHttps()
 	{
-		form.add(new NameValue(name, value));
+		return isHttps;
+	}
+
+	/**
+	 * 设置超时时间毫秒
+	 * @param connectTimeout int
+	 * @return HttpUtil
+	 */
+	public HttpUtil setConnectTimeout(int connectTimeout)
+	{
+		this.connectTimeout = connectTimeout;
+		if(http != null)
+		{
+			this.http.setConnectTimeout(connectTimeout);
+		}
 		return this;
 	}
 
+	/**
+	 * 设置contentType
+	 * @param contentType String
+	 * @return HttpUtil
+	 */
+	public HttpUtil setContentType(String contentType)
+	{
+		if(http != null)
+		{
+			this.http.setRequestProperty("Content-Type", contentType);
+		}
+		return this;
+	}
+
+	/**
+	 * 设置读取超时时间毫秒
+	 * @param readTimeout int
+	 * @return HttpUtil
+	 */
+	public HttpUtil setReadTimeout(int readTimeout)
+	{
+		this.readTimeout = readTimeout;
+		if(http != null)
+		{
+			this.http.setReadTimeout(readTimeout);
+		}
+		return this;
+	}
+
+	/**
+	 * 设置requestMethod
+	 * @param requestMethod String
+	 * @return HttpUtil
+	 */
+	public HttpUtil setRequestMethod(String requestMethod)
+	{
+		if(http == null)
+		{
+			log.error("http is not create");
+		}
+		else
+		{
+			try
+			{
+				this.http.setRequestMethod(requestMethod.toUpperCase(Locale.ROOT));
+			}
+			catch(Exception e)
+			{
+				log.error(e.getMessage());
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * 设置requestProperty
+	 * @param key String
+	 * @param value String
+	 * @return HttpUtil
+	 */
+	public HttpUtil setRequestProperty(String key, String value)
+	{
+		if(http == null)
+		{
+			log.error("http is not create");
+		}
+		else
+		{
+			try
+			{
+				this.http.setRequestProperty(key, value);
+			}
+			catch(Exception e)
+			{
+				log.error(e.getMessage());
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * 设置useCaches
+	 * @param usecaches boolean
+	 * @return HttpUtil
+	 */
+	public HttpUtil setUseCaches(boolean usecaches)
+	{
+		if(http == null)
+		{
+			log.error("http is not create");
+		}
+		else
+		{
+			this.http.setUseCaches(usecaches);
+		}
+		return this;
+	}
+
+	/**
+	 * 设置userAgent
+	 * @param userAgent String
+	 * @return HttpUtil
+	 */
+	public HttpUtil setUserAgent(String userAgent)
+	{
+		this.userAgent = userAgent;
+		if(http != null)
+		{
+			this.http.setRequestProperty("User-Agent", userAgent);
+		}
+		return this;
+	}
+
+	/**
+	 * 创建新的http(s)请求，重置除cookie外的所有设置
+	 * @param url url地址请求
+	 * @return HttpUtil
+	 */
+	public HttpUtil create(String url)
+	{
+		return create(url, true);
+	}
+
+	/**
+	 * 创建新的http(s)请求，重置除cookie、connectTimeout、readTimeout、userAgent外的所有设置
+	 * @param url url地址请求
+	 * @param isHostnameVerifier 是否不确认主机名
+	 * @return HttpUtil
+	 */
 	public HttpUtil create(String url, boolean isHostnameVerifier)
 	{
-		form.clear();
+		this.url = url;
+		this.clearForm();
 		URL c;
 		try
 		{
 			c = new URL(url);
 			isHttps = c.getProtocol().toLowerCase().equals("https");
-			this.http = (HttpURLConnection) c.openConnection();
-			if(isHttps)
+			if(isHostnameVerifier && isHttps)
 			{
-				HttpsURLConnection https = (HttpsURLConnection) this.http;
-				if(isHostnameVerifier)
-				{
-					https.setHostnameVerifier(HV);// 不进行主机名确认
-				}
+				HttpsURLConnection.setDefaultSSLSocketFactory(HttpCommon.getSocketFactory());
+				this.http = (HttpURLConnection) c.openConnection();
+				((HttpsURLConnection) this.http).setHostnameVerifier(HttpCommon.HV);// 不进行主机名确认
+			}
+			else
+			{
+				HttpsURLConnection.setDefaultSSLSocketFactory(HttpCommon.getSocketFactoryDefault());
+				this.http = (HttpURLConnection) c.openConnection();
 			}
 			this.http.setDoInput(true);
 			this.http.setDoOutput(false);
-			this.http.setConnectTimeout(10000);
-			this.http.setReadTimeout(30000);
+			this.http.setConnectTimeout(connectTimeout);
+			this.http.setReadTimeout(readTimeout);
 			this.http.setRequestProperty("User-Agent", userAgent);
+			this.http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 			this.http.setRequestProperty("Accept-Charset", "utf-8");
 			this.http.setRequestMethod("GET");
 		}
 		catch(Exception e)
 		{
-			log.error(e.getMessage());
+			e.printStackTrace();
 		}
 		return this;
 	}
-	
+
 	/**
 	 * 连接并返回网页文本
 	 * @return 连接失败返回null
 	 */
 	public String connect()
 	{
+		return connect("UTF-8");
+	}
+
+	/**
+	 * 连接并返回网页文本
+	 * @param charsetName 对封装的表单、获取的网页内容进行的编码设置
+	 * @return 连接失败返回null
+	 */
+	public String connect(String charsetName)
+	{
 		String result = null;
 		try
 		{
-			byte[] arr = null;
 			if(this.form.size() > 0)
 			{
-				String data = format(form, "UTF-8");
-				arr = data.getBytes("ISO-8859-1");
-			}
-			this.http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			if(arr != null)
-			{
+				String data = HttpCommon.format(form, charsetName);
 				this.http.setDoOutput(true);
 				this.http.setUseCaches(false);
 				if(this.http.getRequestMethod().toUpperCase().equals("GET"))// DELETE, PUT, POST
 				{
+					if(log.isDebugEnabled())
+					{
+						log.debug("RequestMethod GET change to POST");
+					}
 					this.http.setRequestMethod("POST");
 				}
+				// this.http.setRequestProperty("Content-Length", String.valueOf(data.length()));
 				DataOutputStream out = new DataOutputStream(this.http.getOutputStream());
-				out.write(arr, 0, arr.length);
+				out.write(data.getBytes("ISO-8859-1"));
+				// out.writeBytes(data);
 				out.flush();
 				out.close();
 			}
 			this.http.connect();
-			int responseCode = http.getResponseCode();// 设置http返回状态200（ok）还是403
-			if(responseCode >= 200 && responseCode < 300)
+			int _responseCode = http.getResponseCode();// 设置http返回状态200（ok）还是403
+			BufferedReader in = null;
+			if(_responseCode == 200)
 			{
-				BufferedReader in = null;
 				in = new BufferedReader(new InputStreamReader(http.getInputStream(), "UTF-8"));
 				String temp = in.readLine();
 				while(temp != null)
@@ -127,44 +289,51 @@ public class HttpUtil
 		}
 		catch(Exception e)
 		{
+			log.error(e.getMessage());
 		}
 		return result;
 	}
+	// 表单项
+	private List<NameValue> form = new ArrayList<NameValue>();
 
-	public final static HostnameVerifier HV = new HostnameVerifier()
+	/**
+	 * 清除已清加的表单项
+	 * @return HttpUtil
+	 */
+	public HttpUtil clearForm()
 	{
-		public boolean verify(String urlHostName, SSLSession session)
-		{
-			return true;
-		}
-	};
+		form.clear();
+		return this;
+	}
 
-	private static final String NAME_VALUE_SEPARATOR = "=";
-	private static final String PARAMETER_SEPARATOR = "&";
-	public static String format(List<? extends NameValue> parameters, String charsetName)
+	/**
+	 * 添加表单项
+	 * @param name String
+	 * @param value String
+	 * @return HttpUtil
+	 */
+	public HttpUtil addForm(String name, String value)
 	{
-		StringBuilder result = new StringBuilder();
-		for(NameValue parameter : parameters)
+		form.add(new NameValue(name, value));
+		return this;
+	}
+
+	/**
+	 * 批量添加表单项
+	 * @param array NameValue[]
+	 * @return HttpUtil
+	 */
+	public HttpUtil addForms(NameValue[] array)
+	{
+		for(NameValue c : array)
 		{
-			try
-			{
-				String encodedName = java.net.URLEncoder.encode(parameter.getName(), charsetName);
-				String encodedValue = java.net.URLEncoder.encode(parameter.getValue(), charsetName);
-				if(result.length() > 0)
-				{
-					result.append(PARAMETER_SEPARATOR);
-				}
-				result.append(encodedName);
-				if(encodedValue != null)
-				{
-					result.append(NAME_VALUE_SEPARATOR);
-					result.append(encodedValue);
-				}
-			}
-			catch(Exception e)
-			{
-			}
+			form.add(c);
 		}
-		return result.toString();
+		return this;
+	}
+	
+	public String getUrl()
+	{
+		return url;
 	}
 }
