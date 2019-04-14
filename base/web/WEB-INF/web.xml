@@ -3,6 +3,7 @@
 	xmlns="http://java.sun.com/xml/ns/javaee" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" metadata-complete="false">
+	<context-param><param-name>log4jConfiguration</param-name><param-value>classpath:/config/log4j2.xml</param-value></context-param>
 	<error-page><error-code>400</error-code><location>/50x.jsp</location></error-page>
 	<error-page><error-code>404</error-code><location>/50x.jsp</location></error-page>
 	<error-page><error-code>500</error-code><location>/50x.jsp</location></error-page>
@@ -15,33 +16,11 @@
 	</filter>
 	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/*</url-pattern></filter-mapping>
 	<filter-mapping><filter-name>websso</filter-name><url-pattern>/index.jsp</url-pattern></filter-mapping>
-<!--
-	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/base/dict/*</url-pattern></filter-mapping>
-	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/base/flow/*</url-pattern></filter-mapping>
 
-	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/base/system/*</url-pattern></filter-mapping>
-	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/base/func/*</url-pattern></filter-mapping>
-	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/base/role/*</url-pattern></filter-mapping>
-	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/base/rolechoose/*</url-pattern></filter-mapping>
-
-	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/base/org/*</url-pattern></filter-mapping>
-	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/base/orgrole/*</url-pattern></filter-mapping>
-
-	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/base/user/*</url-pattern></filter-mapping>
-	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/base/userrole/*</url-pattern></filter-mapping>
-	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/base/userorg/*</url-pattern></filter-mapping>
-	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/base/usertype/*</url-pattern></filter-mapping>
-
-	<filter-mapping><filter-name>websso</filter-name><url-pattern>/ds/base/ex/*</url-pattern></filter-mapping>
--->
-	
-	
 	<servlet><servlet-name>SSOLoginServlet</servlet-name><servlet-class>dswork.sso.SSOLoginServlet</servlet-class></servlet>
 	<servlet-mapping><servlet-name>SSOLoginServlet</servlet-name><url-pattern>/sso/login</url-pattern></servlet-mapping>
 	
 	<servlet><servlet-name>SSOLogoutServlet</servlet-name><servlet-class>dswork.sso.SSOLogoutServlet</servlet-class></servlet>
 	<servlet-mapping><servlet-name>SSOLogoutServlet</servlet-name><url-pattern>/sso/logout</url-pattern></servlet-mapping>
-	
-	<servlet><servlet-name>SSOMenuServlet</servlet-name><servlet-class>dswork.sso.SSOMenuServlet</servlet-class></servlet>
-	<servlet-mapping><servlet-name>SSOMenuServlet</servlet-name><url-pattern>/sso/menu</url-pattern></servlet-mapping>
+
 </web-app>
