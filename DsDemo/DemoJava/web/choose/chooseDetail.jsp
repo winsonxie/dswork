@@ -47,13 +47,13 @@ $(function(){
 });
 
 function reselect(id){
-	if($("#b"+id).checked){//取消选择
-		parent.setModel(map.get(id), false);
-		$("#c"+id).html("<span style='color:#ff0000'>未选择</span>");
-	}
-	else{
+	if($("#b"+id).prop("checked")){//取消选择
 		parent.setModel(map.get(id), true);
 		 $("#c"+id).html("已选择");
+	}
+	else{
+		parent.setModel(map.get(id), false);
+		$("#c"+id).html("<span style='color:#ff0000'>未选择</span>");
 	}
 }
 </script>
@@ -69,7 +69,7 @@ function reselect(id){
 	<c:forEach items="${list}" var="d">
 	<tr class='list'>
 	<td style='text-align:left;'>${d.name}</td>
-	<td><label><input id="b${d.id}" onclick="reselect('${d.id}')" type="checkbox"/><span id="c${d.id}"></span></label></td>
+	<td><label onclick="reselect('${d.id}')"><input id="b${d.id}" type="checkbox"/><span id="c${d.id}"></span></label></td>
 	</tr>
 	</c:forEach>
 </table>
