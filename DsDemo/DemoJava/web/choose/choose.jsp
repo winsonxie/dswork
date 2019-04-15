@@ -1,12 +1,16 @@
-<%@page language="java" pageEncoding="utf-8" import="testwork.model.Choose"%>
+<%@page language="java" pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%
-java.util.List<Choose> list = new java.util.ArrayList<Choose>();
-list.add(new Choose().setId(1L).setName("A1"));
-list.add(new Choose().setId(3L).setName("A3"));
-list.add(new Choose().setId(4L).setName("A4"));
-list.add(new Choose().setId(11L).setName("A11"));
+java.util.List<java.util.Map<String, String>> list = new java.util.ArrayList<java.util.Map<String, String>>();
+java.util.Map<String, String> m = new java.util.HashMap<String, String>();m.put("id", "1");m.put("name", "1A");
+list.add(m);
+m = new java.util.HashMap<String, String>();m.put("id", "2");m.put("name", "2A");
+list.add(m);
+m = new java.util.HashMap<String, String>();m.put("id", "4");m.put("name", "4A");
+list.add(m);
+m = new java.util.HashMap<String, String>();m.put("id", "11");m.put("name", "11A");
+list.add(m);
 request.setAttribute("list", list);
 %>
 <!DOCTYPE html>

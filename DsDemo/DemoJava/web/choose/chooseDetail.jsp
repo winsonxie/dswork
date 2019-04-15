@@ -1,14 +1,16 @@
-<%@page language="java" pageEncoding="utf-8" import="dswork.web.MyRequest,testwork.model.Choose"%>
+<%@page language="java" pageEncoding="utf-8" import="dswork.web.MyRequest"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%
 MyRequest req = new MyRequest(request);
 int p = req.getInt("page", 1);
 if(p < 1){p = 1;}
-java.util.List<Choose> list = new java.util.ArrayList<Choose>();
+java.util.List<java.util.Map<String, String>> list = new java.util.ArrayList<java.util.Map<String, String>>();
+java.util.Map<String, String> m;
 for(long i = 5*(p-1) + 1; i <= 5*p; i++)
 {
-	list.add(new Choose().setId(i).setName("A"+i));
+	m = new java.util.HashMap<String, String>();m.put("id", i + "");m.put("name", i + "A");
+	list.add(m);
 }
 request.setAttribute("list", list);
 request.setAttribute("page", p);
