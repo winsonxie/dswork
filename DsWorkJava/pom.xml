@@ -8,17 +8,8 @@
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
 	<name>dswork-project-parent</name>
-	<description>dswork-parent</description>
+	<description>dswork-project-parent</description>
 	<url>https://github.com/skeychen/dswork</url>
-
-	<licenses>
-		<license>
-			<name>GNU Lesser General Public License v3.0</name>
-			<url>https://github.com/skeychen/dswork/blob/master/LICENSE</url>
-		</license>
-	</licenses>
-	
-	<developers><developer><id>skeychen</id><name>skey</name><email>249725997@qq.com</email></developer></developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
