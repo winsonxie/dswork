@@ -10,14 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 @WebServlet(name="SSOLogoutServlet", loadOnStartup = 2, urlPatterns={"/sso/logout"})
 public class SSOLogoutServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
-	static Logger log = LoggerFactory.getLogger("dswork.sso.logout");
+	static org.slf4j.Logger log = AuthGlobal.log;
 
 	public SSOLogoutServlet()
 	{
@@ -25,7 +22,7 @@ public class SSOLogoutServlet extends HttpServlet
 	}
 	
 	@Override
-	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		try
 		{
