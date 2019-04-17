@@ -3,6 +3,7 @@ package dswork.ee;
 import java.io.File;
 import java.util.Map;
 
+import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.startup.Tomcat;
 
 public class MyTomcat
@@ -147,6 +148,8 @@ public class MyTomcat
 			{
 				c.setConfigFile(contextDir.toURI().toURL());
 			}
+			c.addLifecycleListener((LifecycleListener) new EmbededContextConfig());
+			c.setJarScanner(new EmbededStandardJarScanner());
 		}
 		tomcat.start();
 		tomcat.getServer().await();
