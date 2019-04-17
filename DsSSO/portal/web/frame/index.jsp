@@ -41,7 +41,7 @@ if(top.location != this.location){top.location = "<%=path %>/frame/index.jsp";}
 	<div class="right"></div>
 	<div id="toolDiv" class="xtool minitool">
 		<div title="<%=user.getAccount()%>"><i>&#xf1001;</i><b class="show"><%=user.getName() %></b></div>
-		<div onclick="$('#tt').tabs('select', 0);"       title="切换首页"><i>&#xf1003;</i><b>首页</b></div>
+		<%--<div onclick="$('#tt').tabs('select', 0);"       title="切换首页"><i>&#xf1003;</i><b>首页</b></div>--%>
 		<div onclick="reload();"                         title="刷新页面"><i>&#xf1004;</i><b>刷新</b></div>
 		<%--切换系统使用showModalDialog模式，只有在ie模式下，或08-13年间的浏览器可用--%>
 		<%--<div onclick="document.getElementById('leftFrame').contentWindow.showSystem();" title="切换系统"><i>&#xf1009;</i><b>切换系统</b></div>--%>
@@ -57,9 +57,9 @@ if(top.location != this.location){top.location = "<%=path %>/frame/index.jsp";}
 </div>
 <div region="center" data-options="border:false" style="overflow:hidden;">
 	<div id="tt" class="easyui-tabs" data-options="fit:true,plain:false,tools:'#tab-tools'" style="overflow:hidden;">
-		<div title="首页" style="overflow:hidden;" closable="false">
+		<%--<div title="首页" style="overflow:hidden;" closable="false">
 			<div style="overflow:hidden;width:100%;height:100%;"><iframe id="rightFrame" name="rightFrame" scrolling="no" frameborder="0" src="../portlet.jsp"></iframe></div>
-		</div>
+		</div>--%>
 	</div>
 	<div id="tab-tools">
 		<a class="easyui-linkbutton" title="关闭当前" data-options="plain:true,iconCls:'icon-closeone'" onclick="if(true){var t=$('#tt').tabs('getSelected');if(t.panel('options').closable){$('#tt').tabs('close',$('#tt').tabs('getTabIndex',t));}}return false;" href="#"></a>
