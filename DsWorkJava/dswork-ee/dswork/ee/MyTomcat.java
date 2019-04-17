@@ -135,7 +135,12 @@ public class MyTomcat
 		return this;
 	}
 	
-	public MyTomcat start() throws Exception
+	public void start() throws Exception
+	{
+		start(true);
+	}
+	
+	public void start(boolean await) throws Exception
 	{
 		tomcat.setPort(port);
 		tomcat.setBaseDir(baseDir);
@@ -153,8 +158,15 @@ public class MyTomcat
 			c.setJarScanner(new EmbededStandardJarScanner());
 		}
 		tomcat.start();
+		if(await)
+		{
+			tomcat.getServer().await();
+		}
+	}
+	
+	public void await() throws Exception
+	{
 		tomcat.getServer().await();
-		return this;
 	}
 	// String jarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile() + "!";
 }
