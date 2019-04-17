@@ -11,7 +11,7 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class StatementSpy implements Statement, Spy
 {
-	protected final SpyLogDelegator log;
+	static SpyLog log = SpyLog.getLog();
 	protected ConnectionSpy connectionSpy;
 	protected Statement realStatement;
 	
@@ -47,7 +47,6 @@ public class StatementSpy implements Statement, Spy
 		}
 		this.realStatement = realStatement;
 		this.connectionSpy = connectionSpy;
-		log = SpyLogFactory.getSpyLogDelegator();
 	}
 
 	public String getClassType()

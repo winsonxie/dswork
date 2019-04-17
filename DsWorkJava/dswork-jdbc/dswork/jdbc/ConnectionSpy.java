@@ -30,7 +30,7 @@ public class ConnectionSpy implements Connection, Spy
 	{
 		return realConnection;
 	}
-	private SpyLogDelegator log;
+	static SpyLog log = SpyLog.getLog();
 	private final Integer connectionNumber;
 	private static int lastConnectionNumber = 0;
 	private static final Map connectionTracker = new HashMap();
@@ -52,7 +52,6 @@ public class ConnectionSpy implements Connection, Spy
 			throw new IllegalArgumentException("Must pass in a non null real Connection");
 		}
 		this.realConnection = realConnection;
-		log = SpyLogFactory.getSpyLogDelegator();
 		synchronized(connectionTracker)
 		{
 			connectionNumber = new Integer(++lastConnectionNumber);

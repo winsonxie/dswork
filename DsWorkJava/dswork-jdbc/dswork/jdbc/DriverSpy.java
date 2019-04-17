@@ -16,12 +16,15 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @SuppressWarnings("all")
 public class DriverSpy implements Driver
 {
 	private Driver lastUnderlyingDriverRequested;
 	private static Map rdbmsSpecifics;
-	static final SpyLogDelegator log = SpyLogFactory.getSpyLogDelegator();
+	static SpyLog log = SpyLog.getLog();
 	private static boolean hasSql2000 = false;
 
 	private static String getStringOption(Properties props, String propName)

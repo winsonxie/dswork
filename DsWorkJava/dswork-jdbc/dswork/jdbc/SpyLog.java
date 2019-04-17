@@ -1,22 +1,22 @@
 package dswork.jdbc;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class SpyLogDelegator
+public class SpyLog
 {
 	static final long SqlTimingWarn = 10000L;
 	static final long SqlTimingWarnDebug = 60000L;
-
-	public SpyLogDelegator(org.slf4j.Logger logger)
-	{
-		this.sqlLogger = logger;
-	}
 	private static String nl = System.getProperty("line.separator");
-	private Logger sqlLogger = null;
+	public static Logger log = LoggerFactory.getLogger("jdbc.sqlonly");
+
+	private SpyLog()
+	{
+	}
 
 	public boolean isJdbcLoggingEnabled()
 	{
-		return sqlLogger.isErrorEnabled();
+		return log.isErrorEnabled();
 	}
 
 	public void exceptionOccured(Spy spy, String methodCall, Exception e, String sql, long execTime)
@@ -26,32 +26,32 @@ public class SpyLogDelegator
 		{
 			String classType = spy.getClassType();
 			String header = spyNo + ". " + classType + "." + methodCall;
-			sqlLogger.error(header, e);
+			log.error(header, e);
 		}
 		else
 		{
 			sql = (sql == null) ? "" : sql.trim();
-			sqlLogger.error(" {FAILED after " + execTime + " msec}" + nl + spyNo + ". " + sql, e);
+			log.error(" {FAILED after " + execTime + " msec}" + nl + spyNo + ". " + sql, e);
 		}
 	}
 
 	public void sqlOccured(Spy spy, long execTime, String methodCall, String sql)
 	{
-		if(sqlLogger.isErrorEnabled())
+		if(log.isErrorEnabled())
 		{
-			if(sqlLogger.isWarnEnabled())
+			if(log.isWarnEnabled())
 			{
-				if(execTime >= SpyLogDelegator.SqlTimingWarn)
+				if(execTime >= SpyLog.SqlTimingWarn)
 				{
-					sqlLogger.warn(buildSqlDump(spy, execTime, methodCall, sql, sqlLogger.isDebugEnabled() || (execTime > SpyLogDelegator.SqlTimingWarnDebug)));
+					log.warn(buildSqlDump(spy, execTime, methodCall, sql, log.isDebugEnabled() || (execTime > SpyLog.SqlTimingWarnDebug)));
 				}
-				else if(sqlLogger.isDebugEnabled())
+				else if(log.isDebugEnabled())
 				{
-					sqlLogger.debug(buildSqlDump(spy, execTime, methodCall, sql, true));
+					log.debug(buildSqlDump(spy, execTime, methodCall, sql, true));
 				}
-				else if(sqlLogger.isInfoEnabled())
+				else if(log.isInfoEnabled())
 				{
-					sqlLogger.info(buildSqlDump(spy, execTime, methodCall, sql, false));
+					log.info(buildSqlDump(spy, execTime, methodCall, sql, false));
 				}
 			}
 		}
@@ -76,16 +76,23 @@ public class SpyLogDelegator
 
 	public void debug(String msg)
 	{
-		sqlLogger.debug(msg);
+		log.debug(msg);
 	}
 
 	public void connectionOpened(Spy spy)
 	{
-		sqlLogger.info(spy.getConnectionNumber() + ". Connection opened");
+		log.info(spy.getConnectionNumber() + ". Connection opened");
 	}
 
 	public void connectionClosed(Spy spy)
 	{
-		sqlLogger.info(spy.getConnectionNumber() + ". Connection closed ");
+		log.info(spy.getConnectionNumber() + ". Connection closed ");
+	}
+	
+	static SpyLog spylog = new SpyLog();
+	
+	public static SpyLog getLog()
+	{
+		return spylog;
 	}
 }
