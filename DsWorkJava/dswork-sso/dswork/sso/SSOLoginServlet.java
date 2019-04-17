@@ -56,6 +56,10 @@ public class SSOLoginServlet extends HttpServlet
 //					}
 				}
 				JsonResult<AccessToken> token = AuthFactory.getUserAccessToken(code);
+				if(token == null)
+				{
+					throw new Exception("连不上sso服务的api或权限不足");
+				}
 				if(token.getCode() == AuthGlobal.CODE_001)
 				{
 					AccessToken t = token.getData();
@@ -79,7 +83,6 @@ public class SSOLoginServlet extends HttpServlet
 		catch(Exception ex)
 		{
 			log.error(ex.getMessage());
-			ex.printStackTrace();
 		}
 		return;
 	}
