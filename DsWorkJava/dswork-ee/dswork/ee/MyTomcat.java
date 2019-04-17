@@ -140,17 +140,17 @@ public class MyTomcat
 		tomcat.setPort(port);
 		tomcat.setBaseDir(baseDir);
 		tomcat.setHostname(hostname);
+		tomcat.getServer().setParentClassLoader(Thread.currentThread().getContextClassLoader());
 		for(Map.Entry<String, String> x : map.entrySet())
 		{
 			System.out.println(x.getKey() + "=" + x.getValue());
-			org.apache.catalina.Context c = tomcat.addWebapp(x.getKey(), x.getValue());
+			org.apache.catalina.Context c = tomcat.addWebapp(tomcat.getHost(), x.getKey(), x.getValue(), (LifecycleListener) new EmbededContextConfig());
 			if(contextDir != null && contextDir.isFile())
 			{
 				c.setConfigFile(contextDir.toURI().toURL());
 			}
-			c.addLifecycleListener((LifecycleListener) new EmbededContextConfig());
-			c.setJarScanner(new EmbededStandardJarScanner());
 			c.setParentClassLoader(Thread.currentThread().getContextClassLoader());
+			c.setJarScanner(new EmbededStandardJarScanner());
 		}
 		tomcat.start();
 		tomcat.getServer().await();
