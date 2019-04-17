@@ -12,7 +12,7 @@ public class SpyLogDelegator
 	{
 	}
 	private static String nl = System.getProperty("line.separator");
-	private final Logger sqlLogger = LoggerFactory.getLogger("jdbc.sqlonly");
+	private Logger sqlLogger = LoggerFactory.getLogger("jdbc.sqlonly");
 
 	public boolean isJdbcLoggingEnabled()
 	{

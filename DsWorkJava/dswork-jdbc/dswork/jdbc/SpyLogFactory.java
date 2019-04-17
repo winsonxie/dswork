@@ -5,10 +5,15 @@ public class SpyLogFactory
 	private SpyLogFactory()
 	{
 	}
-	private static final SpyLogDelegator logger = new SpyLogDelegator();
+	private static SpyLogDelegator logger = new SpyLogDelegator();
 
 	public static SpyLogDelegator getSpyLogDelegator()
 	{
 		return logger;
+	}
+
+	public static void refresh()
+	{
+		logger = new SpyLogDelegator();
 	}
 }
