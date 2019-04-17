@@ -150,6 +150,7 @@ public class MyTomcat
 			}
 			c.addLifecycleListener((LifecycleListener) new EmbededContextConfig());
 			c.setJarScanner(new EmbededStandardJarScanner());
+			c.setParentClassLoader(Thread.currentThread().getContextClassLoader());
 		}
 		tomcat.start();
 		tomcat.getServer().await();
