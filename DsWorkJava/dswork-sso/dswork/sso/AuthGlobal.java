@@ -112,7 +112,6 @@ public class AuthGlobal
 		{
 			public void run()
 			{
-				System.out.println("_tokenTask1 run");
 				try
 				{
 					JsonResult<AccessToken> result = getUnitAccessToken(true);
@@ -127,15 +126,14 @@ public class AuthGlobal
 						}
 					}
 				}
-				catch(Exception ex){System.out.println("_tokenTask1 Exception");ex.printStackTrace();}
-				try{_timer.schedule(_tokenTask2, 10000L);}catch(Exception e){System.out.println("_tokenTask1 _timer._tokenTask2");e.printStackTrace();}
+				catch(Exception ex){}
+				try{_timer.schedule(_tokenTask2, 10000L);}catch(Exception e){}
 			}
 		};
 		_tokenTask2 = new TimerTask()
 		{
 			public void run()
 			{
-				System.out.println("_tokenTask2 run");
 				try
 				{
 					JsonResult<AccessToken> result = getUnitAccessToken(true);
@@ -149,8 +147,8 @@ public class AuthGlobal
 						}
 					}
 				}
-				catch(Exception ex){System.out.println("_tokenTask2 Exception");ex.printStackTrace();}
-				try{_timer.schedule(_tokenTask1, 10000L);}catch(Exception e){System.out.println("_tokenTask2 _timer._tokenTask1");e.printStackTrace();}
+				catch(Exception ex){}
+				try{_timer.schedule(_tokenTask1, 10000L);}catch(Exception e){}
 			}
 		};
 	}
@@ -218,7 +216,6 @@ public class AuthGlobal
 		INIT_ACCESSTOKEN = initAccessToken;
 		if(INIT_ACCESSTOKEN)
 		{
-			System.out.println("initConfig auto run");
 			_timer.schedule(_tokenTask1, 100L);// 重新启动
 		}
 	}
