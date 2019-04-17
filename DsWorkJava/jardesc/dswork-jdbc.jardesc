@@ -11,6 +11,6 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=DsWorkJava/dswork-jdbc"/>
+        <javaElement handleIdentifier="=DsWorkJava/dswork-jdbc&lt;dswork.jdbc"/>
     </selectedElements>
 </jardesc>
