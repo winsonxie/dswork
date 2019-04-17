@@ -289,13 +289,13 @@ public class EmbededStandardJarScanner implements JarScanner
 		String urlStr = url.toString();
 		if(conn instanceof JarURLConnection)
 		{
-			System.out.println("-----scan UrlJar: " + urlStr);
+			// .out.println("-----scan UrlJar: " + urlStr);
 			callback.scan(new UrlJar(conn.getURL()), webappPath, isWebapp);
 			// callback.scan((JarURLConnection) conn, webappPath, isWebapp);
 		}
 		else
 		{
-			System.out.println("-----scan: " + urlStr);
+			// System.out.println("-----scan: " + urlStr);
 			if(urlStr.startsWith("file:") || urlStr.startsWith("http:") || urlStr.startsWith("https:"))
 			{
 				if(urlStr.endsWith(Constants.JAR_EXT))
