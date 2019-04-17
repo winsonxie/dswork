@@ -1,6 +1,5 @@
 package dswork.jdbc;
 
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 public class SpyLogDelegator
@@ -8,11 +7,12 @@ public class SpyLogDelegator
 	static final long SqlTimingWarn = 10000L;
 	static final long SqlTimingWarnDebug = 60000L;
 
-	public SpyLogDelegator()
+	public SpyLogDelegator(org.slf4j.Logger logger)
 	{
+		this.sqlLogger = logger;
 	}
 	private static String nl = System.getProperty("line.separator");
-	private Logger sqlLogger = LoggerFactory.getLogger("jdbc.sqlonly");
+	private Logger sqlLogger = null;
 
 	public boolean isJdbcLoggingEnabled()
 	{
