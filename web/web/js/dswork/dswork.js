@@ -73,7 +73,10 @@ $dswork.checkResult = function(res){
 			}
 			else if(typeof(res)=="object"){n = res;}
 			if(n && typeof(n)=="object"){
-				try{o.code = parseInt((n.code||"-1"));}catch(e){}
+				try{
+					o.type = o.code+"";
+					o.code = parseInt((n.code||"-1"));
+				}catch(e){}
 				try{o.msg = n.msg||"";}catch(e){}
 				try{o.data = n.data||null;}catch(e){}
 			}
