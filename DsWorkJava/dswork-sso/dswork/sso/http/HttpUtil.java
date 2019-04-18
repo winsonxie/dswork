@@ -21,11 +21,11 @@ import org.slf4j.LoggerFactory;
  */
 public class HttpUtil
 {
-	static Logger log = LoggerFactory.getLogger(HttpUtil.class.getName());
+	public static Logger log = LoggerFactory.getLogger(HttpUtil.class.getName());
 	private HttpURLConnection http;
 	private boolean isHttps = false;
-	private int connectTimeout = 10000;
-	private int readTimeout = 30000;
+	private int connectTimeout = 8000;
+	private int readTimeout = 8000;
 	private String url = "";
 	private String userAgent = "Mozilla/5.0 (compatible; MSIE 11; Windows NT 6.1; Win64; x64;)";// Gecko/20150123
 
@@ -101,7 +101,6 @@ public class HttpUtil
 			}
 			catch(Exception e)
 			{
-				log.error(e.getMessage());
 			}
 		}
 		return this;
@@ -127,7 +126,6 @@ public class HttpUtil
 			}
 			catch(Exception e)
 			{
-				log.error(e.getMessage());
 			}
 		}
 		return this;
@@ -213,7 +211,6 @@ public class HttpUtil
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
 		}
 		return this;
 	}

@@ -44,6 +44,16 @@ public class AuthGlobal
 	{
 		return new HttpUtil().create(APIURL + "/unit/access_token", https).addForm("appid", APPID).addForm("appsecret", APPSECRET).addForm("grant_type", "client_credential");
 	}
+	
+	private static JsonResult<AccessToken> connToken()
+	{
+		JsonResult<AccessToken> result = gson.fromJson(getConnectHttp().connect(), (new TypeToken<JsonResult<AccessToken>>(){}).getType());
+		if(result == null)
+		{
+			result = gson.fromJson(getConnectHttp().connect(), (new TypeToken<JsonResult<AccessToken>>(){}).getType());
+		}
+		return result;
+	}
 
 	private static synchronized JsonResult<AccessToken> getUnitAccessToken(boolean hasMust)// hasMust用于防止为空时，无数请求都去重新获取
 	{
@@ -60,22 +70,11 @@ public class AuthGlobal
 		JsonResult<AccessToken> result = null;
 		try
 		{
-			result = gson.fromJson(getConnectHttp().connect(), (new TypeToken<JsonResult<AccessToken>>()
-			{
-			}).getType());
+			result = connToken();
 		}
 		catch(Exception e)
 		{
-			try
-			{
-				result = gson.fromJson(getConnectHttp().connect(), new TypeToken<JsonResult<AccessToken>>()
-				{
-				}.getType());
-			}
-			catch(Exception ee)
-			{
-				log.error("dswork.sso.AuthGlobal获取unit的access_token失败，" + ee.getMessage());
-			}
+			log.error("dswork.sso.AuthGlobal获取unit的access_token失败，" + e.getMessage());
 		}
 		if(result != null)
 		{
@@ -83,12 +82,23 @@ public class AuthGlobal
 			{
 				ACCESS_TOKEN = result.getData().getAccess_token();
 				ACCESS_TOKEN_TIMEOUT = result.getData().getExpires_in() * 1000 + now;
-				log.info("dswork.sso.AuthGlobal获取unit的access_token成功，成功结果：" + result.getData().getAccess_token());
+				if(log.isInfoEnabled())
+				{
+					log.info("dswork.sso.AuthGlobal获取unit的access_token成功，成功结果：" + result.getData().getAccess_token());
+				}
+				else
+				{
+					log.error("只是测试，说log.isInfoEnabled()为false");
+				}
 			}
 			else
 			{
 				log.error("dswork.sso.AuthGlobal获取unit的access_token失败，失败结果：" + result.getCode());
 			}
+		}
+		else
+		{
+			log.error("dswork.sso.AuthGlobal获取unit的access_token失败");
 		}
 		return result;
 	}
@@ -122,12 +132,17 @@ public class AuthGlobal
 							time = 1000L * result.getData().getExpires_in() - 3000000;// 提前五分钟刷新
 							//_timer.cancel();
 							_timer.schedule(_tokenTask2, time);
+							if(log.isDebugEnabled())
+							{
+								log.debug("tokenTask2 wait next " + time);
+							}
 							return;
 						}
 					}
 				}
 				catch(Exception ex){}
 				try{_timer.schedule(_tokenTask2, 10000L);}catch(Exception e){}
+				log.error("tokenTask2 wait next 10000L");
 			}
 		};
 		_tokenTask2 = new TimerTask()
@@ -143,12 +158,17 @@ public class AuthGlobal
 						{
 							time = 1000L * result.getData().getExpires_in() - 3000000;// 提前五分钟刷新
 							_timer.schedule(_tokenTask1, time);
+							if(log.isDebugEnabled())
+							{
+								log.debug("tokenTask1 wait next " + time);
+							}
 							return;
 						}
 					}
 				}
 				catch(Exception ex){}
 				try{_timer.schedule(_tokenTask1, 10000L);}catch(Exception e){}
+				log.error("tokenTask1 wait next 10000L");
 			}
 		};
 	}
