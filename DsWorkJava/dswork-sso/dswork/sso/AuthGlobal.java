@@ -134,7 +134,7 @@ public class AuthGlobal
 							_timer.schedule(_tokenTask2, time);
 							if(log.isDebugEnabled())
 							{
-								log.debug("tokenTask2 wait next " + time);
+								log.debug("getUnitAccessToken task2 wait " + time);
 							}
 							return;
 						}
@@ -142,7 +142,7 @@ public class AuthGlobal
 				}
 				catch(Exception ex){}
 				try{_timer.schedule(_tokenTask2, 10000L);}catch(Exception e){}
-				log.error("tokenTask2 wait next 10000L");
+				log.error("getUnitAccessToken task2 wait 10000L");
 			}
 		};
 		_tokenTask2 = new TimerTask()
@@ -160,7 +160,7 @@ public class AuthGlobal
 							_timer.schedule(_tokenTask1, time);
 							if(log.isDebugEnabled())
 							{
-								log.debug("tokenTask1 wait next " + time);
+								log.debug("getUnitAccessToken task1 wait " + time);
 							}
 							return;
 						}
@@ -168,7 +168,7 @@ public class AuthGlobal
 				}
 				catch(Exception ex){}
 				try{_timer.schedule(_tokenTask1, 10000L);}catch(Exception e){}
-				log.error("tokenTask1 wait next 10000L");
+				log.error("getUnitAccessToken task1 wait 10000L");
 			}
 		};
 	}
