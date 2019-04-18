@@ -1,3 +1,4 @@
 新建javaweb项目，web目录为“web”
 创建后，复制config和web目录替换原有文件，并将config目录设置为源码目录
-引入userlibraries，JAVAEE和JAVAWEB即可
+引入userlibraries，JAVAEE和JAVAWEB
+最后根据项目需要，导入数据库相关jar
