@@ -54,10 +54,10 @@ $dswork.checkResult = function(res){
 	try{
 		var n;
 		if(res){
-			if(typeof(m)=="string"){
-				if(m.length>0 && m.indexOf("{")==0){try{n = eval(m);}catch(e){}}
+			if(typeof(res)=="string" || typeof(res)=="number"){
+				if(res.length>0 && res.indexOf("{")==0){try{n = eval(res);}catch(e){}}
 				else{
-					var _d = (m + "").split(":");
+					var _d = (res + "").split(":");
 					o.type = _d[0];
 					try{o.code = parseInt(_d[0]);}catch(e){}
 					if(_d.length > 1){
@@ -71,7 +71,7 @@ $dswork.checkResult = function(res){
 					}
 				}
 			}
-			else if(typeof(m)=="object"){n = m;}
+			else if(typeof(res)=="object"){n = res;}
 			if(n && typeof(n)=="object"){
 				try{o.code = parseInt((n.code||"-1"));}catch(e){}
 				try{o.msg = n.msg||"";}catch(e){}
