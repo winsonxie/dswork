@@ -86,10 +86,6 @@ public class AuthGlobal
 				{
 					log.info("dswork.sso.AuthGlobal获取unit的access_token成功，成功结果：" + result.getData().getAccess_token());
 				}
-				else
-				{
-					log.error("只是测试，说log.isInfoEnabled()为false");
-				}
 			}
 			else
 			{
