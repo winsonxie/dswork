@@ -7,7 +7,6 @@
         <archive path="/Lib/JAVAEE/tomcat-embed-core.jar"/>
         <archive path="/Lib/JAVAEE/tomcat-embed-el.jar"/>
         <archive path="/Lib/JAVAEE/tomcat-embed-jasper.jar"/>
-        <archive path="/Lib/JAVAEE/tomcat-embed-logging-juli.jar"/>
         <archive path="/Lib/JAVAEE/tomcat-embed-websocket.jar"/>
     </library>
 </eclipse-userlibraries>
