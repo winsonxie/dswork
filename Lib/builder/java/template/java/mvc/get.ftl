@@ -11,7 +11,7 @@ $(function(){
 	$${frame}.page.menu("del${model}.htm", "upd${model}1.htm", "get${model}ById.htm", "${'$'}{pageModel.page}");
 });
 $${frame}.doAjax = true;
-$${frame}.callback = function(){if($${frame}.result.type == 1){
+$${frame}.callback = function(){if($${frame}.result.code == 1){
 	location.href = "get${model}.htm?page=${'$'}{pageModel.page}";
 }};
 </script>

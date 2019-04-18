@@ -26,10 +26,10 @@
 <update id="update" parameterType="${namespace}.model.${model}">
 	update ${table.nameUpperCase} set
 <#list table.columnNokey as c>
-		${c.nameUpperCase}=${'#'}{${c.nameLowerCamel}}<#if c_has_next>,</#if>
+		${c.nameUpperCase}=${'#'}{${c.nameLowerCamel}}
 </#list>
-	where <#list table.columnKey as c>${c.nameUpperCase}=${'#'}{${c.nameLowerCamel}}<#if c_has_next> and </#if></#list>
-	<if test="@Ognl@isNotEmpty(lasttime)"> and LASTTIME=${'#'}{lasttime} </if>
+		LASTTIME=LASTTIME+1
+	where <#list table.columnKey as c>${c.nameUpperCase}=${'#'}{${c.nameLowerCamel}}<#if c_has_next> and </#if></#list> and LASTTIME=${'#'}{lasttime}
 </update>
 
 <resultMap id="result" type="${namespace}.model.${model}">

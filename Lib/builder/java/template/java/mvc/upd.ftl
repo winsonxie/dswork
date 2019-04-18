@@ -7,7 +7,7 @@
 <title></title>
 <%@include file="/commons/include/updAjax.jsp"%>
 <script type="text/javascript">
-$${frame}.callback = function(){if($${frame}.result.type == 1){
+$${frame}.callback = function(){if($${frame}.result.code == 1){
 	location.href = "get${model}.htm?page=${'$'}{page}";
 }};
 </script>

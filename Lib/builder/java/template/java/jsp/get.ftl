@@ -19,7 +19,7 @@ $(function(){
 	$${frame}.page.menu("del${model}.jsp", "upd${model}1.jsp", "get${model}ById.jsp", "${'$'}{pageModel.page}");
 });
 $${frame}.doAjax = true;
-$${frame}.callback = function(){if($${frame}.result.type == 1){
+$${frame}.callback = function(){if($${frame}.result.code == 1){
 	location.href = "get${model}.jsp?page=${'$'}{pageModel.page}";
 }};
 </script>

@@ -11,7 +11,7 @@ request.setAttribute("param", req.getParameterValueMap(false, false));
 <title></title>
 <%@include file="/commons/include/addAjax.jsp"%>
 <script type="text/javascript">
-$${frame}.callback = function(){if($${frame}.result.type == 1){
+$${frame}.callback = function(){if($${frame}.result.code == 1){
 	location.href = "get${model}.jsp";
 }};
 </script>
