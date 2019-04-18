@@ -49,19 +49,37 @@ $dswork.showNavigation = function(title){try{
 $dswork.callback = null;
 $dswork.validCallBack = function(){return true;};
 $dswork.result = {type:"", msg:"", data:""};
-$dswork.checkResult = function(responseText){
-	$dswork.result = {type:"", msg:"", data:""};
+$dswork.checkResult = function(res){
+	var o = $dswork.result = {code:-1, type:"", msg:"", data:null};
 	try{
-		var _msg = "", _arr = (responseText + "").split(":");
-		if(_arr.length > 1){_msg = _arr[1];}
-		else{switch(_arr[0]){
-			case "0": _msg = "操作失败！";break;
-			case "1": _msg = "操作成功！";break;
-			default: _msg = (!isNaN(_arr[0]))?"":_arr[0];
-		}}
-		$dswork.result = {type:_arr[0], msg:_msg, data:(_arr.length>2?_arr[2]:"")};
+		var n;
+		if(res){
+			if(typeof(m)=="string"){
+				if(m.length>0 && m.indexOf("{")==0){try{n = eval(m);}catch(e){}}
+				else{
+					var _d = (m + "").split(":");
+					o.type = _d[0];
+					try{o.code = parseInt(_d[0]);}catch(e){}
+					if(_d.length > 1){
+						o.msg = _d[1];
+					}
+					else{
+						switch(_d[0]){case "0":o.msg = "操作失败！";break;case "1":o.msg = "操作成功！";break;}
+					}
+					if(_d.length>2){
+						o.data = _d[2];// 这里本应该是个对象的，但为了兼容旧的项目，特殊情况还是为string
+					}
+				}
+			}
+			else if(typeof(m)=="object"){n = m;}
+			if(n && typeof(n)=="object"){
+				try{o.code = parseInt((n.code||"-1"));}catch(e){}
+				try{o.msg = n.msg||"";}catch(e){}
+				try{o.data = n.data||null;}catch(e){}
+			}
+		}
 	}
-	catch(e){$dswork.result = {type:"", msg:"", data:""};}
+	catch(e){}
 	return $dswork.result.msg;
 };
 /**
