@@ -145,7 +145,7 @@ public class MyTomcat
 		tomcat.setPort(port);
 		tomcat.setBaseDir(baseDir);
 		tomcat.setHostname(hostname);
-		tomcat.getServer().setParentClassLoader(Thread.currentThread().getContextClassLoader());
+		org.apache.juli.ClassLoaderLogManager.getLoggingMXBean().setLoggerLevel("", "ALL");
 		for(Map.Entry<String, String> x : map.entrySet())
 		{
 			System.out.println(x.getKey() + "=" + x.getValue());
@@ -154,7 +154,7 @@ public class MyTomcat
 			{
 				c.setConfigFile(contextDir.toURI().toURL());
 			}
-			c.setParentClassLoader(Thread.currentThread().getContextClassLoader());
+			// c.setParentClassLoader(Thread.currentThread().getContextClassLoader());
 			c.setJarScanner(new EmbededStandardJarScanner());
 		}
 		tomcat.start();

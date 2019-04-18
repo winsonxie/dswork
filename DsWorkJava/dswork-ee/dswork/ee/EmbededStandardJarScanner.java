@@ -1,5 +1,6 @@
 package dswork.ee;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;
@@ -41,6 +42,7 @@ import org.apache.tomcat.util.scan.UrlJar;
 public class EmbededStandardJarScanner implements JarScanner
 {
 	private static final Log log = LogFactory.getLog(EmbededStandardJarScanner.class);
+	private static String prevScan = "";
 	/**
 	 * The string resources for this package.
 	 */
@@ -138,6 +140,15 @@ public class EmbededStandardJarScanner implements JarScanner
 		{
 			log.trace(sm.getString("jarScan.webinflibStart"));
 		}
+		if(prevScan.equals(context.getContextPath()))
+		{
+			return;
+		}
+		else
+		{
+			prevScan = context.getContextPath();
+			System.out.println(prevScan + " loaded jar");
+		}
 		Set<URL> processedURLs = new HashSet<>();
 		// Scan WEB-INF/lib
 		Set<String> dirList = context.getResourcePaths(Constants.WEB_INF_LIB);
@@ -225,6 +236,11 @@ public class EmbededStandardJarScanner implements JarScanner
 				// WebappClassLoader.getParent()
 				stopLoader = classLoader.getParent().getParent();
 			}
+//			classLoader = classLoader.getParent();// 跳过运行embed级别的父类
+//			if(classLoader != null && classLoader.getParent() != null)
+//			{
+//				// classLoader = classLoader.getParent();// 跳过运行embed级别的父类
+//			}
 			// JARs are treated as application provided until the common class
 			// loader is reached.
 			boolean isWebapp = true;
@@ -289,13 +305,13 @@ public class EmbededStandardJarScanner implements JarScanner
 		String urlStr = url.toString();
 		if(conn instanceof JarURLConnection)
 		{
-			// .out.println("-----scan UrlJar: " + urlStr);
+			System.err.println("-----scan UrlJar: " + urlStr);// 为了变红而已
 			callback.scan(new UrlJar(conn.getURL()), webappPath, isWebapp);
 			// callback.scan((JarURLConnection) conn, webappPath, isWebapp);
 		}
 		else
 		{
-			// System.out.println("-----scan: " + urlStr);
+			System.err.println("-----scan: " + urlStr);// 为了变红而已
 			if(urlStr.startsWith("file:") || urlStr.startsWith("http:") || urlStr.startsWith("https:"))
 			{
 				if(urlStr.endsWith(Constants.JAR_EXT))
