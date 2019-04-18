@@ -37,22 +37,19 @@ public class SpyLog
 
 	public void sqlOccured(Spy spy, long execTime, String methodCall, String sql)
 	{
-		if(log.isErrorEnabled())
+		if(log.isWarnEnabled())
 		{
-			if(log.isWarnEnabled())
+			if(execTime >= SpyLog.SqlTimingWarn)
 			{
-				if(execTime >= SpyLog.SqlTimingWarn)
-				{
-					log.warn(buildSqlDump(spy, execTime, methodCall, sql, log.isDebugEnabled() || (execTime > SpyLog.SqlTimingWarnDebug)));
-				}
-				else if(log.isDebugEnabled())
-				{
-					log.debug(buildSqlDump(spy, execTime, methodCall, sql, true));
-				}
-				else if(log.isInfoEnabled())
-				{
-					log.info(buildSqlDump(spy, execTime, methodCall, sql, false));
-				}
+				log.warn(buildSqlDump(spy, execTime, methodCall, sql, log.isDebugEnabled() || (execTime > SpyLog.SqlTimingWarnDebug)));
+			}
+			else if(log.isDebugEnabled())
+			{
+				log.debug(buildSqlDump(spy, execTime, methodCall, sql, true));
+			}
+			else if(log.isInfoEnabled())
+			{
+				log.info(buildSqlDump(spy, execTime, methodCall, sql, false));
 			}
 		}
 	}
