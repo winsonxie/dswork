@@ -81,7 +81,7 @@ $(function(){
 		<td style="width:2%;"><input id="chkall" type="checkbox" /></td>
 		<td style="width:5%">操作</td>
 		<td style="width:12%">类型</td>
-		<td style="width:20%;">姓名(帐号)</td>
+		<td style="width:20%;">帐号(姓名)</td>
 		<td>单位</td>
 		<td style="width:12%;">部门</td>
 		<td style="width:7%;">状态</td>
@@ -92,7 +92,7 @@ $(function(){
 		<td><input name="keyIndex" type="checkbox" value="${d.id}" ${d.id<0?'style="display:none;" disabled="disabled"':''}/></td>
 		<td class="menuTool" keyIndex="${d.id}" v="${d.id<0?'true':''}">&nbsp;</td>
 		<td>${fn:escapeXml(d.typename)}</td>
-		<td style="text-align:left;">&nbsp;${fn:escapeXml(d.name)}(${fn:escapeXml(d.account)})</td>
+		<td style="text-align:left;">&nbsp;${fn:escapeXml(d.account)}(${fn:escapeXml(d.name)})</td>
 		<td>${fn:escapeXml(d.orgpname)}</td>
 		<td>${fn:escapeXml(d.orgname)}</td>
 		<td id="td_a_status${status.index}" style="color:${1==d.status?"":"red"}">${1==d.status?"启用":"禁用"}</td>
