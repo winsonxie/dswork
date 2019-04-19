@@ -241,10 +241,10 @@ $dswork.upload.prototype = {
 	}
 	if(p.url == ""){
 		if(this.io){
-			p.url = $dswork.ioURL() + "?name=" + this.name + "&ext=" + p.ext;
+			p.url = $dswork.ioURL() + ($dswork.ioURL().indexOf("?") > 0 ? "&" : "?") + "name=" + this.name + "&ext=" + p.ext;
 		}
 		else{
-			p.url = $dswork.uploadURL() + "?sessionkey=" + p.sessionKey + "&filekey=" + p.fileKey + "&ext=" + p.ext + "&uploadone=" + (p.uploadone=="true"?"true":"false");
+			p.url = $dswork.uploadURL() + ($dswork.uploadURL().indexOf("?") > 0 ? "&" : "?") + "sessionkey=" + p.sessionKey + "&filekey=" + p.fileKey + "&ext=" + p.ext + "&uploadone=" + (p.uploadone=="true"?"true":"false");
 		}
 	}
 	p.success = (typeof(p.success) == "function" ? p.success : function(p){});
