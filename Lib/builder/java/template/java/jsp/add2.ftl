@@ -6,7 +6,7 @@ try
 	${model} po = new ${model}();
 	MyRequest req = new MyRequest(request);
 	req.getFillObject(po);
-	MyFactory.get${model}Service().update(po);
+	MyFactory.get${model}Service().save(po);
 	out.print(1);
 }
 catch (Exception e)
