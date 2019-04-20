@@ -1,11 +1,9 @@
 package dswork.core.util;
 
-import java.util.*;
-
 /**
  * ID生成类
  */
-public class UniqueId
+public class IdUtil
 {
 	private static long getDatacenterId(long maxDatacenterId)
 	{
@@ -77,19 +75,18 @@ public class UniqueId
 	}
 
 	/**
-	 * 根据时间戳和机器信息生产一个唯一ID，具有防止重复机制<br>
+	 * 根据时间戳和机器信息生产一个唯一的18位ID，具有防止重复机制，但2090-11-18 22:07:45.624后的ID将超出18位<br>
 	 * 结构：正数0 - 时间戳 - 10位机器码 - 8位序列号<br>
 	 * 长型形共64位，最高位是符号位，0正数，1负数：<br>
 	 * 0 - 000 - 00 0000000000 0000000000 0000000000 0000000000 - 1111111111 - 11111111<br>
 	 * 18位长整形最大值为（时间戳有42位）：<br>
 	 * 0 - 000 - 11 0111100000 1011011010 1100111010 0111011000 - 1111111111 - 11111111<br>
 	 * (Long.parseLong("110111100000101101101011001110100111011000", 2)) = 3814697265624L<br>
-	 * 即2090-11-18 22:07:45.624后的ID将超出18位<br>
 	 * 10位的数据机器位，可以部署在1024个节点<br>
 	 * 8位序列号可支持每个节点每毫秒(同一机器，同一时间截)产生256个ID序号
 	 * @return long 最大18位的id
 	 */
-	public synchronized static long genUniqueId()
+	public synchronized static long genId()
 	{
 		long times = timeGen();
 		// if(timestamp < lastTimestamp){}// 系统时钟回退过
@@ -113,38 +110,28 @@ public class UniqueId
 	}
 
 	/**
-	 * 根据genUniqueId()获取到的id转化为java时间截
-	 * @param uniqueId genUniqueId()获取到的id
+	 * 根据genId()获取到的id转化为java时间截
+	 * @param id genId()获取到的id
 	 * @return long java时间截
 	 */
-	public static long formatUniqueId(long uniqueId)
+	public static long formatId(long id)
 	{
-		return uniqueId >> 18;
+		return id >> 18;
 	}
-
+	
 	/**
 	 * 根据时间戳产生一个唯一ID，具有防止重复机制
 	 * @return long
 	 */
-	public synchronized static long genId()
+	public synchronized static long genTimeId()
 	{
 		long id = 0;
 		do
 		{
-			id = Calendar.getInstance().getTimeInMillis();
+			id = java.util.Calendar.getInstance().getTimeInMillis();
 		}
 		while(id == lastTimeMillis);
 		lastTimeMillis = id;
 		return id;
-	}
-
-	/**
-	 * 返回GUID，格式00000000-0000-0000-0000-000000000000
-	 * @return String
-	 */
-	public static String genGuid()
-	{
-		UUID uuid = UUID.randomUUID();
-		return uuid.toString();
 	}
 }

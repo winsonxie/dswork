@@ -6,7 +6,7 @@ public class UniqueIdTest
 	{
 		for(int i = 0; i < 10; i++)
 		{
-			long id = UniqueId.genUniqueId();
+			long id = IdUtil.genId();
 			System.out.println(id);
 			System.out.println(id >> 14);
 			System.out.println(TimeUtil.formatDate(new java.util.Date(id >> 14), "yyyy-MM-dd HH:mm:ss"));
