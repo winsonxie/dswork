@@ -12,7 +12,7 @@ import dswork.base.dao.DsBaseOrgDao;
 import dswork.base.dao.DsBaseOrgRoleDao;
 import dswork.base.model.DsBaseOrg;
 import dswork.base.model.DsBaseOrgRole;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 
 @Service
 public class DsBaseOrgRoleService
@@ -36,7 +36,7 @@ public class DsBaseOrgRoleService
 		{
 			if(roleid > 0)
 			{
-				o.setId(UniqueId.genUniqueId());
+				o.setId(IdUtil.genId());
 				o.setRoleid(roleid);
 				orgroleDao.save(o);
 			}

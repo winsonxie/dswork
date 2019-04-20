@@ -19,7 +19,7 @@ import dswork.base.model.DsBaseRes;
 import dswork.base.model.DsBaseSystem;
 import dswork.base.model.view.DsBaseFuncView;
 import dswork.core.page.PageRequest;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 
 @Service
 @SuppressWarnings("all")
@@ -43,7 +43,7 @@ public class DsBaseFuncService
 	 */
 	public void save(DsBaseFunc po)
 	{
-		po.setId(UniqueId.genUniqueId());
+		po.setId(IdUtil.genId());
 		funcDao.save(po);
 	}
 

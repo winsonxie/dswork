@@ -18,7 +18,7 @@ import dswork.base.model.DsBaseRole;
 import dswork.base.model.DsBaseRoleFunc;
 import dswork.base.model.DsBaseSystem;
 import dswork.core.page.PageRequest;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 
 @Service
 @SuppressWarnings("all")
@@ -43,13 +43,13 @@ public class DsBaseRoleService
 	 */
 	public void save(DsBaseRole po, List<DsBaseRoleFunc> list)
 	{
-		po.setId(UniqueId.genUniqueId());
+		po.setId(IdUtil.genId());
 		roleDao.save(po);
 		if(null != list)
 		{
 			for(DsBaseRoleFunc tmp : list)
 			{
-				tmp.setId(UniqueId.genUniqueId());
+				tmp.setId(IdUtil.genId());
 				tmp.setSystemid(po.getSystemid());
 				tmp.setRoleid(po.getId());
 				roleDao.saveRoleFunc(tmp);
@@ -83,7 +83,7 @@ public class DsBaseRoleService
 		roleDao.deleteRoleFuncByRoleid(po.getId());
 		for(DsBaseRoleFunc tmp : list)
 		{
-			tmp.setId(UniqueId.genUniqueId());
+			tmp.setId(IdUtil.genId());
 			tmp.setRoleid(po.getId());
 			tmp.setSystemid(po.getSystemid());
 			roleDao.saveRoleFunc(tmp);

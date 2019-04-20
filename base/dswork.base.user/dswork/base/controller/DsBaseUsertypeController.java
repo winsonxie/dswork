@@ -17,7 +17,7 @@ import dswork.mvc.BaseController;
 import dswork.core.page.Page;
 import dswork.core.page.PageNav;
 import dswork.core.util.CollectionUtil;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 import dswork.base.model.DsBaseUsertype;
 import dswork.base.model.DsBaseUsertypeRes;
 import dswork.base.service.DsBaseUsertypeService;
@@ -79,7 +79,7 @@ public class DsBaseUsertypeController extends BaseController
 					return;
 				}
 			}
-			po.setId(UniqueId.genUniqueId());
+			po.setId(IdUtil.genId());
 			po.setSeq(po.getId());
 			po.setResourcesList(list);
 			service.save(po);

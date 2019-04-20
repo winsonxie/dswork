@@ -17,7 +17,6 @@ import dswork.common.model.IFlowTask;
 import dswork.common.model.IFlowWaiting;
 import dswork.core.db.MyBatisDao;
 import dswork.core.util.TimeUtil;
-import dswork.core.util.UniqueId;
 
 @Repository
 @SuppressWarnings("all")

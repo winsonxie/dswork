@@ -17,7 +17,7 @@ import dswork.base.model.DsBaseOrg;
 import dswork.base.model.DsBaseUser;
 import dswork.base.model.DsBaseUserOrg;
 import dswork.core.page.PageRequest;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 
 @Service
 @SuppressWarnings("all")
@@ -44,7 +44,7 @@ public class DsBaseUserOrgService
 		{
 			if(id != 0)
 			{
-				o.setId(UniqueId.genUniqueId());
+				o.setId(IdUtil.genId());
 				o.setUserid(id);
 				userorgDao.save(o);
 			}
@@ -65,7 +65,7 @@ public class DsBaseUserOrgService
 		{
 			if(id > 0)
 			{
-				o.setId(UniqueId.genUniqueId());
+				o.setId(IdUtil.genId());
 				o.setOrgid(id);
 				userorgDao.save(o);
 			}

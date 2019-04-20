@@ -15,7 +15,7 @@ import dswork.base.service.DsBaseDictService;
 import dswork.core.page.Page;
 import dswork.core.page.PageNav;
 import dswork.core.util.CollectionUtil;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 import dswork.mvc.BaseController;
 
 @Controller
@@ -37,7 +37,7 @@ public class DsBaseDictController extends BaseController
 	{
 		try
 		{
-			po.setId(UniqueId.genUniqueId());
+			po.setId(IdUtil.genId());
 			if(po.getName().trim().length() <= 0)
 			{
 				print("0:保存失败，引用名不能为空");

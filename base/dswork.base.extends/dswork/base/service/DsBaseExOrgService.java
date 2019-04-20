@@ -15,7 +15,7 @@ import dswork.base.dao.DsBaseUserDao;
 import dswork.base.model.DsBaseOrg;
 import dswork.base.model.DsBaseUser;
 import dswork.core.page.PageRequest;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 
 @Service
 public class DsBaseExOrgService
@@ -32,7 +32,7 @@ public class DsBaseExOrgService
 
 	public void save(DsBaseOrg entity)
 	{
-		entity.setId(UniqueId.genUniqueId());
+		entity.setId(IdUtil.genId());
 		dao.save(entity);
 	}
 

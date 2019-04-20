@@ -13,7 +13,7 @@ import dswork.base.service.DsBaseSystemService;
 import dswork.core.page.Page;
 import dswork.core.page.PageNav;
 import dswork.core.util.CollectionUtil;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 import dswork.mvc.BaseController;
 
 //应用系统
@@ -43,7 +43,7 @@ public class DsBaseSystemController extends BaseController
 			{
 				if (!service.isExistsByAlias(po.getAlias()))
 				{
-					po.setId(UniqueId.genUniqueId());
+					po.setId(IdUtil.genId());
 					po.setStatus(0);// 默认禁用系统
 					service.save(po);
 					print(1);

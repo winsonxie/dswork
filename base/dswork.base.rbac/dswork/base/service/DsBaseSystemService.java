@@ -41,7 +41,7 @@ public class DsBaseSystemService extends BaseService<DsBaseSystem, java.lang.Lon
 	{
 		systemDao.save(po);
 		DsBaseRole role = new DsBaseRole();
-		role.setId(dswork.core.util.UniqueId.genUniqueId());
+		role.setId(dswork.core.util.IdUtil.genId());
 		role.setSystemid(po.getId());
 		role.setName("系统管理员");
 		roleDao.save(role);

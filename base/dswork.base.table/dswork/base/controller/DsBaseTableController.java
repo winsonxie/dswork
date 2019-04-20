@@ -20,7 +20,7 @@ import dswork.base.service.DsBaseTableService;
 import dswork.core.page.Page;
 import dswork.core.page.PageNav;
 import dswork.core.util.CollectionUtil;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 import dswork.mvc.BaseController;
 
 @Controller
@@ -52,7 +52,7 @@ public class DsBaseTableController extends BaseController
 			{
 				throw new Exception("该类型下的\""+po.getName()+"\"表单已经存在！");
 			}
-			po.setId(UniqueId.genId());
+			po.setId(IdUtil.genId());
 			po.setDatatable(resolve());//解析成json字符串
 			service.save(po);
 			print(1);
@@ -176,7 +176,7 @@ public class DsBaseTableController extends BaseController
 			{
 				throw new Exception("该类型\""+po.getName()+"\"已经存在！");
 			}
-			po.setId(UniqueId.genId());
+			po.setId(IdUtil.genId());
 			service.saveCategory(po);
 			print(1);
 		}

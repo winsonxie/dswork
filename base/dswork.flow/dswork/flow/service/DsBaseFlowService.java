@@ -18,7 +18,7 @@ import dswork.flow.model.DsFlow;
 import dswork.flow.model.DsFlowCategory;
 import dswork.flow.model.DsFlowTask;
 import dswork.core.page.PageRequest;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 
 @Service
 @SuppressWarnings("all")
@@ -33,14 +33,14 @@ public class DsBaseFlowService
 
 	public int saveFlow(DsFlow flow, List<DsFlowTask> list)
 	{
-		flow.setId(UniqueId.genUniqueId());
+		flow.setId(IdUtil.genId());
 		flow.setDeployid("");
 		flow.setStatus(0);
 		flow.setVnum(0);
 		flowDao.save(flow);
 		for(DsFlowTask m : list)
 		{
-			m.setId(UniqueId.genUniqueId());
+			m.setId(IdUtil.genId());
 			m.setFlowid(flow.getId());
 			m.setDeployid("");
 			taskDao.save(m);
@@ -65,7 +65,7 @@ public class DsBaseFlowService
 		taskDao.deleteByFlowid(flow.getId());
 		for(DsFlowTask task : list)
 		{
-			task.setId(UniqueId.genUniqueId());
+			task.setId(IdUtil.genId());
 			task.setFlowid(flow.getId());
 			taskDao.save(task);
 		}
@@ -94,7 +94,7 @@ public class DsBaseFlowService
 		DsFlow flow = (DsFlow) flowDao.get(flowid);
 		if(flow.getVnum() == 0)
 		{
-			flow.setId(UniqueId.genUniqueId());
+			flow.setId(IdUtil.genId());
 			String deployid = flow.getAlias() + "-" + flow.getId();
 			// 把旧的数据处理为发布版本
 			flow.setDeployid(deployid);
@@ -107,7 +107,7 @@ public class DsBaseFlowService
 			{
 				for(DsFlowTask m : list)
 				{
-					m.setId(UniqueId.genUniqueId());
+					m.setId(IdUtil.genId());
 					m.setFlowid(flow.getId());
 					m.setDeployid(deployid);
 					taskDao.save(m);
@@ -137,7 +137,7 @@ public class DsBaseFlowService
 	 */
 	public void save(DsFlowCategory entity)
 	{
-		entity.setId(UniqueId.genUniqueId());
+		entity.setId(IdUtil.genId());
 		categoryDao.save(entity);
 	}
 

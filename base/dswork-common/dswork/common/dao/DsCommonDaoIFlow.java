@@ -26,7 +26,7 @@ import dswork.common.model.IFlowTask;
 import dswork.common.model.IFlowWaiting;
 import dswork.core.db.MyBatisDao;
 import dswork.core.util.TimeUtil;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 
 @Repository
 @SuppressWarnings("all")
@@ -209,7 +209,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		{
 			IFlowTask task = this.getFlowTask(flowid, "start");
 			IFlowPi pi = new IFlowPi();
-			pi.setId(UniqueId.genUniqueId());
+			pi.setId(IdUtil.genId());
 
 			IFlowParam beforeParam = new IFlowParam();
 			IFlowParam afterParam = new IFlowParam();
@@ -238,7 +238,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			executeInsert("insertFlowPi", pi);
 			Long piid = pi.getId();
 			IFlowWaiting m = new IFlowWaiting();
-			m.setId(UniqueId.genUniqueId());
+			m.setId(IdUtil.genId());
 			m.setPiid(piid);
 			m.setYwlsh(ywlsh);
 			m.setSblsh(sblsh);
@@ -358,7 +358,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			
 			String time = TimeUtil.getCurrentTime();
 			IFlowPiData pd = new IFlowPiData();
-			pd.setId(UniqueId.genUniqueId());
+			pd.setId(IdUtil.genId());
 			pd.setPiid(m.getPiid());
 			pd.setTprev(m.getTprev());
 			pd.setTalias(m.getTalias());
@@ -439,7 +439,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				
 				// 记录最后一步流向
 				IFlowPiData pdend = new IFlowPiData();
-				pdend.setId(UniqueId.genUniqueId());
+				pdend.setId(IdUtil.genId());
 				pdend.setPiid(m.getPiid());
 				pdend.setTprev(m.getTalias());
 				pdend.setTalias("end");
@@ -508,7 +508,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			else
 			{
 				IFlowWaiting newm = new IFlowWaiting();
-				newm.setId(UniqueId.genUniqueId());
+				newm.setId(IdUtil.genId());
 				newm.setPiid(m.getPiid());
 				newm.setYwlsh(m.getYwlsh());
 				newm.setSblsh(m.getSblsh());
@@ -687,7 +687,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				map.put("tuser", tuser);
 				String time = TimeUtil.getCurrentTime();
 				IFlowPiData pd = new IFlowPiData();
-				pd.setId(UniqueId.genUniqueId());
+				pd.setId(IdUtil.genId());
 				pd.setPiid(m.getPiid());
 				pd.setTprev(m.getTprev());
 				pd.setTalias(m.getTalias());

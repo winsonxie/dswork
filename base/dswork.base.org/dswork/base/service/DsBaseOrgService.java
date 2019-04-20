@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import dswork.base.dao.DsBaseOrgDao;
 import dswork.base.model.DsBaseOrg;
 import dswork.core.page.PageRequest;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 
 @Service
 @SuppressWarnings("all")
@@ -28,7 +28,7 @@ public class DsBaseOrgService
 	 */
 	public void save(DsBaseOrg entity)
 	{
-		entity.setId(UniqueId.genUniqueId());
+		entity.setId(IdUtil.genId());
 		orgDao.save(entity);
 	}
 
