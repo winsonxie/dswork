@@ -14,7 +14,7 @@ import dswork.core.db.EntityDao;
 import dswork.core.db.BaseService;
 import dswork.core.page.Page;
 import dswork.core.page.PageRequest;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 import testwork.model.Demo;
 import testwork.model.Mark;
 import testwork.dao.DemoDao;
@@ -51,7 +51,7 @@ public class ManageMarkService
 		System.out.println("进入save方法，该方法在接口中定义");
 		if(list.size() == 2)// 用来测试数据回滚的
 		{
-			long id = UniqueId.genId();
+			long id = IdUtil.genId();
 			for(Mark m : list)
 			{
 				m.setId(id);
@@ -61,7 +61,7 @@ public class ManageMarkService
 		{
 			for(Mark m : list)
 			{
-				m.setId(UniqueId.genId());
+				m.setId(IdUtil.genId());
 			}
 		}
 		for(Mark m : list)
@@ -76,7 +76,7 @@ public class ManageMarkService
 		System.out.println("进入test方法，该方法不在接口中定义");
 		if(list.size() == 3)// 用来测试数据回滚的
 		{
-			long id = UniqueId.genId();
+			long id = IdUtil.genId();
 			for(Mark m : list)
 			{
 				m.setId(id);

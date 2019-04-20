@@ -38,13 +38,13 @@ public class ManageMimeController extends BaseController
 			req().getFillObject(obj);
 			try
 			{
-				obj.getClass().getMethod("setId", String.class).invoke(obj, dswork.core.util.UniqueId.genGuid());
+				obj.getClass().getMethod("setId", String.class).invoke(obj, dswork.core.util.IdUtil.genId());
 			}
 			catch(Exception ex1)
 			{
 				try
 				{
-					obj.getClass().getMethod("setId", Long.class).invoke(obj, dswork.core.util.UniqueId.genUniqueId());
+					obj.getClass().getMethod("setId", Long.class).invoke(obj, dswork.core.util.IdUtil.genId());
 				}
 				catch(Exception ex2){}
 			}
