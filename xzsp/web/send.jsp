@@ -3,7 +3,7 @@ try
 {
 	dswork.web.MyRequest req = new dswork.web.MyRequest(request);
 	common.gov.DsXzsp m = new common.gov.DsXzsp();
-	m.setId(dswork.core.util.UniqueId.genId());
+	m.setId(dswork.core.util.IdUtil.genId());
 	m.setSblsh(req.getString("sblsh").trim());
 	m.setSptype(req.getInt("sptype"));
 	m.setSpobject(req.getString("spobject").trim());
