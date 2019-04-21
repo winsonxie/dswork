@@ -12,7 +12,7 @@ import dswork.core.page.PageRequest;
 import dswork.core.util.CollectionUtil;
 import dswork.core.util.EncryptUtil;
 import dswork.core.util.TimeUtil;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 import dswork.ep.model.DsEpUser;
 import dswork.ep.service.DsEpUserService;
 import dswork.mvc.BaseController;
@@ -45,7 +45,7 @@ public class DsEpUserController extends BaseController
 			else
 			{
 				Auth user = AuthUtil.getLoginUser(request());
-				po.setId(UniqueId.genId());
+				po.setId(IdUtil.genId());
 				po.setQybm(user.getQybm());
 				po.setUsertype(0);// 非企业管理员
 				po.setStatus(1);// 正常状态

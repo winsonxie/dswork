@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import dswork.core.page.Page;
 import dswork.core.page.PageNav;
 import dswork.core.util.TimeUtil;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 import dswork.ep.model.DsEpEnterprise;
 import dswork.ep.model.DsEpUser;
 import dswork.ep.service.DsEpEnterpriseService;
@@ -46,7 +46,7 @@ public class DsEpEnterpriseController extends BaseController
 			}
 			else
 			{
-				ent.setId(UniqueId.genId());
+				ent.setId(IdUtil.genId());
 				user.setId(ent.getId());
 				
 				user.setName(req().getString("username"));

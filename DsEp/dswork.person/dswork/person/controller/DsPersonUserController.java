@@ -10,7 +10,7 @@ import dswork.core.page.PageRequest;
 import dswork.core.util.CollectionUtil;
 import dswork.core.util.EncryptUtil;
 import dswork.core.util.TimeUtil;
-import dswork.core.util.UniqueId;
+import dswork.core.util.IdUtil;
 import dswork.person.model.DsPersonUser;
 import dswork.person.service.DsPersonUserService;
 import dswork.mvc.BaseController;
@@ -41,7 +41,7 @@ public class DsPersonUserController extends BaseController
 			}
 			else
 			{
-				po.setId(UniqueId.genId());
+				po.setId(IdUtil.genId());
 				po.setStatus(0);
 				po.setCreatetime(TimeUtil.getCurrentTime());
 				service.save(po);
