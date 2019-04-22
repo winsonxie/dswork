@@ -76,9 +76,9 @@ public class IOrgTree
 		try
 		{
 			StringBuilder sb = new StringBuilder(100);
-			sb.append("{\"id\":").append(id)
-					.append(",\"pid\":").append(pid)
-					.append(",\"status\":").append(status)
+			sb.append("{\"id\":\"").append(id)
+					.append("\",\"pid\":\"").append(pid)
+					.append("\",\"status\":").append(status)
 					.append(",\"isParent\":").append(isParent ? "true" : "false")
 					.append(",\"name\":\"").append(name.trim().replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\\\\\"")).append("\"")
 				;
@@ -91,7 +91,7 @@ public class IOrgTree
 		}
 		catch(Exception e)
 		{
-			return "{\"id\":0,\"pid\":-1,\"status\":-1,\"isParent\":false,\"name\":\"\",\"list\":[]}";
+			return "{\"id\":\"0\",\"pid\":\"-1\",\"status\":-1,\"isParent\":false,\"name\":\"\",\"list\":[]}";
 		}
 	}
 }
