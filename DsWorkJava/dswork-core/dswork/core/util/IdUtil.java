@@ -159,7 +159,7 @@ public class IdUtil
 	 */
 	public static long formatUniqueId(long id)
 	{
-		return id >> 10;
+		return id >> 18;
 	}
 
 	private static long lastTimeId = -1L;// 上次生成ID的时间截
