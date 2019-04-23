@@ -101,6 +101,7 @@ public class AuthGlobal
 
 	/**
 	 * 一次性用于强制刷新token，可能是token被动过期，或临时需要使用UnitAccessToken
+	 * @return 刷新并返回应用凭证
 	 */
 	public static String refreshUnitAccessToken()
 	{
@@ -219,9 +220,10 @@ public class AuthGlobal
 
 	/**
 	 * 一般只初始化一次，且必须初始化
-	 * @param appid
-	 * @param appsecret
-	 * @param apiURL
+	 * @param appid 应用ID
+	 * @param appsecret 应用密钥
+	 * @param apiURL 回调地址
+	 * @param initAccessToken 是否初始应用凭证
 	 */
 	public static void initConfig(String appid, String appsecret, String apiURL, boolean initAccessToken)
 	{
@@ -238,7 +240,7 @@ public class AuthGlobal
 
 	/**
 	 * 默认添加了表单参数appid
-	 * @param path
+	 * @param path 调用的api相对路径
 	 * @return HttpUtil
 	 */
 	public static HttpUtil getHttp(String path)

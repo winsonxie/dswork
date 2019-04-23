@@ -259,8 +259,8 @@ public class Lexeme implements Comparable<Lexeme>
 
 	/**
 	 * 合并两个相邻的词元
-	 * @param l
-	 * @param lexemeType
+	 * @param l Lexeme
+	 * @param lexemeType 类型
 	 * @return boolean 词元是否成功合并
 	 */
 	public boolean append(Lexeme l, int lexemeType)
@@ -278,7 +278,7 @@ public class Lexeme implements Comparable<Lexeme>
 	}
 
 	/**
-	 * 
+	 * 格式化字符串
 	 */
 	public String toString()
 	{

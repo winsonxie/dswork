@@ -206,11 +206,6 @@ public class RedisConfig
 		return this;
 	}
 
-	/**
-	 * 设置connectTimeout和soTimeout
-	 * @param timeout
-	 * @return
-	 */
 	public RedisConfig setTimeout(int timeout)
 	{
 		this.connectTimeout = timeout;

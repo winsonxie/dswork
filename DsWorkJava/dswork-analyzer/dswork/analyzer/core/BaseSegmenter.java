@@ -24,8 +24,8 @@ public final class BaseSegmenter
 
 	/**
 	 * 分词器构造函数
-	 * @param input
-	 * @param cfg 使用自定义的Configuration构造分词器
+	 * @param input Reader
+	 * @param useSmart true分词器使用智能切分策略， false则使用细粒度切分
 	 */
 	public BaseSegmenter(Reader input, boolean useSmart)
 	{
@@ -57,7 +57,7 @@ public final class BaseSegmenter
 	/**
 	 * 分词，获取下一个词元
 	 * @return Lexeme 词元对象
-	 * @throws IOException
+	 * @throws IOException 流读取异常
 	 */
 	public synchronized Lexeme next() throws IOException
 	{
@@ -113,7 +113,7 @@ public final class BaseSegmenter
 
 	/**
 	 * 重置分词器到初始状态
-	 * @param input
+	 * @param input Reader
 	 */
 	public synchronized void reset(Reader input)
 	{

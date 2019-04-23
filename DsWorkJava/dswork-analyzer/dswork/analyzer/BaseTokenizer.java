@@ -27,7 +27,7 @@ public final class BaseTokenizer extends org.apache.lucene.analysis.Tokenizer
 
 	/**
 	 * Tokenizer适配器类构造函数
-	 * @param useSmart
+	 * @param useSmart true分词器使用智能切分策略， false则使用细粒度切分
 	 */
 	public BaseTokenizer(boolean useSmart)
 	{

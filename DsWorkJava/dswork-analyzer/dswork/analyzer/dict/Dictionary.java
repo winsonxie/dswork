@@ -98,7 +98,7 @@ public class Dictionary
 
 	/**
 	 * 批量加载新词条
-	 * @param words Collection<String>词条列表
+	 * @param words 需要加载的词条
 	 */
 	public void addWords(Collection<String> words)
 	{
@@ -117,7 +117,7 @@ public class Dictionary
 
 	/**
 	 * 批量移除（屏蔽）词条
-	 * @param words
+	 * @param words 需要移除的词条
 	 */
 	public void disableWords(Collection<String> words)
 	{
@@ -136,7 +136,7 @@ public class Dictionary
 
 	/**
 	 * 检索匹配主词典
-	 * @param charArray
+	 * @param charArray 源数据
 	 * @return Hit 匹配结果描述
 	 */
 	public Hit matchInMainDict(char[] charArray)
@@ -146,9 +146,9 @@ public class Dictionary
 
 	/**
 	 * 检索匹配主词典
-	 * @param charArray
-	 * @param begin
-	 * @param length
+	 * @param charArray 匹配目标
+	 * @param begin 开始
+	 * @param length 长度
 	 * @return Hit 匹配结果描述
 	 */
 	public Hit matchInMainDict(char[] charArray, int begin, int length)
@@ -158,9 +158,9 @@ public class Dictionary
 
 	/**
 	 * 检索匹配量词词典
-	 * @param charArray
-	 * @param begin
-	 * @param length
+	 * @param charArray 源数据
+	 * @param begin 设置hit的起始文本位置
+	 * @param length 设置hit的长度
 	 * @return Hit 匹配结果描述
 	 */
 	public Hit matchInQuantifierDict(char[] charArray, int begin, int length)
@@ -170,22 +170,22 @@ public class Dictionary
 
 	/**
 	 * 从已匹配的Hit中直接取出DictSegment，继续向下匹配
-	 * @param charArray
-	 * @param currentIndex
-	 * @param matchedHit
+	 * @param charArray 源数据
+	 * @param begin 设置hit的起始文本位置
+	 * @param searchHit 当前Hit状态
 	 * @return Hit
 	 */
-	public Hit matchWithHit(char[] charArray, int currentIndex, Hit matchedHit)
+	public Hit matchWithHit(char[] charArray, int begin, Hit searchHit)
 	{
-		DictSegment ds = matchedHit.getMatchedDictSegment();
-		return ds.match(charArray, currentIndex, 1, matchedHit);
+		DictSegment ds = searchHit.getMatchedDictSegment();
+		return ds.match(charArray, begin, 1, searchHit);
 	}
 
 	/**
 	 * 判断是否是停止词
-	 * @param charArray
-	 * @param begin
-	 * @param length
+	 * @param charArray 源数据
+	 * @param begin 设置hit的起始文本位置
+	 * @param length 设置hit的长度
 	 * @return boolean
 	 */
 	public boolean isStopWord(char[] charArray, int begin, int length)

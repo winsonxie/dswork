@@ -31,13 +31,10 @@ import org.apache.tomcat.util.scan.UrlJar;
  * <pre>
  * When boot by spring boot loader, WebappClassLoader.getParent() is LaunchedURLClassLoader,
  * Just need to scan WebappClassLoader and LaunchedURLClassLoader.
- *
  * When boot in IDE, WebappClassLoader.getParent() is AppClassLoader,
  * Just need to scan WebappClassLoader and AppClassLoader.
  * </pre>
- *
- * @see {@link JarScanner}
- * @author hengyunabc, zollty
+ * @author hengyunabc, zollty, skey
  */
 public class EmbededStandardJarScanner implements JarScanner
 {
@@ -61,9 +58,6 @@ public class EmbededStandardJarScanner implements JarScanner
 	{
 		this.scanClassPath = scanClassPath;
 	}
-	/**
-	 * Controls the testing all files to see of they are JAR files extension.
-	 */
 	private boolean scanAllFiles = false;
 
 	public boolean isScanAllFiles()
@@ -75,10 +69,6 @@ public class EmbededStandardJarScanner implements JarScanner
 	{
 		this.scanAllFiles = scanAllFiles;
 	}
-	/**
-	 * Controls the testing all directories to see of they are exploded JAR
-	 * files extension.
-	 */
 	private boolean scanAllDirectories = false;
 
 	public boolean isScanAllDirectories()
@@ -90,10 +80,6 @@ public class EmbededStandardJarScanner implements JarScanner
 	{
 		this.scanAllDirectories = scanAllDirectories;
 	}
-	/**
-	 * Controls the testing of the bootstrap classpath which consists of the
-	 * runtime classes provided by the JVM and any installed system extensions.
-	 */
 	private boolean scanBootstrapClassPath = false;
 
 	public boolean isScanBootstrapClassPath()
@@ -105,9 +91,6 @@ public class EmbededStandardJarScanner implements JarScanner
 	{
 		this.scanBootstrapClassPath = scanBootstrapClassPath;
 	}
-	/**
-	 * Controls the filtering of the results from the scan for JARs
-	 */
 	private JarScanFilter jarScanFilter = new StandardJarScanFilter();
 
 	@Override
@@ -121,7 +104,6 @@ public class EmbededStandardJarScanner implements JarScanner
 	{
 		this.jarScanFilter = jarScanFilter;
 	}
-
 	/**
 	 * Scan the provided ServletContext and class loader for JAR files. Each JAR
 	 * file found will be passed to the callback handler to be processed.
@@ -292,8 +274,7 @@ public class EmbededStandardJarScanner implements JarScanner
 	}
 
 	/*
-	 * Scan a URL for JARs with the optional extensions to look at all files and
-	 * all directories.
+	 * Scan a URL for JARs with the optional extensions to look at all files and all directories.
 	 */
 	private void process(JarScanType scanType, JarScannerCallback callback, URL url, String webappPath, boolean isWebapp) throws IOException
 	{

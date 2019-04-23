@@ -14,6 +14,12 @@ public class MyRedis
 		this.redis= redis;
 	}
 
+	/**
+	 * 设置值
+	 * @param key 键
+	 * @param value 值
+	 * @return 值
+	 */
 	public String set(String key, String value)
 	{
 		return redis.set(key, value);
@@ -21,8 +27,8 @@ public class MyRedis
 
 	/**
 	 * 获取值
-	 * @param key
-	 * @return 读操作
+	 * @param key 键
+	 * @return 值
 	 */
 	public String get(String key)
 	{
@@ -31,9 +37,9 @@ public class MyRedis
 
 	/**
 	 * 设置key的过期时间
-	 * @param key
-	 * @param value -5：Jedis实例获取失败，1：成功，0：失败
-	 * @return 写操作
+	 * @param key 键
+	 * @param seconds 过期时间，单位：秒
+	 * @return long
 	 */
 	public long expire(String key, int seconds)
 	{
@@ -42,8 +48,8 @@ public class MyRedis
 
 	/**
 	 * 判断key是否存在
-	 * @param key
-	 * @return 读操作
+	 * @param key 键
+	 * @return boolean
 	 */
 	public boolean exists(String key)
 	{
@@ -52,8 +58,8 @@ public class MyRedis
 
 	/**
 	 * 删除key
-	 * @param keys
-	 * @return -5：Jedis实例获取失败，1：成功，0：失败
+	 * @param keys 多个键
+	 * @return long
 	 */
 	public long del(String... keys)
 	{
@@ -62,9 +68,9 @@ public class MyRedis
 
 	/**
 	 * set if not exists，若key已存在，则setnx不做任何操作
-	 * @param key
-	 * @param value key已存在，1：key赋值成功
-	 * @return 写操作
+	 * @param key 键
+	 * @param value 值
+	 * @return long
 	 */
 	public long setnx(String key, String value)
 	{
@@ -73,10 +79,10 @@ public class MyRedis
 
 	/**
 	 * set if not exists，若key已存在，则setnx不做任何操作
-	 * @param key
-	 * @param value key已存在，1：key赋值成功
+	 * @param key 键
+	 * @param value 值
 	 * @param expire 过期时间，单位：秒
-	 * @return
+	 * @return long
 	 */
 	public long setnx(String key, String value, int expire)
 	{
@@ -88,10 +94,10 @@ public class MyRedis
 
 	/**
 	 * 缓存Map赋值
-	 * @param key
-	 * @param field
-	 * @param value
-	 * @return -5：Jedis实例获取失败
+	 * @param key 键
+	 * @param field 集合键
+	 * @param value 集合
+	 * @return long
 	 */
 	public long hset(String key, String field, String value)
 	{
@@ -100,8 +106,9 @@ public class MyRedis
 
 	/**
 	 * 获取缓存的Map值
-	 * @param key
-	 * @return
+	 * @param key 键
+	 * @param field 集合键
+	 * @return 集合值
 	 */
 	public String hget(String key, String field)
 	{
@@ -110,8 +117,8 @@ public class MyRedis
 
 	/**
 	 * 获取map所有的字段和值
-	 * @param key
-	 * @return
+	 * @param key 键
+	 * @return 集合
 	 */
 	public Map<String, String> hgetAll(String key)
 	{
@@ -120,9 +127,9 @@ public class MyRedis
 
 	/**
 	 * 查看哈希表 key 中，指定的field字段是否存在。
-	 * @param key
-	 * @param field
-	 * @return
+	 * @param key 键
+	 * @param field 集合键
+	 * @return boolean
 	 */
 	public boolean hexists(String key, String field)
 	{
@@ -131,8 +138,8 @@ public class MyRedis
 
 	/**
 	 * 获取所有哈希表中的字段
-	 * @param key
-	 * @return
+	 * @param key 键
+	 * @return 集合
 	 */
 	public Set<String> hkeys(String key)
 	{
@@ -141,8 +148,8 @@ public class MyRedis
 
 	/**
 	 * 获取所有哈希表中的值
-	 * @param key
-	 * @return
+	 * @param key 键
+	 * @return 集合
 	 */
 	public List<String> hvals(String key)
 	{
@@ -151,9 +158,9 @@ public class MyRedis
 
 	/**
 	 * 从哈希表 key 中删除指定的field
-	 * @param key
-	 * @param field
-	 * @return
+	 * @param key 键
+	 * @param fields 多个集合键
+	 * @return long
 	 */
 	public long hdel(String key, String... fields)
 	{
@@ -162,8 +169,8 @@ public class MyRedis
 
 	/**
 	 * 可模糊获取redis中的key值 eg:lock*得到 所有带lock的key的set集合
-	 * @param pattern
-	 * @return
+	 * @param pattern 匹配值
+	 * @return 集合
 	 */
 	public Set<String> keys(String pattern)
 	{

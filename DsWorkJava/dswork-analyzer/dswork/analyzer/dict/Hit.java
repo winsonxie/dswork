@@ -18,26 +18,20 @@ public class Hit
 	private int hitState = UNMATCH;
 	// 记录词典匹配过程中，当前匹配到的词典分支节点
 	private DictSegment matchedDictSegment;
-	/*
-	 * 词段开始位置
-	 */
+	// 词段开始位置
 	private int begin;
-	/*
-	 * 词段的结束位置
-	 */
+	// 词段的结束位置
 	private int end;
 
 	/**
 	 * 判断是否完全匹配
+	 * @return 判断是否完全匹配
 	 */
 	public boolean isMatch()
 	{
 		return (this.hitState & MATCH) > 0;
 	}
 
-	/**
-	 * 
-	 */
 	public void setMatch()
 	{
 		this.hitState = this.hitState | MATCH;
@@ -45,15 +39,13 @@ public class Hit
 
 	/**
 	 * 判断是否是词的前缀
+	 * @return 判断是否是词的前缀
 	 */
 	public boolean isPrefix()
 	{
 		return (this.hitState & PREFIX) > 0;
 	}
 
-	/**
-	 * 
-	 */
 	public void setPrefix()
 	{
 		this.hitState = this.hitState | PREFIX;
@@ -61,15 +53,13 @@ public class Hit
 
 	/**
 	 * 判断是否是不匹配
+	 * @return 判断是否是不匹配
 	 */
 	public boolean isUnmatch()
 	{
 		return this.hitState == UNMATCH;
 	}
 
-	/**
-	 * 
-	 */
 	public void setUnmatch()
 	{
 		this.hitState = UNMATCH;

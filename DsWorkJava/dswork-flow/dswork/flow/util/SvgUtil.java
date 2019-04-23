@@ -25,14 +25,14 @@ public class SvgUtil
 	
 	/**
 	 * 画矩形
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @param stroke
-	 * @param strokeWidth
-	 * @param fill
-	 * @return
+	 * @param x 左上角x坐标
+	 * @param y 左上角y坐标
+	 * @param width 宽
+	 * @param height 高
+	 * @param stroke 边框颜色
+	 * @param strokeWidth 边框粗细
+	 * @param fill 填充颜色
+	 * @return svg
 	 */
 	public static String getRect(int x, int y, int width, int height, String stroke, int strokeWidth, String fill)
 	{
@@ -52,12 +52,12 @@ public class SvgUtil
 	/**
 	 * 画多行文本
 	 * @param text
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @param fontSize
-	 * @return
+	 * @param x 左上角x坐标
+	 * @param y 左上角y坐标
+	 * @param width 宽
+	 * @param height 高
+	 * @param fontSize 字体大小
+	 * @return svg
 	 */
 	public static String getTextMult(String text, int x, int y, int width, int height, int fontSize)
 	{
@@ -98,11 +98,11 @@ public class SvgUtil
 
 	/**
 	 * 画单行文本
-	 * @param text
-	 * @param x
-	 * @param y
-	 * @param fontSize
-	 * @return
+	 * @param text 文本
+	 * @param x 左上角x坐标
+	 * @param y 左上角y坐标
+	 * @param fontSize 字体大小
+	 * @return svg
 	 */
 	public static String getText(String text, int x, int y, int fontSize)
 	{
@@ -143,13 +143,12 @@ public class SvgUtil
 
 	/**
 	 * 画点
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @param fill
-	 * @param opacity
-	 * @return
+	 * @param cx 圆心x
+	 * @param cy 圆心y
+	 * @param r 半径
+	 * @param fill 填充颜色
+	 * @param opacity 透明度
+	 * @return svg
 	 */
 	public static String getPoint(int cx, int cy, int r, String fill, double opacity)
 	{
@@ -204,10 +203,10 @@ public class SvgUtil
 	
 	/**
 	 * 生成xml标签
-	 * @param tagName
-	 * @param attributes
-	 * @param nodeContent
-	 * @return
+	 * @param tagName 标签名
+	 * @param attributes 属性集合
+	 * @param nodeContent 标签值
+	 * @return xml
 	 */
 	public static String getTag(String tagName, Map<String, String> attributes, String nodeContent)
 	{

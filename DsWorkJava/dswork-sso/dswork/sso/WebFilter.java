@@ -164,7 +164,7 @@ public class WebFilter implements Filter
 	}
 	
 	/**
-	 * @note 获取指定用户的基本信息
+	 * 获取指定用户的基本信息
 	 * @param session session
 	 * @return IUser 失败返回空白的Iuser实例，即id为-1
 	 */

@@ -117,7 +117,7 @@ public class AuthFactory
 	 * 前端登入认证地址(post)，获取用户授权令牌(code)或用户凭证(access_token)，其中该地址因authtime只有2小时有效，另还需增加grant_type=password|sms
 	 * @param isCode code|token
 	 * @param redirect_uri 重定向地址，如果为配置的redirect_uri不为空，则忽略
-	 * @return String /user/login?appid=应用ID&response_type=code|token&redirect_uri=重定向地址&authtime=超时时间戳&authcode=应用认证码&grant_type=&account=&password=
+	 * @return String /user/login?appid=应用ID&amp;response_type=code|token&amp;redirect_uri=重定向地址&amp;authtime=超时时间戳&amp;authcode=应用认证码&amp;grant_type=&amp;account=&amp;password=
 	 */
 	public static String getUserLoginURL(boolean isCode, String redirect_uri)
 	{
@@ -132,7 +132,7 @@ public class AuthFactory
 	 * 前端登出认证地址，即取消用户凭证
 	 * @param openid 用户标识
 	 * @param access_token 用户凭证
-	 * @return String /user/logout?appid=应用ID&openid=用户标识&access_token=用户凭证
+	 * @return String /user/logout?appid=应用ID&amp;openid=用户标识&amp;access_token=用户凭证
 	 */
 	public static String getUserLogoutURL(String openid, String access_token)
 	{
@@ -144,7 +144,7 @@ public class AuthFactory
 	/**
 	 * 授权后访问重定向地址
 	 * @param code 用户授权令牌
-	 * @return String /user/redirect?appid=应用ID&code=用户授权令牌
+	 * @return String /user/redirect?appid=应用ID&amp;code=用户授权令牌
 	 */
 	public static String getUserRedirectURL(String code)
 	{
@@ -158,7 +158,7 @@ public class AuthFactory
 	 * @param openid 用户标识
 	 * @param access_token 用户凭证
 	 * @param redirect_uri 重定向地址，即修改完密码需跳转至指定地址，为空则不跳转
-	 * @return String /user/password?appid=应用ID&openid=用户标识&access_token=用户凭证&
+	 * @return String /user/password?appid=应用ID&amp;openid=用户标识&amp;access_token=用户凭证&amp;
 	 */
 	public static String getUserPasswordURL(String openid, String access_token, String redirect_uri)
 	{
@@ -204,7 +204,7 @@ public class AuthFactory
 	// 组织机构及用户的方法
 	//////////////////////////////////////////////////////////////////////////////
 	/**
-	 * @note 获取组织机构（单位、部门、岗位）
+	 * 获取组织机构（单位、部门、岗位）
 	 * @param orgId 组织机构ID（单位ID、部门ID、岗位ID）
 	 * @return IOrg
 	 */
@@ -230,7 +230,7 @@ public class AuthFactory
 	}
 
 	/**
-	 * @note 获取下级组织机构(status:2单位,1部门,0岗位)
+	 * 获取下级组织机构(status:2单位,1部门,0岗位)
 	 * @param orgPid 组织机构ID，为0则取顶级
 	 * @return IOrg[]
 	 */
@@ -258,7 +258,7 @@ public class AuthFactory
 	}
 
 	/**
-	 * @note 获取指定用户的基本信息
+	 * 获取指定用户的基本信息
 	 * @param userAccount 用户帐号
 	 * @return IUser
 	 */
@@ -284,7 +284,7 @@ public class AuthFactory
 	}
 
 	/**
-	 * @note 获取指定用户的基本信息
+	 * 获取指定用户的基本信息
 	 * @param userOpenid 用户标识
 	 * @return IUser
 	 */
@@ -310,7 +310,7 @@ public class AuthFactory
 	}
 
 	/**
-	 * @note 获取指定单位下的用户，不含子单位
+	 * 获取指定单位下的用户，不含子单位
 	 * @param orgPid 单位ID
 	 * @return IUser[]
 	 */
@@ -339,7 +339,7 @@ public class AuthFactory
 	}
 
 	/**
-	 * @note 获取指定部门下的用户，不含子部门
+	 * 获取指定部门下的用户，不含子部门
 	 * @param orgId 部门 ID
 	 * @return IUser[]
 	 */
