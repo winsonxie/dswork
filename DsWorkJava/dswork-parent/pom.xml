@@ -157,31 +157,33 @@
 
 			<dependency><groupId>mysql</groupId><artifactId>mysql-connector-java</artifactId><version>5.1.45</version></dependency>
 			
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-core  </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-http  </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-jdbc  </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-ognl  </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-spring</artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-web   </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-config</artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-mvc   </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-analyzer</artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-builder </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-core    </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-db      </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-flow    </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-html    </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-http    </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-jdbc    </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-ognl    </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-spring  </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-sso     </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-web     </artifactId><version>${v.dswork}</version></dependency>
 			
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-common</artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-flow  </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-html  </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-config  </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-mvc     </artifactId><version>${v.dswork}</version></dependency>
 			
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-cs    </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-java    </artifactId><version>${v.dswork}</version><type>pom</type></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-javaweb </artifactId><version>${v.dswork}</version><type>pom</type></dependency>
 			
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-sso           </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-cs      </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-ee      </artifactId><version>${v.dswork}</version><scope>provided</scope></dependency>
 			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-sso-authfilter</artifactId><version>${v.dswork}</version></dependency>
 			
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-common</artifactId><version>${v.dswork}</version></dependency>
 			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-authown</artifactId><version>${v.dswork}</version></dependency>
 			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-cms    </artifactId><version>${v.dswork}</version></dependency>
 			
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-ee</artifactId><version>${v.dswork}</version><scope>provided</scope></dependency>
-			
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-java</artifactId><version>${v.dswork}</version><type>pom</type></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-javaweb</artifactId><version>${v.dswork}</version><type>pom</type></dependency>
 			
 		</dependencies>
 	</dependencyManagement>
