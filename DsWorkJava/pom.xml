@@ -1,45 +1,39 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>com.github.skeychen</groupId>
-	<artifactId>dswork-project-parent</artifactId>
-	<version>1.0.0</version>
+	<artifactId>dswork-framework</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>dswork-project-parent</name>
-	<description>dswork-project-parent</description>
-	<url>https://github.com/skeychen/dswork</url>
+	<name>dswork-framework</name>
+	<description>dswork-framework</description>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.5</maven.compiler.target>
-        <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
-    </properties>
-
-    <modules>
+	<modules>
         <module>dswork-parent</module>
-        <module>dswork-core</module>
-        <module>dswork-db</module>
-        <module>dswork-html</module>
-        <module>dswork-http</module>
-        <module>dswork-jdbc</module>
-        <module>dswork-ognl</module>
-        <module>dswork-spring</module>
-        <module>dswork-web</module>
         
-        <module>dswork-config</module>
-        <module>dswork-mvc</module>
-        
-        <module>dswork-flow</module>
-        
-        <module>dswork-java</module>
-        <module>dswork-javaweb</module>
-        <!--
-        <module>dswork-sso</module>
-        <module>dswork-sso-authfilter</module>
-        -->
-        <module>dswork-ee</module>
-    </modules>
+		<module>dswork-analyzer</module>
+		<module>dswork-builder</module>
+		<module>dswork-core</module>
+		<module>dswork-db</module>
+		<module>dswork-flow</module>
+		<module>dswork-html</module>
+		<module>dswork-http</module>
+		<module>dswork-jdbc</module>
+		<module>dswork-ognl</module>
+		<module>dswork-spring</module>
+		<module>dswork-sso</module>
+		<module>dswork-web</module>
+		<module>dswork-webio</module>
+		
+		<module>dswork-config</module>
+		<module>dswork-mvc</module>
+		
+		<module>dswork-java</module>
+		<module>dswork-javaweb</module>
+		
+		<module>dswork-cs</module>
+		<module>dswork-ee</module>
+		<module>dswork-sso-authfilter</module>
+		<module>dswork-test</module>
+		<module>dswork-demo</module>
+	</modules>
 </project>
