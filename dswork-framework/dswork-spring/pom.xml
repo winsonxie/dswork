@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.skeychen</groupId>
+	<artifactId>dswork-spring</artifactId>
+	<version>${v.dswork}</version>
+	<name>dswork-spring</name>
+	<description>dswork-spring</description>
+	<url>https://github.com/skeychen/dswork</url>
+	<parent><groupId>com.github.skeychen</groupId><artifactId>dswork-parent</artifactId><version>8.8.6</version></parent>
+	<dependencies>
+		<dependency><groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId><scope>provided</scope></dependency>
+		<dependency><groupId>org.springframework</groupId><artifactId>spring-context</artifactId><scope>provided</scope></dependency>
+		<dependency><groupId>org.springframework</groupId><artifactId>spring-webmvc </artifactId><scope>provided</scope></dependency>
+	</dependencies>
+	<properties><v.module>dswork-spring</v.module></properties>
+	<build>
+		<directory>E:/Workspaces/jar/pom/dswork-spring</directory>
+	</build>
+</project>

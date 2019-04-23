@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+			http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+			http://www.springframework.org/schema/context 
+			http://www.springframework.org/schema/context/spring-context-4.0.xsd"
+	   default-autowire="byName" default-lazy-init="false">
+	<bean id="transactionManager" class="dswork.core.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="get*">PROPAGATION_NEVER,readOnly</prop>
+				<prop key="query*">PROPAGATION_NEVER,readOnly</prop>
+				<prop key="*">PROPAGATION_NEVER,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="proxyTargetClass" value="true" />
+		<property name="beanNames">
+			<list>
+				<value>*Service</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>transactionInterceptor</value>
+			</list>
+		</property>
+	</bean>
+	
+	<context:component-scan base-package="dswork,common" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+	<context:component-scan base-package="${dswork.p1:x}.dao" />
+	<context:component-scan base-package="${dswork.p1:x}.service" />
+	<context:component-scan base-package="${dswork.p2:x}.dao" />
+	<context:component-scan base-package="${dswork.p2:x}.service" />
+	<context:component-scan base-package="${dswork.p3:x}.dao" />
+	<context:component-scan base-package="${dswork.p3:x}.service" />
+	<context:component-scan base-package="${dswork.p4:x}.dao" />
+	<context:component-scan base-package="${dswork.p4:x}.service" />
+	<context:component-scan base-package="${dswork.p5:x}.dao" />
+	<context:component-scan base-package="${dswork.p5:x}.service" />
+</beans>
