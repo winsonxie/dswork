@@ -208,7 +208,7 @@ public class HttpUtil
 		}
 		return this;
 	}
-	
+
 	private void connectDoing(String charsetName) throws IOException
 	{
 		if(this.cookies.size() > 0)
@@ -269,8 +269,8 @@ public class HttpUtil
 		this.http.connect();
 		this.responseCode = http.getResponseCode();// 设置http返回状态200（ok）还是403
 	}
-	
-	private void connectAfter() throws IOException
+
+	private InputStream connectAfter() throws IOException
 	{
 		Date date = new Date();
 		List<Cookie> list = HttpCommon.getHttpCookies(http);
@@ -288,8 +288,17 @@ public class HttpUtil
 				}
 			}
 		}
+		String encoding = http.getContentEncoding();
+		if("gzip".equals(encoding))
+		{
+			return new java.util.zip.GZIPInputStream(http.getInputStream());
+		}
+		else
+		{
+			return http.getInputStream();
+		}
 	}
-	
+
 	private void connectClose()
 	{
 		try
@@ -332,9 +341,8 @@ public class HttpUtil
 		try
 		{
 			connectDoing(upCharsetName);
-			connectAfter();
-			BufferedReader in = null;
-			in = new BufferedReader(new InputStreamReader(http.getInputStream(), downCharsetName));
+			InputStream instream = connectAfter();
+			BufferedReader in = new BufferedReader(new InputStreamReader(instream, downCharsetName));
 			String temp = in.readLine();
 			while(temp != null)
 			{
@@ -376,8 +384,8 @@ public class HttpUtil
 		try
 		{
 			connectDoing(upCharsetName);
-			connectAfter();
-			return http.getInputStream();
+			InputStream instream = connectAfter();
+			return instream;
 		}
 		catch(Exception e)
 		{
@@ -385,7 +393,7 @@ public class HttpUtil
 		connectClose();
 		return null;
 	}
-	
+
 	public void initSocketFactoryForSSL()
 	{
 		this.sslSocketFactory = HttpCommon.getSocketFactoryForSSL();
@@ -395,7 +403,6 @@ public class HttpUtil
 	{
 		this.sslSocketFactory = HttpCommon.getSocketFactoryForTLS();
 	}
-	
 	// post的数据流，与Form数据冲突
 	private byte[] databody = null;
 
@@ -409,7 +416,6 @@ public class HttpUtil
 		databody = arr;
 		return this;
 	}
-	
 	// 表单项
 	private List<NameValue> form = new ArrayList<NameValue>();
 	private boolean formdata = false;
@@ -459,26 +465,25 @@ public class HttpUtil
 		return this;
 	}
 
-//	/**
-//	 * 添加文件表单项
-//	 * @param name String
-//	 * @param filename String
-//	 * @param contenttype String
-//	 * @param fileobject byte[]
-//	 * @return HttpUtil
-//	 */
-//	public HttpUtil addForm(String name, String filename, String contenttype, byte[] fileobject)
-//	{
-//
-//		NameFile c = new NameFile(name, filename, contenttype, fileobject);
-//		if(c.getName().length() > 0)
-//		{
-//			form.add(c);
-//			formdata = true;
-//		}
-//		return this;
-//	}
-
+	// /**
+	// * 添加文件表单项
+	// * @param name String
+	// * @param filename String
+	// * @param contenttype String
+	// * @param fileobject byte[]
+	// * @return HttpUtil
+	// */
+	// public HttpUtil addForm(String name, String filename, String contenttype, byte[] fileobject)
+	// {
+	//
+	// NameFile c = new NameFile(name, filename, contenttype, fileobject);
+	// if(c.getName().length() > 0)
+	// {
+	// form.add(c);
+	// formdata = true;
+	// }
+	// return this;
+	// }
 	/**
 	 * 批量添加表单项
 	 * @param array NameValue[]
@@ -576,16 +581,16 @@ public class HttpUtil
 		}
 		return list;
 	}
-	
+
 	/**
-	 * 返回http连接状态码 
+	 * 返回http连接状态码
 	 * @return int
 	 */
 	public int getResponseCode()
 	{
 		return this.responseCode;
 	}
-	
+
 	/**
 	 * 返回create中的url地址
 	 * @return String
