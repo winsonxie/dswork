@@ -15,6 +15,7 @@
 	dswork修改了dswork.config中BasicDataSource类，使createConnectionFactory时，不能百分百加载指定驱动的问题，主要针对DriverSpy
 	dswork增加了dswork.ee中的代码，使嵌入式tomcat能加载jar及其中的注解
 	dswork重构了dswork.sso中的代码，不再兼容旧的sso项目，只支持新版本sso项目，同时影响portal、base(原DsCommon)项目
+	dswork修改了dswork.jdbc中的代码和类，日志仅使用slf4j
 2019-02-21
 	dswork增加了dswork.db.redis代码，使支持redis读写分离代码Util
 2019-03-11
