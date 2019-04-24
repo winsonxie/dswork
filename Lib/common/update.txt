@@ -1,22 +1,101 @@
-2014-12-25
-	dswork更新了dswork.core.util下EncryptUtil的encodeBase64方法，去掉了RFC2045协议中定义的每76个Characters就回车换行的做法，即去掉回车即换行符号
-2014-12-31
-	去掉了log4jdbc包，简化代码，并改为dswork.jdbc.jar，增加多个默认驱动，修改配置文件为：/config/config.properties
-	jdbc连接的jdbc.driverClassName的值使用：dswork.jdbc.DriverSpy，其余不变
-	properties如果使用键值：dswork.jdbc.drivers，则不使用默认驱动，多个驱动使用“,”分隔，不能有空格
-	如：dswork.jdbc.drivers=com.mysql.jdbc.Driver,org.sqlite.JDBC
-	log4j.properties的日志输出使用“log4j.logger.jdbc.sqlonly”进行日志输出控制，兼容回log4jdbc的写法（只有jdbc.sqlonly一个）
-	最后，可以去掉spring数据源配置文件中的两个bean：log4jdbcInterceptor和dataSourceLog4jdbcAutoProxyCreator
-2015-04-28
-	dswork修改了dswork.web下的MyCookie类，增加了secure和httponly属性，但httponly是servlet3.0的东西，所以该包不能部署在tomcat6下了（如果需要则使用特配文件dswork.web_servlet2.5.jar）
-2015-05-01
-	dswork修改了dswork.web下的MyCookie类，通过反射判断是否存在setHttpOnly方法，存在则调用，不存在则忽略，用于兼容servlet2.5
-2015-06-18
-	新增log4j2的依赖包log/log4j2，用于升级日志框架，同时log4j1的依赖包移到log/log4j1目录中
-	由于log4j-2.3之后的版本依赖为jdk7，故仅升级到2.3版本
-2015-06-23
-	dswork修改了dswork.core下的JskeyUpload类，增加jskey.upload.init=true属性设置，用于是否初始化临时上传目录
-	增加dswork.http包，目前仅支持简单的http/https调用，可保持会话，但会话状态未持久化
+
+2019-04-24
+	dswork修改了dswork.http中的HttpUtil类，使支持处理gzip的请求
+	DsWorkJava项目整体结构升级为maven结构，新目录结构支持vscode及eclipse等多种IDE
+2019-04-21 release 8.8.5
+	dswork删除了dswork.core中的UniqueId类，改用新增加的IdUtil类
+		新增IdUtil类，genId改为16位，原13位使用genTimeId函数
+2019-04-18
+	spring升级为4.3.23，4.x的最新版本
+	slf4j-1.7.25升级到slf4j-1.7.26
+	dswork修改了dswork.core中的EncryptUtil代码
+		增加genKeyPair、encryptRSA、decryptRSA函数
+		修改encodeDes和decodeDes函数名称为encryptDes和decryptDes
+		删除了Hibernate相关类，不再使用Hibernate
+	dswork修改了dswork.config中BasicDataSource类，使createConnectionFactory时，不能百分百加载指定驱动的问题，主要针对DriverSpy
+	dswork增加了dswork.ee中的代码，使嵌入式tomcat能加载jar及其中的注解
+	dswork重构了dswork.sso中的代码，不再兼容旧的sso项目，只支持新版本sso项目，同时影响portal、base(原DsCommon)项目
+2019-02-21
+	dswork增加了dswork.db.redis代码，使支持redis读写分离代码Util
+2019-03-11
+	dswork修改了dswork.web中的MyRequest代码，增加支持application/json和getDatabody相关函数
+	dswork修改了dswork.core中的Page和PageRequest类，重构整体结构，会影响比较多的页面，主要是当前页变量
+2018-07-12
+	spring升级为4.3.18.release，目前对内置的cxf-2.6.0包有兼容性问题
+2018-07-03
+	dswork修改了dswork.config包，增加了dswork.config.ex配置文件，默认内置集成多数据源时的mybatis配置
+2018-06-08
+	dswork修改了dswork.core包，修改了mybatis集成类，可使用变量来使用内置的兼容性文件
+	dswork修改了dswork.config包，增加了dswork.config.mybaits配置文件，结合dswork.core包的修改使用
+2018-05-13
+	dswork修改了dswork.config包，集成配置mybatis中的默认spring系统配置，包括配置文件、数据源、mybatis配置
+	dswork修改了dswork.core包，对"jskey.upload.savePath"参数增加默认值：/WorkServer/WebIO/temp
+2018-05-04
+	全面升级至servlet3.0
+	dswork修改了dswork.web，新增了servlet3.0的ServletContainerInitializer类MyServletContainerInitializer和MyWebInitializer
+	dswork新增了dswork.config基础包，该包作用于精减掉原web.xml中所有log4j、Spring、验证码、单点登录配置文件路径参数等基础环境配置
+		加入该包可扩展支持config.property文件配置参数dswork.active=dev
+		对/config/config.property下文件新加配置dswork.active=dev，其中dev可以为其它名称用于开启开发环境配置文件，使原只读取存放于/config目录下的
+		配置文件，扩展为优先读取/config/dev/下的同名文件，包括config.property文件（dswork.active参数仅识别/config/config.propert文件的配置）
+2017-12-19
+	升级大部分jar至最新版本
+		slf4j-1.7.22升级到slf4j-1.7.25
+2017-09-05
+	dswork修改了dswork.core中的EncryptUtil，增加了SHA-256加密方法encryptSha256(String)
+2017-08-22
+	dswork完善了dswork.http中的SSLSocketFactory，移除了全局的相关设置及静态变量，增加了setSslSocketFactory方法
+2017-02-24
+	dswork修改了dswork.web中的MyRequestUplaod模块代码，修复用于dswork框架时，如果增加了spring上传插件后，request流被处理过时，MyRequestUpload中加载request流时的死循环问题
+2017-02-23
+	dswork移除了dswork.core.upload.JskeyUpload类下处理移除临时文件任务相关的代码
+	dswork修改了dswork.web中的MyRequest模块代码，修复ContentType为null的情况
+	dswork新增了dswork.webio包，仅用于处理web中的文件上传，目前仅用于webio项目
+2017-02-22
+	dswork修改了dswork.web中的MyRequest模块代码，新增ContentType为"application/octet-stream"时的文件流解析
+2017-02-21
+	dswork修改了dswork.web中的MyRequest模块代码，新增ContentType为"multipart/form-data"时的文件流解析，增加了MyFile类来描述文件
+	dswork移除了dswork.core.upload.jspsmart包下的所有类
+	dswork修改了dswork.core.util.FileUtil的小部分逻辑
+2017-01-18
+	dswork修改了dswork.core.db中的hibernate模块代码，从hibernate3升级到hibernate4
+	hibernate3.6.10.Final升级到hibernate4.2.21.Final，因为spring再升级的话，将移除hibernate3的依赖
+2017-01-13
+	升级大部分jar至最新版本
+		slf4j-1.7.12升级到slf4j-1.7.22
+		commons-collections-3.2.1升级到commons-collections-3.2.2
+		commons-io-2.3升级到commons-io-2.5
+		commons-logging-1.1.3升级到commons-logging-1.2
+		commons-beanutils(-core)-1.8.3升级到commons-beanutils-1.9.3
+		commons-codec-1.6升级到commons-codec-1.10
+		commons-fileupload-1.2.2升级到commons-fileupload-1.3.2
+		poi-3.12升级到poi-3.15，同时减少了相关的依赖包，但新增依赖一个依赖commons-collections4-4.1
+2017-01-12
+	dswork增加了html解析代码，但该代码是在jsoup的代码中转化来的，还不算是自己的东西，所以没放到commons目录中，等以后有机会再细化
+2017-01-11
+	tomcat的session共享模块memcached-sesssion-manager1.9.7升级到2.1.1，并新增了redis共享存储方式，建议共享存储从memcached迁移到redis
+2017-01-06
+	dswork优化sso模块，固定了sso内部url，访问页面地址改为仅配置sso项目根目录
+2016-12-14
+	dswork增加了分词代码，但该代码是在IK中文分词的代码中转化来的，还不算是自己的东西，所以没放到commons目录中，等以后有机会再细化
+2016-12-08
+	增加lucene模块相关jar，lucene5.5.3，此模块最低依赖于jdk7，6.x开始是jdk8
+2016-11-26
+	dswork更新修改了jdbc模块，利用反射判断，兼容jdbc4、jdbc4.1、jdbc4.2的差异
+2016-06-29
+	spring升级为4.0.9.release，基于1.8.0_20编译的
+2016-06-28
+	slf4j-1.7.12升级到slf4j-1.7.21
+	mybatis.spring-1.2.2升级到mybatis.spring-1.2.5
+	spring从4.0.0.release升级为4.0.2.release，4.0.0和4.0.2都是基于1.8.0-ea编译的
+2016-06-03
+	dswork修改了dswork.spring下的BeanFactory类，增加setApplicationContext方法，因之前修改获取spring容器获取方法后，在非web环境下，该类无法使用
+	dswork修改了dswork.core下的MyBatisDao类，修复通过PageRequest获取Page分页数据后，pageName和pageSizeName属性丢失的bug
+2015-11-19
+	dswork修改了dswork.http下的HttpUtil类，增加操作response中body数据流的方法
+2015-09-11
+	dswork修改了dswork.mvc下的类，优化代码
+2015-08-22
+	dswork修改了dswork.http下的HttpUtil类，增加了设置方法
 2015-06-26
 	dswork增加了dswork.core下的LikeTypeHandler类，在xml进行%%配置时，可使用#{key, typeHandler=LikeTypeHandler}
 	applicationContext-mybatis.xml增加配置
@@ -30,81 +109,22 @@
 				<value>dswork.core.mybatis.LikeTypeHandler</value>
         	</list>
         </property>
-2015-08-22
-	dswork修改了dswork.http下的HttpUtil类，增加了设置方法
-2015-09-11
-	dswork修改了dswork.mvc下的类，优化代码
-2015-11-19
-	dswork修改了dswork.http下的HttpUtil类，增加操作response中body数据流的方法
-2016-06-03
-	dswork修改了dswork.spring下的BeanFactory类，增加setApplicationContext方法，因之前修改获取spring容器获取方法后，在非web环境下，该类无法使用
-	dswork修改了dswork.core下的MyBatisDao类，修复通过PageRequest获取Page分页数据后，pageName和pageSizeName属性丢失的bug
-2016-06-28
-	slf4j-1.7.12升级到slf4j-1.7.21
-	mybatis.spring-1.2.2升级到mybatis.spring-1.2.5
-	spring从4.0.0.release升级为4.0.2.release，4.0.0和4.0.2都是基于1.8.0-ea编译的
-2016-06-29
-	spring升级为4.0.9.release，基于1.8.0_20编译的
-2016-11-26
-	dswork更新修改了jdbc模块，利用反射判断，兼容jdbc4、jdbc4.1、jdbc4.2的差异
-2016-12-08
-	增加lucene模块相关jar，lucene5.5.3，此模块最低依赖于jdk7，6.x开始是jdk8
-2016-12-14
-	dswork增加了分词代码，但该代码是在IK中文分词的代码中转化来的，还不算是自己的东西，所以没放到commons目录中，等以后有机会再细化
-2017-01-06
-	dswork优化sso模块，固定了sso内部url，访问页面地址改为仅配置sso项目根目录
-2017-01-11
-	tomcat的session共享模块memcached-sesssion-manager1.9.7升级到2.1.1，并新增了redis共享存储方式，建议共享存储从memcached迁移到redis
-2017-01-12
-	dswork增加了html解析代码，但该代码是在jsoup的代码中转化来的，还不算是自己的东西，所以没放到commons目录中，等以后有机会再细化
-2017-01-13
-	升级大部分jar至最新版本
-		slf4j-1.7.12升级到slf4j-1.7.22
-		commons-collections-3.2.1升级到commons-collections-3.2.2
-		commons-io-2.3升级到commons-io-2.5
-		commons-logging-1.1.3升级到commons-logging-1.2
-		commons-beanutils(-core)-1.8.3升级到commons-beanutils-1.9.3
-		commons-codec-1.6升级到commons-codec-1.10
-		commons-fileupload-1.2.2升级到commons-fileupload-1.3.2
-		poi-3.12升级到poi-3.15，同时减少了相关的依赖包，但新增依赖一个依赖commons-collections4-4.1
-2017-01-18
-	dswork修改了dswork.core.db中的hibernate模块代码，从hibernate3升级到hibernate4
-	hibernate3.6.10.Final升级到hibernate4.2.21.Final，因为spring再升级的话，将移除hibernate3的依赖
-2017-02-21
-	dswork修改了dswork.web中的MyRequest模块代码，新增ContentType为"multipart/form-data"时的文件流解析，增加了MyFile类来描述文件
-	dswork移除了dswork.core.upload.jspsmart包下的所有类
-	dswork修改了dswork.core.util.FileUtil的小部分逻辑
-2017-02-22
-	dswork修改了dswork.web中的MyRequest模块代码，新增ContentType为"application/octet-stream"时的文件流解析
-2017-02-23
-	dswork移除了dswork.core.upload.JskeyUpload类下处理移除临时文件任务相关的代码
-	dswork修改了dswork.web中的MyRequest模块代码，修复ContentType为null的情况
-	dswork新增了dswork.webio包，仅用于处理web中的文件上传，目前仅用于webio项目
-2017-02-24
-	dswork修改了dswork.web中的MyRequestUplaod模块代码，修复用于dswork框架时，如果增加了spring上传插件后，request流被处理过时，MyRequestUpload中加载request流时的死循环问题
-2017-08-22
-	dswork完善了dswork.http中的SSLSocketFactory，移除了全局的相关设置及静态变量，增加了setSslSocketFactory方法
-2017-09-05
-	dswork修改了dswork.core中的EncryptUtil，增加了SHA-256加密方法encryptSha256(String)
-2017-12-19
-	升级大部分jar至最新版本
-		slf4j-1.7.22升级到slf4j-1.7.25
-2018-05-04
-	全面升级至servlet3.0
-	dswork修改了dswork.web，新增了servlet3.0的ServletContainerInitializer类MyServletContainerInitializer和MyWebInitializer
-	dswork新增了dswork.config基础包，该包作用于精减掉原web.xml中所有log4j、Spring、验证码、单点登录配置文件路径参数等基础环境配置
-		加入该包可扩展支持config.property文件配置参数dswork.active=dev
-		对/config/config.property下文件新加配置dswork.active=dev，其中dev可以为其它名称用于开启开发环境配置文件，使原只读取存放于/config目录下的
-		配置文件，扩展为优先读取/config/dev/下的同名文件，包括config.property文件（dswork.active参数仅识别/config/config.propert文件的配置）
-2018-05-13
-	dswork修改了dswork.config包，集成配置mybatis中的默认spring系统配置，包括配置文件、数据源、mybatis配置
-	dswork修改了dswork.core包，对"jskey.upload.savePath"参数增加默认值：/WorkServer/WebIO/temp
-2018-06-08
-	dswork修改了dswork.core包，修改了mybatis集成类，可使用变量来使用内置的兼容性文件
-	dswork修改了dswork.config包，增加了dswork.config.mybaits配置文件，结合dswork.core包的修改使用
-2018-07-03
-	dswork修改了dswork.config包，增加了dswork.config.ex配置文件，默认内置集成多数据源时的mybatis配置
-2018-07-12
-	spring升级为4.3.18.release，目前对内置的cxf-2.6.0包有兼容性问题
-2019-03-11
-	dswork修改了dswork.web中的MyRequest代码，增加支持application/json和getDatabody相关函数
+2015-06-23
+	dswork修改了dswork.core下的JskeyUpload类，增加jskey.upload.init=true属性设置，用于是否初始化临时上传目录
+	增加dswork.http包，目前仅支持简单的http/https调用，可保持会话，但会话状态未持久化
+2015-06-18
+	新增log4j2的依赖包log/log4j2，用于升级日志框架，同时log4j1的依赖包移到log/log4j1目录中
+	由于log4j-2.3之后的版本依赖为jdk7，故仅升级到2.3版本
+2015-05-01
+	dswork修改了dswork.web下的MyCookie类，通过反射判断是否存在setHttpOnly方法，存在则调用，不存在则忽略，用于兼容servlet2.5
+2015-04-28
+	dswork修改了dswork.web下的MyCookie类，增加了secure和httponly属性，但httponly是servlet3.0的东西，所以该包不能部署在tomcat6下了（如果需要则使用特配文件dswork.web_servlet2.5.jar）
+2014-12-31
+	去掉了log4jdbc包，简化代码，并改为dswork.jdbc.jar，增加多个默认驱动，修改配置文件为：/config/config.properties
+	jdbc连接的jdbc.driverClassName的值使用：dswork.jdbc.DriverSpy，其余不变
+	properties如果使用键值：dswork.jdbc.drivers，则不使用默认驱动，多个驱动使用“,”分隔，不能有空格
+	如：dswork.jdbc.drivers=com.mysql.jdbc.Driver,org.sqlite.JDBC
+	log4j.properties的日志输出使用“log4j.logger.jdbc.sqlonly”进行日志输出控制，兼容回log4jdbc的写法（只有jdbc.sqlonly一个）
+	最后，可以去掉spring数据源配置文件中的两个bean：log4jdbcInterceptor和dataSourceLog4jdbcAutoProxyCreator
+2014-12-25
+	dswork更新了dswork.core.util下EncryptUtil的encodeBase64方法，去掉了RFC2045协议中定义的每76个Characters就回车换行的做法，即去掉回车即换行符号
