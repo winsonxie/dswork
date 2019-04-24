@@ -4,15 +4,16 @@
     <options buildIfNeeded="true" compress="true" descriptionLocation="/DsWorkJava/jardesc/dswork-webio_dswork-web-mini.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
-    <manifest generateManifest="false" manifestLocation="/DsWorkJava/dswork-web/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+    <manifest generateManifest="true" manifestLocation="/DsWorkJava/dswork-web/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
         <sealing sealJar="false">
             <packagesToSeal/>
             <packagesToUnSeal/>
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=DsWorkJava/dswork-web&lt;dswork.web{MyRequest.java"/>
-        <javaElement handleIdentifier="=DsWorkJava/dswork-web&lt;dswork.web{MyFile.java"/>
-        <javaElement handleIdentifier="=DsWorkJava/dswork-web&lt;dswork.web{MyRequestUpload.java"/>
+        <javaElement handleIdentifier="=DsWorkJava/dswork\/dswork-web\/src\/main\/java&lt;dswork.web{MyFile.java"/>
+        <javaElement handleIdentifier="=DsWorkJava/dswork\/dswork-web\/src\/main\/java&lt;dswork.web{MyRequest.java"/>
+        <javaElement handleIdentifier="=DsWorkJava/dswork\/dswork-webio\/src\/main\/java"/>
+        <javaElement handleIdentifier="=DsWorkJava/dswork\/dswork-web\/src\/main\/java&lt;dswork.web{MyRequestUpload.java"/>
     </selectedElements>
 </jardesc>

@@ -4,13 +4,13 @@
     <options buildIfNeeded="true" compress="true" descriptionLocation="/DsWorkJava/jardesc/dswork-sso-authfilter.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
-    <manifest generateManifest="false" manifestLocation="/DsWorkJava/dswork-sso-authfilter/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+    <manifest generateManifest="true" manifestLocation="/DsWorkJava/dswork-sso-authfilter/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
         <sealing sealJar="false">
             <packagesToSeal/>
             <packagesToUnSeal/>
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=DsWorkJava/dswork-sso-authfilter&lt;dswork.sso"/>
+        <javaElement handleIdentifier="=DsWorkJava/dswork\/dswork-sso-authfilter\/src\/main\/java"/>
     </selectedElements>
 </jardesc>

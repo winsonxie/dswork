@@ -1,6 +1,0 @@
-dswork.webio用于webio项目接收文件（打包成dswork.webio.jar）
-还需要下以三个类（打包成dswork.web.mini.jar）：
-	dswork.web
-		MyFile
-		MyRequest
-		MyRequestUpload

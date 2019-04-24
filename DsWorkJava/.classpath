@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-analyzer"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-builder"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-config"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-core"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-cs"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-db"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-flow"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-html"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-http"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-jdbc"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-mvc"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-ognl"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-spring"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-sso"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-sso-authfilter"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-web"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-webio"/>
-	<classpathentry excluding="MANIFEST.MF|pom.xml|pom-snapshot.xml" kind="src" path="dswork-ee"/>
+	<classpathentry kind="src" path="dswork/dswork-analyzer/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-builder/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-config/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-core/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-cs/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-db/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-flow/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-html/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-http/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-jdbc/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-mvc/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-ognl/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-spring/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-sso/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-sso-authfilter/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-web/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-webio/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-ee/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-config/src/main/resources"/>
+	<classpathentry kind="src" path="dswork/dswork-web/src/main/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JAVAEE">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
