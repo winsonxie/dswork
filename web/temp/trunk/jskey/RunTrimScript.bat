@@ -1,3 +1,4 @@
+set PATH=\WorkServer\Java\jdk\bin;%PATH%
 java -classpath jskey.js.TrimScript.jar; jskey.js.TrimScript "UTF-8" "UTF-8" "./" "./../../tags/"
 rem args参数说明
 rem [0]读取文件字符集，默认"UTF-8"

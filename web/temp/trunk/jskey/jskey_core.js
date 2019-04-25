@@ -1790,7 +1790,7 @@
 			var iSum = 0;
 			for(var i = 0; i < 8; i++)
 			{
-				iSum += CC.indexOf(v.charAt(i)) * WW[i];
+				iSum += parseInt(CC.indexOf(v.charAt(i)), 36) * WW[i];
 			}
 			var C9 = 11 - iSum%11;
 			if(C9 == 11)
@@ -1864,7 +1864,7 @@
 			var iSum = 0;
 			for(var i = 0; i < 17; i++)
 			{
-				iSum += CC.indexOf(v.charAt(i)) * WW[i];
+				iSum += parseInt(CC.indexOf(v.charAt(i)), 31) * WW[i];
 			}
 			if(CC.charAt(31 - iSum%31) == v.charAt(17))// 当余数为0时，31-0=31，原本应该取0值的，但CC增加了第31位用来代替0，故这里不需要再处理
 			{
