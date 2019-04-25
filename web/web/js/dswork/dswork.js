@@ -55,7 +55,7 @@ $dswork.checkResult = function(res){
 		var n;
 		if(res){
 			if(typeof(res)=="string" || typeof(res)=="number"){
-				if(res.length>0 && res.indexOf("{")==0){try{n = eval(res);}catch(e){}}
+				if(res.length>0 && res.indexOf("{")==0){try{eval("n="+res);}catch(e){}}
 				else{
 					var _d = (res + "").split(":");
 					o.type = _d[0];
