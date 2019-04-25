@@ -64,7 +64,7 @@ $dswork.checkResult = function(res){
 						o.msg = _d[1];
 					}
 					else{
-						switch(_d[0]){case "0":o.msg = "操作失败！";break;case "1":o.msg = "操作成功！";break;}
+						switch(_d[0]){case "0":o.msg = "操作失败";break;case "1":o.msg = "操作成功";break;}
 					}
 					if(_d.length>2){
 						o.data = _d[2];// 这里本应该是个对象的，但为了兼容旧的项目，特殊情况还是为string
@@ -77,7 +77,7 @@ $dswork.checkResult = function(res){
 					o.code = parseInt((n.code||"-1"));
 					o.type = o.code+"";
 				}catch(e){}
-				try{o.msg = n.msg||"";}catch(e){}
+				try{o.msg = n.msg||(o.code==1?"操作成功":(o.code==0?"操作失败":o.type));}catch(e){}
 				try{o.data = n.data||null;}catch(e){}
 			}
 		}
