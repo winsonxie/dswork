@@ -5,7 +5,6 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-builder/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-config/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-core/src/main/java"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-cs/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-db/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-flow/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-html/src/main/java"/>
@@ -18,7 +17,6 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-sso-authfilter/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-web/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-webio/src/main/java"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-ee/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-config/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-web/src/main/resources"/>
         <property name="context-root" value="DsWorkJava"/>

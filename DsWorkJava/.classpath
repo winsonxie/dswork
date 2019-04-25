@@ -21,25 +21,15 @@
 	<classpathentry kind="src" path="dswork/dswork-ee/src/main/java"/>
 	<classpathentry kind="src" path="dswork/dswork-config/src/main/resources"/>
 	<classpathentry kind="src" path="dswork/dswork-web/src/main/resources"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JAVAEE">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/Lib/database/sqlite/sqlite-jdbc-3.7.2.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/DSWORK">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
+	
 	<classpathentry kind="lib" path="/Lib/module/lucene/lucene-core-5.5.4.jar"/>
 	<classpathentry kind="lib" path="/Lib/module/template/freemarker-2.3.27.jar"/>
 	<classpathentry kind="lib" path="/Lib/database/mysql/mysql-connector-java-5.1.45-bin.jar"/>
 	<classpathentry kind="lib" path="/Lib/database/redis/commons-pool2-2.6.1.jar"/>
 	<classpathentry kind="lib" path="/Lib/database/redis/jedis-2.10.2.jar"/>
+	
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JAVAEE"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/DSWORK"/>
+	
 	<classpathentry kind="output" path="web/WEB-INF/classes"/>
 </classpath>
