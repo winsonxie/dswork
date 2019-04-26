@@ -1,12 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent><groupId>com.github.skeychen</groupId><artifactId>dswork-parent</artifactId><version>8.8.6</version></parent>
-	<groupId>com.github.skeychen</groupId>
 	<artifactId>dswork-ee</artifactId>
-	<version>${v.dswork}</version>
-	<name>dswork-ee</name>
-	<description>dswork-ee</description>
-	<url>https://github.com/skeychen/dswork</url>
 	<dependencies>
 		<dependency><groupId>org.eclipse.jdt.core.compiler</groupId><artifactId>ecj</artifactId><version>4.6.1</version></dependency>
 		<dependency><groupId>org.apache.tomcat</groupId><artifactId>tomcat-annotations-api</artifactId><version>${v.tomcat-embed}</version></dependency>
@@ -16,7 +11,7 @@
 		<dependency><groupId>org.apache.tomcat.embed</groupId><artifactId>tomcat-embed-logging-juli</artifactId><version>${v.tomcat-embed}</version></dependency>
 		<dependency><groupId>org.apache.tomcat.embed</groupId><artifactId>tomcat-embed-websocket</artifactId><version>${v.tomcat-embed}</version></dependency>
 	</dependencies>
-	<properties><v.module>dswork-ee</v.module><v.tomcat-embed>8.0.53</v.tomcat-embed></properties>
+	<properties><v.tomcat-embed>8.0.53</v.tomcat-embed></properties>
 	<build>
 		<directory>E:/Workspaces/jar/pom/dswork-ee</directory>
 		<plugins>

@@ -1,13 +1,49 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>com.github.skeychen</groupId>
 	<artifactId>dswork-parent</artifactId>
-	<version>8.8.6</version>
+	<version>${v.dswork}</version>
 	<packaging>pom</packaging>
 	<name>dswork-parent</name>
 	<description>dswork-parent</description>
 	<url>https://github.com/skeychen/dswork</url>
+
+	<modules>
+		<module>dswork-analyzer</module>
+		<module>dswork-builder</module>
+		<module>dswork-core</module>
+		<module>dswork-db</module>
+		<module>dswork-flow</module>
+		<module>dswork-html</module>
+		<module>dswork-http</module>
+		<module>dswork-jdbc</module>
+		<module>dswork-ognl</module>
+		<module>dswork-spring</module>
+		<module>dswork-sso</module>
+		<module>dswork-web</module>
+		<module>dswork-webio</module>
+		
+		<module>dswork-config</module>
+		<module>dswork-mvc</module>
+		
+		<module>dswork-java</module>
+		<module>dswork-javaweb</module>
+		
+		<module>dswork-cs</module>
+		<module>dswork-ee</module>
+		<module>dswork-sso-authfilter</module>
+	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<v.log4j>2.3</v.log4j>
+		<v.slf4j>1.7.26</v.slf4j>
+		<v.spring>4.3.23.RELEASE</v.spring>
+		<v.mybatis>3.4.6</v.mybatis>
+		<v.mybatis.spring>1.3.2</v.mybatis.spring>
+		<v.gson>2.8.5</v.gson>
+		<v.dswork>0.0.0-SNAPSHOT</v.dswork>
+	</properties>
 
 	<licenses>
 		<license>
@@ -26,20 +62,49 @@
 
 	<build>
 		<sourceDirectory>./</sourceDirectory>
-		<directory>E:/Workspaces/jar/pom/dswork-parent</directory>
+		<directory>E:/Workspaces/jar/pom-snapshot/dswork-parent</directory>
 	</build>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<v.log4j>2.3</v.log4j>
-		<v.slf4j>1.7.26</v.slf4j>
-		<v.gson>2.8.5</v.gson>
-		<v.spring>4.3.23.RELEASE</v.spring>
-		<v.mybatis>3.4.6</v.mybatis>
-		<v.mybatis.spring>1.3.2</v.mybatis.spring>
-		<v.dswork>8.8.6</v.dswork>
-		<v.module>dswork-framework</v.module>
-	</properties>
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions><execution><phase>package</phase><goals><goal>jar-no-fork</goal></goals></execution></executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.10.4</version>
+						<executions>
+							<execution>
+								<phase>package</phase><goals><goal>jar</goal></goals>
+								<configuration><additionalparam>-Xdoclint:none</additionalparam></configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions><execution><phase>verify</phase><goals><goal>sign</goal></goals></execution></executions>
+					</plugin>
+				</plugins>
+			</build>
+			<distributionManagement>
+				<snapshotRepository>
+					<id>dswork-server</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+				</snapshotRepository>
+				<repository>
+					<id>dswork-server</id>
+					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
 	
 	<dependencyManagement>
 		<dependencies>
@@ -106,76 +171,5 @@
 			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-cms    </artifactId><version>${v.dswork}</version></dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<profiles>
-		<profile>
-			<id>release</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
-						<executions><execution><phase>verify</phase><goals><goal>sign</goal></goals></execution></executions>
-					</plugin>
-					<plugin>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<configuration>
-							<source>1.6</source>
-							<target>1.6</target>
-							<encoding>UTF-8</encoding>
-							<optimize>true</optimize>
-							<debug>true</debug>
-							<showDeprecation>true</showDeprecation>
-							<showWarnings>false</showWarnings>
-							<compilerArguments>
-								<verbose />
-								<bootclasspath>${java.home}/lib/rt.jar;${java.home}/lib/jce.jar</bootclasspath>
-							</compilerArguments>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-						<version>3.0.1</version>
-						<executions><execution><phase>package</phase><goals><goal>jar-no-fork</goal></goals></execution></executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.1.0</version>
-						<executions><execution><phase>package</phase><goals><goal>jar</goal></goals><configuration><additionalparam>-Xdoclint:none</additionalparam></configuration></execution></executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-jar-plugin</artifactId>
-						<version>3.1.1</version>
-						<configuration>
-							<archive>
-								<addMavenDescriptor>false</addMavenDescriptor>
-								<manifestEntries>
-									<Implementation-Title>${v.module}</Implementation-Title>
-									<Implementation-Version>${v.dswork}</Implementation-Version>
-									<Built-By>skey(249725997@qq.com)</Built-By>
-									<X-Compile-Source-JDK>1.8</X-Compile-Source-JDK>
-									<Created-By>1.8.0_201 (Oracle Corporation)</Created-By>
-									<Build-Jdk>1.8.0_201</Build-Jdk>
-								</manifestEntries>
-							</archive>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-			<distributionManagement>
-				<snapshotRepository>
-					<id>dswork-server</id>
-					<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-				</snapshotRepository>
-				<repository>
-					<id>dswork-server</id>
-					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-				</repository>
-			</distributionManagement>
-		</profile>
-	</profiles>
+		
 </project>

@@ -315,7 +315,7 @@ public class AuthFilter implements Filter
 
 	/**
 	 * 获取用户菜单功能，过滤掉不显示在菜单上的功能项
-	 * @param account
+	 * @param account 用户账号
 	 * @return IFunc[]
 	 */
 	public static IFunc[] getFuncByUser(String account)
