@@ -6,6 +6,6 @@
 		<dependency><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></dependency>
 	</dependencies>
 	<build>
-		<directory>E:/Workspaces/jar/pom/dswork-jdbc</directory>
+		<directory>/Workspaces/jar/pom/dswork-jdbc</directory>
 	</build>
 </project>

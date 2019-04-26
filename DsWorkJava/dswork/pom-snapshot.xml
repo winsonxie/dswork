@@ -62,7 +62,7 @@
 
 	<build>
 		<sourceDirectory>./</sourceDirectory>
-		<directory>E:/Workspaces/jar/pom-snapshot/dswork-parent</directory>
+		<directory>/Workspaces/jar/pom-snapshot/dswork-parent</directory>
 	</build>
 
 	<profiles>

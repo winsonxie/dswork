@@ -42,7 +42,7 @@
 
 	<build>
 		<sourceDirectory>./</sourceDirectory>
-		<directory>E:/Workspaces/jar/pom/dswork-java</directory>
+		<directory>/Workspaces/jar/pom/dswork-java</directory>
 	</build>
 
 </project>

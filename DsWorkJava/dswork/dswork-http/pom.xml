@@ -3,6 +3,6 @@
 	<parent><groupId>com.github.skeychen</groupId><artifactId>dswork-parent</artifactId><version>8.8.6</version></parent>
 	<artifactId>dswork-http</artifactId>
 	<build>
-		<directory>E:/Workspaces/jar/pom/dswork-http</directory>
+		<directory>/Workspaces/jar/pom/dswork-http</directory>
 	</build>
 </project>

@@ -8,6 +8,6 @@
 		<dependency><groupId>org.springframework</groupId><artifactId>spring-webmvc </artifactId><scope>provided</scope></dependency>
 	</dependencies>
 	<build>
-		<directory>E:/Workspaces/jar/pom/dswork-spring</directory>
+		<directory>/Workspaces/jar/pom/dswork-spring</directory>
 	</build>
 </project>

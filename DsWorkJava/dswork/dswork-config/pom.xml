@@ -12,6 +12,6 @@
 		<dependency><groupId>commons-dbcp</groupId><artifactId>commons-dbcp</artifactId><scope>provided</scope></dependency>
 	</dependencies>
 	<build>
-		<directory>E:/Workspaces/jar/pom/dswork-config</directory>
+		<directory>/Workspaces/jar/pom/dswork-config</directory>
 	</build>
 </project>

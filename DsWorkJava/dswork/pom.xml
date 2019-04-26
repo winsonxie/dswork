@@ -63,7 +63,7 @@
 
 	<build>
 		<sourceDirectory>./</sourceDirectory>
-		<directory>E:/Workspaces/jar/pom/dswork-parent</directory>
+		<directory>/Workspaces/jar/pom/dswork-parent</directory>
 	</build>
 	
 	<dependencyManagement>

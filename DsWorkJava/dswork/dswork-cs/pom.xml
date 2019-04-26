@@ -9,6 +9,6 @@
 		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-spring</artifactId><scope>provided</scope></dependency>
 	</dependencies>
 	<build>
-		<directory>E:/Workspaces/jar/pom/dswork-cs</directory>
+		<directory>/Workspaces/jar/pom/dswork-cs</directory>
 	</build>
 </project>

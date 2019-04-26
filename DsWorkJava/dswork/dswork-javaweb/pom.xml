@@ -49,7 +49,7 @@
 	</dependencies>
 
 	<build>
-		<directory>E:/Workspaces/jar/pom/dswork-javaweb</directory>
+		<directory>/Workspaces/jar/pom/dswork-javaweb</directory>
 	</build>
 
 </project>

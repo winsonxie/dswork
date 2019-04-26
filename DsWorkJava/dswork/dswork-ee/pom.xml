@@ -13,7 +13,7 @@
 	</dependencies>
 	<properties><v.tomcat-embed>8.0.53</v.tomcat-embed></properties>
 	<build>
-		<directory>E:/Workspaces/jar/pom/dswork-ee</directory>
+		<directory>/Workspaces/jar/pom/dswork-ee</directory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>

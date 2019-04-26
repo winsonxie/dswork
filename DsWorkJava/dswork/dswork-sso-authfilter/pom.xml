@@ -7,6 +7,6 @@
 		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-sso</artifactId></dependency>
 	</dependencies>
 	<build>
-		<directory>E:/Workspaces/jar/pom/dswork-sso-authfilter</directory>
+		<directory>/Workspaces/jar/pom/dswork-sso-authfilter</directory>
 	</build>
 </project>
