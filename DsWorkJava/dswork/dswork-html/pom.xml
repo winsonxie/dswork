@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<parent><groupId>com.github.skeychen</groupId><artifactId>dswork-parent</artifactId><version>8.8.6</version></parent>
 	<groupId>com.github.skeychen</groupId>
 	<artifactId>dswork-html</artifactId>
 	<version>${v.dswork}</version>
 	<name>dswork-html</name>
 	<description>dswork-html</description>
 	<url>https://github.com/skeychen/dswork</url>
-	<parent><groupId>com.github.skeychen</groupId><artifactId>dswork-parent</artifactId><version>8.8.6</version></parent>
 	<properties><v.module>dswork-html</v.module></properties>
 	<build>
 		<directory>E:/Workspaces/jar/pom/dswork-html</directory>
