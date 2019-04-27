@@ -179,7 +179,7 @@
 							<archive>
 								<addMavenDescriptor>false</addMavenDescriptor>
 								<manifestEntries>
-									<Implementation-Title>${artifactId}</Implementation-Title>
+									<Implementation-Title>${project.artifactId}</Implementation-Title>
 									<Implementation-Version>${v.dswork}</Implementation-Version>
 									<Built-By>skey(249725997@qq.com)</Built-By>
 									<X-Compile-Source-JDK>1.8</X-Compile-Source-JDK>
