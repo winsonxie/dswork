@@ -134,7 +134,9 @@
 						<executions><execution><phase>verify</phase><goals><goal>sign</goal></goals></execution></executions>
 					</plugin>
 					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-compiler-plugin</artifactId>
+						<version>3.1</version>
 						<configuration>
 							<source>1.6</source>
 							<target>1.6</target>
@@ -173,7 +175,6 @@
 									<Implementation-Version>${v}</Implementation-Version>
 									<Built-By>skey(249725997@qq.com)</Built-By>
 									<X-Compile-Source-JDK>1.8</X-Compile-Source-JDK>
-									<Created-By>Apache Maven 3.6.1</Created-By>
 									<Build-Jdk>1.8.0_201</Build-Jdk>
 								</manifestEntries>
 							</archive>
