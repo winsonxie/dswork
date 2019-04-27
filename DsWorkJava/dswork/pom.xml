@@ -183,7 +183,7 @@
 									<Implementation-Version>${v.dswork}</Implementation-Version>
 									<Built-By>skey(249725997@qq.com)</Built-By>
 									<X-Compile-Source-JDK>1.8</X-Compile-Source-JDK>
-									<Created-By>1.8.0_201 (Oracle Corporation)</Created-By>
+									<Created-By>Apache Maven 3.6.1</Created-By>
 									<Build-Jdk>1.8.0_201</Build-Jdk>
 								</manifestEntries>
 							</archive>
