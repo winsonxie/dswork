@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.skeychen</groupId>
 	<artifactId>dswork-parent</artifactId>
-	<version>8.8.6</version>
+	<version>${v}</version>
 	<packaging>pom</packaging>
 	<name>dswork-framework</name>
 	<description>dswork-framework</description>
@@ -33,28 +33,13 @@
 		<module>dswork-ee</module>
 		<module>dswork-sso-authfilter</module>
 	</modules>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<v.log4j>2.3</v.log4j>
-		<v.slf4j>1.7.26</v.slf4j>
-		<v.gson>2.8.5</v.gson>
-		<v.spring>4.3.23.RELEASE</v.spring>
-		<v.mybatis>3.4.6</v.mybatis>
-		<v.mybatis.spring>1.3.2</v.mybatis.spring>
-		<v.dswork>8.8.6</v.dswork>
-		<v.module>dswork-framework</v.module>
-	</properties>
-
 	<licenses>
 		<license>
 			<name>GNU Lesser General Public License v3.0</name>
 			<url>https://github.com/skeychen/dswork/blob/master/LICENSE</url>
 		</license>
 	</licenses>
-	
 	<developers><developer><id>skeychen</id><name>skey</name><email>249725997@qq.com</email></developer></developers>
-
 	<scm>
 		<connection>scm:git:git://github.com/skeychen/dswork</connection>
 		<developerConnection>scm:git:git://github.com/skeychen/dswork</developerConnection>
@@ -66,6 +51,11 @@
 		<directory>/Workspaces/jar/pom/dswork-parent</directory>
 	</build>
 -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<v-log4j>2.3</v-log4j>
+		<v-spring>4.3.23.RELEASE</v-spring>
+	</properties>
 	<dependencyManagement>
 		<dependencies>
 			<dependency><groupId>commons-collections</groupId><artifactId>commons-collections</artifactId><version>3.2.2</version></dependency>
@@ -75,66 +65,66 @@
 			<dependency><groupId>commons-dbcp       </groupId><artifactId>commons-dbcp       </artifactId><version>1.4</version></dependency>
 			<dependency><groupId>commons-logging    </groupId><artifactId>commons-logging    </artifactId><version>1.2</version></dependency>
 			
-			<dependency><groupId>org.apache.logging.log4j</groupId><artifactId>log4j-api       </artifactId><version>${v.log4j}</version></dependency>
-			<dependency><groupId>org.apache.logging.log4j</groupId><artifactId>log4j-web       </artifactId><version>${v.log4j}</version></dependency>
-			<dependency><groupId>org.apache.logging.log4j</groupId><artifactId>log4j-core      </artifactId><version>${v.log4j}</version></dependency>
-			<dependency><groupId>org.apache.logging.log4j</groupId><artifactId>log4j-slf4j-impl</artifactId><version>${v.log4j}</version></dependency>
+			<dependency><groupId>org.apache.logging.log4j</groupId><artifactId>log4j-api       </artifactId><version>${v-log4j}</version></dependency>
+			<dependency><groupId>org.apache.logging.log4j</groupId><artifactId>log4j-web       </artifactId><version>${v-log4j}</version></dependency>
+			<dependency><groupId>org.apache.logging.log4j</groupId><artifactId>log4j-core      </artifactId><version>${v-log4j}</version></dependency>
+			<dependency><groupId>org.apache.logging.log4j</groupId><artifactId>log4j-slf4j-impl</artifactId><version>${v-log4j}</version></dependency>
 			
-			<dependency><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId><version>${v.slf4j}</version></dependency>
-			<dependency><groupId>com.google.code.gson</groupId><artifactId>gson</artifactId><version>${v.gson}</version></dependency>
+			<dependency><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId><version>1.7.26</version></dependency>
+			<dependency><groupId>com.google.code.gson</groupId><artifactId>gson</artifactId><version>2.8.5</version></dependency>
 		
 			<dependency><groupId>aopalliance</groupId><artifactId>aopalliance</artifactId><version>1.0</version></dependency>
 			<dependency><groupId>javax.servlet</groupId><artifactId>jstl</artifactId><version>1.2</version></dependency>
 			<dependency><groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId><version>3.0.1</version><scope>provided</scope></dependency>
 
-			<dependency><groupId>org.springframework</groupId><artifactId>spring-aop       </artifactId><version>${v.spring}</version></dependency>
-			<dependency><groupId>org.springframework</groupId><artifactId>spring-beans     </artifactId><version>${v.spring}</version></dependency>
-			<dependency><groupId>org.springframework</groupId><artifactId>spring-context   </artifactId><version>${v.spring}</version></dependency>
-			<dependency><groupId>org.springframework</groupId><artifactId>spring-core      </artifactId><version>${v.spring}</version></dependency>
-			<dependency><groupId>org.springframework</groupId><artifactId>spring-expression</artifactId><version>${v.spring}</version></dependency>
-			<dependency><groupId>org.springframework</groupId><artifactId>spring-jdbc      </artifactId><version>${v.spring}</version></dependency>
-			<dependency><groupId>org.springframework</groupId><artifactId>spring-tx        </artifactId><version>${v.spring}</version></dependency>
-			<dependency><groupId>org.springframework</groupId><artifactId>spring-web       </artifactId><version>${v.spring}</version></dependency>
-			<dependency><groupId>org.springframework</groupId><artifactId>spring-webmvc    </artifactId><version>${v.spring}</version></dependency>
-			<dependency><groupId>org.springframework</groupId><artifactId>spring-orm       </artifactId><version>${v.spring}</version></dependency>
+			<dependency><groupId>org.springframework</groupId><artifactId>spring-aop       </artifactId><version>${v-spring}</version></dependency>
+			<dependency><groupId>org.springframework</groupId><artifactId>spring-beans     </artifactId><version>${v-spring}</version></dependency>
+			<dependency><groupId>org.springframework</groupId><artifactId>spring-context   </artifactId><version>${v-spring}</version></dependency>
+			<dependency><groupId>org.springframework</groupId><artifactId>spring-core      </artifactId><version>${v-spring}</version></dependency>
+			<dependency><groupId>org.springframework</groupId><artifactId>spring-expression</artifactId><version>${v-spring}</version></dependency>
+			<dependency><groupId>org.springframework</groupId><artifactId>spring-jdbc      </artifactId><version>${v-spring}</version></dependency>
+			<dependency><groupId>org.springframework</groupId><artifactId>spring-tx        </artifactId><version>${v-spring}</version></dependency>
+			<dependency><groupId>org.springframework</groupId><artifactId>spring-web       </artifactId><version>${v-spring}</version></dependency>
+			<dependency><groupId>org.springframework</groupId><artifactId>spring-webmvc    </artifactId><version>${v-spring}</version></dependency>
+			<dependency><groupId>org.springframework</groupId><artifactId>spring-orm       </artifactId><version>${v-spring}</version></dependency>
 			
-			<dependency><groupId>org.mybatis</groupId><artifactId>mybatis       </artifactId><version>${v.mybatis}       </version></dependency>
-			<dependency><groupId>org.mybatis</groupId><artifactId>mybatis-spring</artifactId><version>${v.mybatis.spring}</version></dependency>
+			<dependency><groupId>org.mybatis</groupId><artifactId>mybatis       </artifactId><version>3.4.6</version></dependency>
+			<dependency><groupId>org.mybatis</groupId><artifactId>mybatis-spring</artifactId><version>1.3.2</version></dependency>
 
 			<dependency><groupId>mysql</groupId><artifactId>mysql-connector-java</artifactId><version>5.1.45</version></dependency>
 			
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-analyzer</artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-builder </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-core    </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-db      </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-flow    </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-html    </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-http    </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-jdbc    </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-ognl    </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-spring  </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-sso     </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-web     </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-analyzer</artifactId><version>${v}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-builder </artifactId><version>${v}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-core    </artifactId><version>${v}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-db      </artifactId><version>${v}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-flow    </artifactId><version>${v}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-html    </artifactId><version>${v}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-http    </artifactId><version>${v}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-jdbc    </artifactId><version>${v}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-ognl    </artifactId><version>${v}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-spring  </artifactId><version>${v}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-sso     </artifactId><version>${v}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-web     </artifactId><version>${v}</version></dependency>
 			
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-config  </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-mvc     </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-config  </artifactId><version>${v}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-mvc     </artifactId><version>${v}</version></dependency>
 			
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-java    </artifactId><version>${v.dswork}</version><type>pom</type></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-javaweb </artifactId><version>${v.dswork}</version><type>pom</type></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-java    </artifactId><version>${v}</version><type>pom</type></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-javaweb </artifactId><version>${v}</version><type>pom</type></dependency>
 			
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-cs      </artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-ee      </artifactId><version>${v.dswork}</version><scope>provided</scope></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-sso-authfilter</artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-cs      </artifactId><version>${v}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-ee      </artifactId><version>${v}</version><scope>provided</scope></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-sso-authfilter</artifactId><version>${v}</version></dependency>
 			
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-common</artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-authown</artifactId><version>${v.dswork}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-cms    </artifactId><version>${v.dswork}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-common</artifactId><version>${v}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-authown</artifactId><version>${v}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-cms    </artifactId><version>${v}</version></dependency>
 		</dependencies>
 	</dependencyManagement>
-
 	<profiles>
 		<profile>
 			<id>release</id>
+			<activation><activeByDefault>true</activeByDefault></activation>
 			<build>
 				<plugins>
 					<plugin>
@@ -180,7 +170,7 @@
 								<addMavenDescriptor>false</addMavenDescriptor>
 								<manifestEntries>
 									<Implementation-Title>${project.artifactId}</Implementation-Title>
-									<Implementation-Version>${v.dswork}</Implementation-Version>
+									<Implementation-Version>${v}</Implementation-Version>
 									<Built-By>skey(249725997@qq.com)</Built-By>
 									<X-Compile-Source-JDK>1.8</X-Compile-Source-JDK>
 									<Created-By>Apache Maven 3.6.1</Created-By>
@@ -192,14 +182,14 @@
 				</plugins>
 			</build>
 			<distributionManagement>
-				<snapshotRepository>
-					<id>dswork-server</id>
-					<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-				</snapshotRepository>
 				<repository>
 					<id>dswork-server</id>
 					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 				</repository>
+				<snapshotRepository>
+					<id>dswork-server</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+				</snapshotRepository>
 			</distributionManagement>
 		</profile>
 	</profiles>

@@ -1,0 +1,11 @@
+正式版本发布
+	clean deploy -Dv=8.8.6
+
+正式版本仅发布到本地
+	clean install -Dv=8.8.6
+
+快照版本发布
+	clean deploy -Dv=0.0.0-SNAPSHOT
+
+快照版本仅发布到本地
+	clean install -Dv=0.0.0-SNAPSHOT
