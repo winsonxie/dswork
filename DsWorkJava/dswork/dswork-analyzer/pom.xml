@@ -5,5 +5,4 @@
 	<dependencies>
 		<dependency><groupId>org.apache.lucene</groupId><artifactId>lucene-analyzers-common</artifactId><version>5.5.4</version><scope>provided</scope></dependency>
 	</dependencies>
-	<build><directory>/Workspaces/jar/pom/dswork-analyzer</directory></build>
 </project>

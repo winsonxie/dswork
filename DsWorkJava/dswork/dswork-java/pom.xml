@@ -40,8 +40,4 @@
 		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-config</artifactId></dependency>
 	</dependencies>
 
-	<build>
-		<directory>/Workspaces/jar/pom/dswork-java</directory>
-	</build>
-
 </project>

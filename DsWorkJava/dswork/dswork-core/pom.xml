@@ -10,5 +10,4 @@
 		<dependency><groupId>org.mybatis</groupId><artifactId>mybatis</artifactId><scope>provided</scope></dependency>
 		<dependency><groupId>org.mybatis</groupId><artifactId>mybatis-spring</artifactId><scope>provided</scope></dependency>
 	</dependencies>
-	<build><directory>/Workspaces/jar/pom/dswork-core</directory></build>
 </project>

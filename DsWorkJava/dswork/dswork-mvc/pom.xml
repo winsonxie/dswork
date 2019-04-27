@@ -9,5 +9,4 @@
 		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-core</artifactId><scope>provided</scope></dependency>
 		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-web</artifactId><scope>provided</scope></dependency>
 	</dependencies>
-	<build><directory>/Workspaces/jar/pom/dswork-mvc</directory></build>
 </project>

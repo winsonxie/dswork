@@ -48,8 +48,4 @@
 		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-mvc   </artifactId></dependency>
 	</dependencies>
 
-	<build>
-		<directory>/Workspaces/jar/pom/dswork-javaweb</directory>
-	</build>
-
 </project>
