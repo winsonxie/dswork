@@ -62,7 +62,6 @@
 	</scm>
 
 	<build>
-		<sourceDirectory>./</sourceDirectory>
 		<directory>/Workspaces/jar/pom/dswork-parent</directory>
 	</build>
 	

@@ -5,7 +5,5 @@
 	<dependencies>
 		<dependency><groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId><scope>provided</scope></dependency>
 	</dependencies>
-	<build>
-		<directory>/Workspaces/jar/pom/dswork-webio</directory>
-	</build>
+	<build><directory>/Workspaces/jar/pom/dswork-webio</directory></build>
 </project>

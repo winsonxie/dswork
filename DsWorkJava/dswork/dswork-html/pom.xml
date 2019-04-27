@@ -2,7 +2,5 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent><groupId>com.github.skeychen</groupId><artifactId>dswork-parent</artifactId><version>8.8.6</version></parent>
 	<artifactId>dswork-html</artifactId>
-	<build>
-		<directory>/Workspaces/jar/pom/dswork-html</directory>
-	</build>
+	<build><directory>/Workspaces/jar/pom/dswork-html</directory></build>
 </project>

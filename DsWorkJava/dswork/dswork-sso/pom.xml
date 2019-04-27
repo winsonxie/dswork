@@ -7,7 +7,5 @@
 		<dependency><groupId>com.google.code.gson</groupId><artifactId>gson</artifactId></dependency>
 		<dependency><groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId><scope>provided</scope></dependency>
 	</dependencies>
-	<build>
-		<directory>/Workspaces/jar/pom/dswork-sso</directory>
-	</build>
+	<build><directory>/Workspaces/jar/pom/dswork-sso</directory></build>
 </project>

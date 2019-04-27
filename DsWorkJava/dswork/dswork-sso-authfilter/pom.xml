@@ -6,7 +6,5 @@
 		<dependency><groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId><scope>provided</scope></dependency>
 		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-sso</artifactId></dependency>
 	</dependencies>
-	<build>
-		<directory>/Workspaces/jar/pom/dswork-sso-authfilter</directory>
-	</build>
+	<build><directory>/Workspaces/jar/pom/dswork-sso-authfilter</directory></build>
 </project>
