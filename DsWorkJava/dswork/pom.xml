@@ -60,11 +60,12 @@
 		<developerConnection>scm:git:git://github.com/skeychen/dswork</developerConnection>
 		<url>https://github.com/skeychen/dswork</url>
 	</scm>
-
+<!--
 	<build>
+		<sourceDirectory>./</sourceDirectory>
 		<directory>/Workspaces/jar/pom/dswork-parent</directory>
 	</build>
-	
+-->
 	<dependencyManagement>
 		<dependencies>
 			<dependency><groupId>commons-collections</groupId><artifactId>commons-collections</artifactId><version>3.2.2</version></dependency>
