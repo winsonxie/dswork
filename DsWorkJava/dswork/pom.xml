@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.skeychen</groupId>
 	<artifactId>dswork-parent</artifactId>
-	<version>8.8.6</version>
+	<version>${v}</version>
 	<packaging>pom</packaging>
 	<name>dswork-framework</name>
 	<description>dswork-framework</description>
