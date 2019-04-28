@@ -1,10 +1,10 @@
 特别说明：
-	需要前置versions:update-child-modules用于把所有子模块的版本号改成和父模块一致
+	需要前置-N versions:update-child-modules用于把所有子模块的版本号改成和父模块一致
 	快照版本：0.0.0-SNAPSHOT
 	父项目需要修改版本号，默认值是${v}，不能发布
 	
 正式版本发布
-	versions:update-child-modules clean deploy
+	-N versions:update-child-modules clean deploy
 
 正式版本仅发布到本地
-	versions:update-child-modules clean install
+	-N versions:update-child-modules clean install
