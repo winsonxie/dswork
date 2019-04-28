@@ -1,5 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.skeychen</groupId>
 	<parent><groupId>com.github.skeychen</groupId><artifactId>dswork-parent</artifactId><version>${v}</version></parent>
 	<artifactId>dswork-java</artifactId>
 	<packaging>pom</packaging>
@@ -32,12 +33,12 @@
 		<dependency><groupId>org.mybatis</groupId><artifactId>mybatis       </artifactId></dependency>
 		<dependency><groupId>org.mybatis</groupId><artifactId>mybatis-spring</artifactId></dependency>
 		
-		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-core  </artifactId></dependency>
-		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-http  </artifactId></dependency>
-		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-jdbc  </artifactId></dependency>
-		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-ognl  </artifactId></dependency>
-		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-spring</artifactId></dependency>
-		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-config</artifactId></dependency>
+		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-core  </artifactId><version>${version}</version></dependency>
+		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-http  </artifactId><version>${version}</version></dependency>
+		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-jdbc  </artifactId><version>${version}</version></dependency>
+		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-ognl  </artifactId><version>${version}</version></dependency>
+		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-spring</artifactId><version>${version}</version></dependency>
+		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-config</artifactId><version>${version}</version></dependency>
 	</dependencies>
 
 </project>
