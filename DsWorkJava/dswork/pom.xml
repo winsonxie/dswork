@@ -144,7 +144,7 @@
 								<addMavenDescriptor>false</addMavenDescriptor>
 								<manifestEntries>
 									<Implementation-Title>${project.artifactId}</Implementation-Title>
-									<Implementation-Version>${v}</Implementation-Version>
+									<Implementation-Version>${version}</Implementation-Version>
 									<Built-By>skey(249725997@qq.com)</Built-By>
 									<X-Compile-Source-JDK>1.8</X-Compile-Source-JDK>
 									<Build-Jdk>1.8.0_201</Build-Jdk>
