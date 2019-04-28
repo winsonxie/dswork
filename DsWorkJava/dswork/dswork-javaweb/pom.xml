@@ -38,14 +38,14 @@
 		<dependency><groupId>org.mybatis</groupId><artifactId>mybatis       </artifactId></dependency>
 		<dependency><groupId>org.mybatis</groupId><artifactId>mybatis-spring</artifactId></dependency>
 		
-		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-core    </artifactId><version>${version}</version></dependency>
-		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-http    </artifactId><version>${version}</version></dependency>
-		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-jdbc    </artifactId><version>${version}</version></dependency>
-		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-ognl    </artifactId><version>${version}</version></dependency>
-		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-spring  </artifactId><version>${version}</version></dependency>
-		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-web     </artifactId><version>${version}</version></dependency>
-		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-config  </artifactId><version>${version}</version></dependency>
-		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-mvc     </artifactId><version>${version}</version></dependency>
+		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-core    </artifactId><version>${project.version}</version></dependency>
+		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-http    </artifactId><version>${project.version}</version></dependency>
+		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-jdbc    </artifactId><version>${project.version}</version></dependency>
+		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-ognl    </artifactId><version>${project.version}</version></dependency>
+		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-spring  </artifactId><version>${project.version}</version></dependency>
+		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-web     </artifactId><version>${project.version}</version></dependency>
+		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-config  </artifactId><version>${project.version}</version></dependency>
+		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-mvc     </artifactId><version>${project.version}</version></dependency>
 		
 		
 	</dependencies>
