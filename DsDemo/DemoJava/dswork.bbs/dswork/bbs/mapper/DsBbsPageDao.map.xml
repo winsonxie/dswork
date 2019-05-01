@@ -7,7 +7,7 @@
 
 	<insert id="insert" parameterType="dswork.bbs.model.DsBbsPage">
 		<selectKey resultType="Long" order="AFTER" keyProperty="id">
-			<include refid="common.rowid" />
+			<include refid="dswork.rowid" />
 		</selectKey>
 		insert into DS_BBS_PAGE
 		(SITEID, FORUMID, USERID, TITLE, URL, SUMMARY, ISESSENCE, ISTOP, METAKEYWORDS, METADESCRIPTION, RELEASEUSER, RELEASETIME, OVERTIME, LASTUSER, LASTTIME, NUMPV, NUMHT, CONTENT)
@@ -81,7 +81,7 @@
 	</select>
 
 	<select id="query" resultMap="result">
-		select <include refid="common.top" /><include refid="columns" /> from DS_BBS_PAGE
+		select <include refid="dswork.top" /><include refid="columns" /> from DS_BBS_PAGE
 		<include refid="dynamicWhere" />
 		order by ISTOP desc, ID desc
 	</select>

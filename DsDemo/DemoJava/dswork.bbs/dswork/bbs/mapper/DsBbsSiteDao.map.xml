@@ -7,7 +7,7 @@
 
 <insert id="insert" parameterType="dswork.bbs.model.DsBbsSite">
 	<selectKey resultType="Long" order="AFTER" keyProperty="id">
-		<include refid="common.rowid" />
+		<include refid="dswork.rowid" />
 	</selectKey>
 	insert into DS_BBS_SITE
 	(OWN, NAME, FOLDER, URL, IMG, VIEWSITE)

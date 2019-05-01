@@ -7,7 +7,7 @@
 
 <insert id="insert" parameterType="dswork.bbs.model.DsBbsForum">
 	<selectKey resultType="Long" order="AFTER" keyProperty="id">
-		<include refid="common.rowid" />
+		<include refid="dswork.rowid" />
 	</selectKey>
 	insert into DS_BBS_FORUM
 	(PID, SITEID, NAME, SUMMARY, STATUS, SEQ, VIEWSITE)
@@ -69,7 +69,7 @@
 </select>
 
 <select id="query" resultMap="result">
-	select <include refid="common.top" /><include refid="columns" /> from DS_BBS_FORUM
+	select <include refid="dswork.top" /><include refid="columns" /> from DS_BBS_FORUM
 	<include refid="dynamicWhere" /> order by SEQ, ID
 </select>
 
