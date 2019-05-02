@@ -146,6 +146,7 @@ public class MyTomcat
 		tomcat.setBaseDir(baseDir);
 		tomcat.setHostname(hostname);
 		org.apache.juli.ClassLoaderLogManager.getLoggingMXBean().setLoggerLevel("", "ALL");
+		//tomcat.getServer().setParentClassLoader(Thread.currentThread().getContextClassLoader());
 		for(Map.Entry<String, String> x : map.entrySet())
 		{
 			System.out.println(x.getKey() + "=" + x.getValue());

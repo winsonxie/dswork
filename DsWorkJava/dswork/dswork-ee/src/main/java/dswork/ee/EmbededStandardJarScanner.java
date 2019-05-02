@@ -1,13 +1,11 @@
 package dswork.ee;
 
-
 import java.io.File;
 import java.io.IOException;
-import java.net.JarURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.URLConnection;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -16,39 +14,31 @@ import javax.servlet.ServletContext;
 
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
+import org.apache.tomcat.Jar;
 import org.apache.tomcat.JarScanFilter;
 import org.apache.tomcat.JarScanType;
 import org.apache.tomcat.JarScanner;
 import org.apache.tomcat.JarScannerCallback;
 import org.apache.tomcat.util.ExceptionUtils;
+import org.apache.tomcat.util.buf.UriUtil;
 import org.apache.tomcat.util.res.StringManager;
 import org.apache.tomcat.util.scan.Constants;
-import org.apache.tomcat.util.scan.JarFileUrlJar;
+import org.apache.tomcat.util.scan.JarFactory;
 import org.apache.tomcat.util.scan.StandardJarScanFilter;
-import org.apache.tomcat.util.scan.UrlJar;
 
-/**
- * <pre>
- * When boot by spring boot loader, WebappClassLoader.getParent() is LaunchedURLClassLoader,
- * Just need to scan WebappClassLoader and LaunchedURLClassLoader.
- * When boot in IDE, WebappClassLoader.getParent() is AppClassLoader,
- * Just need to scan WebappClassLoader and AppClassLoader.
- * </pre>
- * @author hengyunabc, zollty, skey
- */
 public class EmbededStandardJarScanner implements JarScanner
 {
 	private static final Log log = LogFactory.getLog(EmbededStandardJarScanner.class);
-	private static String prevScan = "";
-	/**
-	 * The string resources for this package.
-	 */
 	private static final StringManager sm = StringManager.getManager(Constants.Package);
-	/**
-	 * Controls the classpath scanning extension.
-	 */
 	private boolean scanClassPath = true;
 
+	public EmbededStandardJarScanner()
+	{
+		StandardJarScanFilter f = new StandardJarScanFilter();
+		f.setDefaultTldScan(false);
+		f.setTldScan("jstl-1.2.jar");
+		jarScanFilter = f;
+	}
 	public boolean isScanClassPath()
 	{
 		return scanClassPath;
@@ -58,7 +48,7 @@ public class EmbededStandardJarScanner implements JarScanner
 	{
 		this.scanClassPath = scanClassPath;
 	}
-	private boolean scanAllFiles = false;
+	private boolean scanAllFiles = true;
 
 	public boolean isScanAllFiles()
 	{
@@ -91,7 +81,7 @@ public class EmbededStandardJarScanner implements JarScanner
 	{
 		this.scanBootstrapClassPath = scanBootstrapClassPath;
 	}
-	private JarScanFilter jarScanFilter = new StandardJarScanFilter();
+	private JarScanFilter jarScanFilter;
 
 	@Override
 	public JarScanFilter getJarScanFilter()
@@ -104,32 +94,13 @@ public class EmbededStandardJarScanner implements JarScanner
 	{
 		this.jarScanFilter = jarScanFilter;
 	}
-	/**
-	 * Scan the provided ServletContext and class loader for JAR files. Each JAR
-	 * file found will be passed to the callback handler to be processed.
-	 * @param scanType
-	 *        The type of JAR scan to perform. This is passed to the filter
-	 *        which uses it to determine how to filter the results
-	 * @param context
-	 *        The ServletContext - used to locate and access WEB-INF/lib
-	 * @param callback
-	 *        The handler to process any JARs found
-	 */
+
 	@Override
 	public void scan(JarScanType scanType, ServletContext context, JarScannerCallback callback)
 	{
 		if(log.isTraceEnabled())
 		{
 			log.trace(sm.getString("jarScan.webinflibStart"));
-		}
-		if(prevScan.equals(context.getContextPath()))
-		{
-			return;
-		}
-		else
-		{
-			prevScan = context.getContextPath();
-			System.out.println(prevScan + " loaded jar");
 		}
 		Set<URL> processedURLs = new HashSet<>();
 		// Scan WEB-INF/lib
@@ -142,7 +113,6 @@ public class EmbededStandardJarScanner implements JarScanner
 				String path = it.next();
 				if(path.endsWith(Constants.JAR_EXT) && getJarScanFilter().check(scanType, path.substring(path.lastIndexOf('/') + 1)))
 				{
-					// Need to scan this JAR
 					if(log.isDebugEnabled())
 					{
 						log.debug(sm.getString("jarScan.webinflibJarScan", path));
@@ -152,7 +122,7 @@ public class EmbededStandardJarScanner implements JarScanner
 					{
 						url = context.getResource(path);
 						processedURLs.add(url);
-						process(scanType, callback, url, path, true);
+						process(scanType, callback, url, path, true, null);
 					}
 					catch(IOException e)
 					{
@@ -169,36 +139,31 @@ public class EmbededStandardJarScanner implements JarScanner
 			}
 		}
 		// Scan WEB-INF/classes
-		if(isScanAllDirectories())
+		try
 		{
-			try
+			URL webInfURL = context.getResource(Constants.WEB_INF_CLASSES);// "/WEB-INF/classes"
+			if(webInfURL != null)
 			{
-				URL url = context.getResource("/WEB-INF/classes/META-INF");
-				if(url != null)
+				processedURLs.add(webInfURL);
+				if(isScanAllDirectories())
 				{
-					// Class path scanning will look at WEB-INF/classes since
-					// that is the URL that Tomcat's web application class
-					// loader returns. Therefore, it is this URL that needs to
-					// be added to the set of processed URLs.
-					URL webInfURL = context.getResource("/WEB-INF/classes");
-					if(webInfURL != null)
+					URL url = context.getResource(Constants.WEB_INF_CLASSES + "/META-INF");
+					if(url != null)
 					{
-						processedURLs.add(webInfURL);
-					}
-					try
-					{
-						callback.scanWebInfClasses();
-					}
-					catch(IOException e)
-					{
-						log.warn(sm.getString("jarScan.webinfclassesFail"), e);
+						try
+						{
+							callback.scanWebInfClasses();
+						}
+						catch(IOException e)
+						{
+							log.warn(sm.getString("jarScan.webinfclassesFail"), e);
+						}
 					}
 				}
 			}
-			catch(MalformedURLException e)
-			{
-				// Ignore
-			}
+		}
+		catch(MalformedURLException e)
+		{
 		}
 		// Scan the classpath
 		if(isScanClassPath())
@@ -207,24 +172,16 @@ public class EmbededStandardJarScanner implements JarScanner
 			{
 				log.trace(sm.getString("jarScan.classloaderStart"));
 			}
-			ClassLoader classLoader = context.getClassLoader();
 			ClassLoader stopLoader = null;
-			if(classLoader.getParent() != null)
+			if(!isScanBootstrapClassPath())
 			{
-				// there are two cases:
-				// 1. boot by spring boot loader
-				// 2. boot in IDE
-				// in two case, just need to scan WebappClassLoader and
-				// WebappClassLoader.getParent()
-				stopLoader = classLoader.getParent().getParent();
+				stopLoader = ClassLoader.getSystemClassLoader().getParent();
 			}
-//			classLoader = classLoader.getParent();// 跳过运行embed级别的父类
-//			if(classLoader != null && classLoader.getParent() != null)
-//			{
-//				// classLoader = classLoader.getParent();// 跳过运行embed级别的父类
-//			}
-			// JARs are treated as application provided until the common class
-			// loader is reached.
+			ClassLoader classLoader = context.getClassLoader();
+			// if(classLoader.getParent() != null)
+			// {
+			// stopLoader = classLoader.getParent().getParent();
+			// }
 			boolean isWebapp = true;
 			while(classLoader != null && classLoader != stopLoader)
 			{
@@ -239,10 +196,6 @@ public class EmbededStandardJarScanner implements JarScanner
 							continue;
 						}
 						ClassPathEntry cpe = new ClassPathEntry(urls[i]);
-						// JARs are scanned unless the filter says not to.
-						// Directories are scanned for pluggability scans or
-						// if scanAllDirectories is enabled unless the
-						// filter says not to.
 						if((cpe.isJar() || scanType == JarScanType.PLUGGABILITY || isScanAllDirectories()) && getJarScanFilter().check(scanType, cpe.getName()))
 						{
 							if(log.isDebugEnabled())
@@ -251,7 +204,7 @@ public class EmbededStandardJarScanner implements JarScanner
 							}
 							try
 							{
-								process(scanType, callback, urls[i], null, isWebapp);
+								process(scanType, callback, urls[i], null, isWebapp, null);
 							}
 							catch(IOException ioe)
 							{
@@ -260,7 +213,6 @@ public class EmbededStandardJarScanner implements JarScanner
 						}
 						else
 						{
-							// JAR / directory has been skipped
 							if(log.isTraceEnabled())
 							{
 								log.trace(sm.getString("jarScan.classloaderJarNoScan", urls[i]));
@@ -273,74 +225,57 @@ public class EmbededStandardJarScanner implements JarScanner
 		}
 	}
 
-	/*
-	 * Scan a URL for JARs with the optional extensions to look at all files and all directories.
-	 */
-	private void process(JarScanType scanType, JarScannerCallback callback, URL url, String webappPath, boolean isWebapp) throws IOException
+	private void process(JarScanType scanType, JarScannerCallback callback, URL url, String webappPath, boolean isWebapp, Deque<URL> classPathUrlsToProcess) throws IOException
 	{
 		if(log.isTraceEnabled())
 		{
 			log.trace(sm.getString("jarScan.jarUrlStart", url));
 		}
-		URLConnection conn = url.openConnection();
 		String urlStr = url.toString();
-		if(conn instanceof JarURLConnection)
+		System.err.println("===scan:" + urlStr);// 为了变红而已
+		if("jar".equals(url.getProtocol()) || url.getPath().endsWith(Constants.JAR_EXT))
 		{
-			System.err.println("-----scan UrlJar: " + urlStr);// 为了变红而已
-			callback.scan(new UrlJar(conn.getURL()), webappPath, isWebapp);
-			// callback.scan((JarURLConnection) conn, webappPath, isWebapp);
-		}
-		else
-		{
-			System.err.println("-----scan: " + urlStr);// 为了变红而已
-			if(urlStr.startsWith("file:") || urlStr.startsWith("http:") || urlStr.startsWith("https:"))
+			try (Jar jar = JarFactory.newInstance(url))
 			{
-				if(urlStr.endsWith(Constants.JAR_EXT))
+				callback.scan(jar, webappPath, isWebapp);
+			}
+		}
+		else if("file".equals(url.getProtocol()))
+		{
+			File f;
+			try
+			{
+				f = new File(url.toURI());
+				if(f.isFile() && isScanAllFiles())
 				{
-					// URL jarURL = new URL("jar:" + urlStr + "!/");
-					// callback.scan((JarURLConnection) jarURL.openConnection(), webappPath, isWebapp);
-					// System.out.println("-----" + jarURL);
-					// callback.scan(new UrlJar(jarURL), webappPath, isWebapp);
-					callback.scan(new JarFileUrlJar(url, false), webappPath, isWebapp);
-				}
-				else
-				{
-					File f;
-					try
+					URL jarURL = UriUtil.buildJarUrl(f);
+					try (Jar jar = JarFactory.newInstance(jarURL))
 					{
-						f = new File(url.toURI());
-						if(f.isFile() && isScanAllFiles())
-						{
-							// Treat this file as a JAR
-							URL jarURL = new URL("jar:" + urlStr + "!/");
-							// callback.scan((JarURLConnection) jarURL.openConnection(), webappPath, isWebapp);
-							callback.scan(new UrlJar(jarURL), webappPath, isWebapp);
-						}
-						else if(f.isDirectory())
-						{
-							if(scanType == JarScanType.PLUGGABILITY)
-							{
-								callback.scan(f, webappPath, isWebapp);
-							}
-							else
-							{
-								File metainf = new File(f.getAbsoluteFile() + File.separator + "META-INF");
-								if(metainf.isDirectory())
-								{
-									callback.scan(f, webappPath, isWebapp);
-								}
-							}
-						}
-					}
-					catch(Throwable t)
-					{
-						ExceptionUtils.handleThrowable(t);
-						// Wrap the exception and re-throw
-						IOException ioe = new IOException();
-						ioe.initCause(t);
-						throw ioe;
+						callback.scan(jar, webappPath, isWebapp);
 					}
 				}
+				else if(f.isDirectory())
+				{
+					if(scanType == JarScanType.PLUGGABILITY)
+					{
+						callback.scan(f, webappPath, isWebapp);
+					}
+					else
+					{
+						File metainf = new File(f.getAbsoluteFile() + File.separator + "META-INF");
+						if(metainf.isDirectory())
+						{
+							callback.scan(f, webappPath, isWebapp);
+						}
+					}
+				}
+			}
+			catch(Throwable t)
+			{
+				ExceptionUtils.handleThrowable(t);
+				IOException ioe = new IOException();
+				ioe.initCause(t);
+				throw ioe;
 			}
 		}
 	}
