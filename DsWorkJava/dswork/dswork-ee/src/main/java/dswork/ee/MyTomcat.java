@@ -150,13 +150,13 @@ public class MyTomcat
 		for(Map.Entry<String, String> x : map.entrySet())
 		{
 			System.out.println(x.getKey() + "=" + x.getValue());
-			org.apache.catalina.Context c = tomcat.addWebapp(tomcat.getHost(), x.getKey(), x.getValue(), (LifecycleListener) new EmbededContextConfig());
+			org.apache.catalina.Context c = tomcat.addWebapp(tomcat.getHost(), x.getKey(), x.getValue(), (LifecycleListener) new EmbedContextConfig());
 			if(contextDir != null && contextDir.isFile())
 			{
 				c.setConfigFile(contextDir.toURI().toURL());
 			}
 			// c.setParentClassLoader(Thread.currentThread().getContextClassLoader());
-			c.setJarScanner(new EmbededStandardJarScanner());
+			c.setJarScanner(new EmbedJarScanner());
 		}
 		tomcat.start();
 		if(await)

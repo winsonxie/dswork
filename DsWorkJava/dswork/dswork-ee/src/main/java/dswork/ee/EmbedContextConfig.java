@@ -14,25 +14,10 @@ import org.apache.tomcat.util.descriptor.web.WebXml;
 import org.apache.tomcat.Jar;
 import org.apache.tomcat.util.scan.JarFactory;
 
-/**
- * <pre>
- * Support jar in jar. when boot by spring boot loader, 
- * jar url will be: fat.jar!/lib/!/test.jar!/ .
- * </pre>
- * 
- * @author hengyunabc, zollty
- */
-public class EmbededContextConfig extends ContextConfig
+public class EmbedContextConfig extends ContextConfig
 {
-	private static final Log log = LogFactory.getLog(EmbededContextConfig.class);
+	private static final Log log = LogFactory.getLog(EmbedContextConfig.class);
 
-	/**
-	 * Scan JARs that contain web-fragment.xml files that will be used to
-	 * configure this application to see if they also
-	 * contain static resources. If static resources are found,
-	 * add them to the context. Resources are added in
-	 * web-fragment.xml priority order.
-	 */
 	@Override
 	protected void processResourceJARs(Set<WebXml> fragments)
 	{
@@ -44,9 +29,6 @@ public class EmbededContextConfig extends ContextConfig
 				String urlString = url.toString();
 				if(isInsideNestedJar(urlString))
 				{
-					// It's a nested jar but we now don't want the suffix
-					// because Tomcat is going to try and locate it
-					// as a root URL (not the resource inside it)
 					urlString = urlString.substring(0, urlString.length() - 2);
 				}
 				url = new URL(urlString);

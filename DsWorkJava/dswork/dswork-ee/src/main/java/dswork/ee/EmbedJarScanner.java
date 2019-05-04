@@ -26,13 +26,13 @@ import org.apache.tomcat.util.scan.Constants;
 import org.apache.tomcat.util.scan.JarFactory;
 import org.apache.tomcat.util.scan.StandardJarScanFilter;
 
-public class EmbededStandardJarScanner implements JarScanner
+public class EmbedJarScanner implements JarScanner
 {
 	private static final Log log = LogFactory.getLog(EmbededStandardJarScanner.class);
 	private static final StringManager sm = StringManager.getManager(Constants.Package);
 	private boolean scanClassPath = true;
 
-	public EmbededStandardJarScanner()
+	public EmbedJarScanner()
 	{
 		StandardJarScanFilter f = new StandardJarScanFilter();
 		f.setDefaultTldScan(false);
