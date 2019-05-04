@@ -28,7 +28,7 @@ import org.apache.tomcat.util.scan.StandardJarScanFilter;
 
 public class EmbedJarScanner implements JarScanner
 {
-	private static final Log log = LogFactory.getLog(EmbededStandardJarScanner.class);
+	private static final Log log = LogFactory.getLog(EmbedJarScanner.class);
 	private static final StringManager sm = StringManager.getManager(Constants.Package);
 	private boolean scanClassPath = true;
 
