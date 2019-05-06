@@ -314,7 +314,7 @@ public class AuthGlobal
 	 * @param access_token 用户凭证
 	 * @return JsonResult&lt;IUser&gt;
 	 */
-	public static JsonResult<IUser> getUserUserinfo(String openid, String access_token)
+	private static JsonResult<IUser> _getUserUserinfo(String openid, String access_token)
 	{
 		HttpUtil h = getHttp("/user/userinfo").addForm("openid", openid).addForm("access_token", access_token);
 		JsonResult<IUser> result = null;
@@ -335,5 +335,25 @@ public class AuthGlobal
 			log.error("getUserUserinfo:url=" + h.getUrl() + ", json:" + v + ", msg=" + e.getMessage());
 		}
 		return result;
+	}
+
+	/**
+	 * 前端账户信息
+	 * @param openid 用户标识
+	 * @param access_token 用户凭证
+	 * @return JsonResult&lt;IUser&gt;
+	 */
+	public static JsonResult<IUser> getUserUserinfo(String openid, String access_token)
+	{
+		JsonResult<IUser> result = null;
+		for(int i = 0; i < 3; i++)// 3次重试机制
+		{
+			result = _getUserUserinfo(openid, access_token);
+			if(result != null)
+			{
+				return result;
+			}
+		}
+		return null;
 	}
 }
