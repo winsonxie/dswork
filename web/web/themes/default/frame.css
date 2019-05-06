@@ -193,7 +193,7 @@ div.line{display:block;width:1px;height:3px;margin:0px;padding:0px;overflow:hidd
 .queryTable tr{height:30px;}
 .queryTable td{background-color:#ffffff;padding:0em;}
 .queryTable td.title{text-align:right;padding-left:1px;}
-.queryTable td.input{text-align:left;padding:2px 0 2px 1px;line-height:24px;}
+.queryTable td.input{text-align:left;padding:2px 0 2px 1px;line-height:22px;}
 .queryTable td.query{text-align:center;}
 .queryTable input.text{width:80px;}
 .queryTable input.button{height:20px;padding:0em;margin:0em;width:38px;}
