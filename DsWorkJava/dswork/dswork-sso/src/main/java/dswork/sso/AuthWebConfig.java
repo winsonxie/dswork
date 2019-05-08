@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class AuthWebConfig
 {
+	static org.slf4j.Logger log = AuthGlobal.log;
 	public static boolean use = false;
 	private static String str(java.util.Properties C, String key, String bakkey)
 	{
@@ -196,7 +197,7 @@ public class AuthWebConfig
 		return false;
 	}
 	
-	public static String[] getSSOTicket(HttpServletRequest request)
+	public static String[] getSSOTicket(HttpServletRequest request, String userjson)
 	{
 		String ssoticket = request.getParameter(SSOTICKET);// 参数优先
 		if(ssoticket != null)
@@ -213,6 +214,17 @@ public class AuthWebConfig
 		}
 		if(ssoticket != null && ssoticket.length() > 10)
 		{
+			if(userjson != null)
+			{
+				if(userjson.contains("\"ssoticket\":\"" + ssoticket + "\""))
+				{
+					return null;// 不需要重新登录
+				}
+				if(log.isDebugEnabled())
+				{
+					log.debug("ssoticket不相等，需要更新用户");
+				}
+			}
 			if(ssoticket.startsWith("-"))
 			{
 				String[] arr = ssoticket.substring(1).split("-", 2);

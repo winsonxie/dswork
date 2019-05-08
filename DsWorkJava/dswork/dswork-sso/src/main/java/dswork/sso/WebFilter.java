@@ -38,9 +38,10 @@ public class WebFilter implements Filter
 
 		HttpSession session = request.getSession();
 		
-		Object ouser = session.getAttribute(LOGINER);// 当前登录用户
+		Object o = session.getAttribute(LOGINER);// 当前登录用户
+		String ouser = o == null ? null : String.valueOf(o);
 		String relativeURI = request.getServletPath();// 相对地址
-		String[] arr = AuthWebConfig.getSSOTicket(request);// 获取是否存在ticket信息
+		String[] arr = AuthWebConfig.getSSOTicket(request, ouser);// 获取是否存在需要登录的ticket
 		if(log.isDebugEnabled())
 		{
 			StringBuilder sb = new StringBuilder(126);
@@ -58,73 +59,45 @@ public class WebFilter implements Filter
 		}
 		if(arr != null)
 		{
+			if(ouser != null)
+			{
+				ouser = null;// 需要登录
+				session.removeAttribute(LOGINER);// 清除掉原登录信息
+			}
+			
 			String openid = arr[0];
 			String access_token = arr[1];
 			IUser user = null;
-			if(ouser != null)
+			try
 			{
-				try
+				JsonResult<IUser> result = AuthFactory.getUserUserinfo(openid, access_token);
+				if(result.getCode() == AuthGlobal.CODE_001)
 				{
-					user = gson.fromJson(String.valueOf(ouser), IUser.class);
-					if(user != null)
-					{
-						if(!arr[2].equals(user.getSsoticket()))
-						{
-							ouser = null;// 不相等需要 更新用户
-							if(log.isDebugEnabled())
-							{
-								log.debug("ticket不相等，需要更新用户");
-							}
-						}
-					}
-					else
-					{
-						if(log.isErrorEnabled())
-						{
-							log.error("登录错误，对象转化失败：" + String.valueOf(ouser));
-						}
-						// 这里原则上是不需要重新登录，只需要提示稍候再试
-					}
+					user = result.getData();
 				}
-				catch(Exception e)
+				if(SSOLoginServlet.refreshUser(session, user, openid, access_token))
 				{
-					log.error(e.getMessage());
-					ouser = null;// 用户数据异常，重新获取
+					try
+					{
+						chain.doFilter(request, response);
+					}
+					catch(Exception e)
+					{
+					}
+					return;
 				}
 			}
-			if(ouser == null)
+			catch(Exception e)
 			{
-				try
-				{
-					JsonResult<IUser> result = AuthFactory.getUserUserinfo(openid, access_token);
-					if(result.getCode() == AuthGlobal.CODE_001)
-					{
-						user = result.getData();
-					}
-					if(SSOLoginServlet.refreshUser(session, user, openid, access_token))
-					{
-						try
-						{
-							chain.doFilter(request, response);
-						}
-						catch(Exception e)
-						{
-						}
-						return;
-					}
-				}
-				catch(Exception e)
-				{
-					log.error(e.getMessage());
-					// 发生在result为null的情况
-					response.setCharacterEncoding("UTF-8");
-					response.setContentType("application/json;charset=UTF-8");
-					response.setHeader("P3P", "CP=CAO PSA OUR");
-					response.setHeader("Access-Control-Allow-Origin", "*");
-					response.getWriter().print("{\"code\":500,\"msg\":\"未连接上认证接口，请稍候再试\"}");// 401未登录
-					return;// 应该提示稍候再试
-					// 拿不到用户信息，但有可能不是没有登录
-				}
+				log.error(e.getMessage());
+				// 发生在result为null的情况
+				response.setCharacterEncoding("UTF-8");
+				response.setContentType("application/json;charset=UTF-8");
+				response.setHeader("P3P", "CP=CAO PSA OUR");
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				response.getWriter().print("{\"code\":500,\"msg\":\"未连接上认证接口，请稍候再试\"}");// 401未登录
+				return;// 应该提示稍候再试
+				// 拿不到用户信息，但有可能不是没有登录
 			}
 		}
 		if(ouser != null)// 已登录
