@@ -38,16 +38,24 @@ public class WebFilter implements Filter
 
 		HttpSession session = request.getSession();
 		
-		Object ouser = session.getAttribute(LOGINER);
-		
+		Object ouser = session.getAttribute(LOGINER);// 当前登录用户
 		String relativeURI = request.getServletPath();// 相对地址
+		String[] arr = AuthWebConfig.getSSOTicket(request);// 获取是否存在ticket信息
 		if(log.isDebugEnabled())
 		{
-			log.debug("当前访问地址：" + request.getContextPath() + relativeURI);
-			log.debug(ouser != null ? "当前已登录" + String.valueOf(ouser) : "当前未登录");
+			StringBuilder sb = new StringBuilder(126);
+			sb.append("当前访问地址：" + request.getContextPath() + relativeURI);
+			sb.append(ouser != null ? "，已登录" + String.valueOf(ouser) : "，未登录");
+			if(arr != null)
+			{
+				sb.append("，sso-ticket：" + arr[2]);
+			}
+			else
+			{
+				sb.append("，取不到sso-ticket");
+			}
+			log.debug(sb.toString());
 		}
-		
-		String[] arr = AuthWebConfig.getSSOTicket(request);// 获取是否存在ticket信息
 		if(arr != null)
 		{
 			String openid = arr[0];
@@ -58,13 +66,24 @@ public class WebFilter implements Filter
 				try
 				{
 					user = gson.fromJson(String.valueOf(ouser), IUser.class);
-					if(!arr[2].equals(user.getSsoticket()))
+					if(user != null)
 					{
-						ouser = null;// 相等不需要 更新用户
-						if(log.isDebugEnabled())
+						if(!arr[2].equals(user.getSsoticket()))
 						{
-							log.debug("ticket不相等，需要更新用户");
+							ouser = null;// 不相等需要 更新用户
+							if(log.isDebugEnabled())
+							{
+								log.debug("ticket不相等，需要更新用户");
+							}
 						}
+					}
+					else
+					{
+						if(log.isErrorEnabled())
+						{
+							log.error("登录错误，对象转化失败：" + String.valueOf(ouser));
+						}
+						// 这里原则上是不需要重新登录，只需要提示稍候再试
 					}
 				}
 				catch(Exception e)
@@ -97,8 +116,15 @@ public class WebFilter implements Filter
 				catch(Exception e)
 				{
 					log.error(e.getMessage());
+					// 发生在result为null的情况
+					response.setCharacterEncoding("UTF-8");
+					response.setContentType("application/json;charset=UTF-8");
+					response.setHeader("P3P", "CP=CAO PSA OUR");
+					response.setHeader("Access-Control-Allow-Origin", "*");
+					response.getWriter().print("{\"code\":500,\"msg\":\"未连接上认证接口，请稍候再试\"}");// 401未登录
+					return;// 应该提示稍候再试
+					// 拿不到用户信息，但有可能不是没有登录
 				}
-				ouser = null;// 失败清空
 			}
 		}
 		if(ouser != null)// 已登录
@@ -116,8 +142,6 @@ public class WebFilter implements Filter
 		{
 			session.removeAttribute(LOGINER);// 没有用户，清一下session
 		}
-		// String relativeURI = request.getRequestURI();// 相对地址
-		// if(request.getContextPath().length() > 0){relativeURI = relativeURI.replaceFirst(request.getContextPath(), "");}
 		if(AuthWebConfig.containsIgnoreURL(relativeURI))// 判断是否为无需验证页面
 		{
 			try
@@ -129,7 +153,6 @@ public class WebFilter implements Filter
 			}
 			return;
 		}
-		
 		if("XMLHttpRequest".equals(String.valueOf(request.getHeader("X-Requested-With"))))
 		{
 			response.setCharacterEncoding("UTF-8");

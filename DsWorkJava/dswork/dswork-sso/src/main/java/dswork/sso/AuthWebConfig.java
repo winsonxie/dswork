@@ -198,15 +198,18 @@ public class AuthWebConfig
 	
 	public static String[] getSSOTicket(HttpServletRequest request)
 	{
-		String ssoticket = getValueByCookie(request, SSOTICKET);// cookie优先
-		if(ssoticket == null)
+		String ssoticket = request.getParameter(SSOTICKET);// 参数优先
+		if(ssoticket != null)
 		{
-			ssoticket = request.getParameter(SSOTICKET);// 参数次选优先
 			String qstr = request.getQueryString();
-			if(qstr != null && !qstr.contains("ssoticket="+ssoticket))
+			if(qstr == null || !qstr.contains("ssoticket="+ssoticket))
 			{
-				ssoticket = null;
+				ssoticket = getValueByCookie(request, SSOTICKET);// cookie次之
 			}
+		}
+		else
+		{
+			ssoticket = getValueByCookie(request, SSOTICKET);// cookie次之
 		}
 		if(ssoticket != null && ssoticket.length() > 10)
 		{
