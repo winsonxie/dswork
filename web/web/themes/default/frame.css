@@ -137,18 +137,18 @@ img{border:0;vertical-align:middle;-ms-interpolation-mode:bicubic;}
 .menuTool-bar     {background:url(img/menu.png) no-repeat 0px -650px!important;}
 .menuTool-pie     {background:url(img/menu.png) no-repeat 0px -675px!important;}
 
-input.text,input[type="text"],input[type="password"],select,textarea{padding:1px;box-sizing:border-box;border:solid 1px #c2c2c2;line-height:1.42857;
+input.text,input[type="text"],input[type="password"],input[type="number"],select,textarea{padding:1px;box-sizing:border-box;border:solid 1px #c2c2c2;line-height:1.42857;
     -webkit-transition:all 0.2s linear 0s;
        -moz-transition:all 0.2s linear 0s;
          -o-transition:all 0.2s linear 0s;
             transition:all 0.2s linear 0s;}
-input.text,input[type="text"],input[type="password"],select{height:24px;vertical-align:middle;line-height:1.42857!important;}
+input.text,input[type="text"],input[type="password"],input[type="number"],select{height:24px;vertical-align:middle;line-height:1.42857!important;}
 textarea{resize:none;padding:2px;}
-input.text:hover,input[type="text"]:hover,input[type="password"]:hover,select:hover,textarea:hover{border:#0192d0 solid 1px;}
-input.text:focus,input[type="text"]:focus,input[type="password"]:focus,select:focus,textarea:focus{border-color:rgba(82,168,236,0.8);box-shadow:0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);}
+input.text:hover,input[type="text"]:hover,input[type="password"]:hover,input[type="number"]:hover,select:hover,textarea:hover{border:#0192d0 solid 1px;}
+input.text:focus,input[type="text"]:focus,input[type="password"]:focus,input[type="number"]:focus,select:focus,textarea:focus{border-color:rgba(82,168,236,0.8);box-shadow:0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);}
 
-input.text.disabled,input[type="text"].disabled,input[type="password"].disabled,select.disabled,textarea.disabled,
-input.text.disabled:focus,input[type="text"].disabled:focus,input[type="password"].disabled:focus,select.disabled:focus,textarea.disabled:focus
+input.text.disabled,input[type="text"].disabled,input[type="password"].disabled,input[type="number"].disabled,select.disabled,textarea.disabled,
+input.text.disabled:focus,input[type="text"].disabled:focus,input[type="password"].disabled:focus,input[type="number"].disabled:focus,select.disabled:focus,textarea.disabled:focus
 .input-text.disabled,.textarea.disabled,.input-text.disabled.focus,.textarea.disabled.focus{background-color:#ededed; cursor:default;border-color:#ddd;
 	-webkit-box-shadow:inset 0 2px 2px #e8e7e7;
        -moz-box-shadow:inset 0 2px 2px #e8e7e7;
