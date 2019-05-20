@@ -1,9 +1,9 @@
 /**
  * 日历类
- * @version 9
- * @datetime 2016-02-16 17:47
+ * @version 10
+ * @datetime 2019-01-07 16:10
  * @author skey_chen
- * @copyright 2011-2016 &copy; skey_chen@163.com
+ * @copyright 2011-2019 &copy; skey_chen@163.com
  * @license LGPL
  */
 var $jskey = $jskey || {};
