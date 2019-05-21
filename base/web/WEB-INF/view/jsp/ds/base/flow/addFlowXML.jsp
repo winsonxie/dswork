@@ -157,8 +157,15 @@ $(function(){
 		<input type="button" name="datatable" style="width:200px;" class="button" maxlength="300" value="编辑" onclick="choose()" />
 		</td>
 	</tr>
+	<tr>
+		<td class="form_title">表单视图</td>
+		<td class="form_input">
+		<input type="button" style="width:200px;" class="button" maxlength="300" value="编辑" onclick="setTableView()" />
+		</td>
+	</tr>
 </table>
 <input type="hidden" id="datatable" name="datatable" value="" />
+<input type="hidden" id="dataview" name="dataview" value="" />
 <input type="hidden" id="flowxml" name="flowxml" value="" />
 </form>
 <div class="line"></div>
