@@ -63,7 +63,7 @@ public class DsCommonIFlowUtil
 	{
 		return start(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
 	}
-	
+
 	/**
 	 * 流程启动
 	 * @param alias 启动流程的标识
@@ -145,7 +145,7 @@ public class DsCommonIFlowUtil
 	{
 		return startFlow(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
 	}
-	
+
 	public void stop(Long flowid, String alias, String piid)
 	{
 		try
@@ -200,6 +200,11 @@ public class DsCommonIFlowUtil
 		return process(waitid, nextTalias, null, paccount, pname, resultType, resultMsg, formdata);
 	}
 
+	/**
+	 * 查询当前账号的所有待办
+	 * @param account 账号
+	 * @return
+	 */
 	public List<IFlowWaiting> queryWaiting(String account)
 	{
 		try
@@ -214,6 +219,12 @@ public class DsCommonIFlowUtil
 		return null;
 	}
 
+	/**
+	 * 取得待办任务
+	 * @param waitid 需要取得的待办ID
+	 * @param user 取得待办的用户
+	 * @return
+	 */
 	public boolean takeWaiting(long waitid, String user)
 	{
 		try
@@ -232,6 +243,11 @@ public class DsCommonIFlowUtil
 		return false;
 	}
 
+	/**
+	 * 根据待办ID取得待办
+	 * @param waitid 待办ID
+	 * @return
+	 */
 	public IFlowWaiting getWaiting(long waitid)
 	{
 		try
@@ -246,6 +262,11 @@ public class DsCommonIFlowUtil
 		return null;
 	}
 
+	/**
+	 * 获取流程任务
+	 * @param flowid 流程ID
+	 * @return
+	 */
 	public Map<String, String> getTaskList(long flowid)
 	{
 		Map<String, String> map = new HashMap<String, String>();
@@ -268,6 +289,11 @@ public class DsCommonIFlowUtil
 		return map;
 	}
 
+	/**
+	 * 根据流程ID获取流程
+	 * @param flowid 流程ID
+	 * @return
+	 */
 	public IFlow getFlowById(long flowid)
 	{
 		try
@@ -282,6 +308,11 @@ public class DsCommonIFlowUtil
 		return null;
 	}
 
+	/**
+	 * 根据流程实例id(piid)获取流程实例
+	 * @param piid 流程实例id
+	 * @return
+	 */
 	public IFlowPi getFlowPiByPiid(String piid)
 	{
 		try
@@ -296,6 +327,11 @@ public class DsCommonIFlowUtil
 		return null;
 	}
 
+	/**
+	 * 根据业务流水号查询所有的流程实例
+	 * @param ywlsh 业务流水号
+	 * @return
+	 */
 	public List<IFlowPi> queryFlowPi(String ywlsh)
 	{
 		try
@@ -310,6 +346,11 @@ public class DsCommonIFlowUtil
 		return null;
 	}
 
+	/**
+	 * 根据申办流水号查询所有的流程实例
+	 * @param sblsh 申办流水号
+	 * @return
+	 */
 	public List<IFlowPi> queryFlowPiBySblsh(String sblsh)
 	{
 		try
@@ -324,6 +365,11 @@ public class DsCommonIFlowUtil
 		return null;
 	}
 
+	/**
+	 * 根据业务流水号获取流程实例
+	 * @param ywlsh 业务流水号
+	 * @return
+	 */
 	public IFlowPi getFlowPi(String ywlsh)
 	{
 		try
@@ -338,6 +384,11 @@ public class DsCommonIFlowUtil
 		return null;
 	}
 
+	/**
+	 * 根据申办流水号获取流程实例
+	 * @param sblsh 申办流水号
+	 * @return
+	 */
 	public IFlowPi getFlowPiBySblsh(String sblsh)
 	{
 		try
@@ -352,6 +403,11 @@ public class DsCommonIFlowUtil
 		return null;
 	}
 
+	/**
+	 * 根据流程实例id(piid)查询已办数据
+	 * @param piid 流程实例id
+	 * @return
+	 */
 	public List<IFlowPiData> queryFlowPiData(String piid)
 	{
 		try
@@ -365,6 +421,12 @@ public class DsCommonIFlowUtil
 		}
 		return null;
 	}
+
+	/**
+	 * 根据流程实例id(piid) 查询待办数据
+	 * @param piid
+	 * @return
+	 */
 	public List<IFlowWaiting> queryFlowWaitingByPiid(String piid)
 	{
 		try
@@ -378,7 +440,11 @@ public class DsCommonIFlowUtil
 		}
 		return null;
 	}
-	
+
+	/**
+	 * 根据流程实例id删除流程实例
+	 * @param id
+	 */
 	public void deleteFlowPi(String id)
 	{
 		try
@@ -391,8 +457,17 @@ public class DsCommonIFlowUtil
 			e.printStackTrace();
 		}
 	}
-	
-	public boolean updateFlowTuser(Long wid, String olduser, String oldname,String newuser, String newname)
+
+	/**
+	 * 代办
+	 * @param wid 流程待办id
+	 * @param olduser 旧的用户
+	 * @param oldname 旧的用户名
+	 * @param newuser 新的用户
+	 * @param newname 新的用户名
+	 * @return
+	 */
+	public boolean updateFlowTuser(Long wid, String olduser, String oldname, String newuser, String newname)
 	{
 		try
 		{
@@ -405,8 +480,14 @@ public class DsCommonIFlowUtil
 		}
 		return false;
 	}
-	
-	
+
+	/**
+	 * 更新待办经办人和会签数
+	 * @param wid 待办ID
+	 * @param tuser 经办人([会签用户|]经办用户，当为会签任务时对有中括号部分，用户前后补逗号)
+	 * @param subcount 会签数(不需要会签则为-1)
+	 * @return
+	 */
 	public boolean updateFlowTuser(Long wid, String tuser, int subcount)
 	{
 		try
@@ -420,7 +501,13 @@ public class DsCommonIFlowUtil
 		}
 		return false;
 	}
-	
+
+	/**
+	 * 更新当前任务的用户ID(以逗号分隔可选用户)
+	 * @param wid 待办ID
+	 * @param tusers 当前任务的用户ID(以逗号分隔可选用户)
+	 * @return
+	 */
 	public boolean updateFlowTusers(Long wid, String tusers)
 	{
 		try
@@ -434,7 +521,13 @@ public class DsCommonIFlowUtil
 		}
 		return false;
 	}
-	
+
+	/**
+	 * 是否启用待办
+	 * @param wid 待办ID
+	 * @param datatable 表单结构
+	 * @return
+	 */
 	public boolean saveFlow(Long wid, String datatable)
 	{
 		try

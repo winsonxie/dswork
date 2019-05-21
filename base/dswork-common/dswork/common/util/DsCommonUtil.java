@@ -2,7 +2,7 @@ package dswork.common.util;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +42,7 @@ public class DsCommonUtil
 	
 	public static Map<String, IFlowDataRow> getMap(String datatable)
 	{
-		Map<String, IFlowDataRow> map = new HashMap<String, IFlowDataRow>();
+		Map<String, IFlowDataRow> map = new LinkedHashMap<String, IFlowDataRow>();
 		if (datatable != null && !"".equals(datatable))
 		{
 			List<IFlowDataRow> list = gson.fromJson(datatable, new TypeToken<List<IFlowDataRow>>(){}.getType());

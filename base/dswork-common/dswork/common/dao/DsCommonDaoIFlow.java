@@ -3,9 +3,9 @@
  */
 package dswork.common.dao;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -25,15 +25,14 @@ import dswork.common.model.IFlowPiData;
 import dswork.common.model.IFlowTask;
 import dswork.common.model.IFlowWaiting;
 import dswork.core.db.MyBatisDao;
-import dswork.core.util.TimeUtil;
 import dswork.core.util.IdUtil;
+import dswork.core.util.TimeUtil;
 
 @Repository
 @SuppressWarnings("all")
 public class DsCommonDaoIFlow extends MyBatisDao
 {
 	private String dtSet = "";
-	
 	// 此处这样写法是为了让流程的管理可成独立项目运行，不在同一数据库中
 	// #############################################################
 	@Autowired
@@ -48,7 +47,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 	{
 		return daoCommon.getFlow(alias);
 	}
-	
+
 	public IFlow getFlowById(long id)
 	{
 		return daoCommon.getFlowById(id);
@@ -79,12 +78,12 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		}
 		executeUpdate("updateFlowPi", map);
 	}
-	
+
 	private void saveFlowWaiting(IFlowWaiting m)
 	{
 		executeInsert("insertFlowWaiting", m);
 	}
-	
+
 	public void deleteFlowPi(Long id)
 	{
 		executeDelete("deleteFlowPi", id);
@@ -174,7 +173,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		map.put("tuser", "," + tuser + ",");
 		executeUpdate("updateFlowWaitingUser", map);
 	}
-	
+
 	public int saveSubFlow(IFlowWaiting subflow)
 	{
 		return executeUpdate("insertFlowWaiting", subflow);
@@ -186,7 +185,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		map.put("id", id);
 		return (IFlowWaiting) executeSelect("selectFlowWaiting", map);
 	}
-	
+
 	public List<IFlowWaiting> queryFlowWaiting(String account)
 	{
 		String tuser = account;
@@ -210,16 +209,14 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			IFlowTask task = this.getFlowTask(flowid, "start");
 			IFlowPi pi = new IFlowPi();
 			pi.setId(IdUtil.genId());
-
 			IFlowParam beforeParam = new IFlowParam();
 			IFlowParam afterParam = new IFlowParam();
 			beforeParam.setFlowid(flowid);
 			beforeParam.setPiid(pi.getId());
 			beforeParam.setAlias(alias);
 			beforeParam.setStart(true);
-			BeanUtils.copyProperties(beforeParam, afterParam);//复制
+			BeanUtils.copyProperties(beforeParam, afterParam);// 复制
 			DsFactory.getUtil().handleMethod(beforeParam, true);
-			
 			pi.setYwlsh(ywlsh);
 			pi.setSblsh(sblsh);
 			pi.setAlias(alias);
@@ -290,11 +287,10 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				}
 			}
 			this.saveFlowWaiting(m);
-			
-//			param.setFlowid(flowid);
-//			param.setPiid(pi.getId());
-//			param.setAlias(alias);
-//			param.setStart(true);
+			// param.setFlowid(flowid);
+			// param.setPiid(pi.getId());
+			// param.setAlias(alias);
+			// param.setStart(true);
 			afterParam.setProcess(m);
 			DsFactory.getUtil().handleMethod(afterParam, false);
 			return m;
@@ -311,7 +307,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		}
 		return "";
 	}
-	
+
 	public String saveStart(String alias, String users, String ywlsh, String sblsh, String account, String name, int piDay, boolean isWorkDay, int tenable)
 	{
 		IFlowWaiting w = saveFlowStart(alias, users, ywlsh, sblsh, account, name, piDay, isWorkDay, tenable);
@@ -330,12 +326,10 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		beforeParam.setPiid(piid);
 		beforeParam.setAlias(alias);
 		beforeParam.setEnd(true);
-		BeanUtils.copyProperties(beforeParam, afterParam);//复制
+		BeanUtils.copyProperties(beforeParam, afterParam);// 复制
 		DsFactory.getUtil().handleMethod(beforeParam, true);
-		
 		this.deleteFlowWaitingByPiid(piid);
 		this.updateFlowPi(piid, 0, "", dtSet);// 结束
-		
 		DsFactory.getUtil().handleMethod(afterParam, false);
 	}
 
@@ -348,14 +342,13 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			IFlowParam beforeParam = new IFlowParam();
 			IFlowParam afterParam = new IFlowParam();
 			IFlowWaiting w = new IFlowWaiting();
-			BeanUtils.copyProperties(m, w);//复制m
+			BeanUtils.copyProperties(m, w);// 复制m
 			beforeParam.setPiid(w.getPiid());
 			beforeParam.setProcess(w);
 			beforeParam.setFlowid(w.getFlowid());
 			beforeParam.setAlias(pi.getAlias());
-			BeanUtils.copyProperties(beforeParam, afterParam);//复制
+			BeanUtils.copyProperties(beforeParam, afterParam);// 复制
 			DsFactory.getUtil().handleMethod(beforeParam, true);
-			
 			String time = TimeUtil.getCurrentTime();
 			IFlowPiData pd = new IFlowPiData();
 			pd.setId(IdUtil.genId());
@@ -363,7 +356,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			pd.setTprev(m.getTprev());
 			pd.setTalias(m.getTalias());
 			pd.setTname(m.getTname());
-			pd.setStatus(m.getSubcount()>-1?4:0);// 状态(0已处理,1代办,2挂起,3取消挂起,4会签)
+			pd.setStatus(m.getSubcount() > -1 ? 4 : 0);// 状态(0已处理,1代办,2挂起,3取消挂起,4会签)
 			pd.setPaccount(account);
 			pd.setPname(name);
 			pd.setPtime(time);
@@ -373,14 +366,14 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			pd.setDataview(m.getDataview());
 			executeInsert("insertFlowPiData", pd);
 			boolean isEnd = false;
-			if(m.getSubcount() > -1)//会签任务
+			if(m.getSubcount() > -1)// 会签任务
 			{
 				dtSet = updateDataTable(pi.getDatatable(), datatable, true);
 				String subusers = m.getSubusers();
 				subusers += "".equals(subusers) ? "," + account + "," : account + ",";
-				if(m.getSubcount() == 0)//会签个数为0时,subcount不需要继续减
+				if(m.getSubcount() == 0)// 会签个数为0时,subcount不需要继续减
 				{
-					this.updateSubFlowWaitingSubusers(m.getId(), subusers, dtSet);//更新subusers,datatable
+					this.updateSubFlowWaitingSubusers(m.getId(), subusers, dtSet);// 更新subusers,datatable
 					String cuser = "|," + account + ",";
 					if(m.getTuser().indexOf(cuser) > 0)
 					{
@@ -389,15 +382,15 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				}
 				else
 				{
-					this.updateSubFlowWaiting(m.getId(), subusers, dtSet);//更新subusers,subcount,datatable
+					this.updateSubFlowWaiting(m.getId(), subusers, dtSet);// 更新subusers,subcount,datatable
 				}
 				if(m.getSubcount() == 1)
 				{
-					//最后一个会签个数
+					// 最后一个会签个数
 					IFlowTask t = this.getFlowTask(m.getFlowid(), m.getTalias());
-					if(!"".equals(t.getTusers()))//是否有用户来控制会签的结束
+					if(!"".equals(t.getTusers()))// 是否有用户来控制会签的结束
 					{
-						String tuser = m.getTuser() + "|," + t.getTusers() + ",";//tuser |后的用户是用来控制会签环节结束的用户
+						String tuser = m.getTuser() + "|," + t.getTusers() + ",";// tuser |后的用户是用来控制会签环节结束的用户
 						Map<String, Object> map = new HashMap<String, Object>();
 						map.put("id", m.getId());
 						map.put("tuser", tuser);
@@ -433,10 +426,8 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			if(isEnd)
 			{
 				afterParam.setEnd(true);// 标记为结束
-				
 				this.deleteFlowWaitingByPiid(m.getPiid());// 已经结束，清空所有待办事项
 				this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
-				
 				// 记录最后一步流向
 				IFlowPiData pdend = new IFlowPiData();
 				pdend.setId(IdUtil.genId());
@@ -444,7 +435,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				pdend.setTprev(m.getTalias());
 				pdend.setTalias("end");
 				pdend.setTname("结束");
-				pdend.setStatus(m.getSubcount()>-1?4:0);// 状态(0已处理,1代办,2挂起,3取消挂起,4会签)
+				pdend.setStatus(m.getSubcount() > -1 ? 4 : 0);// 状态(0已处理,1代办,2挂起,3取消挂起,4会签)
 				pdend.setPaccount(account);
 				pdend.setPname(name);
 				pdend.setPtime(time);
@@ -496,9 +487,10 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			if(w != null && w.getId().longValue() != 0)
 			{
 				dtSet = updateDataTable(datatable, w.getDatatable(), false);
-				if(w.getTcount() > 1) 
+				if(w.getTcount() > 1)
 				{
-					this.updateFlowWaiting(w.getId(), time, w.getTprev() + "," + m.getTalias(), dtSet);// 等待数减1, 上经节点增加一个
+					this.updateFlowWaiting(w.getId(), time, w.getTprev() + "," + m.getTalias(), dtSet);// 等待数减1,
+																										// 上经节点增加一个
 				}
 				else
 				{
@@ -568,7 +560,14 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		}
 		return isEnd;
 	}
-	
+
+	/**
+	 * 表单替换
+	 * @param oDataTable 旧的表单
+	 * @param nDataTable 新的表单
+	 * @param flag 是否是会签
+	 * @return
+	 */
 	public String updateDataTable(String oDataTable, String nDataTable, boolean flag)
 	{
 		Map<String, IFlowDataRow> oMap = null;
@@ -576,14 +575,15 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		List<IFlowDataRow> list = new ArrayList<IFlowDataRow>();
 		List<IFlowDataRow> oList = null;
 		List<IFlowDataRow> nList = null;
-		
 		if(oDataTable != null && !"".equals(oDataTable))
 		{
-			oList = DsFactory.getUtil().toBean(oDataTable,  new TypeToken<List<IFlowDataRow>>(){}.getType());
+			oList = DsFactory.getUtil().toBean(oDataTable, new TypeToken<List<IFlowDataRow>>()
+			{
+			}.getType());
 			if(oList != null && oList.size() > 0)
 			{
-				oMap = new HashMap<String, IFlowDataRow>();
-				for (int i = 0; i < oList.size(); i++)
+				oMap = new LinkedHashMap<String, IFlowDataRow>();
+				for(int i = 0; i < oList.size(); i++)
 				{
 					IFlowDataRow row = oList.get(i);
 					oMap.put(row.getTname(), row);
@@ -592,21 +592,23 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		}
 		if(nDataTable != null && !"".equals(nDataTable))
 		{
-			nList = DsFactory.getUtil().toBean(nDataTable,  new TypeToken<List<IFlowDataRow>>(){}.getType());
+			nList = DsFactory.getUtil().toBean(nDataTable, new TypeToken<List<IFlowDataRow>>()
+			{
+			}.getType());
 			if(nList != null && nList.size() > 0)
 			{
-				nMap = new HashMap<String, IFlowDataRow>();
-				for (int i = 0; i < nList.size(); i++)
+				nMap = new LinkedHashMap<String, IFlowDataRow>();
+				for(int i = 0; i < nList.size(); i++)
 				{
 					IFlowDataRow row = nList.get(i);
 					nMap.put(row.getTname(), row);
 				}
 			}
 		}
-		if(oMap != null && nMap != null)
+		if(oMap != null && nMap != null) // 旧不空，新不空
 		{
-			//将oMap的val放到nMap中
-			for (Entry<String, IFlowDataRow> et : nMap.entrySet())
+			// 将oMap的val放到nMap中
+			for(Entry<String, IFlowDataRow> et : nMap.entrySet())
 			{
 				IFlowDataRow nrow = nMap.get(et.getKey());
 				if(nrow != null)
@@ -634,18 +636,18 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				}
 			}
 		}
-		else if(oMap == null  && nMap != null)
+		else if(oMap == null && nMap != null)// 旧空，新不空
 		{
-			//将nMap直接返回
-			for (Entry<String, IFlowDataRow> et : nMap.entrySet())
+			// 将nMap直接返回
+			for(Entry<String, IFlowDataRow> et : nMap.entrySet())
 			{
 				list.add(et.getValue());
 			}
 		}
-		else if(oMap != null  && nMap == null)
+		else if(oMap != null && nMap == null)// 旧不空，新空
 		{
-			//将oMap中的trwx全部改为001并返回
-			for (Entry<String, IFlowDataRow> et : oMap.entrySet())
+			// 将oMap中的trwx全部改为001并返回
+			for(Entry<String, IFlowDataRow> et : oMap.entrySet())
 			{
 				IFlowDataRow v = et.getValue();
 				v.setTrwx("001");
@@ -655,6 +657,13 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		return DsFactory.getUtil().toJson(list);
 	}
 
+	/**
+	 * 更新已进行会签的用户和表单数据(会签数减一)
+	 * @param id 待办ID
+	 * @param subusers 已进行会签的用户ID(以逗号分隔用户，前后补逗号)
+	 * @param datatable 表单数据
+	 * @return
+	 */
 	public boolean updateSubFlowWaiting(Long id, String subusers, String datatable)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -663,7 +672,14 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		map.put("datatable", datatable);
 		return executeUpdate("updateSubFlowWaiting", map) > 0 ? true : false;
 	}
-	
+
+	/**
+	 * 更新已进行会签的用户和表单数据(会签数不减)
+	 * @param id 待办ID
+	 * @param subusers 已进行会签的用户ID(以逗号分隔用户，前后补逗号)
+	 * @param datatable 表单数据
+	 * @return
+	 */
 	public boolean updateSubFlowWaitingSubusers(Long id, String subusers, String datatable)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -672,8 +688,17 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		map.put("datatable", datatable);
 		return executeUpdate("updateSubFlowWaitingSubusers", map) > 0 ? true : false;
 	}
-	
-	public boolean updateFlowTuser(Long wid, String olduser, String oldname,String newuser, String newname)
+
+	/**
+	 * 代办
+	 * @param wid 流程待办id
+	 * @param olduser 旧的用户
+	 * @param oldname 旧的用户名
+	 * @param newuser 新的用户
+	 * @param newname 新的用户名
+	 * @return
+	 */
+	public boolean updateFlowTuser(Long wid, String olduser, String oldname, String newuser, String newname)
 	{
 		IFlowWaiting m = this.getFlowWaiting(wid);
 		if(m != null)
@@ -707,6 +732,12 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		return false;
 	}
 
+	/**
+	 * 更新当前任务的用户
+	 * @param wid 待办ID
+	 * @param tusers 当前任务的用户(以逗号分隔可选用户)
+	 * @return
+	 */
 	public boolean updateFlowTusers(Long wid, String tusers)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -715,6 +746,13 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		return executeUpdate("updateFlowTusers", map) > 0 ? true : false;
 	}
 
+	/**
+	 * 更新待办经办人和会签数(不是会签，会签数为-1)
+	 * @param wid
+	 * @param tuser 经办人([会签用户|]经办用户，当为会签任务时对有中括号部分，用户前后补逗号)
+	 * @param subcount 会签数
+	 * @return
+	 */
 	public boolean updateFlowTuser(Long wid, String tuser, int subcount)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -724,6 +762,12 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		return executeUpdate("updateFlowTuser", map) > 0 ? true : false;
 	}
 
+	/**
+	 * 更新待办状态(是否启用)
+	 * @param wid
+	 * @param datatable
+	 * @return
+	 */
 	public boolean updateFlowWaitingTenable(Long wid, String datatable)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
