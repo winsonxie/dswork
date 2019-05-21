@@ -76,6 +76,7 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 		}
 		context.setInitParameter("dsworkConfiguration", dswork);
 		context.setInitParameter("dsworkSSOConfiguration", dsworkSSO);
+		context.setInitParameter("log4jConfiguration", log4j2);
 		String dsworkDataSource = EnvironmentUtil.getToString("dswork.datasource", "");
 		if(dsworkDataSource.length() > 0)
 		{
