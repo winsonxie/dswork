@@ -3,8 +3,6 @@ package dswork.cs;
 import java.io.File;
 import java.io.FileFilter;
 
-import dswork.core.util.EnvironmentUtil;
-
 /**
  * 本地方式启动应用
  */
@@ -70,7 +68,7 @@ public class MyStart
 			}
 			if(isEnvironmentUtil)
 			{
-				String dsworkDataSource = EnvironmentUtil.getToString("dswork.datasource", "");
+				String dsworkDataSource = dswork.core.util.EnvironmentUtil.getToString("dswork.datasource", "");
 				if(dsworkDataSource.length() > 0)
 				{
 					System.setProperty("dswork.datasource", dsworkDataSource);
@@ -87,44 +85,44 @@ public class MyStart
 				{
 					spring = ",classpath*:/dswork/config/spring/spring-datasource.xml" + spring;
 				}
-				String dsworkCommon = EnvironmentUtil.getToString("jdbc.common.dialect.name", "");
+				String dsworkCommon = dswork.core.util.EnvironmentUtil.getToString("jdbc.common.dialect.name", "");
 				if(dsworkCommon.length() > 0)
 				{
 					spring = ",classpath*:/dswork/config/spring/spring-mybatis-common.xml" + spring;
 				}
-				String jdbc1 = EnvironmentUtil.getToString("jdbc1.dialect.name", "");
+				String jdbc1 = dswork.core.util.EnvironmentUtil.getToString("jdbc1.dialect.name", "");
 				if(jdbc1.length() > 0)
 				{
 					String[] mapperArray = {null, null, null, null, null, null};
 					spring = ",classpath*:/dswork/config/ex/spring-mybatis1.xml" + spring;
-					String[] mappers = EnvironmentUtil.getToString("jdbc1.mapper", "").split(",");
+					String[] mappers = dswork.core.util.EnvironmentUtil.getToString("jdbc1.mapper", "").split(",");
 					int i = 1;
 					for(String p : mappers){if(p.length() > 0 && i < 6){mapperArray[i] = p;i++;}}
 					for(i = 1; i < 6; i++){if(mapperArray[i] != null){System.setProperty("dswork1.m" + i, mapperArray[i]);}}
 				}
-				String jdbc2 = EnvironmentUtil.getToString("jdbc2.dialect.name", "");
+				String jdbc2 = dswork.core.util.EnvironmentUtil.getToString("jdbc2.dialect.name", "");
 				if(jdbc2.length() > 0)
 				{
 					String[] mapperArray = {null, null, null, null, null, null};
 					spring = ",classpath*:/dswork/config/ex/spring-mybatis2.xml" + spring;
-					String[] mappers = EnvironmentUtil.getToString("jdbc2.mapper", "").split(",");
+					String[] mappers = dswork.core.util.EnvironmentUtil.getToString("jdbc2.mapper", "").split(",");
 					int i = 1;
 					for(String p : mappers){if(p.length() > 0 && i < 6){mapperArray[i] = p;i++;}}
 					for(i = 1; i < 6; i++){if(mapperArray[i] != null){System.setProperty("dswork2.m" + i, mapperArray[i]);}}
 				}
-				String jdbc3 = EnvironmentUtil.getToString("jdbc3.dialect.name", "");
+				String jdbc3 = dswork.core.util.EnvironmentUtil.getToString("jdbc3.dialect.name", "");
 				if(jdbc3.length() > 0)
 				{
 					String[] mapperArray = {null, null, null, null, null, null};
 					spring = ",classpath*:/dswork/config/ex/spring-mybatis3.xml" + spring;
-					String[] mappers = EnvironmentUtil.getToString("jdbc3.mapper", "").split(",");
+					String[] mappers = dswork.core.util.EnvironmentUtil.getToString("jdbc3.mapper", "").split(",");
 					int i = 1;
 					for(String p : mappers){if(p.length() > 0 && i < 6){mapperArray[i] = p;i++;}}
 					for(i = 1; i < 6; i++){if(mapperArray[i] != null){System.setProperty("dswork3.m" + i, mapperArray[i]);}}
 				}
 				
 				String[] mapperArray = {null, null, null, null, null, null};
-				String dsworkBasePackage = EnvironmentUtil.getToString("dswork.base-package", "");
+				String dsworkBasePackage = dswork.core.util.EnvironmentUtil.getToString("dswork.base-package", "");
 				int i = 1;
 				if(dsworkBasePackage.length() > 0)
 				{
@@ -140,7 +138,7 @@ public class MyStart
 						}
 					}
 				}
-				String[] mappers = EnvironmentUtil.getToString("jdbc.mapper", "").split(",");
+				String[] mappers = dswork.core.util.EnvironmentUtil.getToString("jdbc.mapper", "").split(",");
 				i = 1;
 				for(String p : mappers){if(p.length() > 0 && i < 6){mapperArray[i] = p;i++;}}
 				for(i = 1; i < 6; i++){if(mapperArray[i] != null){System.setProperty("dswork.m" + i, mapperArray[i]);}}
