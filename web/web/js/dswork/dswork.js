@@ -1,10 +1,19 @@
 //jquery.js和jskey_core.js支持
 if(typeof($dswork)!="object"){$dswork={};}
-$dswork.showDate = function(){
+$dswork.date = {};
+$dswork.date.callback = function(o, p){
+};
+$dswork.date.show = function(){
 	var o = arguments[0];
 	var f = arguments[1] || "yyyy-MM-dd";
-	$jskey.calendar.show(o,{skin:'default', lang:0, format:f, sample:f});
+	var m = $(o);
+	var FN = "$dswork.date.callback"
+	if(m.attr("fn")){
+		FN = m.attr("fn");
+	}
+	$jskey.calendar.show(o,{skin:'default', lang:0, format:f, sample:f, fn:FN});
 };
+
 $dswork.uploadURL = function(){
 	return "/webio/io/upload." + ($dswork.dotnet ? "aspx" : "jsp");
 };
@@ -295,7 +304,7 @@ $(function(){
 		var o = $(this);
 		if(o.hasClass("WebDate") && o.attr("format")){
 			o.bind("click", function(event){
-				$dswork.showDate(this, o.attr("format"));
+				$dswork.date.show(this, o.attr("format"));
 			});
 			o.prop("readonly", true);
 		}
