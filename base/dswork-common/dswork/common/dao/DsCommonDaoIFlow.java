@@ -174,11 +174,6 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		executeUpdate("updateFlowWaitingUser", map);
 	}
 
-	public int saveSubFlow(IFlowWaiting subflow)
-	{
-		return executeUpdate("insertFlowWaiting", subflow);
-	}
-
 	public IFlowWaiting getFlowWaiting(Long id)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -195,7 +190,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		return executeSelectList("queryFlowWaiting", map);
 	}
 
-	public IFlowWaiting saveFlowStart(String alias, String users, String ywlsh, String sblsh, String account, String name, int piDay, boolean isWorkDay, int tenable)
+	public IFlowWaiting saveFlowStart(String alias, String users, String ywlsh, String sblsh, String account, String name, int piDay, boolean isWorkDay, boolean tenable)
 	{
 		String time = TimeUtil.getCurrentTime();
 		IFlow flow = this.getFlow(alias);
@@ -249,7 +244,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			m.setTstart(time);
 			m.setTmemo(task.getTmemo());
 			m.setSubcount(task.getSubcount());
-			m.setTenable(tenable);
+			m.setTenable(tenable ? 0 : -1);// （-1不启用，0启用）
 			m.setDataview(task.getDataview());
 			if(task.getSubcount() > -1 && "".equals(task.getSubusers()))
 			{
@@ -298,17 +293,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		return null;
 	}
 
-	public String saveStart(String alias, String users, String ywlsh, String sblsh, String account, String name, int piDay, boolean isWorkDay)
-	{
-		IFlowWaiting w = saveFlowStart(alias, users, ywlsh, sblsh, account, name, piDay, isWorkDay, 0);
-		if(w != null)
-		{
-			return String.valueOf(w.getPiid());
-		}
-		return "";
-	}
-
-	public String saveStart(String alias, String users, String ywlsh, String sblsh, String account, String name, int piDay, boolean isWorkDay, int tenable)
+	public String saveStart(String alias, String users, String ywlsh, String sblsh, String account, String name, int piDay, boolean isWorkDay, boolean tenable)
 	{
 		IFlowWaiting w = saveFlowStart(alias, users, ywlsh, sblsh, account, name, piDay, isWorkDay, tenable);
 		if(w != null)
@@ -333,146 +318,202 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		DsFactory.getUtil().handleMethod(afterParam, false);
 	}
 
-	public boolean saveProcess(Long waitid, String[] nextTalias, String[] nextTusers, String account, String name, String resultType, String resultMsg, String datatable)
+	public boolean saveProcess(Long waitid, String replaceUser, String[] nextTalias, String[] nextTusers, String account, String name, String resultType, String resultMsg, String datatable)
 	{
 		IFlowWaiting m = this.getFlowWaiting(waitid);
-		if(m != null && m.getTcount() <= 1)
+		if(m != null)
 		{
-			IFlowPi pi = this.getFlowPiByPiid(m.getPiid() + "");
-			IFlowParam beforeParam = new IFlowParam();
-			IFlowParam afterParam = new IFlowParam();
-			IFlowWaiting w = new IFlowWaiting();
-			BeanUtils.copyProperties(m, w);// 复制m
-			beforeParam.setPiid(w.getPiid());
-			beforeParam.setProcess(w);
-			beforeParam.setFlowid(w.getFlowid());
-			beforeParam.setAlias(pi.getAlias());
-			BeanUtils.copyProperties(beforeParam, afterParam);// 复制
-			DsFactory.getUtil().handleMethod(beforeParam, true);
-			String time = TimeUtil.getCurrentTime();
-			IFlowPiData pd = new IFlowPiData();
-			pd.setId(IdUtil.genId());
-			pd.setPiid(m.getPiid());
-			pd.setTprev(m.getTprev());
-			pd.setTalias(m.getTalias());
-			pd.setTname(m.getTname());
-			pd.setStatus(m.getSubcount() > -1 ? 4 : 0);// 状态(0已处理,1代办,2挂起,3取消挂起,4会签)
-			pd.setPaccount(account);
-			pd.setPname(name);
-			pd.setPtime(time);
-			pd.setPtype(resultType);
-			pd.setMemo(resultMsg);
-			pd.setDatatable(datatable);
-			pd.setDataview(m.getDataview());
-			executeInsert("insertFlowPiData", pd);
-			boolean isEnd = false;
-			if(m.getSubcount() > -1)// 会签任务
+			// 代办或增加会签人
+			if(replaceUser != null)
 			{
-				dtSet = updateDataTable(pi.getDatatable(), datatable, true);
-				String subusers = m.getSubusers();
-				subusers += "".equals(subusers) ? "," + account + "," : account + ",";
-				if(m.getSubcount() == 0)// 会签个数为0时,subcount不需要继续减
+
+
+				/**
+				 * 代办
+				 * @param wid 流程待办id
+				 * @param olduser 旧的用户
+				 * @param oldname 旧的用户名
+				 * @param newuser 新的用户
+				 * @param newname 新的用户名
+				 * @return
+				 */
+				public boolean updateFlowTuser(Long wid, String olduser, String oldname, String newuser, String newname)
 				{
-					this.updateSubFlowWaitingSubusers(m.getId(), subusers, dtSet);// 更新subusers,datatable
-					String cuser = "|," + account + ",";
-					if(m.getTuser().indexOf(cuser) > 0)
+					IFlowWaiting m = this.getFlowWaiting(wid);
+					if(m != null)
 					{
-						isEnd = exeProcess(nextTalias, nextTusers, datatable, m, time);
-					}
-				}
-				else
-				{
-					this.updateSubFlowWaiting(m.getId(), subusers, dtSet);// 更新subusers,subcount,datatable
-				}
-				if(m.getSubcount() == 1)
-				{
-					// 最后一个会签个数
-					if(!"".equals(m.getTusers()))// 是否有用户来控制会签的结束
-					{
-						String tuser = m.getTuser() + "|" + m.getTusers();// tuser |,1,的用户是用来控制会签环节结束的用户
-						Map<String, Object> map = new HashMap<String, Object>();
-						map.put("id", m.getId());
-						map.put("tuser", tuser);
-						executeUpdate("updateFlowUser", map);
-					}
-					else
-					{
-						if("end".equals(m.getTnext()))
+						String tuser = m.getTuser();
+						if(tuser.indexOf(olduser) > 0 && tuser.indexOf(newuser) < 0)
 						{
-							isEnd = true;
+							Map<String, Object> map = new HashMap<String, Object>();
+							map.put("id", m.getId());
+							tuser = tuser.replaceAll("," + olduser + ",", "," + newuser + ",");
+							map.put("tuser", tuser);
+							String time = TimeUtil.getCurrentTime();
+							IFlowPiData pd = new IFlowPiData();
+							pd.setId(IdUtil.genId());
+							pd.setPiid(m.getPiid());
+							pd.setTprev(m.getTprev());
+							pd.setTalias(m.getTalias());
+							pd.setTname(m.getTname());
+							pd.setStatus(1);// 状态(0已处理,1代办,2挂起,3取消挂起,4会签)
+							pd.setPaccount(olduser);
+							pd.setPname(oldname);
+							pd.setPtime(time);
+							pd.setPtype("1");
+							pd.setMemo("无");
+							pd.setDatatable("[]");
+							executeInsert("insertFlowPiData", pd);
+							executeUpdate("updateFlowTuser", map);
+							return true;
+						}
+					}
+					return false;
+				}
+
+			}
+			else
+			{
+				if(m.getTcount() <= 1)
+				{
+					IFlowPi pi = this.getFlowPiByPiid(m.getPiid() + "");
+					IFlowParam beforeParam = new IFlowParam();
+					IFlowParam afterParam = new IFlowParam();
+					IFlowWaiting w = new IFlowWaiting();
+					BeanUtils.copyProperties(m, w);// 复制m
+					beforeParam.setPiid(w.getPiid());
+					beforeParam.setProcess(w);
+					beforeParam.setFlowid(w.getFlowid());
+					beforeParam.setAlias(pi.getAlias());
+					BeanUtils.copyProperties(beforeParam, afterParam);// 复制
+					DsFactory.getUtil().handleMethod(beforeParam, true);
+					String time = TimeUtil.getCurrentTime();
+					IFlowPiData pd = new IFlowPiData();
+					pd.setId(IdUtil.genId());
+					pd.setPiid(m.getPiid());
+					pd.setTprev(m.getTprev());
+					pd.setTalias(m.getTalias());
+					pd.setTname(m.getTname());
+					pd.setStatus(m.getSubcount() > -1 ? 4 : 0);// 状态(0已处理,1代办,2挂起,3取消挂起,4会签)
+					pd.setPaccount(account);
+					pd.setPname(name);
+					pd.setPtime(time);
+					pd.setPtype(resultType);
+					pd.setMemo(resultMsg);
+					pd.setDatatable(datatable);
+					pd.setDataview(m.getDataview());
+					executeInsert("insertFlowPiData", pd);
+					boolean isEnd = false;
+					if(m.getSubcount() > -1)// 会签任务
+					{
+						dtSet = updateDataTable(pi.getDatatable(), datatable, true);
+						String subusers = m.getSubusers();
+						subusers += "".equals(subusers) ? "," + account + "," : account + ",";
+						if(m.getSubcount() == 0)// 会签个数为0时,subcount不需要继续减
+						{
+							this.updateSubFlowWaitingSubusers(m.getId(), subusers, dtSet);// 更新subusers,datatable
+							String cuser = "|," + account + ",";
+							if(m.getTuser().indexOf(cuser) > 0)
+							{
+								isEnd = exeProcess(nextTalias, nextTusers, datatable, m, time);
+							}
 						}
 						else
 						{
-							datatable = updateDataTable(pi.getDatatable(), datatable, true);
+							this.updateSubFlowWaiting(m.getId(), subusers, dtSet);// 更新subusers,subcount,datatable
+						}
+						if(m.getSubcount() == 1)
+						{
+							// 最后一个会签个数
+							if(!"".equals(m.getTusers()))// 是否有用户来控制会签的结束
+							{
+								String tuser = m.getTuser() + "|" + m.getTusers();// tuser |,1,的用户是用来控制会签环节结束的用户
+								Map<String, Object> map = new HashMap<String, Object>();
+								map.put("id", m.getId());
+								map.put("tuser", tuser);
+								executeUpdate("updateFlowUser", map);
+							}
+							else
+							{
+								if("end".equals(m.getTnext()))
+								{
+									isEnd = true;
+								}
+								else
+								{
+									datatable = updateDataTable(pi.getDatatable(), datatable, true);
+									isEnd = exeProcess(nextTalias, nextTusers, datatable, m, time);
+								}
+							}
+						}
+					}
+					else
+					{
+						if(nextTalias == null)
+						{
+							isEnd = true;// 需要结束流程
+						}
+						else
+						{
 							isEnd = exeProcess(nextTalias, nextTusers, datatable, m, time);
 						}
 					}
-				}
-			}
-			else
-			{
-				if(nextTalias == null)
-				{
-					isEnd = true;// 需要结束流程
-				}
-				else
-				{
-					isEnd = exeProcess(nextTalias, nextTusers, datatable, m, time);
-				}
-			}
-			List<IFlowPiData> pidataList = new ArrayList<IFlowPiData>();
-			pidataList.add(pd);
-			if(isEnd)
-			{
-				afterParam.setEnd(true);// 标记为结束
-				this.deleteFlowWaitingByPiid(m.getPiid());// 已经结束，清空所有待办事项
-				this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
-				// 记录最后一步流向
-				IFlowPiData pdend = new IFlowPiData();
-				pdend.setId(IdUtil.genId());
-				pdend.setPiid(m.getPiid());
-				pdend.setTprev(m.getTalias());
-				pdend.setTalias("end");
-				pdend.setTname("结束");
-				pdend.setStatus(m.getSubcount() > -1 ? 4 : 0);// 状态(0已处理,1代办,2挂起,3取消挂起,4会签)
-				pdend.setPaccount(account);
-				pdend.setPname(name);
-				pdend.setPtime(time);
-				pdend.setPtype(resultType);
-				pdend.setMemo(resultMsg);
-				pdend.setDatatable(datatable);
-				pdend.setDataview(m.getDataview());
-				pidataList.add(pdend);
-				executeInsert("insertFlowPiData", pdend);
-			}
-			else
-			{
-				List<IFlowWaiting> newWaitList = this.queryFlowWaitingByPiid(m.getPiid());
-				if(newWaitList == null || newWaitList.size() == 0)
-				{
-					this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
-					afterParam.setEnd(true);// 标记为结束
-				}
-				else
-				{
-					StringBuilder sb = new StringBuilder(100);
-					sb.append(newWaitList.get(0));
-					for(int i = 1; i < newWaitList.size(); i++)
+					List<IFlowPiData> pidataList = new ArrayList<IFlowPiData>();
+					pidataList.add(pd);
+					if(isEnd)
 					{
-						sb.append(",").append(newWaitList.get(i));
+						afterParam.setEnd(true);// 标记为结束
+						this.deleteFlowWaitingByPiid(m.getPiid());// 已经结束，清空所有待办事项
+						this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
+						// 记录最后一步流向
+						IFlowPiData pdend = new IFlowPiData();
+						pdend.setId(IdUtil.genId());
+						pdend.setPiid(m.getPiid());
+						pdend.setTprev(m.getTalias());
+						pdend.setTalias("end");
+						pdend.setTname("结束");
+						pdend.setStatus(m.getSubcount() > -1 ? 4 : 0);// 状态(0已处理,1代办,2挂起,3取消挂起,4会签)
+						pdend.setPaccount(account);
+						pdend.setPname(name);
+						pdend.setPtime(time);
+						pdend.setPtype(resultType);
+						pdend.setMemo(resultMsg);
+						pdend.setDatatable(datatable);
+						pdend.setDataview(m.getDataview());
+						pidataList.add(pdend);
+						executeInsert("insertFlowPiData", pdend);
 					}
-					this.updateFlowPi(m.getPiid(), 2, sb.toString(), dtSet);// 处理中
-					afterParam.setWaitingList(newWaitList);
+					else
+					{
+						List<IFlowWaiting> newWaitList = this.queryFlowWaitingByPiid(m.getPiid());
+						if(newWaitList == null || newWaitList.size() == 0)
+						{
+							this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
+							afterParam.setEnd(true);// 标记为结束
+						}
+						else
+						{
+							StringBuilder sb = new StringBuilder(100);
+							sb.append(newWaitList.get(0));
+							for(int i = 1; i < newWaitList.size(); i++)
+							{
+								sb.append(",").append(newWaitList.get(i));
+							}
+							this.updateFlowPi(m.getPiid(), 2, sb.toString(), dtSet);// 处理中
+							afterParam.setWaitingList(newWaitList);
+						}
+					}
+					afterParam.setPidataList(pidataList);
+					DsFactory.getUtil().handleMethod(afterParam, false);
+					return true;
+				}
+				else
+				{
+					return false;
 				}
 			}
-			afterParam.setPidataList(pidataList);
-			DsFactory.getUtil().handleMethod(afterParam, false);
-			return true;
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 
 	private boolean exeProcess(String[] nextTalias, String[] nextTusers, String datatable, IFlowWaiting m, String time)
@@ -518,20 +559,20 @@ public class DsCommonDaoIFlow extends MyBatisDao
 					newm.setDatatable(dtSet);
 					newm.setTenable(0);
 					newm.setDataview(t.getDataview());
-					String[] s = new String[] {};
+					String[] s = new String[]{};
 					String tuser = "";
 					String tusers = "";
 					newm.setTmemo(t.getTmemo());
 					if(t.getSubcount() > -1)
 					{
 						int tcount = t.getSubcount();
-						if(nextTusers != null && nextTusers[i].length() > 0)
+						if(nextTusers != null && (nextTusers.length - 1) >= i && nextTusers[i].length() > 0)
 						{
 							s = nextTusers[i].split("\\|", 2);// |
-							tuser = s[0];
+							tuser = s[0];// 去掉会签的控制人
 							if(s.length == 2)
 							{
-								tusers = s[1];// 下一步会签的控制人
+								tusers = s[1];// 会签的控制人
 							}
 							if(tuser.length() == 0 || tuser.equals(",") || tuser.equals(",,"))
 							{
@@ -695,111 +736,6 @@ public class DsCommonDaoIFlow extends MyBatisDao
 	}
 
 	/**
-	 * 更新已进行会签的用户和表单数据(会签数减一)
-	 * @param id 待办ID
-	 * @param subusers 已进行会签的用户ID(以逗号分隔用户，前后补逗号)
-	 * @param datatable 表单数据
-	 * @return
-	 */
-	public boolean updateSubFlowWaiting(Long id, String subusers, String datatable)
-	{
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("id", id);
-		map.put("subusers", subusers);
-		map.put("datatable", datatable);
-		return executeUpdate("updateSubFlowWaiting", map) > 0 ? true : false;
-	}
-
-	/**
-	 * 更新已进行会签的用户和表单数据(会签数不减)
-	 * @param id 待办ID
-	 * @param subusers 已进行会签的用户ID(以逗号分隔用户，前后补逗号)
-	 * @param datatable 表单数据
-	 * @return
-	 */
-	public boolean updateSubFlowWaitingSubusers(Long id, String subusers, String datatable)
-	{
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("id", id);
-		map.put("subusers", subusers);
-		map.put("datatable", datatable);
-		return executeUpdate("updateSubFlowWaitingSubusers", map) > 0 ? true : false;
-	}
-
-	/**
-	 * 代办
-	 * @param wid 流程待办id
-	 * @param olduser 旧的用户
-	 * @param oldname 旧的用户名
-	 * @param newuser 新的用户
-	 * @param newname 新的用户名
-	 * @return
-	 */
-	public boolean updateFlowTuser(Long wid, String olduser, String oldname, String newuser, String newname)
-	{
-		IFlowWaiting m = this.getFlowWaiting(wid);
-		if(m != null)
-		{
-			String tuser = m.getTuser();
-			if(tuser.indexOf(olduser) > 0 && tuser.indexOf(newuser) < 0)
-			{
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("id", m.getId());
-				tuser = tuser.replaceAll("," + olduser + ",", "," + newuser + ",");
-				map.put("tuser", tuser);
-				String time = TimeUtil.getCurrentTime();
-				IFlowPiData pd = new IFlowPiData();
-				pd.setId(IdUtil.genId());
-				pd.setPiid(m.getPiid());
-				pd.setTprev(m.getTprev());
-				pd.setTalias(m.getTalias());
-				pd.setTname(m.getTname());
-				pd.setStatus(1);// 状态(0已处理,1代办,2挂起,3取消挂起,4会签)
-				pd.setPaccount(olduser);
-				pd.setPname(oldname);
-				pd.setPtime(time);
-				pd.setPtype("1");
-				pd.setMemo("无");
-				pd.setDatatable("[]");
-				executeInsert("insertFlowPiData", pd);
-				executeUpdate("updateFlowTuser", map);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * 更新当前任务的用户
-	 * @param wid 待办ID
-	 * @param tusers 当前任务的用户(以逗号分隔可选用户)
-	 * @return
-	 */
-	public boolean updateFlowTusers(Long wid, String tusers)
-	{
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("id", wid);
-		map.put("tusers", tusers);
-		return executeUpdate("updateFlowTusers", map) > 0 ? true : false;
-	}
-
-	/**
-	 * 更新待办经办人和会签数(不是会签，会签数为-1)
-	 * @param wid
-	 * @param tuser 经办人([会签用户|]经办用户，当为会签任务时对有中括号部分，用户前后补逗号)
-	 * @param subcount 会签数
-	 * @return
-	 */
-	public boolean updateFlowTuser(Long wid, String tuser, int subcount)
-	{
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("id", wid);
-		map.put("tuser", tuser);
-		map.put("subcount", subcount);
-		return executeUpdate("updateFlowTuser", map) > 0 ? true : false;
-	}
-
-	/**
 	 * 更新待办状态(是否启用)
 	 * @param wid
 	 * @param datatable
@@ -811,5 +747,36 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		map.put("id", wid);
 		map.put("datatable", datatable);
 		return executeUpdate("updateFlowWaitingTenable", map) > 0 ? true : false;
+	}
+
+	/**
+	 * 更新已进行会签的用户和表单数据(会签数不减)
+	 * @param id 待办ID
+	 * @param subusers 已进行会签的用户ID(以逗号分隔用户，前后补逗号)
+	 * @param datatable 表单数据
+	 * @return
+	 */
+	private boolean updateSubFlowWaitingSubusers(Long id, String subusers, String datatable)
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("subusers", subusers);
+		map.put("datatable", datatable);
+		return executeUpdate("updateSubFlowWaitingSubusers", map) > 0 ? true : false;
+	}
+	/**
+	 * 更新已进行会签的用户和表单数据(会签数减一)
+	 * @param id 待办ID
+	 * @param subusers 已进行会签的用户ID(以逗号分隔用户，前后补逗号)
+	 * @param datatable 表单数据
+	 * @return
+	 */
+	private boolean updateSubFlowWaiting(Long id, String subusers, String datatable)
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("subusers", subusers);
+		map.put("datatable", datatable);
+		return executeUpdate("updateSubFlowWaiting", map) > 0 ? true : false;
 	}
 }

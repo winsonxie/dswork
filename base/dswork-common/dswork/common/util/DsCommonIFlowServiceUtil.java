@@ -7,9 +7,10 @@ import dswork.common.model.IFlow;
 import dswork.common.model.IFlowPi;
 import dswork.common.model.IFlowPiData;
 import dswork.common.model.IFlowWaiting;
+import dswork.common.model.IFlowInterface;
 import dswork.common.service.DsCommonIFlowService;
 
-public class DsCommonIFlowServiceUtil
+public class DsCommonIFlowServiceUtil implements IFlowInterface
 {
 	private DsCommonIFlowService service;
 
@@ -17,95 +18,8 @@ public class DsCommonIFlowServiceUtil
 	{
 		this.service = service;
 	}
-
-	/**
-	 * 流程启动
-	 * @param alias 启动流程的标识
-	 * @param ywlsh 业务流水号
-	 * @param caccount 提交人账号
-	 * @param cname 提交人姓名
-	 * @param piDay 时限天数
-	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
-	 * @param taskInterface 接口类（暂时无用）
-	 * @return 流程实例ID
-	 */
-	public String start(String alias, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
-	{
-		try
-		{
-			return service.saveStart(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return "";
-	}
-
-	/**
-	 * 流程启动
-	 * @param alias 启动流程的标识
-	 * @param users 启动节点任务处理人，如果为null，则使用流程配置中的处理人信息
-	 * @param ywlsh 业务流水号
-	 * @param caccount 提交人账号
-	 * @param cname 提交人姓名
-	 * @param piDay 时限天数
-	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
-	 * @param taskInterface 接口类（暂时无用）
-	 * @return 流程实例ID
-	 */
-	public String start(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
-	{
-		try
-		{
-			return service.saveStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return "";
-	}
-
-	/**
-	 * 流程启动
-	 * @param alias 启动流程的标识
-	 * @param ywlsh 业务流水号
-	 * @param caccount 提交人账号
-	 * @param cname 提交人姓名
-	 * @param piDay 时限天数
-	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
-	 * @param enable 是否启用待办（-1不启用，0启用）
-	 * @param taskInterface 接口类（暂时无用）
-	 * @return 流程实例ID
-	 */
-	public String start(String alias, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, int tenable)
-	{
-		try
-		{
-			return service.saveStart(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, tenable);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return "";
-	}
-
-	/**
-	 * 流程启动
-	 * @param alias 启动流程的标识
-	 * @param users 启动节点任务处理人，如果为null，则使用流程配置中的处理人信息
-	 * @param ywlsh 业务流水号
-	 * @param caccount 提交人账号
-	 * @param cname 提交人姓名
-	 * @param piDay 时限天数
-	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
-	 * @param enable 是否启用待办（-1不启用，0启用）
-	 * @param taskInterface 接口类（暂时无用）
-	 * @return 流程实例ID
-	 */
-	public String start(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, int tenable)
+	
+	public String start(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, boolean tenable)
 	{
 		try
 		{
@@ -118,57 +32,14 @@ public class DsCommonIFlowServiceUtil
 		return "";
 	}
 
-	/**
-	 * 流程启动并返回开始节点待办信息
-	 * @param alias 启动流程的标识
-	 * @param ywlsh 业务流水号
-	 * @param caccount 提交人账号
-	 * @param cname 提交人姓名
-	 * @param piDay 时限天数
-	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
-	 * @param taskInterface 接口类（暂时无用）
-	 * @return 流程实例的start待办信息或null
-	 */
-	public IFlowWaiting startFlow(String alias, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
+	public IFlowWaiting startFlow(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, boolean tenable)
 	{
-		return service.saveFlowStart(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
-	}
-
-	/**
-	 * 流程启动并返回开始节点待办信息
-	 * @param alias 启动流程的标识
-	 * @param users 启动节点任务处理人，如果为null，则使用流程配置中的处理人信息
-	 * @param ywlsh 业务流水号
-	 * @param caccount 提交人账号
-	 * @param cname 提交人姓名
-	 * @param piDay 时限天数
-	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
-	 * @param taskInterface 接口类（暂时无用）
-	 * @return 流程实例的start待办信息或null
-	 */
-	public IFlowWaiting startFlow(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
-	{
-		return service.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
+		return service.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, tenable);
 	}
 
 	public void stop(Long flowid, String alias, String piid)
 	{
 		service.saveStop(flowid, alias, piid);
-	}
-
-	/**
-	 * 流程处理
-	 * @param waitid 待办事项ID
-	 * @param nextTalias 下级任务列表，如果为null，处理当前任务后，会结束流程
-	 * @param paccount 当前处理人账号
-	 * @param pname 当前处理人姓名
-	 * @param resultType 处理类型
-	 * @param resultMsg 处理意见
-	 * @return true|false
-	 */
-	public boolean process(long waitid, String[] nextTalias, String paccount, String pname, String resultType, String resultMsg, String datatable)
-	{
-		return service.saveProcess(waitid, nextTalias, null, paccount, pname, resultType, resultMsg, datatable);
 	}
 
 	/**
@@ -182,9 +53,9 @@ public class DsCommonIFlowServiceUtil
 	 * @param resultMsg 处理意见
 	 * @return true|false
 	 */
-	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
+	public boolean process(long waitid, String replaceUser, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
 	{
-		return service.saveProcess(waitid, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, datatable);
+		return service.saveProcess(waitid, replaceUser, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, datatable);
 	}
 
 	/**
@@ -320,43 +191,6 @@ public class DsCommonIFlowServiceUtil
 	public void deleteFlowPi(String id)
 	{
 		service.deleteFlowPi(id);
-	}
-
-	/**
-	 * 代办
-	 * @param wid 流程待办id
-	 * @param olduser 旧的用户
-	 * @param oldname 旧的用户名
-	 * @param newuser 新的用户
-	 * @param newname 新的用户名
-	 * @return
-	 */
-	public boolean updateFlowTuser(Long wid, String olduser, String oldname, String newuser, String newname)
-	{
-		return service.updateFlowTuser(wid, olduser, oldname, newuser, newname);
-	}
-
-	/**
-	 * 更新待办经办人和会签数
-	 * @param wid 待办ID
-	 * @param tuser 经办人([会签用户|]经办用户，当为会签任务时对有中括号部分，用户前后补逗号)
-	 * @param subcount 会签数(不需要会签则为-1)
-	 * @return
-	 */
-	public boolean updateFlowTuser(Long wid, String tuser, int subcount)
-	{
-		return service.updateFlowTuser(wid, tuser, subcount);
-	}
-
-	/**
-	 * 更新当前任务的用户ID(以逗号分隔可选用户)
-	 * @param wid 待办ID
-	 * @param tusers 当前任务的用户ID(以逗号分隔可选用户)
-	 * @return
-	 */
-	public boolean updateFlowTusers(Long wid, String tusers)
-	{
-		return service.updateFlowTusers(wid, tusers);
 	}
 
 	/**

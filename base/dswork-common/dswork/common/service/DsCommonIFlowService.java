@@ -19,97 +19,8 @@ public class DsCommonIFlowService
 {
 	@Autowired
 	private DsCommonDaoIFlow dao;
-
-	/**
-	 * 流程启动
-	 * @param alias 启动流程的标识
-	 * @param ywlsh 业务流水号
-	 * @param caccount 提交人账号
-	 * @param cname 提交人姓名
-	 * @param piDay 时限天数
-	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
-	 * 
-	 * @param taskInterface 接口类（暂时无用）
-	 * @return 流程实例ID
-	 */
-	public String saveStart(String alias, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
-	{
-		try
-		{
-			return dao.saveStart(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return "";
-	}
 	
-	/**
-	 * 流程启动
-	 * @param alias 启动流程的标识
-	 * @param users 启动节点任务处理人，如果为null，则使用流程配置中的处理人信息
-	 * @param ywlsh 业务流水号
-	 * @param caccount 提交人账号
-	 * @param cname 提交人姓名
-	 * @param piDay 时限天数
-	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
-	 * 
-	 * @param taskInterface 接口类（暂时无用）
-	 * @return 流程实例ID
-	 */
-	public String saveStart(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
-	{
-		try
-		{
-			return dao.saveStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return "";
-	}
-	
-	/**
-	 * 流程启动
-	 * @param alias 启动流程的标识
-	 * @param ywlsh 业务流水号
-	 * @param caccount 提交人账号
-	 * @param cname 提交人姓名
-	 * @param piDay 时限天数
-	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
-	 * 
-	 * @param taskInterface 接口类（暂时无用）
-	 * @return 流程实例ID
-	 */
-	public String saveStart(String alias, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, int tenable)
-	{
-		try
-		{
-			return dao.saveStart(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, tenable);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return "";
-	}
-	
-	/**
-	 * 流程启动
-	 * @param alias 启动流程的标识
-	 * @param users 启动节点任务处理人，如果为null，则使用流程配置中的处理人信息
-	 * @param ywlsh 业务流水号
-	 * @param caccount 提交人账号
-	 * @param cname 提交人姓名
-	 * @param piDay 时限天数
-	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
-	 * 
-	 * @param taskInterface 接口类（暂时无用）
-	 * @return 流程实例ID
-	 */
-	public String saveStart(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, int tenable)
+	public String saveStart(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, boolean tenable)
 	{
 		try
 		{
@@ -121,38 +32,10 @@ public class DsCommonIFlowService
 		}
 		return "";
 	}
-
-	/**
-	 * 流程启动并返回开始节点待办信息
-	 * @param alias 启动流程的标识
-	 * @param ywlsh 业务流水号
-	 * @param caccount 提交人账号
-	 * @param cname 提交人姓名
-	 * @param piDay 时限天数
-	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
-	 * @param taskInterface 接口类（暂时无用）
-	 * @return 流程实例的start待办信息或null
-	 */
-	public IFlowWaiting saveFlowStart(String alias, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
+	
+	public IFlowWaiting saveFlowStart(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, boolean tenable)
 	{
-		return dao.saveFlowStart(alias, null, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, 0);
-	}
-
-	/**
-	 * 流程启动并返回开始节点待办信息
-	 * @param alias 启动流程的标识
-	 * @param users 启动节点任务处理人，如果为null，则使用流程配置中的处理人信息
-	 * @param ywlsh 业务流水号
-	 * @param caccount 提交人账号
-	 * @param cname 提交人姓名
-	 * @param piDay 时限天数
-	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
-	 * @param taskInterface 接口类（暂时无用）
-	 * @return 流程实例的start待办信息或null
-	 */
-	public IFlowWaiting saveFlowStart(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay)
-	{
-		return dao.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, 0);
+		return dao.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, tenable);
 	}
 	
 	public void saveStop(Long flowid, String alias, String piid)
@@ -160,35 +43,9 @@ public class DsCommonIFlowService
 		dao.saveStop(flowid, alias, Long.parseLong(piid));
 	}
 
-	/**
-	 * 流程处理
-	 * @param waitid 待办事项ID
-	 * @param nextTalias 下级任务列表，如果为null，处理当前任务后，会结束流程
-	 * @param paccount 当前处理人账号
-	 * @param pname 当前处理人姓名
-	 * @param resultType 处理类型
-	 * @param resultMsg 处理意见
-	 * @return true|false
-	 */
-	public boolean saveProcess(long waitid, String[] nextTalias, String paccount, String pname, String resultType, String resultMsg, String datatable)
+	public boolean saveProcess(long waitid, String replaceUser, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
 	{
-		return dao.saveProcess(waitid, nextTalias, null, paccount, pname, resultType, resultMsg, datatable);
-	}
-
-	/**
-	 * 流程处理
-	 * @param waitid 待办事项ID
-	 * @param nextTalias 下级任务列表，如果为null，处理当前任务后，会结束流程
-	 * @param nextTusers 下级任务处理人列表，如果为null，则使用流程配置中的处理人信息
-	 * @param paccount 当前处理人账号
-	 * @param pname 当前处理人姓名
-	 * @param resultType 处理类型
-	 * @param resultMsg 处理意见
-	 * @return true|false
-	 */
-	public boolean saveProcess(long waitid, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
-	{
-		return dao.saveProcess(waitid, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, datatable);
+		return dao.saveProcess(waitid, replaceUser, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, datatable);
 	}
 
 	public List<IFlowWaiting> queryFlowWaiting(String account)
@@ -266,21 +123,6 @@ public class DsCommonIFlowService
 	public void deleteFlowPi(String id)
 	{
 		dao.deleteFlowPi(Long.parseLong(id));
-	}
-	
-	public boolean updateFlowTuser(Long wid, String olduser, String oldname,String newuser, String newname)
-	{
-		return dao.updateFlowTuser(wid, olduser, oldname, newuser, newname);
-	}
-
-	public boolean updateFlowTuser(Long wid, String tuser, int subcount)
-	{
-		return dao.updateFlowTuser(wid, tuser, subcount);
-	}
-
-	public boolean updateFlowTusers(Long wid, String tusers)
-	{
-		return dao.updateFlowTusers(wid, tusers);
 	}
 
 	public boolean updateFlowWaitingTenable(Long wid, String datatable)
