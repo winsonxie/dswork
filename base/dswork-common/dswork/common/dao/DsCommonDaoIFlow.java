@@ -387,10 +387,9 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				if(m.getSubcount() == 1)
 				{
 					// 最后一个会签个数
-					IFlowTask t = this.getFlowTask(m.getFlowid(), m.getTalias());
-					if(!"".equals(t.getTusers()))// 是否有用户来控制会签的结束
+					if(!"".equals(m.getTusers()))// 是否有用户来控制会签的结束
 					{
-						String tuser = m.getTuser() + "|," + t.getTusers() + ",";// tuser |后的用户是用来控制会签环节结束的用户
+						String tuser = m.getTuser() + "|" + m.getTusers();// tuser |,1,的用户是用来控制会签环节结束的用户
 						Map<String, Object> map = new HashMap<String, Object>();
 						map.put("id", m.getId());
 						map.put("tuser", tuser);
@@ -398,7 +397,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 					}
 					else
 					{
-						if("end".equals(t.getTnext()))
+						if("end".equals(m.getTnext()))
 						{
 							isEnd = true;
 						}
@@ -480,83 +479,121 @@ public class DsCommonDaoIFlow extends MyBatisDao
 	{
 		boolean isEnd = false;
 		this.deleteFlowWaiting(m.getId());// 该待办事项已经处理
-		for(int i = 0; i < nextTalias.length; i++)
+		if(nextTalias != null && nextTalias.length > 0)
 		{
-			String talias = nextTalias[i];
-			IFlowWaiting w = this.getFlowWaitingByPiid(m.getPiid(), talias);
-			if(w != null && w.getId().longValue() != 0)
+			for(int i = 0; i < nextTalias.length; i++)
 			{
-				dtSet = updateDataTable(datatable, w.getDatatable(), false);
-				if(w.getTcount() > 1)
+				String talias = nextTalias[i];
+				IFlowWaiting w = this.getFlowWaitingByPiid(m.getPiid(), talias);
+				if(w != null && w.getId().longValue() != 0)
 				{
-					this.updateFlowWaiting(w.getId(), time, w.getTprev() + "," + m.getTalias(), dtSet);// 等待数减1,
-																										// 上经节点增加一个
-				}
-				else
-				{
-					this.updateSubFlowWaitingSubusers(w.getId(), w.getSubusers(), dtSet);
-				}
-			}
-			else
-			{
-				IFlowWaiting newm = new IFlowWaiting();
-				newm.setId(IdUtil.genId());
-				newm.setPiid(m.getPiid());
-				newm.setYwlsh(m.getYwlsh());
-				newm.setSblsh(m.getSblsh());
-				newm.setFlowid(m.getFlowid());
-				newm.setFlowname(m.getFlowname());
-				newm.setTstart(time);
-				newm.setTprev(m.getTalias());
-				IFlowTask t = this.getFlowTask(m.getFlowid(), talias);
-				newm.setTalias(t.getTalias());
-				newm.setTname(t.getTname());
-				newm.setTcount(t.getTcount());
-				newm.setTnext(t.getTnext());
-				dtSet = updateDataTable(datatable, t.getDatatable(), false);
-				newm.setDatatable(dtSet);
-				newm.setTenable(0);
-				newm.setDataview(t.getDataview());
-				if(nextTusers != null)
-				{
-					String[] s = nextTusers[i].split(",", -1);
-					if(s.length > 1)
+					dtSet = updateDataTable(datatable, w.getDatatable(), false);
+					if(w.getTcount() > 1)
 					{
-						newm.setTusers("," + nextTusers[i] + ",");// 多人，候选人
-						newm.setTuser("");
+						this.updateFlowWaiting(w.getId(), time, w.getTprev() + "," + m.getTalias(), dtSet);// 等待数减1,
+																											// 上经节点增加一个
 					}
 					else
 					{
-						newm.setTusers("");// 候选人
-						newm.setTuser("," + nextTusers[i] + ",");// 单人
+						this.updateSubFlowWaitingSubusers(w.getId(), w.getSubusers(), dtSet);
 					}
 				}
 				else
 				{
-					String[] s = t.getTusers().split(",", -1);
-					if(s.length > 1)
+					IFlowWaiting newm = new IFlowWaiting();
+					newm.setId(IdUtil.genId());
+					newm.setPiid(m.getPiid());
+					newm.setYwlsh(m.getYwlsh());
+					newm.setSblsh(m.getSblsh());
+					newm.setFlowid(m.getFlowid());
+					newm.setFlowname(m.getFlowname());
+					newm.setTstart(time);
+					newm.setTprev(m.getTalias());
+					IFlowTask t = this.getFlowTask(m.getFlowid(), talias);
+					newm.setTalias(t.getTalias());
+					newm.setTname(t.getTname());
+					newm.setTcount(t.getTcount());
+					newm.setTnext(t.getTnext());
+					dtSet = updateDataTable(datatable, t.getDatatable(), false);
+					newm.setDatatable(dtSet);
+					newm.setTenable(0);
+					newm.setDataview(t.getDataview());
+					String[] s = new String[] {};
+					String tuser = "";
+					String tusers = "";
+					newm.setTmemo(t.getTmemo());
+					if(t.getSubcount() > -1)
 					{
-						newm.setTusers("," + t.getTusers() + ",");// 多人，候选人
-						newm.setTuser("");
+						int tcount = t.getSubcount();
+						if(nextTusers != null && nextTusers[i].length() > 0)
+						{
+							s = nextTusers[i].split("\\|", 2);// |
+							tuser = s[0];
+							if(s.length == 2)
+							{
+								tusers = s[1];// 下一步会签的控制人
+							}
+							if(tuser.length() == 0 || tuser.equals(",") || tuser.equals(",,"))
+							{
+								tuser = "";
+								if(t.getSubcount() == 0)
+								{
+									tcount = 1;
+								}
+							}
+							else
+							{
+								s = tuser.split(",", -1);
+								if(t.getSubcount() > s.length)
+								{
+									tcount = s.length;
+								}
+							}
+						}
+						else
+						{
+							tuser = t.getSubusers();
+							tusers = t.getTusers();
+						}
+						newm.setTuser(("," + tuser + ",").replaceAll(",,", ","));
+						newm.setTusers(tusers);
+						newm.setSubcount(tcount);
 					}
 					else
 					{
-						newm.setTusers("");// 候选人
-						newm.setTuser("," + t.getTusers() + ",");// 单人
+						if(nextTusers != null && nextTusers[i].length() > 0)
+						{
+							s = nextTusers[i].split(",", -1);
+							tusers = nextTusers[i];
+						}
+						else
+						{
+							s = t.getTusers().split(",", -1);
+							tusers = t.getTusers();
+						}
+						newm.setSubcount(-1);
+						if(s.length > 1)
+						{
+							newm.setTusers("," + tusers + ",");// 多人，候选人
+							newm.setTuser("");
+						}
+						else
+						{
+							newm.setTusers("");// 候选人
+							newm.setTuser("," + tusers + ",");// 单人
+						}
 					}
+					this.saveFlowWaiting(newm);
 				}
-				newm.setTmemo(t.getTmemo());
-				newm.setSubcount(t.getSubcount());
-				if(t.getSubcount() > -1)
+				if(talias.equals("end"))
 				{
-					newm.setTuser("," + t.getSubusers() + ",");
+					isEnd = true;
 				}
-				this.saveFlowWaiting(newm);
 			}
-			if(talias.equals("end"))
-			{
-				isEnd = true;
-			}
+		}
+		else
+		{
+			isEnd = true;
 		}
 		return isEnd;
 	}
