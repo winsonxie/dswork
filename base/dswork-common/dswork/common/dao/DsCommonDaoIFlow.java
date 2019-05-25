@@ -226,7 +226,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			m.setTstart(time);
 			m.setTmemo(task.getTmemo());
 			m.setSubcount(task.getSubcount());
-			m.setTenable(tenable ? 0 : -1);// （-1不启用，0启用）
+			m.setTenable(tenable ? 1 : 0);// （-1不启用，0启用）
 			m.setDataview(task.getDataview());
 			if(task.getSubcount() > -1 && "".equals(task.getSubusers()))
 			{
@@ -515,11 +515,29 @@ public class DsCommonDaoIFlow extends MyBatisDao
 					break;
 				}
 
+				String customTuser = "";// 仅会签任务有效
 				Map<String, String> uMap = new HashMap<String, String>();
 				if(uIndexLen >= i && nextTusers[i].length() > 0)
 				{
-					String ux = nextTusers[i].split("\\|")[0];
-					String[] uarr = ux.split(",");
+					if(nextTusers[i].indexOf("|") != -1)
+					{
+						String[] s = nextTusers[i].split("\\|");
+						nextTusers[i] = s[0];
+						String x = s[1].trim();
+						if(x.length() > 0)
+						{
+							s = x.split(",");
+							for(String u : s)
+							{
+								u = u.trim();
+								if(u.length() > 0)
+								{
+									customTuser = "," + u + ",";
+								}
+							}
+						}
+					}
+					String[] uarr = nextTusers[i].split(",");
 					for(String u : uarr)
 					{
 						u = u.trim();
@@ -611,6 +629,10 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				}
 				if(w.getSubcount() > -1)// 会签
 				{
+					if(customTuser.length() > 0)
+					{
+						tuser = customTuser;// 自定义的会签控制人
+					}
 					subcount = w.getSubcount();
 					if(uMap.size() > 0)
 					{
@@ -652,7 +674,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 							tusers = ",";
 							for(String u : uMap.keySet())
 							{
-								tusers += u = ",";
+								tusers += u + ",";
 							}
 							
 							tuser = "";
