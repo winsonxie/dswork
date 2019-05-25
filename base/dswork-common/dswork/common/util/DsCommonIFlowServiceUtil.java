@@ -42,20 +42,9 @@ public class DsCommonIFlowServiceUtil implements IFlowInterface
 		service.saveStop(flowid, alias, piid);
 	}
 
-	/**
-	 * 流程处理
-	 * @param waitid 待办事项ID
-	 * @param nextTalias 下级任务列表，如果为null，处理当前任务后，会结束流程
-	 * @param nextTusers 下级任务处理人列表，如果为null，则使用流程配置中的处理人信息
-	 * @param paccount 当前处理人账号
-	 * @param pname 当前处理人姓名
-	 * @param resultType 处理类型
-	 * @param resultMsg 处理意见
-	 * @return true|false
-	 */
-	public boolean process(long waitid, String replaceUser, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
+	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
 	{
-		return service.saveProcess(waitid, replaceUser, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, datatable);
+		return service.saveProcess(waitid, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, datatable);
 	}
 
 	/**
@@ -66,22 +55,6 @@ public class DsCommonIFlowServiceUtil implements IFlowInterface
 	public List<IFlowWaiting> queryWaiting(String account)
 	{
 		return service.queryFlowWaiting(account);
-	}
-
-	/**
-	 * 取得待办任务
-	 * @param waitid 需要取得的待办ID
-	 * @param user 取得待办的用户
-	 * @return
-	 */
-	public boolean takeWaiting(long waitid, String user)
-	{
-		if(user != null && user.trim().length() > 0)
-		{
-			service.updateFlowWaitingUser(waitid, user);
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -199,7 +172,7 @@ public class DsCommonIFlowServiceUtil implements IFlowInterface
 	 * @param datatable 表单结构
 	 * @return
 	 */
-	public boolean saveFlow(Long wid, String datatable)
+	public boolean saveFlow(long wid, String datatable)
 	{
 		return service.updateFlowWaitingTenable(wid, datatable);
 	}

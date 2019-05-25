@@ -43,24 +43,14 @@ public class DsCommonIFlowService
 		dao.saveStop(flowid, alias, Long.parseLong(piid));
 	}
 
-	public boolean saveProcess(long waitid, String replaceUser, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
+	public boolean saveProcess(long waitid, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
 	{
-		return dao.saveProcess(waitid, replaceUser, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, datatable);
+		return dao.saveProcess(waitid, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, datatable);
 	}
 
 	public List<IFlowWaiting> queryFlowWaiting(String account)
 	{
 		return dao.queryFlowWaiting(account);
-	}
-
-	public boolean updateFlowWaitingUser(long waitid, String user)
-	{
-		if(user != null && user.trim().length() > 0)
-		{
-			dao.updateFlowWaitingUser(waitid, user);
-			return true;
-		}
-		return false;
 	}
 
 	public IFlowWaiting getFlowWaiting(long waitid)
@@ -125,8 +115,8 @@ public class DsCommonIFlowService
 		dao.deleteFlowPi(Long.parseLong(id));
 	}
 
-	public boolean updateFlowWaitingTenable(Long wid, String datatable)
+	public boolean updateFlowWaitingTenable(long wid, String datatable)
 	{
-		return  dao.updateFlowWaitingTenable(wid, datatable);
+		return dao.updateFlowWaitingTenable(wid, datatable);
 	}
 }

@@ -95,33 +95,29 @@
 <delete id="deleteFlowWaitingByPiid">
 	delete from DS_FLOW_PI_WAITING where PIID=#{piid}
 </delete>
-<update id="updateFlowWaiting">
-	update DS_FLOW_PI_WAITING set TCOUNT=TCOUNT-1, TSTART=#{tstart}, TPREV=#{tprev}, DATATABLE=#{datatable} 
+
+<update id="updateFlowWaitingTcount">
+	update DS_FLOW_PI_WAITING set TCOUNT=TCOUNT-1, TSTART=#{tstart}, TPREV=#{tprev}
 	where ID=#{id} and TCOUNT&gt;1
 </update>
-<update id="updateFlowWaitingUser">
-	update DS_FLOW_PI_WAITING set TUSER=#{tuser}, TUSERS=null where ID=#{id}
-</update>
-<update id="updateSubFlowWaiting">
-	update DS_FLOW_PI_WAITING set SUBCOUNT=SUBCOUNT-1, SUBUSERS=#{subusers}, DATATABLE=#{datatable}
+
+<update id="updateFlowWaiting" parameterType="dswork.common.model.IFlowWaiting">
+	update DS_FLOW_PI_WAITING set 
+		TCOUNT=#{tcount},
+		TMEMO=#{tmemo},
+		TUSERS=#{tusers},
+		TUSER=#{tuser}, 
+		SUBUSERS=#{subusers},
+		SUBCOUNT=#{subcount},
+		DATATABLE=#{datatable},
+		DATAVIEW=#{dataview},
+		TENABLE=#{tenable}
 	where ID=#{id}
 </update>
-<update id="updateSubFlowWaitingSubusers">
-	update DS_FLOW_PI_WAITING set SUBUSERS=#{subusers}, DATATABLE=#{datatable}
-	where ID=#{id}
-</update>
-<update id="updateFlowTuser">
-	update DS_FLOW_PI_WAITING set TUSER=#{tuser}, TUSERS=null, SUBCOUNT=#{subcount}
-	where ID=#{id}
-</update>
-<update id="updateFlowTusers">
-	update DS_FLOW_PI_WAITING set TUSER=null, TUSERS=#{tusers}
-	where ID=#{id}
-</update>
-<update id="updateFlowWaitingTenable">
-	update DS_FLOW_PI_WAITING set TENABLE=0, DATATABLE=#{datatable}
-	where ID=#{id} and TALIAS='start'
-</update>
+
+
+
+
 <resultMap id="resultFlowWaiting" type="dswork.common.model.IFlowWaiting">
 	<id property="id" column="ID" />
 	<result property="piid" column="PIID" />
@@ -156,10 +152,22 @@
 </select>
 <sql id="sqlQueryFlowWaiting">
 	select <include refid="sqlFlowWaiting" /> from DS_FLOW_PI_WAITING
-	where ((TUSER=#{account} and SUBCOUNT &lt; 0) or TUSERS like #{account, typeHandler=LikeTypeHandler} 
-	or ((TUSER like #{account, typeHandler=LikeTypeHandler} or TUSER like '%,,%' ) and SUBCOUNT > -1 
-	and (SUBUSERS not like #{account, typeHandler=LikeTypeHandler} or TUSER like #{tuser, typeHandler=LikeTypeHandler}) )
-	) 
-	and TCOUNT=1 and TENABLE &gt; -1
+	where TCOUNT=1 and TENABLE=1 and 
+	(
+		(SUBCOUNT &lt; 0 and 
+			(
+				TUSERS like #{account, typeHandler=LikeTypeHandler} 
+				or 
+				TUSER=#{account} 
+			)
+		) 
+		or (SUBCOUNT &gt; -1 and 
+			(
+				SUBUSERS like #{account, typeHandler=LikeTypeHandler}
+				or
+				(SUBCOUNT=0 and TUSER=#{account})
+			)
+		)
+	)
 </sql>
 </mapper>
