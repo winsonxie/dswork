@@ -307,6 +307,9 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		IFlowWaiting m = this.getFlowWaiting(waitid);
 		if(m != null)
 		{
+			String dtSet = updateDataTable(datatable, m.getDatatable());
+			m.setDatatable(dtSet);
+
 			IFlowPi pi = this.getFlowPiByPiid(m.getPiid() + "");
 			IFlowParam beforeParam = new IFlowParam();
 			IFlowParam afterParam = new IFlowParam();
@@ -318,7 +321,6 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			beforeParam.setAlias(pi.getAlias());
 			BeanUtils.copyProperties(beforeParam, afterParam);// 复制
 			DsFactory.getUtil().handleMethod(beforeParam, true);
-
 			
 			// 先初始化已办数据。除状态外
 			String time = TimeUtil.getCurrentTime();
@@ -333,11 +335,8 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			pd.setPtime(time);
 			pd.setPtype(resultType);
 			pd.setMemo(resultMsg);
-			pd.setDatatable(datatable);
+			pd.setDatatable(m.getDatatable());
 			pd.setDataview(m.getDataview());
-
-			String dtSet = updateDataTable(pi.getDatatable(), datatable);
-			m.setDatatable(dtSet);
 			
 			if(nextTalias == null)// 代办或增加会签人或取得任务
 			{
@@ -685,9 +684,8 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				w.setTuser(tuser);
 				w.setSubusers(subusers);
 				w.setSubcount(subcount);
-				
-				String dtSet = updateDataTable(m.getDatatable(), w.getDatatable());
-				w.setDatatable(dtSet);
+
+				w.setDatatable(updateDataTable(m.getDatatable(), w.getDatatable()));
 				
 				if(w.getId().longValue() <= 0)
 				{
