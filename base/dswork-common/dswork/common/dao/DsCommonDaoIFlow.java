@@ -389,7 +389,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						String subusers = ",";
 						for(String u : tusersMap.keySet())
 						{
-							subusers += u = ",";
+							subusers += u + ",";
 						}
 						m.setSubusers(subusers);
 					}
@@ -414,7 +414,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						tusers = ",";
 						for(String u : tusersList)
 						{
-							tusers += u = ",";
+							tusers += u + ",";
 						}
 						tuser = "";
 					}
@@ -638,7 +638,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						subusers = ",";
 						for(String u : uMap.keySet())
 						{
-							subusers += u = ",";
+							subusers += u + ",";
 						}
 						if(subcount == 0)// 不会小于0
 						{
