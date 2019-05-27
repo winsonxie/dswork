@@ -779,6 +779,43 @@ $jskey.Calendar.prototype = {
 		o.changeEvent = new Function(ev);//重新定义函数
 		o.changeEvent();//触发自定义 changeEvent 函数
 	},
+	$toDate:function(v, f){
+		var E = this;
+		var t = new Date();
+		try{
+			if(v.length >= f.length){
+				var y = 0, M = 1, d = 1, H = 0, m = 0, s = 0, _y = f.indexOf('yyyy'), _M = f.indexOf('MM'), _d = f.indexOf('dd'), _H = f.indexOf('HH'), _m = f.indexOf('mm'), _s = f.indexOf('ss');
+				if(_y != -1){y = E.$int(v.substring(_y, _y + 4));};
+				if(!isNaN(y) && y > 0){
+					if(_M != -1){
+						M = v.substring(_M, _M + 2);
+						if(isNaN(M)){M = (t.getMonth() + 1);}
+					}
+					if(_d != -1){
+						d = E.$int(v.substring(_d, _d + 2));
+						if(isNaN(d)){d = t.getDate();}
+					}
+					if(_H != -1){
+						H = E.$int(v.substring(_H, _H + 2));
+						if(isNaN(H)){H = t.getHours();}
+					}
+					if(_m != -1){
+						m = E.$int(v.substring(_m, _m + 2));
+						if(isNaN(m)){m = t.getMinutes();}
+					}
+					if(_s != -1){
+						s = E.$int(v.substring(_s, _s + 2));
+						if(isNaN(s)){s = t.getSeconds();}
+					}
+					eval("t=new Date(" + y + "," + (E.$int(M) - 1) + "," + E.$int(d) + "," + E.$int(H) + "," + E.$int(m) + "," + E.$int(s) + ")");
+				}
+			}
+		}
+		catch(e){
+			t = new Date();
+		}
+		return t;
+	},
 	//更新值并判断是否需要初始化
 	$isChange:function(p){
 		var C = this.$c;// b为判断设置是否改变
@@ -818,40 +855,7 @@ $jskey.Calendar.prototype = {
 		if(p.format == null){p.format = "yyyy-MM-dd";}
 		p.level = E.$getLevel(p.sample || p.show || "yyyy-MM-dd");// 转化show为level，兼容旧版属性sample
 		//初始化一个时间，用于记录选择日历的时间
-		t = new Date();
-		try{
-			var f = p.format, v = o.value;
-			if(v.length >= f.length){
-				var y = 0, M = 1, d = 1, H = 0, m = 0, s = 0, _y = f.indexOf('yyyy'), _M = f.indexOf('MM'), _d = f.indexOf('dd'), _H = f.indexOf('HH'), _m = f.indexOf('mm'), _s = f.indexOf('ss');
-				if(_y != -1){y = E.$int(v.substring(_y, _y + 4));};
-				if(!isNaN(y) && y > 0){
-					if(_M != -1){
-						M = v.substring(_M, _M + 2);
-						if(isNaN(M)){M = (t.getMonth() + 1);}
-					}
-					if(_d != -1){
-						d = E.$int(v.substring(_d, _d + 2));
-						if(isNaN(d)){d = t.getDate();}
-					}
-					if(_H != -1){
-						H = E.$int(v.substring(_H, _H + 2));
-						if(isNaN(H)){H = t.getHours();}
-					}
-					if(_m != -1){
-						m = E.$int(v.substring(_m, _m + 2));
-						if(isNaN(m)){m = t.getMinutes();}
-					}
-					if(_s != -1){
-						s = E.$int(v.substring(_s, _s + 2));
-						if(isNaN(s)){s = t.getSeconds();}
-					}
-					eval("t=new Date(" + y + "," + (E.$int(M) - 1) + "," + E.$int(d) + "," + E.$int(H) + "," + E.$int(m) + "," + E.$int(s) + ")");
-				}
-			}
-		}
-		catch(e){
-			t = new Date();
-		}
+		t = E.$toDate(o.value, p.format);
 		E.$reset(t);//初始化$s
 		E.$skin(p.skin||"default");
 		E.$param = p;

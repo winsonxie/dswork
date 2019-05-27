@@ -11,7 +11,20 @@ $dswork.date.show = function(){
 	if(m.attr("fn")){
 		FN = m.attr("fn");
 	}
-	$jskey.calendar.show(o,{skin:'default', lang:0, format:f, sample:f, fn:FN});
+	var p = {skin:'default', lang:0, format:f, sample:f, fn:FN, min:"1582-10-15 00:00:00", max:"9999-12-31 23:59:59"};
+	if(m.attr("tomin")){
+		var q = $jskey.$(m.attr("tomin"));
+		if($jskey.$isDOM(q) && q.value.length > 0){
+			p.min = $jskey.calendar.$format($jskey.calendar.$toDate(q.value, f), "yyyy-MM-dd HH:mm:ss");
+		}
+	}
+	if(m.attr("tomax")){
+		var q = $jskey.$(m.attr("tomax"));
+		if($jskey.$isDOM(q) && q.value.length > 0){
+			p.max = $jskey.calendar.$format($jskey.calendar.$toDate(q.value, f), "yyyy-MM-dd HH:mm:ss");
+		}
+	}
+	$jskey.calendar.show(o,p);
 };
 
 $dswork.uploadURL = function(){
