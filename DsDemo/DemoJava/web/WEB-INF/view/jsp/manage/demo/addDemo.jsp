@@ -35,7 +35,15 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 	</tr>
 	<tr>
 		<td class="form_title">创建时间</td>
-		<td class="form_input"><input type="text" name="foundtime" maxlength="19" class="WebDate" format="yyyy-MM-dd" value="" /></td>
+		<td class="form_input"><input id="a1" tomax="a2" type="text" name="foundtime" maxlength="19" class="WebDate" format="yyyy-MM-dd" value="" /></td>
+	</tr>
+	<tr>
+		<td class="form_title">创建时间(测试时间)</td>
+		<td class="form_input"><input id="a2" tomin="a1" type="text" name="foundtime1" maxlength="19" class="WebDate" format="yyyy-MM-dd" value="" /></td>
+	</tr>
+	<tr>
+		<td class="form_title">创建时间测试时间)</td>
+		<td class="form_input"><input id="a3" tomin="a1" tomax="a2" type="text" name="foundtime2" maxlength="19" class="WebDate" format="yyyy-MM-dd" value="" /></td>
 	</tr>
 </table>
 </form>
