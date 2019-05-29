@@ -41,7 +41,7 @@ public class WebFilter implements Filter
 		Object o = session.getAttribute(LOGINER);// 当前登录用户
 		String ouser = o == null ? null : String.valueOf(o);
 		String relativeURI = request.getServletPath();// 相对地址
-		String[] arr = AuthWebConfig.getSSOTicket(request, ouser);// 获取是否存在需要登录的ticket
+		String[] arr = AuthWebConfig.getSSOTicket(request, ouser);// 获取是否存在ticket，如果存在，则判断是否和ouser中的一致
 		if(log.isDebugEnabled())
 		{
 			StringBuilder sb = new StringBuilder(126);
