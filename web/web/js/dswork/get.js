@@ -9,7 +9,7 @@
 		}
 	}
 	$(".listTable").css({"margin-bottom":"35px"});
-	$(".bottomTable").css({padding:"0",margin:"0",width:"100%",position:"fixed",left:"0",bottom:"0","border-top":"#c2c2c2 solid 1px"});
+	$(".bottomTable").removeClass("bottomTable").addClass("bottomTableFix");/*({padding:"0",margin:"0",width:"100%",position:"fixed",left:"0",bottom:"0","border-top":"#c2c2c2 solid 1px"});*/
 	if(isIe6){
 		try{$(".bottomTable").before("<div style='visibility:hidden;height:0px;padding:0;margin:0;'></div>");}catch(ie6ex){}
 		$(".bottomTable").css({position:"absolute",top:"expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-this.offsetHeight-parseInt(this.currentStyle.marginTop)-parseInt(this.currentStyle.marginBottom)))"});
@@ -44,12 +44,13 @@
 	});
 	if(!$dswork.tableCSS){
 		$("table.listTable tr").each(function(){
-			if(!$(this).hasClass("list_title") && !$(this).hasClass("nolist")){
-				$(this).addClass($(this).index()%2 == 0 ? 'list_even' : 'list_odd');
-				$(this).bind("mouseover", function(){
+			var t = $(this);
+			if(!t.hasClass("list_title") && !t.hasClass("nolist")){
+				t.addClass(t.index()%2 == 0 ? 'list_even' : 'list_odd');
+				t.bind("mouseover", function(){
 					$(this).removeClass("list_odd").removeClass("list_over").addClass("list_over");
 				});
-				$(this).bind("mouseout", function(){
+				t.bind("mouseout", function(){
 					$(this).removeClass("list_over").addClass($(this).index()%2 == 0 ? 'list_even' : 'list_odd');
 				});
 			}
