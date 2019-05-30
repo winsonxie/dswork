@@ -14,6 +14,7 @@ body,table,tr{background-color:#ffffff;}
 body::-webkit-scrollbar {width:5px;}
 body::-webkit-scrollbar-thumb {background-color:#95B8E7;}
 body::-webkit-scrollbar-track {background-color:#eeeeee;opacity:0.1;}
+table{border-spacing:1px;}
 table.normal{width:99%;}
 
 a{outline:none;text-decoration:none;cursor:pointer;}
@@ -167,12 +168,12 @@ input.readonlytext{width:200px;background-color:#e1e1e1;color:#000000;}
 textarea.readonlytext{width:100%;background-color:#e1e1e1;color:#000000;}
 div.line{display:block;width:1px;height:3px;margin:0px;padding:0px;overflow:hidden;}
 
-.topTable, .bottomTable, .listTable{width:99%;margin:0 auto;border:#c2c2c2 solid 1px;background-color:#c2c2c2;border-spacing:1px;}
-.topTable{border-bottom:none;}
-.bottomTable{border-top:none;border:none;}
+.topTable, .bottomTable, .listTable{width:99%;margin:0 auto;border:#c2c2c2 solid 1px;background-color:#c2c2c2;}
+.topTable{border-bottom:none;border-spacing:0px;}
+.bottomTable{border-top:none;border:none;border-spacing:0px;}
 .bottomTableFix{padding:0;margin:0;width:100%;position:fixed;left:0;bottom:0;border-top:#c2c2c2 solid 1px;}
 .bottomTable td{background-color:#d9e5fd;}
-.listTable{border:none;}
+.listTable{border:none;border-spacing:1px;}
 .topTable tr, 
 .bottomTable tr, 
 .listTable tr{height:33px;line-height:1.5em;padding:0px 5px;}
