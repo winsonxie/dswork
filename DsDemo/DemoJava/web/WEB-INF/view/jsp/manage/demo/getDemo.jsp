@@ -47,6 +47,9 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 </form>
 <div class="line"></div>
 <form id="listForm" method="post" action="delDemo.htm">
+<table class="topTable">
+	<td class="form_bottom"><input type="button" value="批量提交"><input type="button" value="批量提交"><input type="button" value="批量提交"></td>
+</table>
 <table id="dataTable" class="listTable">
 	<tr class="list_title">
 		<td style="width:2%"><input id="chkall" type="checkbox" /></td>
