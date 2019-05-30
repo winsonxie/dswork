@@ -176,6 +176,7 @@ div.line{display:block;width:1px;height:3px;margin:0px;padding:0px;overflow:hidd
 .topTable tr, 
 .bottomTable tr, 
 .listTable tr{height:33px;line-height:1.5em;padding:0px 5px;}
+.topTable td, 
 .listTable td{line-height:1.5em;vertical-align:middle;text-align:center;background-color:#ffffff;color:#2b3e44;word-wrap:break-word;word-break:break-all;}
 .listTable tr tr, .listTable td td{height:auto;line-height:normal;}
 .listTable tr.list_title{height:33px;}
