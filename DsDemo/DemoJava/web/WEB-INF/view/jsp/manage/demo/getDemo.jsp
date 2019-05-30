@@ -23,7 +23,7 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 </script>
 </head> 
 <body>
-<table border="0" cellspacing="0" cellpadding="0" class="listLogo">
+<table class="listLogo">
 	<tr>
 		<td class="title">样例列表</td>
 		<td class="menuTool">
@@ -34,7 +34,7 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 </table>
 <div class="line"></div>
 <form id="queryForm" method="post" action="getDemo.htm">
-<table border="0" cellspacing="0" cellpadding="0" class="queryTable">
+<table class="queryTable">
 	<tr>
 		<td class="input">
 			&nbsp;标题：<input type="text" class="text" name="title" value="${fn:escapeXml(param.title)}" />
@@ -47,7 +47,7 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 </form>
 <div class="line"></div>
 <form id="listForm" method="post" action="delDemo.htm">
-<table id="dataTable" border="0" cellspacing="1" cellpadding="0" class="listTable">
+<table id="dataTable" class="listTable">
 	<tr class="list_title">
 		<td style="width:2%"><input id="chkall" type="checkbox" /></td>
 		<td style="width:5%">操作</td>
@@ -69,10 +69,39 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 		</td>
 	</tr>
 </c:forEach>
+<c:forEach items="${pageModel.result}" var="d">
+	<tr>
+		<td><input name="keyIndex" type="checkbox" value="${d.id}" /></td>
+		<td class="menuTool" keyIndex="${d.id}">&nbsp;</td>
+		<td>${fn:escapeXml(d.title)}</td>
+		<td>${fn:escapeXml(d.content)}</td>
+		<td>${fn:escapeXml(d.foundtime)}</td>
+		<td class="menuTool">
+			<a class="update" href="updDemo1.htm?keyIndex=${d.id}">修改</a>
+			<a class="delete" href="delDemo.htm?keyIndex=${d.id}">删除</a>
+		</td>
+	</tr>
+</c:forEach>
+<c:forEach items="${pageModel.result}" var="d">
+	<tr>
+		<td><input name="keyIndex" type="checkbox" value="${d.id}" /></td>
+		<td class="menuTool" keyIndex="${d.id}">&nbsp;</td>
+		<td>${fn:escapeXml(d.title)}</td>
+		<td>${fn:escapeXml(d.content)}</td>
+		<td>${fn:escapeXml(d.foundtime)}</td>
+		<td class="menuTool">
+			<a class="update" href="updDemo1.htm?keyIndex=${d.id}">修改</a>
+			<a class="delete" href="delDemo.htm?keyIndex=${d.id}">删除</a>
+		</td>
+	</tr>
+</c:forEach>
+	<tr class="nolist">
+		<td class="form_bottom" colspan="6"><input type="button" value="批量提交"><input type="button" value="批量提交"><input type="button" value="批量提交"></td>
+	</tr>
 </table>
 <input name="page" type="hidden" value="${pageModel.page}" />
 </form>
-<table border="0" cellspacing="0" cellpadding="0" class="bottomTable">
+<table class="bottomTable">
 	<tr><td>${pageNav.page}</td></tr>
 </table>
 </body>

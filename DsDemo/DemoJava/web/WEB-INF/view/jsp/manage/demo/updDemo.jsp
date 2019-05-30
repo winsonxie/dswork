@@ -13,7 +13,7 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 </script>
 </head>
 <body>
-<table border="0" cellspacing="0" cellpadding="0" class="listLogo">
+<table class="listLogo">
 	<tr>
 		<td class="title">修改</td>
 		<td class="menuTool">
@@ -24,7 +24,7 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 </table>
 <div class="line"></div>
 <form id="dataForm" method="post" action="updDemo2.htm">
-<table border="0" cellspacing="1" cellpadding="0" class="listTable">
+<table class="listTable">
 	<tr>
 		<td class="form_title">标题</td>
 		<td class="form_input"><input type="text" name="title" maxlength="30" value="${fn:escapeXml(po.title)}" /></td>
