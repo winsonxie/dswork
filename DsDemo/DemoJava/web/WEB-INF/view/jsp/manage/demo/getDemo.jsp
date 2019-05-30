@@ -48,7 +48,7 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 <div class="line"></div>
 <form id="listForm" method="post" action="delDemo.htm">
 <table class="topTable">
-	<tr><td class="form_bottom"><input type="button" value="批量提交"><input type="button" value="批量提交"><input type="button" value="批量提交"></td></tr>
+	<tr><td class="form_bottom"><input class="listFormDelAll" type="button" value="批量删除"></td></tr>
 </table>
 <table id="dataTable" class="listTable">
 	<tr class="list_title">
@@ -86,7 +86,7 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 	</tr>
 </c:forEach>
 	<tr class="nolist">
-		<td class="form_bottom" colspan="6"><input type="button" value="批量提交"><input type="button" value="批量提交"><input type="button" value="批量提交"></td>
+		<td class="form_bottom" colspan="6"><input class="listFormDelAll" type="button" value="批量删除"></td>
 	</tr>
 </table>
 <input name="page" type="hidden" value="${pageModel.page}" />
