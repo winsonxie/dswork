@@ -25,6 +25,9 @@
 		}}else{alert("请选择记录！");}
 		return false;
 	});
+	$(".listFormDelAll").click(function(){
+		$("#listFormDelAll").click();
+	});
 	$("[name=keyIndex]").click(function(event){event.stopPropagation();}).dblclick(function(event){event.stopPropagation();});
 	//jquery1.5-//$("#chkall").click(function(){$("input[name='keyIndex']").attr("checked", $(this).attr("checked"));});
 	$("#chkall").click(function(){$("input[name='keyIndex']").prop("checked", $(this).prop("checked"));});
