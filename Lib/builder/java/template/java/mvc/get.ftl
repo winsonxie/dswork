@@ -17,7 +17,7 @@ $${frame}.callback = function(){if($${frame}.result.code == 1){
 </script>
 </head> 
 <body>
-<table border="0" cellspacing="0" cellpadding="0" class="listLogo">
+<table class="listLogo">
 	<tr>
 		<td class="title">${table.comment}列表</td>
 		<td class="menuTool">
@@ -28,7 +28,7 @@ $${frame}.callback = function(){if($${frame}.result.code == 1){
 </table>
 <div class="line"></div>
 <form id="queryForm" method="post" action="get${model}.htm">
-<table border="0" cellspacing="0" cellpadding="0" class="queryTable">
+<table class="queryTable">
 	<tr>
 		<td class="input">
 <#list table.columnNokey as c>
@@ -41,7 +41,7 @@ $${frame}.callback = function(){if($${frame}.result.code == 1){
 </form>
 <div class="line"></div>
 <form id="listForm" method="post" action="del${model}.htm">
-<table id="dataTable" border="0" cellspacing="1" cellpadding="0" class="listTable">
+<table id="dataTable" class="listTable">
 	<tr class="list_title">
 		<td style="width:2%"><input id="chkall" type="checkbox" /></td>
 		<td style="width:5%">操作</td>
@@ -61,7 +61,7 @@ $${frame}.callback = function(){if($${frame}.result.code == 1){
 </table>
 <input name="page" type="hidden" value="${'$'}{pageModel.page}" />
 </form>
-<table border="0" cellspacing="0" cellpadding="0" class="bottomTable">
+<table class="bottomTable">
 	<tr><td>${'$'}{pageNav.page}</td></tr>
 </table>
 </body>

@@ -13,7 +13,7 @@ $${frame}.callback = function(){if($${frame}.result.code == 1){
 </script>
 </head>
 <body>
-<table border="0" cellspacing="0" cellpadding="0" class="listLogo">
+<table class="listLogo">
 	<tr>
 		<td class="title">添加</td>
 		<td class="menuTool">
@@ -24,7 +24,7 @@ $${frame}.callback = function(){if($${frame}.result.code == 1){
 </table>
 <div class="line"></div>
 <form id="dataForm" method="post" action="add${model}2.htm">
-<table border="0" cellspacing="1" cellpadding="0" class="listTable">
+<table class="listTable">
 <#list table.columnNokey as c>
 	<#if c.length<=4000>
 	<tr>

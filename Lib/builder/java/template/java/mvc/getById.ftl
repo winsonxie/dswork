@@ -8,7 +8,7 @@
 <%@include file="/commons/include/getById.jsp"%>
 </head>
 <body>
-<table border="0" cellspacing="0" cellpadding="0" class="listLogo">
+<table class="listLogo">
 	<tr>
 		<td class="title">明细</td>
 		<td class="menuTool">
@@ -17,7 +17,7 @@
 	</tr>
 </table>
 <div class="line"></div>
-<table border="0" cellspacing="1" cellpadding="0" class="listTable">
+<table class="listTable">
 <#list table.columnNokey as c>
 	<#if c.length<=4000>
 	<tr>
