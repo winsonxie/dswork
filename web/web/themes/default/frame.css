@@ -242,5 +242,5 @@ td.form_bottom{height:30px;background-color:#ffffff;text-align:center;vertical-a
 #div_maskMessage{z-index:10000;width:300px;padding:40px;font-site:14px;font-weight:bold;position:absolute;text-align:center;background-color:#fff;border:#999 solid 3px;}
 
 .xheTool span{height:22px;height:22px !important;overflow:hidden;}
-.treeheader{height:30px;}
+.treeheader{height:30px;overflow:hidden;border:0px;}
 
