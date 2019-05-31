@@ -6,7 +6,7 @@ html,body{*position:static;height:100%;border:0;line-height:1.6;}
 html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
 input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}
 input,button{overflow:visible;vertical-align:middle;outline:none;}
-body,th,td,button,input,select,textarea,a,span,p,div{font-family:"Microsoft Yahei","Hiragino Sans GB","Helvetica Neue",Helvetica,tahoma,arial,Verdana,"\5B8B\4F53",sans-serif;font-size:14px;color:#182a2d;-webkit-font-smoothing:antialiased;-moz-font-smoothing:antialiased;}
+body,th,td,button,input,select,textarea,a,p,div{font-family:"Microsoft Yahei","Hiragino Sans GB","Helvetica Neue",Helvetica,tahoma,arial,Verdana,"\5B8B\4F53",sans-serif;font-size:14px;color:#182a2d;-webkit-font-smoothing:antialiased;-moz-font-smoothing:antialiased;}
 sub,sup{vertical-align:baseline;}
 html{overflow:-moz-scrollbars-vertical;zoom:expression(function(ele){ele.style.zoom = "1";document.execCommand("BackgroundImageCache",false,true)}(this))}
 
@@ -220,4 +220,6 @@ td.form_bottom{height:39px;background-color:#fff;text-align:left;vertical-align:
 
 .xheTool span{height:22px;height:22px !important;overflow:hidden;}
 .treeheader{height:30px;}
-
+.ztree *{font-size:14px!important;}
+.panel-header{padding:0!important;height:28px!important;}
+.panel-title input{height:28px!important;margin:0!important;}
