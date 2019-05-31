@@ -219,7 +219,7 @@ td.form_bottom{height:39px;background-color:#fff;text-align:left;vertical-align:
 #div_maskMessage{z-index:10000;width:300px;padding:40px;font-site:14px;font-weight:bold;position:absolute;text-align:center;background-color:#fff;border:#999 solid 3px;}
 
 .xheTool span{height:22px;height:22px !important;overflow:hidden;}
-.treeheader{height:33px;overflow:hidden;border:0px;}
+.treeheader{height:40px;overflow:hidden;border:0px;}
 .ztree *{font-size:14px!important;}
 .panel-header{padding:0!important;height:28px!important;}
 .panel-header .panel-title input.text,
