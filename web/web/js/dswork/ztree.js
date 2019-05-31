@@ -104,6 +104,7 @@ $dswork.ztree.config = {
 	callback:null,//必须修改
 	view:{
 		expandSpeed:"",
+		nameIsHTML:true,
 		fontCss:function(treeId, treeNode){return $dswork.ztree.setFontCss(treeId, treeNode);}
 	},
 	async:{
