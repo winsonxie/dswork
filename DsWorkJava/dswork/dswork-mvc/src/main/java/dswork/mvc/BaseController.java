@@ -205,9 +205,10 @@ public class BaseController
 	/**
 	 * 获取封装reqeust请求，并结合session存储pagesize
 	 * @param pagesize 指定pagesize
+	 * @param hasSession 是否需要让pagesize写入session
 	 * @return PageRequest
 	 */
-	protected PageRequest getPageRequest(int pagesize)
+	protected PageRequest getPageRequest(int pagesize, boolean hasSession)
 	{
 		if(pagesize <= 0)
 		{
@@ -216,18 +217,35 @@ public class BaseController
 		PageRequest pr = new PageRequest();
 		pr.setFilters(req().getParameterValueMap(false, false));
 		pr.setPage(req().getInt("page", 1));
-		try
+		if(hasSession)
 		{
-			pagesize = Integer.parseInt(String.valueOf(session().getAttribute(PageSize_SessionName)).trim());
+			try
+			{
+				pagesize = Integer.parseInt(String.valueOf(session().getAttribute(PageSize_SessionName)).trim());
+			}
+			catch(Exception ex)
+			{
+				pagesize = 10;
+			}
+			pagesize = req().getInt("pagesize", req().getInt("pageSize", pagesize));
+			session().setAttribute(PageSize_SessionName, pagesize);
 		}
-		catch(Exception ex)
+		else
 		{
-			pagesize = 10;
+			pagesize = req().getInt("pagesize", req().getInt("pageSize", pagesize));
 		}
-		pagesize = req().getInt("pagesize", req().getInt("pageSize", pagesize));
-		session().setAttribute(PageSize_SessionName, pagesize);
 		pr.setPagesize(pagesize);
 		return pr;
+	}
+
+	/**
+	 * 获取封装reqeust请求，并结合session存储pagesize
+	 * @param pagesize 指定pagesize
+	 * @return PageRequest
+	 */
+	protected PageRequest getPageRequest(int pagesize)
+	{
+		return getPageRequest(pagesize, true);
 	}
 
 	/**
@@ -236,6 +254,6 @@ public class BaseController
 	 */
 	protected PageRequest getPageRequest()
 	{
-		return getPageRequest(10);
+		return getPageRequest(10, true);
 	}
 }
