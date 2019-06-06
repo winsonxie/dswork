@@ -155,6 +155,12 @@ input.text.disabled:focus,input[type="text"].disabled:focus,input[type="password
        -moz-box-shadow:inset 0 2px 2px #e8e7e7;
             box-shadow:inset 0 2px 2px #e8e7e7;}
 
+.success{color:#5cb85c!important;}
+.fail{color:#d9534f!important;}
+.none{color:#999999!important;}
+.info{color:#5bc0de!important;}
+.warn{color:#f0ad4e!important;}
+
 span.msg{color:#0000ff;}
 span.tips{color:#0000ff;}
 span.imp{padding-left:3px;color:#ff0000;font-weight:bold;}
