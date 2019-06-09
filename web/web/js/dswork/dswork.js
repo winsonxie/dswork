@@ -204,7 +204,7 @@ $dswork.showTree = function(p){if(typeof(p)!="object"){p={};}
 	};
 	$win.css("display", "");
 	p.tree = $.fn.zTree.init($tree, cfg, p.nodeArray);
-	try{var _pn = p.tree.getNodeByParam("id", root.id);p.tree.selectNode(_pn);p.tree.reAsyncChildNodes(_pn, "refresh");}catch(e){}
+	try{var _pn = p.tree.getNodeByParam("id", p.nodeArray[0].id);p.tree.selectNode(_pn);p.tree.reAsyncChildNodes(_pn, "refresh");}catch(e){}
 };
 
 //{sessionKey, fileKey, ext:file, limit:10240(KB), show:true}
