@@ -6,15 +6,15 @@ package dswork.common.model;
 public class IFlowWaiting
 {
 	// 主键ID
-	private Long id = 0L;
+	private long id = 0L;
 	// 实例ID
-	private Long piid = 0L;
+	private long piid = 0L;
 	// 业务流水号
 	private String ywlsh = "";
 	// 申办流水号
 	private String sblsh = "";
 	// 流程ID
-	private Long flowid = 0L;
+	private long flowid = 0L;
 	// 流程名称
 	private String flowname = "";
 	// 任务标识
@@ -22,7 +22,7 @@ public class IFlowWaiting
 	// 任务名称
 	private String tname = "";
 	// 合并任务个数(只有一个任务时等于1，其余大于1)
-	private Integer tcount = 0;
+	private int tcount = 0;
 	// 上级任务(从哪过来的)
 	private String tprev = "";
 	// 下级任务（以逗号分隔节点标识，以|线分隔分支任务）翻译成代码可理解为：[(可选1 || 可选2 || 可选3) && (可选A || 可选B)]
@@ -34,7 +34,7 @@ public class IFlowWaiting
 	// 当前任务的用户ID(以逗号分隔可选用户)
 	private String tusers = "";
 	// 至少合并会签个数(不需要会签时值为-1)
-	private Integer subcount = -1;
+	private int subcount = -1;
 	// 已进行会签的用户ID(以逗号分隔用户，前后补逗号)
 	private String subusers = "";
 	// 参数
@@ -46,22 +46,22 @@ public class IFlowWaiting
 	// 数据视图
 	private String dataview = "";
 	
-	public Long getId()
+	public long getId()
 	{
 		return id;
 	}
 
-	public void setId(Long id)
+	public void setId(long id)
 	{
 		this.id = id;
 	}
 
-	public Long getPiid()
+	public long getPiid()
 	{
 		return piid;
 	}
 
-	public void setPiid(Long piid)
+	public void setPiid(long piid)
 	{
 		this.piid = piid;
 	}
@@ -86,12 +86,12 @@ public class IFlowWaiting
 		this.sblsh = sblsh;
 	}
 
-	public Long getFlowid()
+	public long getFlowid()
 	{
 		return flowid;
 	}
 
-	public void setFlowid(Long flowid)
+	public void setFlowid(long flowid)
 	{
 		this.flowid = flowid;
 	}
@@ -126,12 +126,12 @@ public class IFlowWaiting
 		this.tname = tname;
 	}
 
-	public Integer getTcount()
+	public int getTcount()
 	{
 		return tcount;
 	}
 
-	public void setTcount(Integer tcount)
+	public void setTcount(int tcount)
 	{
 		this.tcount = tcount;
 	}
@@ -186,12 +186,12 @@ public class IFlowWaiting
 		this.tusers = tusers;
 	}
 
-	public Integer getSubcount()
+	public int getSubcount()
 	{
 		return subcount;
 	}
 
-	public void setSubcount(Integer subcount)
+	public void setSubcount(int subcount)
 	{
 		this.subcount = subcount;
 	}

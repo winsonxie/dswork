@@ -42,9 +42,9 @@ public class DsCommonIFlowServiceUtil implements IFlowInterface
 		service.saveStop(flowid, alias, piid);
 	}
 
-	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
+	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, Integer customSubusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
 	{
-		return service.saveProcess(waitid, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, datatable);
+		return service.saveProcess(waitid, nextTalias, nextTusers, customSubusers, paccount, pname, resultType, resultMsg, datatable);
 	}
 
 	/**

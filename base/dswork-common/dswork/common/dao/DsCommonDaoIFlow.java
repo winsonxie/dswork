@@ -301,7 +301,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		DsFactory.getUtil().handleMethod(afterParam, false);
 	}
 
-	public boolean saveProcess(Long waitid, String[] nextTalias, String[] nextTusers, String account, String name, String resultType, String resultMsg, String datatable)
+	public boolean saveProcess(long waitid, String[] nextTalias, String[] nextTusers, Integer customSubusers, String account, String name, String resultType, String resultMsg, String datatable)
 	{
 		boolean isEnd = false;
 		IFlowWaiting m = this.getFlowWaiting(waitid);
@@ -378,14 +378,23 @@ public class DsCommonDaoIFlow extends MyBatisDao
 						{
 							m.setSubcount(m.getSubcount() - 1);// 新的
 						}
+						
 						if(tusersList.size() > 0)// 加人
 						{
-							m.setSubcount(m.getSubcount() + tusersList.size());// 新的
+							if(customSubusers == null)
+							{
+								m.setSubcount(m.getSubcount() + tusersList.size());// 新的
+							}
+							else
+							{
+								m.setSubcount(customSubusers);
+							}
 							if(m.getSubcount() > tusersMap.size())// 没那么多人
 							{
 								m.setSubcount(tusersMap.size());
 							}
 						}
+						
 						String subusers = ",";
 						for(String u : tusersMap.keySet())
 						{
@@ -687,7 +696,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 
 				w.setDatatable(updateDataTable(m.getDatatable(), w.getDatatable()));
 				
-				if(w.getId().longValue() <= 0)
+				if(w.getId() <= 0)
 				{
 					w.setId(IdUtil.genId());
 					this.saveFlowWaiting(w);

@@ -66,12 +66,12 @@ public class DsCommonIFlowUtil implements IFlowInterface
 		}
 	}
 
-	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
+	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, Integer customSubusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
 	{
 		try
 		{
 			init();
-			return dao.saveProcess(waitid, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, datatable);
+			return dao.saveProcess(waitid, nextTalias, nextTusers, customSubusers, paccount, pname, resultType, resultMsg, datatable);
 		}
 		catch(Exception e)
 		{

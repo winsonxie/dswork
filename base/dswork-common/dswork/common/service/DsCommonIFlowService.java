@@ -43,9 +43,9 @@ public class DsCommonIFlowService
 		dao.saveStop(flowid, alias, Long.parseLong(piid));
 	}
 
-	public boolean saveProcess(long waitid, String[] nextTalias, String[] nextTusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
+	public boolean saveProcess(long waitid, String[] nextTalias, String[] nextTusers, Integer customSubusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
 	{
-		return dao.saveProcess(waitid, nextTalias, nextTusers, paccount, pname, resultType, resultMsg, datatable);
+		return dao.saveProcess(waitid, nextTalias, nextTusers, customSubusers, paccount, pname, resultType, resultMsg, datatable);
 	}
 
 	public List<IFlowWaiting> queryFlowWaiting(String account)
