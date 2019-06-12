@@ -39,8 +39,6 @@ public class IFlowWaiting
 	private String subusers = "";
 	// 参数
 	private String tmemo = "";
-	// 处理接口类
-	private String tinterface = "";
 	// 数据结构
 	private String datatable = "";
 	// 是否启用待办（-1不启用，0启用）
@@ -216,16 +214,6 @@ public class IFlowWaiting
 	public void setTmemo(String tmemo)
 	{
 		this.tmemo = tmemo;
-	}
-
-	public String getTinterface()
-	{
-		return tinterface;
-	}
-
-	public void setTinterface(String tinterface)
-	{
-		this.tinterface = tinterface;
 	}
 
 	public String getDatatable()
