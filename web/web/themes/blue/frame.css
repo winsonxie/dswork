@@ -145,7 +145,7 @@ input[type="button"],
 input.button,
 input.delete{border:none;background:none;margin:0;line-height:1.5em;cursor:pointer;background-color:#54ACFA;color:#fff;border-radius:2px;-webkit-appearance:none;}
 input[type="button"],input.button{padding:0.2em 1em 0.3em 1em;margin:5px;}
-input[type="button"]:hover,input.button:hover{filter:alpha(opacity:80);opacity:0.8;}
+input[type="button"]:hover,input.button:hover{filter:alpha(opacity:80);opacity:0.8;box-shadow:0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);}
 input.delete{padding:0;border:none;width:18px;height:18px;background:#fff url(img/button/delete.png) 0px 0px no-repeat;}
 input.text{width:200px;}
 input.readonlytext{width:200px;background-color:#e1e1e1;color:#000000;}
@@ -192,16 +192,16 @@ div.line{display:block;width:1px;height:3px;margin:0px;padding:0px;overflow:hidd
 .pageview a:visited,
 .pageview a:hover,
 .pageview a:active{width:auto;height:26px;line-height:26px;text-decoration:none;color:#182a2d;background-color:#fff;border:none;border:1px solid #ddd;display:inline-block;padding:0 10px;border-radius:2px;}
-.pageview a:hover{filter:alpha(opacity:80);opacity:0.8;color:#000;}
+.pageview a:hover{filter:alpha(opacity:80);opacity:0.8;color:#000;border-color:rgba(82,168,236,0.8);box-shadow:0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);}
 .pageview a.first{}
 .pageview a.prev {}
 .pageview a.next {}
 .pageview a.last {}
 .pageview input{height:26px;line-height:26px;text-align:center;}
-.pageview input.input{height:26px;width:25px;border:#ddd solid 1px;font-size:14px;}
-.pageview input.go{height:26px;width:30px;cursor:pointer;color:#182a2d;background-color:#fff;border:none;border:1px solid #ddd;border-radius:2px;padding:0;}
+.pageview input.input{height:26px;width:40px;border:#ddd solid 1px;font-size:14px;padding:0;}
+.pageview input.go{height:26px;width:40px;cursor:pointer;color:#182a2d;background-color:#fff;border:none;border:1px solid #ddd;border-radius:2px;padding:0;}
 .pageview input.go:hover{filter:alpha(opacity:80);opacity:0.8;color:#000;}
-.pageview select{height:26px;width:42px;line-height:1.8em;text-align:center;cursor:pointer;border:none;border:#ddd solid 1px;border-radius:2px;}
+.pageview select{height:26px;width:60px;line-height:1.8em;text-align:center;cursor:pointer;border:none;border:#ddd solid 1px;border-radius:2px;}
 
 /*表单*/
 /*标题*/td.form_title{padding-left:6px;padding-right:6px;text-align:right;background-color:#fff;}
@@ -230,3 +230,14 @@ td.form_bottom{height:39px;background-color:#fff;text-align:left;vertical-align:
 .panel-header{padding:0!important;height:28px!important;}
 .panel-header .panel-title input.text,
 .panel-header .panel-title input[type="text"]{height:28px!important;margin:0!important;border:none;}
+
+@media only screen and (max-width:600px){
+.pageview a,
+.pageview a:link,
+.pageview a:visited,
+.pageview a:hover,
+.pageview a:active{padding:0 5px;}
+.pageview input.input{width:30px;}
+.pageview input.go{width:30px;}
+.pageview select{width:50px;}
+}
