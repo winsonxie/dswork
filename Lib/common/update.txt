@@ -6,7 +6,7 @@
 	dswork删除了dswork.core中的UniqueId类，改用新增加的IdUtil类
 		新增IdUtil类，genId改为16位，原13位使用genTimeId函数
 2019-04-18
-	spring升级为4.3.23，4.x的最新版本
+	spring升级为4.3.23，4.x的最新版本，对内置的cxf-2.6.0包有兼容性问题
 	slf4j-1.7.25升级到slf4j-1.7.26
 	dswork修改了dswork.core中的EncryptUtil代码
 		增加genKeyPair、encryptRSA、decryptRSA函数
@@ -22,7 +22,7 @@
 	dswork修改了dswork.web中的MyRequest代码，增加支持application/json和getDatabody相关函数
 	dswork修改了dswork.core中的Page和PageRequest类，重构整体结构，会影响比较多的页面，主要是当前页变量
 2018-07-12
-	spring升级为4.3.18.release，目前对内置的cxf-2.6.0包有兼容性问题
+	spring升级为4.3.18.release，对内置的cxf-2.6.0包有兼容性问题
 2018-07-03
 	dswork修改了dswork.config包，增加了dswork.config.ex配置文件，默认内置集成多数据源时的mybatis配置
 2018-06-08
@@ -32,7 +32,7 @@
 	dswork修改了dswork.config包，集成配置mybatis中的默认spring系统配置，包括配置文件、数据源、mybatis配置
 	dswork修改了dswork.core包，对"jskey.upload.savePath"参数增加默认值：/WorkServer/WebIO/temp
 2018-05-04
-	全面升级至servlet3.0
+	升级至servlet3.0
 	dswork修改了dswork.web，新增了servlet3.0的ServletContainerInitializer类MyServletContainerInitializer和MyWebInitializer
 	dswork新增了dswork.config基础包，该包作用于精减掉原web.xml中所有log4j、Spring、验证码、单点登录配置文件路径参数等基础环境配置
 		加入该包可扩展支持config.property文件配置参数dswork.active=dev
@@ -69,7 +69,7 @@
 		commons-beanutils(-core)-1.8.3升级到commons-beanutils-1.9.3
 		commons-codec-1.6升级到commons-codec-1.10
 		commons-fileupload-1.2.2升级到commons-fileupload-1.3.2
-		poi-3.12升级到poi-3.15，同时减少了相关的依赖包，但新增依赖一个依赖commons-collections4-4.1
+		poi-3.12升级到poi-3.15，同时减少了相关的依赖包，但新增依赖commons-collections4-4.1
 2017-01-12
 	dswork增加了html解析代码，但该代码是在jsoup的代码中转化来的，还不算是自己的东西，所以没放到commons目录中，等以后有机会再细化
 2017-01-11
