@@ -1,6 +1,7 @@
 $(function(){
+$dswork.confirm = "确定保存吗？";
 $("#dataFormSave").click(function(){
-	if($dswork.beforeSubmit()){if(confirm("确定保存吗？")){
+	if($dswork.beforeSubmit()){if(confirm($dswork.confirm)){
 		$dswork.readySubmit();
 		if($dswork.doAjax){$("#dataForm").ajaxSubmit($dswork.doAjaxOption);}
 		else{$("#dataForm").submit();}
