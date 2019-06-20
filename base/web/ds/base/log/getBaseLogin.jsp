@@ -69,7 +69,7 @@ request.setAttribute("pageNav", new PageNav<java.util.Map<String, Object>>(reque
 <html>
 <head>
 	<title></title>
-	<%@include file="/commons/include/get.jsp" %>
+	<%@include file="/commons/include/list.jsp" %>
 	<style type="text/css">
 		td.L {text-align:left;padding-left:2px;}
 	</style>

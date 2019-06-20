@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/get.jsp"%>
+<%@include file="/commons/include/list.jsp"%>
 <script type="text/javascript">
 $(function(){
 	$dswork.page.menu("delTable.htm", "updTable1.htm", "getTableById.htm", "${pageModel.page}");

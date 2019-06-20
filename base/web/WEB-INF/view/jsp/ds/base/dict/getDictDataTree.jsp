@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/get.jsp"%>
+<%@include file="/commons/include/list.jsp"%>
 <c:if test="${po.level!=1}">
 <%@include file="/commons/include/ztree.jsp"%>
 </c:if>

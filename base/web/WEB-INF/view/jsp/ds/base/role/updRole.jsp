@@ -5,7 +5,7 @@
 <html> 
 <head>  
 <title></title>
-<%@include file="/commons/include/updAjax.jsp"%>
+<%@include file="/commons/include/upd1.jsp"%>
 <%@include file="/commons/include/ztree.jsp"%>
 <script type="text/javascript">
 var map = new $jskey.Map();

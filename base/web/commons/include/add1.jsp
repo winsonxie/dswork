@@ -8,3 +8,4 @@
 <script type="text/javascript" src="/web/js/jskey/jskey_core.js"></script>
 <script type="text/javascript" src="/web/js/dswork/dswork.js"></script>
 <script type="text/javascript" src="/web/js/dswork/form.js"></script>
+<script type="text/javascript">$dswork.doAjax = true;</script>

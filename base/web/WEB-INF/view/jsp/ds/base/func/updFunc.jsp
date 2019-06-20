@@ -5,7 +5,7 @@
 <html> 
 <head>  
 <title></title>
-<%@include file="/commons/include/updAjax.jsp"%>
+<%@include file="/commons/include/upd1.jsp"%>
 <script type="text/javascript">
 $dswork.validCallBack = function(){
 	var rulist = document.getElementsByName("rurl");

@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/get.jsp"%>
+<%@include file="/commons/include/list.jsp"%>
 <script type="text/javascript">
 $(function(){
 	$dswork.page.menu("delDict.htm", "updDict1.htm?mark=${fn:escapeXml(param.mark)}&islist=${fn:escapeXml(param.islist)}", "", "${pageModel.page}");

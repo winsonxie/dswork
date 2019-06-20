@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/get.jsp"%>
+<%@include file="/commons/include/list.jsp"%>
 <script type="text/javascript">
 function updStatus(objid, id){
 	var obj = $("#" + objid), o = document.getElementById(objid);

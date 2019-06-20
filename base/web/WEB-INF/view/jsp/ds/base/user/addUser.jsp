@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/addAjax.jsp"%>
+<%@include file="/commons/include/add1.jsp"%>
 <%@include file="/commons/include/ztree.jsp"%>
 <script type="text/javascript">
 $dswork.callback = function(){if($dswork.result.type == 1){

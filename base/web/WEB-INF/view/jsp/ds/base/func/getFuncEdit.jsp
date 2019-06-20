@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/updAjax.jsp"%>
+<%@include file="/commons/include/upd1.jsp"%>
 </head>
 <body>
 <table border="0" cellspacing="0" cellpadding="0" class="listLogo">

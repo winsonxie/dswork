@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/get.jsp"%>
+<%@include file="/commons/include/list.jsp"%>
 <script type="text/javascript">
 $dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.type == 1){

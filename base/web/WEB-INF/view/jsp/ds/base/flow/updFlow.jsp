@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/updAjax.jsp"%>
+<%@include file="/commons/include/upd1.jsp"%>
 <style type="text/css">
 .calias{width:80%;}
 .cname{width:80%;}

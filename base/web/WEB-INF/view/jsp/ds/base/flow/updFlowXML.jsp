@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/updAjax.jsp"%>
+<%@include file="/commons/include/upd1.jsp"%>
 <script type="text/javascript" src="/web/js/flow/dswork.flow.js"></script>
 <script type="text/javascript" src="/web/js/flow/dswork.flow.check.js"></script>
 <script type="text/javascript" src="/web/js/flow/dswork.flow.event.js"></script>

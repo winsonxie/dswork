@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/updAjax.jsp"%>
+<%@include file="/commons/include/upd1.jsp"%>
 <script type="text/javascript">
 $dswork.callback = function(){if($dswork.result.type == 1){
 	location.href = "getUser.htm?xtype=${fn:escapeXml(param.xtype)}&type=${fn:escapeXml(param.type)}&orgpid=${param.orgpid}&orgid=${param.orgid}&page=${fn:escapeXml(param.page)}";
