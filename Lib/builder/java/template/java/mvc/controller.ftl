@@ -25,13 +25,13 @@ public class ${moduleUpperCamel}Controller extends BaseController
 
 	//添加
 	@RequestMapping
-	public String add${model}1()
+	public String add1()
 	{
-		return "${module}/add${model}.jsp";
+		return "${module}/add1.jsp";
 	}
 
 	@RequestMapping
-	public void add${model}2(${model} po)
+	public void add2(${model} po)
 	{
 		try
 		{
@@ -47,7 +47,7 @@ public class ${moduleUpperCamel}Controller extends BaseController
 
 	//删除
 	@RequestMapping
-	public void del${model}()
+	public void del()
 	{
 		try
 		{
@@ -63,16 +63,16 @@ public class ${moduleUpperCamel}Controller extends BaseController
 
 	//修改
 	@RequestMapping
-	public String upd${model}1()
+	public String upd1()
 	{
 		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
 		put("page", req().getInt("page", 1));
-		return "${module}/upd${model}.jsp";
+		return "${module}/upd1.jsp";
 	}
 
 	@RequestMapping
-	public void upd${model}2(${model} po)
+	public void upd2(${model} po)
 	{
 		try
 		{
@@ -88,20 +88,20 @@ public class ${moduleUpperCamel}Controller extends BaseController
 
 	//获得分页
 	@RequestMapping
-	public String get${model}()
+	public String list()
 	{
 		Page<${model}> pageModel = service.queryPage(getPageRequest());
 		put("pageModel", pageModel);
 		put("pageNav", new PageNav<${model}>(request(), pageModel));
-		return "${module}/get${model}.jsp";
+		return "${module}/list.jsp";
 	}
 
 	//明细
 	@RequestMapping
-	public String get${model}ById()
+	public String get()
 	{
 		Long id = req().getLong("keyIndex");
 		put("po", service.get(id));
-		return "${module}/get${model}ById.jsp";
+		return "${module}/get.jsp";
 	}
 }

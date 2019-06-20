@@ -55,13 +55,13 @@
 		<template name="jsp" viewpath="/java/mmapper.ftl"        path="/{src}/{namespace}/mapper/{model}Dao.map.xml" comment="mybatis" />
 		<template name="jsp" viewpath="/java/model.ftl"          path="/{src}/{namespace}/model/{model}.java" />
 		<template name="jsp" viewpath="/java/service.ftl"        path="/{src}/{namespace}/service/{model}Service.java" />
-		<template name="jsp" viewpath="/java/jsp/get.ftl"        path="/{web}/{module}/get{model}.jsp" />
-		<template name="jsp" viewpath="/java/jsp/getById.ftl"    path="/{web}/{module}/get{model}ById.jsp" />
-		<template name="jsp" viewpath="/java/jsp/add1.ftl"       path="/{web}/{module}/add{model}1.jsp" />
-		<template name="jsp" viewpath="/java/jsp/add2.ftl"       path="/{web}/{module}/add{model}2.jsp" />
-		<template name="jsp" viewpath="/java/jsp/upd1.ftl"       path="/{web}/{module}/upd{model}1.jsp" />
-		<template name="jsp" viewpath="/java/jsp/upd2.ftl"       path="/{web}/{module}/upd{model}2.jsp" />
-		<template name="jsp" viewpath="/java/jsp/del.ftl"        path="/{web}/{module}/del{model}.jsp" />
+		<template name="jsp" viewpath="/java/jsp/list.ftl"       path="/{web}/{module}/list.jsp" />
+		<template name="jsp" viewpath="/java/jsp/get.ftl"        path="/{web}/{module}/get.jsp" />
+		<template name="jsp" viewpath="/java/jsp/add1.ftl"       path="/{web}/{module}/add1.jsp" />
+		<template name="jsp" viewpath="/java/jsp/add2.ftl"       path="/{web}/{module}/add2.jsp" />
+		<template name="jsp" viewpath="/java/jsp/upd1.ftl"       path="/{web}/{module}/upd1.jsp" />
+		<template name="jsp" viewpath="/java/jsp/upd2.ftl"       path="/{web}/{module}/upd2.jsp" />
+		<template name="jsp" viewpath="/java/jsp/del.ftl"        path="/{web}/{module}/del.jsp" />
 
 		<template name="mvc" viewpath="/java/hdao.ftl"           path="/{src}/{namespace}/dao/{model}Dao.java" comment="hibernate" />
 		<template name="mvc" viewpath="/java/hmapper.ftl"        path="/{src}/{namespace}/mapper/{model}.hbm.xml" comment="hibernate" />
@@ -70,9 +70,9 @@
 		<template name="mvc" viewpath="/java/model.ftl"          path="/{src}/{namespace}/model/{model}.java" />
 		<template name="mvc" viewpath="/java/mvc/service.ftl"    path="/{src}/{namespace}/service/{moduleUpperCamel}Service.java" />
 		<template name="mvc" viewpath="/java/mvc/controller.ftl" path="/{src}/{namespace}/controller/{moduleUpperCamel}Controller.java" />
-		<template name="mvc" viewpath="/java/mvc/get.ftl"        path="/{web}/WEB-INF/view/jsp/{module}/get{model}.jsp" />
-		<template name="mvc" viewpath="/java/mvc/getById.ftl"    path="/{web}/WEB-INF/view/jsp/{module}/get{model}ById.jsp" />
-		<template name="mvc" viewpath="/java/mvc/add.ftl"        path="/{web}/WEB-INF/view/jsp/{module}/add{model}.jsp" />
-		<template name="mvc" viewpath="/java/mvc/upd.ftl"        path="/{web}/WEB-INF/view/jsp/{module}/upd{model}.jsp" />
+		<template name="mvc" viewpath="/java/mvc/list.ftl"       path="/{web}/WEB-INF/view/jsp/{module}/list.jsp" />
+		<template name="mvc" viewpath="/java/mvc/get.ftl"        path="/{web}/WEB-INF/view/jsp/{module}/get.jsp" />
+		<template name="mvc" viewpath="/java/mvc/add1.ftl"       path="/{web}/WEB-INF/view/jsp/{module}/add1.jsp" />
+		<template name="mvc" viewpath="/java/mvc/upd1.ftl"       path="/{web}/WEB-INF/view/jsp/{module}/upd1.jsp" />
 	</templates>
 </config>

@@ -14,7 +14,7 @@ request.setAttribute("page", req.getInt("page", 1));
 <%@include file="/commons/include/updAjax.jsp"%>
 <script type="text/javascript">
 $${frame}.callback = function(){if($${frame}.result.code == 1){
-	location.href = "get${model}.jsp?page=${'$'}{page}";
+	location.href = "list.jsp?page=${'$'}{page}";
 }};
 </script>
 </head>
@@ -24,12 +24,12 @@ $${frame}.callback = function(){if($${frame}.result.code == 1){
 		<td class="title">修改</td>
 		<td class="menuTool">
 			<a class="save" id="dataFormSave" href="#">保存</a>
-			<a class="back" href="get${model}.jsp?page=${'$'}{page}">返回</a>
+			<a class="back" href="list.jsp?page=${'$'}{page}">返回</a>
 		</td>
 	</tr>
 </table>
 <div class="line"></div>
-<form id="dataForm" method="post" action="upd${model}2.jsp">
+<form id="dataForm" method="post" action="upd2.jsp">
 <table class="listTable">
 <#list table.columnNokey as c>
 	<#if c.length<=4000>

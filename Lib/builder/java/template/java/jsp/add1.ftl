@@ -12,7 +12,7 @@ request.setAttribute("param", req.getParameterValueMap(false, false));
 <%@include file="/commons/include/addAjax.jsp"%>
 <script type="text/javascript">
 $${frame}.callback = function(){if($${frame}.result.code == 1){
-	location.href = "get${model}.jsp";
+	location.href = "list.jsp";
 }};
 </script>
 </head>
@@ -22,12 +22,12 @@ $${frame}.callback = function(){if($${frame}.result.code == 1){
 		<td class="title">添加</td>
 		<td class="menuTool">
 			<a class="save" id="dataFormSave" href="#">保存</a>
-			<a class="back" href="get${model}.jsp?page=${'$'}{fn:escapeXml(param.page)}">返回</a>
+			<a class="back" href="list.jsp?page=${'$'}{fn:escapeXml(param.page)}">返回</a>
 		</td>
 	</tr>
 </table>
 <div class="line"></div>
-<form id="dataForm" method="post" action="add${model}2.jsp">
+<form id="dataForm" method="post" action="add2.jsp">
 <table class="listTable">
 <#list table.columnNokey as c>
 	<#if c.length<=4000>
