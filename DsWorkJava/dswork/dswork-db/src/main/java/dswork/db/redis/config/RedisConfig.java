@@ -10,7 +10,7 @@ public class RedisConfig
 {
 	private String host = "0.0.0.0";
 	private String password = null;
-	private int dababase = 0;
+	private int database = 0;
 	private int port = 6379;
 	private int minIdle = 5;// 最小空闲数
 	private int maxIdle = 64;// 最大空闲数
@@ -63,14 +63,14 @@ public class RedisConfig
 		return this;
 	}
 
-	public int getDababase()
+	public int getDatabase()
 	{
-		return dababase;
+		return database;
 	}
 
-	public RedisConfig setDababase(int dababase)
+	public RedisConfig setDatabase(int database)
 	{
-		this.dababase = dababase;
+		this.database = database;
 		return this;
 	}
 
@@ -293,6 +293,6 @@ public class RedisConfig
 		{
 			sb.append(getPassword()).append("@");
 		}
-		return sb.append(getHost()).append(":").append(getPort()).append("/").append(getDababase()).toString();
+		return sb.append(getHost()).append(":").append(getPort()).append("/").append(getDatabase()).toString();
 	}
 }

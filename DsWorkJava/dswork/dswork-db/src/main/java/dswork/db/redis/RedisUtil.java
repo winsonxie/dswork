@@ -26,7 +26,7 @@ public class RedisUtil
 			readConfig = config;
 			notread = true;
 		}
-		this.jedisPool = new JedisPool(config.getConfig(), config.getHost(), config.getPort(), config.getConnectTimeout(), config.getSoTimeout(), config.getPassword(), config.getDababase(), config.getClientName(), config.isSsl(), config.getSslSocketFactory(), config.getSslParameters(),
+		this.jedisPool = new JedisPool(config.getConfig(), config.getHost(), config.getPort(), config.getConnectTimeout(), config.getSoTimeout(), config.getPassword(), config.getDatabase(), config.getClientName(), config.isSsl(), config.getSslSocketFactory(), config.getSslParameters(),
 				config.getHostnameVerifier());
 		if(notread)
 		{
@@ -36,7 +36,7 @@ public class RedisUtil
 		else
 		{
 			// log.debug(config.getConfig() + "主连接池创建成功");
-			this.jedisReadPool = new JedisPool(readConfig.getConfig(), readConfig.getHost(), readConfig.getPort(), readConfig.getConnectTimeout(), readConfig.getSoTimeout(), readConfig.getPassword(), readConfig.getDababase(), readConfig.getClientName(), readConfig.isSsl(),
+			this.jedisReadPool = new JedisPool(readConfig.getConfig(), readConfig.getHost(), readConfig.getPort(), readConfig.getConnectTimeout(), readConfig.getSoTimeout(), readConfig.getPassword(), readConfig.getDatabase(), readConfig.getClientName(), readConfig.isSsl(),
 					readConfig.getSslSocketFactory(), readConfig.getSslParameters(), readConfig.getHostnameVerifier());
 			// log.debug(readConfig.getConfig() + "从连接池创建成功");
 		}
