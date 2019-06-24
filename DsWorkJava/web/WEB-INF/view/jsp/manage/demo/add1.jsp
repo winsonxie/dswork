@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/add1.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "list.htm";

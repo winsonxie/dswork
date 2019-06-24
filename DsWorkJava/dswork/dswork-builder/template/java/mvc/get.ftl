@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/get.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $(function(){
 	$${frame}.page.menu("del${model}.htm", "upd${model}1.htm", "get${model}ById.htm", "${'$'}{page}");

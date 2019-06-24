@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/addAjax.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $${frame}.callback = function(){if($${frame}.result.type == 1){
 	location.href = "get${model}.htm";

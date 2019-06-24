@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/get.jsp" %>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 // 扩展菜单写法
 $dswork.page.join = function(td, menu, id){
@@ -14,7 +14,7 @@ $dswork.page.join = function(td, menu, id){
 	}));
 };
 $dswork.doAjax = true;
-$dswork.callback = function(){if($dswork.result.type == 1){
+$dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "listDemo.htm?page=${pageModel.page}";
 }};
 $(function(){

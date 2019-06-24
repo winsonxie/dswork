@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/updAjax.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $${frame}.callback = function(){if($${frame}.result.type == 1){
 	location.href = "get${model}.htm?page=${'$'}{page}";

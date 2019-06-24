@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/addAjax.jsp" %>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $dswork.deleteRow = function (obj){$(obj).parent().parent().remove();};
 $(function(){
@@ -22,7 +22,7 @@ $(function(){
 	});
 });
 $dswork.callback = function(){
-	if($dswork.result.type == 1){
+	if($dswork.result.code == 1){
 		location.href = "getMark.htm?page=${fn:escapeXml(param.page)}&keyIndex=${po.id}";
 	}
 }
