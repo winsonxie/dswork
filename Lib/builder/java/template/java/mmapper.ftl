@@ -65,7 +65,7 @@
 </select>
 
 <select id="query" resultMap="result">
-	select <include refid="dswork.top" /><include refid="columns" /> from ${table.nameUpperCase}
+	select <include refid="columns" /> from ${table.nameUpperCase}
 	<include refid="dynamicWhere" />
 </select>
 
