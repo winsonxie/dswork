@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/getById.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 </head>
 <body>
 <table class="listLogo">

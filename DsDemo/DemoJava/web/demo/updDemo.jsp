@@ -11,7 +11,7 @@
 <html>
 <head>
 	<title></title>
-	<%@include file="/commons/include/updAjax.jsp" %>
+	<%@include file="/commons/include/web.jsp"%>
 	<script type="text/javascript">
 		$(function(){
 			$.getJSON("/DsWorkJava/manage/my/get/Demo.htm?keyIndex=${keyIndex}", function(data){

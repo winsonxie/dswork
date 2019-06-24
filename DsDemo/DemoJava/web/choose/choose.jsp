@@ -19,7 +19,7 @@ request.setAttribute("list", list);
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui"/>
 <title>jskey_dialog</title>
-<%@include file="/commons/include/get.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 var map = new $jskey.Map();
 

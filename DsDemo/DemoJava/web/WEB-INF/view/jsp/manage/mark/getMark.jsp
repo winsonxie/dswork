@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/addAjax.jsp" %>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $dswork.deleteRow = function (obj){$(obj).parent().parent().remove();};
 $(function(){
@@ -22,13 +22,22 @@ $(function(){
 	});
 });
 $dswork.callback = function(){
-	if($dswork.result.type == 1){
+	if($dswork.result.code == 1){
 		location.href = "getMark.htm?page=${fn:escapeXml(param.page)}&keyIndex=${po.id}";
 	}
 }
 </script>
 </head>
 <body>
+<table border="0" cellspacing="0" cellpadding="0" class="listLogo">
+	<tr>
+		<td class="title">测试</td>
+		<td class="menuTool">
+			<a class="save" id="dataFormSave" href="#">保存</a>
+			<a class="back" href="getDemo.htm?page=${fn:escapeXml(param.page)}">返回</a>
+		</td>
+	</tr>
+</table>
 <table border="0" cellspacing="0" cellpadding="0" class="listLogo">
 	<tr>
 		<td class="title">评论</td>

@@ -18,7 +18,7 @@ request.setAttribute("page", p);
 <!DOCTYPE html>
 <html>
 <head>
-<%@include file="/commons/include/get.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 var map = new $jskey.Map();
 function init(){

@@ -5,7 +5,7 @@
 <html>
 <head>
 	<title></title>
-	<%@include file="/commons/include/add.jsp" %>
+	<%@include file="/commons/include/add.jsp"%>
 </head>
 <body>
 <table border="0" cellspacing="0" cellpadding="0" class="listLogo">
