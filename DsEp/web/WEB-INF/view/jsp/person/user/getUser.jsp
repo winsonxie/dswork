@@ -5,10 +5,10 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/get.jsp" %>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $dswork.doAjax = true;
-$dswork.callback = function(){if($dswork.result.type == 1){
+$dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getUser.htm?page=${pageModel.page}";
 }};
 $dswork.page.join = function(td, menu, id){
@@ -24,7 +24,7 @@ function updStatus(objid, id){
 	var obj = $("#" + objid), o = document.getElementById(objid);
 	$.post("updUserStatus.htm",{"keyIndex":id,"status":obj.attr("v")==0?1:0},function(data){
 		$dswork.checkResult(data);
-		if($dswork.result.type == 1){
+		if($dswork.result.code == 1){
 		obj.removeClass("pause").removeClass("start");
 		if(1 == obj.attr("v")){
 			obj.text("启用").attr("v", 0).addClass("start");$("#td_" + objid).text("禁用").css("color", "red");

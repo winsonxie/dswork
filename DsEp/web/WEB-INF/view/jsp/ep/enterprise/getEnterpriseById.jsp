@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/getById.jsp" %>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $(function(){
 	$("#status").text($("#status").text()=="1"?"正常运营":$("#status").text()=="0"?"禁用":$("#status").text()=="2"?"待审":"已注销");

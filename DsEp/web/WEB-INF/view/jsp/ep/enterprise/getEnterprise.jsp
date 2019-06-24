@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/get.jsp" %>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $dswork.page.join = function(td, menu, id){
 	$(menu).append($('<div iconCls="menuTool-user">重置密码</div>').bind("click", function(){
@@ -24,7 +24,7 @@ $(function(){
 	});
 });
 $dswork.doAjax = true;
-$dswork.callback = function(){if($dswork.result.type == 1){
+$dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getEnterprise.htm?page=${pageModel.page}";
 }};
 </script>

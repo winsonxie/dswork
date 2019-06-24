@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/getById.jsp" %>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $(function(){$("#status").text($("#status").text()=="1"?"启用":"禁用");});
 </script>
