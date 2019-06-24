@@ -13,7 +13,7 @@ request.setAttribute("param", map);
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/list.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $(function(){
 	$${frame}.page.menu("del.jsp", "upd1.jsp", "getById.jsp", "${'$'}{pageModel.page}");

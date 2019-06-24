@@ -10,7 +10,7 @@ request.setAttribute("po", MyFactory.get${model}Service().get(id));
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/get.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 </head>
 <body>
 <table class="listLogo">

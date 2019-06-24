@@ -18,7 +18,7 @@ request.setAttribute("param", map);
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/get.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 ${mf}(function(){
 	${mf}${Frame.ToLower()}.page.menu("del${Model}.jsp", "upd${Model}1.jsp", "get${Model}ById.jsp", "${mf}{pageModel.currentPage}");

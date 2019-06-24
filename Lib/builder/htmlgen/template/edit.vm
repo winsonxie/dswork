@@ -16,7 +16,7 @@
 <script type="text/javascript">
 $dswork.callback = function()
 {
-	if($dswork.result.type == 1)
+	if($dswork.result.code == 1)
 	{
 		location.href = "get.html";
 	}

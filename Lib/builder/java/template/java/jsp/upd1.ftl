@@ -11,7 +11,7 @@ request.setAttribute("page", req.getInt("page", 1));
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/edit.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $${frame}.callback = function(){if($${frame}.result.code == 1){
 	location.href = "list.jsp?page=${'$'}{page}";

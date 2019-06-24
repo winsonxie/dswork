@@ -9,7 +9,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/get.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 ${mf}(function(){
 	${mf}${Frame.ToLower()}.page.menu("del${Model}.htm", "upd${Model}1.htm", "get${Model}ById.htm", "${mf}{pageModel.currentPage}");

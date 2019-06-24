@@ -10,7 +10,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/updAjax.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 ${mf}${Frame.ToLower()}.callback = function(){if($${Frame.ToLower()}.result.type == 1){
 	location.href = "get${Model}.htm?page=${mf}{fn:escapeXml(param.page)}";

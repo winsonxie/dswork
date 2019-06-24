@@ -15,7 +15,7 @@ request.setAttribute("param", req.getParameterValueMap(false, false));
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/addAjax.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 ${mf}${Frame.ToLower()}.callback = function(){if(${mf}${Frame.ToLower()}.result.type == 1){
 	location.href = "get${Model}.jsp";
