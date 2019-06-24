@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title> 
-<%@include file="/commons/include/upd.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 var map = new $jskey.Map();
 function init(){
@@ -39,7 +39,7 @@ function getRoleById(id){
 }
 $dswork.deleteRow = function (obj,id){map.remove(id);$(obj).parent().parent().remove();domsg(true);};
 function domsg(type){$("#showmsg").html(type?"数据已修改，未保存":"");}
-$dswork.callback = function(){if($dswork.result.type == 1){parent.$dswork.ztree.click();}};
+$dswork.callback = function(){if($dswork.result.code == 1){parent.$dswork.ztree.click();}};
 //$jskey.dialog.callback = function(){var result = $jskey.dialog.returnValue;if(result != null){map = new $jskey.Map();for(var i = 0; i < result.length; i++){map.put(result[i].id + "", result[i]);}refreshRole();domsg(true);}}
 function callback(m){map = m;refreshRole();domsg(true);}
 $(function(){init();

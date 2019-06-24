@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/list.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <c:if test="${po.level!=1}">
 <%@include file="/commons/include/ztree.jsp"%>
 </c:if>
@@ -60,7 +60,7 @@ $(function(){
 			$dswork.showRequest();
 			$.post("delDictData.htm",{keyIndex:node.id},function(data){
 				$dswork.doAjaxShow(data, function(){
-					if($dswork.result.type == 1){attachUrl("");$z.refreshNode(true);}
+					if($dswork.result.code == 1){attachUrl("");$z.refreshNode(true);}
 				});
 			});
 		}

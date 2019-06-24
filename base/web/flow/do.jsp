@@ -26,8 +26,11 @@ if(wid > 0)
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/upd.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <%@include file="/commons/include/datatable.jsp"%>
+<script type="text/javascript">
+$dswork.doAjax = false;
+</script>
 </head>
 <body>
 <table border="0" cellspacing="0" cellpadding="0" class="listLogo">

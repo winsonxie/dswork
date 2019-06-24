@@ -5,10 +5,10 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/list.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $dswork.doAjax = true;
-$dswork.callback = function(){if($dswork.result.type == 1){parent.refreshNode(true);}};
+$dswork.callback = function(){if($dswork.result.code == 1){parent.refreshNode(true);}};
 $(function(){
 $dswork.page.menu("", "updRole1.htm", "getRoleById.htm", "");
 $("#listFormMoveAll").click(function(){
@@ -25,7 +25,7 @@ $("#listFormMoveAll").click(function(){
 				$("#moveForm").ajaxSubmit({
 					beforeSubmit:$dswork.showRequest,
 					success:function(data){
-						$dswork.doAjaxShow(data, function(){if($dswork.result.type == 1){
+						$dswork.doAjaxShow(data, function(){if($dswork.result.code == 1){
 							parent.$dswork.ztree.expandAll(false);//收缩掉其余的
 							parent.$dswork.ztree.moveUpdate("${pid}", $("#movepid").val());
 						}});

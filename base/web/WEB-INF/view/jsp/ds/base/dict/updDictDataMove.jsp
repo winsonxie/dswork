@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/upd.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <%@include file="/commons/include/ztree.jsp"%>
 <script type="text/javascript">
 <c:if test="${po.level==1}">parent.$jskey.dialog.close();</c:if>

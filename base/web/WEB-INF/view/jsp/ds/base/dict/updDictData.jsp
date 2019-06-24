@@ -5,10 +5,10 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/upd1.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $dswork.callback = function(){
-	try{if($dswork.result.type == 1){parent.refreshNode(true);}}catch(e){}
+	try{if($dswork.result.code == 1){parent.refreshNode(true);}}catch(e){}
 };
 </script>
 </head>

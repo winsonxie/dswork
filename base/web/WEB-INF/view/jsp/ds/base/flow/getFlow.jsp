@@ -5,12 +5,12 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/list.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 function updStatus(objid, id){
 	var obj = $("#" + objid), o = document.getElementById(objid);
 	$.post("updStatus.htm",{"keyIndex":id,"status":obj.attr("v")==0?1:0},function(data){
-		$dswork.checkResult(data);if($dswork.result.type == 1){
+		$dswork.checkResult(data);if($dswork.result.code == 1){
 		obj.removeClass("pause").removeClass("start");
 		if(1 == obj.attr("v")){
 			obj.text("启用").attr("v", 0).addClass("start");$("#td_" + objid).text("禁用").css("color", "red");
@@ -23,7 +23,7 @@ function updStatus(objid, id){
 };
 function deployFlow(id){
 	if(confirm("确认将当前流程配置发布成为正式版本吗？")){
-		$.post("deployFlow.htm",{"keyIndex":id},function(data){$dswork.checkResult(data);if($dswork.result.type == 1){
+		$.post("deployFlow.htm",{"keyIndex":id},function(data){$dswork.checkResult(data);if($dswork.result.code == 1){
 			$("#queryForm").submit();
 		}});
 	}
@@ -38,7 +38,7 @@ $(function(){
 	$dswork.page.menu("", "updFlow1.htm", "getFlowById.htm", "1");
 });
 $dswork.doAjax = true;
-$dswork.callback = function(){if($dswork.result.type == 1){
+$dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getFlow.htm?categoryid=${fn:escapeXml(param.categoryid)}";
 }};
 $(function(){

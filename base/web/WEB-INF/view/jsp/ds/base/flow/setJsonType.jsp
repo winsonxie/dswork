@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/add1.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $(function(){
 var model = parent.getModel();

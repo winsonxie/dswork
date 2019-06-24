@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/add1.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <style type="text/css">
 .calias{width:80%;}
 .cname{width:80%;}
@@ -15,7 +15,7 @@
 tr.list td {text-align:left;padding-left:1px;}
 </style>
 <script type="text/javascript">
-$dswork.callback = function(){if($dswork.result.type == 1){
+$dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getFlow.htm?categoryid=${fn:escapeXml(param.categoryid)}";
 }};
 $dswork.deleteRow = function(obj){$(obj).parent().parent().remove();};

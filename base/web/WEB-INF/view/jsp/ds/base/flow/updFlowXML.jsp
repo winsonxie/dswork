@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/upd1.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript" src="/web/js/flow/dswork.flow.js"></script>
 <script type="text/javascript" src="/web/js/flow/dswork.flow.check.js"></script>
 <script type="text/javascript" src="/web/js/flow/dswork.flow.event.js"></script>
@@ -41,7 +41,7 @@ $dswork.validCallBack = function(){
 		return false;
 	}
 };
-$dswork.callback = function(){if($dswork.result.type == 1){
+$dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getFlow.htm?categoryid=${po.categoryid}";
 }};
 

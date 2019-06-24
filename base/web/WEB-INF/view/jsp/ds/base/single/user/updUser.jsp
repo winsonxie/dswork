@@ -5,9 +5,9 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/upd1.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
-$dswork.callback = function(){if($dswork.result.type == 1){
+$dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getUser.htm?xtype=${fn:escapeXml(param.xtype)}&orgpid=${param.orgpid}&orgid=${param.orgid}&page=${page}";
 }};
 $dswork.readySubmit = function(){

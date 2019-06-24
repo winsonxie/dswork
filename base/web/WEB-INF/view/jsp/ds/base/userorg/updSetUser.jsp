@@ -4,7 +4,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/upd.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 var data = parent.$jskey.dialog.dialogArguments.args.data;
 var list = data.oList;

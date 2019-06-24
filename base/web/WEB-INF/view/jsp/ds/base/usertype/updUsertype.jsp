@@ -5,10 +5,10 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/upd1.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
 $dswork.deleteRow = function (obj){$(obj).parent().parent().remove();};
-$dswork.callback = function(){if($dswork.result.type == 1){
+$dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getUsertype.htm?page=${page}";
 }};
 </script>

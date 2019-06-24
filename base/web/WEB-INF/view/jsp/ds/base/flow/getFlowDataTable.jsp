@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/add1.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <style type="text/css">
 .listLogo{position:fixed;}
 .listTable{margin:30px 0 0 0;}

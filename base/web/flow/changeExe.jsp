@@ -6,7 +6,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/upd.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <style type="text/css">
 li,a {line-height:2em;}
 </style>

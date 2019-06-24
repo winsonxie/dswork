@@ -5,10 +5,10 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/add1.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <%@include file="/commons/include/ztree.jsp"%>
 <script type="text/javascript">
-$dswork.callback = function(){if($dswork.result.type == 1){
+$dswork.callback = function(){if($dswork.result.code == 1){
 	if(!confirm("是否继续添加用户？")){location.href = "getUser.htm?xtype=${fn:escapeXml(param.xtype)}";}
 }};
 $dswork.readySubmit = function(){

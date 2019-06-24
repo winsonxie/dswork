@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/list.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <%@include file="/commons/include/ztree.jsp"%>
 <script type="text/javascript">
 $dswork.callback = null;
@@ -47,7 +47,7 @@ $(function(){
 			$dswork.showRequest();
 			$.post("delFlowCategory.htm",{keyIndex:$z.getSelectedNode().id},function(data){
 				$dswork.doAjaxShow(data, function(){
-					if($dswork.result.type == 1){attachUrl("");$z.refreshNode(true);}
+					if($dswork.result.code == 1){attachUrl("");$z.refreshNode(true);}
 				});
 			});
 		}

@@ -5,7 +5,7 @@
 <html>
 <head> 
 <title></title>
-<%@include file="/commons/include/add1.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <%@include file="/commons/include/ztree.jsp"%>
 <script type="text/javascript">
 $(function(){
@@ -55,7 +55,7 @@ $dswork.validCallBack = function(){
 	return true;
 };
 $dswork.callback = function(){
-	try{if($dswork.result.type == 1){parent.refreshNode(true);}}catch(e){}
+	try{if($dswork.result.code == 1){parent.refreshNode(true);}}catch(e){}
 };
 </script>
 </head>

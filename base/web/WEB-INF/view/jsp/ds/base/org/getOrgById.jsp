@@ -5,7 +5,7 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/get.jsp"%>
+<%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">$(function(){$("#status").text($("#status").text()=="2"?"单位":($("#status").text()=="1"?"部门":"岗位"));});</script>
 </head>
 <body>
