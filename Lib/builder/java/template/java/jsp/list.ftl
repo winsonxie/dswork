@@ -23,7 +23,7 @@ $${frame}.callback = function(){if($${frame}.result.code == 1){
 	location.href = "list.jsp?page=${'$'}{pageModel.page}";
 }};
 </script>
-</head> 
+</head>
 <body>
 <table class="listLogo">
 	<tr>
