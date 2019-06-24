@@ -9,7 +9,7 @@ request.setAttribute("param", req.getParameterValueMap(false, false));
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/addAjax.jsp"%>
+<%@include file="/commons/include/edit.jsp"%>
 <script type="text/javascript">
 $${frame}.callback = function(){if($${frame}.result.code == 1){
 	location.href = "list.jsp";
