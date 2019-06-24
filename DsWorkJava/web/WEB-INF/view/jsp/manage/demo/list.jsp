@@ -5,20 +5,20 @@
 <html>
 <head>
 <title></title>
-<%@include file="/commons/include/get.jsp"%>
+<%@include file="/commons/include/list.jsp"%>
 <script type="text/javascript">
 // 扩展菜单写法
 $dswork.page.join = function(td, menu, id){
 	$(menu).append($('<div iconCls="menuTool-user">自定义</div>').bind("click", function(){
-		location.href = "getDemoById.htm?page=${pageModel.page}&keyIndex=" + id;
+		location.href = "get.htm?page=${pageModel.page}&keyIndex=" + id;
 	}));
 };
 $(function(){
-	$dswork.page.menu("delDemo.htm", "updDemo1.htm", "getDemoById.htm", "${pageModel.page}");
+	$dswork.page.menu("del.htm", "upd1.htm", "get.htm", "${pageModel.page}");
 });
 $dswork.doAjax = true;
-$dswork.callback = function(){if($dswork.result.type == 1){
-	location.href = "getDemo.htm?page=${pageModel.page}";
+$dswork.callback = function(){if($dswork.result.code == 1){
+	location.href = "list.htm?page=${pageModel.page}";
 }};
 </script>
 </head> 
@@ -27,13 +27,13 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 	<tr>
 		<td class="title">样例列表</td>
 		<td class="menuTool">
-			<a class="insert" href="addDemo1.htm?page=${pageModel.page}">添加</a>
+			<a class="insert" href="add1.htm?page=${pageModel.page}">添加</a>
 			<a class="delete" id="listFormDelAll" href="#">删除所选</a>
 		</td>
 	</tr>
 </table>
 <div class="line"></div>
-<form id="queryForm" method="post" action="getDemo.htm">
+<form id="queryForm" method="post" action="list.htm">
 <table border="0" cellspacing="0" cellpadding="0" class="queryTable">
 	<tr>
 		<td class="input">
@@ -46,7 +46,7 @@ $dswork.callback = function(){if($dswork.result.type == 1){
 </table>
 </form>
 <div class="line"></div>
-<form id="listForm" method="post" action="delDemo.htm">
+<form id="listForm" method="post" action="del.htm">
 <table id="dataTable" border="0" cellspacing="1" cellpadding="0" class="listTable">
 	<tr class="list_title">
 		<td style="width:2%"><input id="chkall" type="checkbox" /></td>

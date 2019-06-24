@@ -10,12 +10,12 @@
 // 扩展菜单写法
 $dswork.page.join = function(td, menu, id){
 	$(menu).append($('<div iconCls="menuTool-user">评论</div>').bind("click", function(){
-		location.href = "getMark.htm?page=${pageModel.page}&keyIndex=" + id;
+		location.href = "list.htm?page=${pageModel.page}&keyIndex=" + id;
 	}));
 };
 $dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.type == 1){
-	location.href = "getDemo.htm?page=${pageModel.page}";
+	location.href = "listDemo.htm?page=${pageModel.page}";
 }};
 $(function(){
 	$dswork.page.menu("", "", "", "${pageModel.page}");
@@ -29,7 +29,7 @@ $(function(){
 	</tr>
 </table>
 <div class="line"></div>
-<form id="queryForm" method="post" action="getDemo.htm">
+<form id="queryForm" method="post" action="listDemo.htm">
 <table border="0" cellspacing="0" cellpadding="0" class="queryTable">
 	<tr>
 		<td class="input">
@@ -57,7 +57,7 @@ $(function(){
 		<td>${d.content}</td>
 		<td>${d.foundtime}</td>
 		<td class="menuTool">
-			<a class="select" href="getMark.htm?keyIndex=${d.id}&page=${pageModel.page}">评论</a>
+			<a class="select" href="list.htm?keyIndex=${d.id}&page=${pageModel.page}">评论</a>
 		</td>
 	</tr>
 </c:forEach>
