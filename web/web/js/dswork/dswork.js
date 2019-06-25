@@ -1,6 +1,5 @@
 //jquery.js和jskey_core.js支持
 if(typeof($dswork)!="object"){$dswork={};}
-$dswork.confirm = "确定保存吗？";
 $dswork.date = {};
 $dswork.date.callback = function(o, p){};
 $dswork.date.show = function(){
@@ -343,6 +342,7 @@ $dswork.page.menu = function(delURL, updURL, getByIdURL, page, showContext){
 		_menu.menu();
 	});
 };
+$dswork.confirm = "确定保存吗？";
 $(function(){
 	$("input").each(function(){
 		var o = $(this);
