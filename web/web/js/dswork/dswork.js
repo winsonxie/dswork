@@ -139,7 +139,6 @@ function MaskControl(){
 	this.hide = function(){var m = $("#div_maskContainer");if(m.length == 0){return;}m.remove();if(self.callBack != null){self.callBack();}this.callBack = null;};
 	this.autoDelayHide = function(html, timeOut){var m = $("#div_maskContainer");if(m.length == 0){this.show(html);}else{$("#div_maskMessage").html(html);}if(timeOut == undefined){timeOut = 3000;}window.setTimeout(this.hide, timeOut);};
 }
-$dswork.doAjax = false;
 $dswork.doAjaxObject = new MaskControl();
 $dswork.showRequest = function(formData, jqForm, options){
 	$dswork.doAjaxObject.show("正在处理，请稍候<img src='/web/js/dswork/loading.gif' />");return true;
@@ -153,7 +152,6 @@ $dswork.doAjaxShow = function(data, callback){
 	$dswork.doAjaxObject.callBack = callback;
 };
 $dswork.doAjaxOption = {beforeSubmit:$dswork.showRequest,success:$dswork.showResponse};
-_options = $dswork.doAjaxOption;
 $dswork.readySubmit = function(){};
 $dswork.beforeSubmit = function(){
 	if(!$dswork.validCallBack()){return false;}
