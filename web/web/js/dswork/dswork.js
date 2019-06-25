@@ -96,7 +96,7 @@ $dswork.checkResult = function(res){
  * o.autoDelayHide=function(html,time)//显示提示信息，并隔time毫秒后关闭
  */
 $dswork.doAjaxControl = function(){
-	this.callBack = null;
+	this.callback = null;
 	var self = this;
 	this.show = function(html){
 		var m = $("#div_maskContainer"),w = $(window).width(),h = $(window).height();
@@ -115,7 +115,7 @@ $dswork.doAjaxControl = function(){
 		var x = (w - tip.width()) / 2, y = (h - tip.height()) / 2;
 		tip.css("left", x).css("top", y + $(document).scrollTop());
 	};
-	this.hide = function(){var m = $("#div_maskContainer");if(m.length == 0){return;}m.remove();if(self.callBack != null){self.callBack();}this.callBack = null;};
+	this.hide = function(){var m = $("#div_maskContainer");if(m.length == 0){return;}m.remove();if(self.callback != null){self.callback();}this.callback = null;};
 	this.autoDelayHide = function(html, timeOut){var m = $("#div_maskContainer");if(m.length == 0){this.show(html);}else{$("#div_maskMessage").html(html);}if(timeOut == undefined){timeOut = 3000;}window.setTimeout(this.hide, timeOut);};
 };
 $dswork.callback     = function(){};
@@ -124,7 +124,7 @@ $dswork.beforeSubmit = function(){if(!$dswork.validCallBack()){return false;}ret
 $dswork.readySubmit  = function(){};
 $dswork.doAjaxObject = new $dswork.doAjaxControl();
 $dswork.showRequest  = function(){$dswork.doAjaxObject.show("正在处理，请稍候<img src='/web/js/dswork/loading.gif' />");return true;};
-$dswork.showResponse = function(res, callback){$dswork.doAjaxObject.autoDelayHide($dswork.checkResult(res), 2000);$dswork.doAjaxObject.callBack = callback||$dswork.callback;};
+$dswork.showResponse = function(res, callback){$dswork.doAjaxObject.autoDelayHide($dswork.checkResult(res), 2000);$dswork.doAjaxObject.callback = callback||$dswork.callback;};
 $dswork.doAjaxShow   = $dswork.showResponse;
 $dswork.doAjaxOption = {beforeSubmit:function(formData, jqForm, options){return $dswork.showRequest();},success:function(res, status, xhr){$dswork.showResponse(res);}};
 $dswork.doAjax       = true;
@@ -262,9 +262,7 @@ $dswork.upload.prototype = {
 			}
 			else{
 				var v = p.$vInput.val();
-				if(p.uploadone == "true"){
-					v = "";
-				}
+				if(p.uploadone == "true"){v = "";}
 				for(var i = 0;i < data.arr.length;i++){o = data.arr[i];if(o.state == "1"){v += (v != "" ? "|" : "") + o.file + ":" + o.name;}}
 				p.$vInput.val(v);
 				p.$input.val(v == "" ? _has : p.fileKey);
