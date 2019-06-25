@@ -12,6 +12,4 @@
 	改为调用
 	$dswork.showResponse(
 
-$dswork.doAjaxObject.autoDelayHide(
-
 
