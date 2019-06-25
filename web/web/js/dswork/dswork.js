@@ -8,34 +8,24 @@ $dswork.date.show = function(){
 	var f = arguments[1] || "yyyy-MM-dd";
 	var m = $(o);
 	var FN = "$dswork.date.callback"
-	if(m.attr("fn")){
-		FN = m.attr("fn");
-	}
+	if(m.attr("fn")){FN = m.attr("fn");}
 	var p = {skin:'default', lang:0, format:f, sample:f, fn:FN, min:"1582-10-15 00:00:00", max:"9999-12-31 23:59:59"};
 	if(m.attr("tomin")){
 		var q = $jskey.$(m.attr("tomin"));
-		if($jskey.$isDOM(q) && q.value.length > 0){
-			p.min = $jskey.calendar.$format($jskey.calendar.$toDate(q.value, f), "yyyy-MM-dd HH:mm:ss");
-		}
+		if($jskey.$isDOM(q) && q.value.length > 0){p.min = $jskey.calendar.$format($jskey.calendar.$toDate(q.value, f), "yyyy-MM-dd HH:mm:ss");}
 	}
 	if(m.attr("tomax")){
 		var q = $jskey.$(m.attr("tomax"));
-		if($jskey.$isDOM(q) && q.value.length > 0){
-			p.max = $jskey.calendar.$format($jskey.calendar.$toDate(q.value, f), "yyyy-MM-dd HH:mm:ss");
-		}
+		if($jskey.$isDOM(q) && q.value.length > 0){p.max = $jskey.calendar.$format($jskey.calendar.$toDate(q.value, f), "yyyy-MM-dd HH:mm:ss");}
 	}
 	$jskey.calendar.show(o,p);
 };
 
-$dswork.uploadURL = function(){
-	return "/webio/io/upload." + ($dswork.dotnet ? "aspx" : "jsp");
-};
-$dswork.ioURL = function(){
-	return "/webio/io/up." + ($dswork.dotnet ? "aspx" : "jsp");
-};
-$dswork.getChoose = function(m){m.url = "/web/js/jskey/themes/dialog/jskey_choose.html";return $jskey.dialog.show(m);};
+$dswork.uploadURL = function(){return "/webio/io/upload." + ($dswork.dotnet ? "aspx" : "jsp");};
+$dswork.ioURL     = function(){return "/webio/io/up." + ($dswork.dotnet ? "aspx" : "jsp");};
+$dswork.getChoose      = function(m){m.url = "/web/js/jskey/themes/dialog/jskey_choose.html";return $jskey.dialog.show(m);};
 $dswork.getChooseByKey = function(m){m.url = "/web/js/jskey/themes/dialog/jskey_choose_key.html";return $jskey.dialog.show(m);};
-$dswork.getChooseDialog = function(m){return $jskey.dialog.showChoose(m);};
+$dswork.getChooseDialog      = function(m){return $jskey.dialog.showChoose(m);};
 $dswork.getChooseDialogByKey = function(m){return $jskey.dialog.showChooseKey(m);};
 
 $dswork.getWebRootPath = function(){
@@ -60,16 +50,7 @@ function attachUrl(){
 	else if(url.indexOf("/") == 0){url = ctx + url;}
 	document.getElementById(frameId).src = url;
 }
-//导航
-$dswork.showNavigation = function(title){try{
-	var url = window.location.href;
-	top.frames['middleFrame'].navigation.addUrl(title, url);
-	top.frames['middleFrame'].navigation.show();
-}catch(ex){}};
 
-//form
-$dswork.callback = null;
-$dswork.validCallBack = function(){return true;};
 $dswork.result = {type:"", msg:"", data:""};
 $dswork.checkResult = function(res){
 	var o = $dswork.result = {code:-1, type:"", msg:"", data:null};
@@ -138,14 +119,16 @@ $dswork.doAjaxControl = function(){
 	this.hide = function(){var m = $("#div_maskContainer");if(m.length == 0){return;}m.remove();if(self.callBack != null){self.callBack();}this.callBack = null;};
 	this.autoDelayHide = function(html, timeOut){var m = $("#div_maskContainer");if(m.length == 0){this.show(html);}else{$("#div_maskMessage").html(html);}if(timeOut == undefined){timeOut = 3000;}window.setTimeout(this.hide, timeOut);};
 };
+$dswork.callback     = function(){};
+$dswork.validCallBack= function(){return true;};
 $dswork.beforeSubmit = function(){if(!$dswork.validCallBack()){return false;}return $jskey.validator.Validate("dataForm", $dswork.validValue || 3);};
 $dswork.readySubmit  = function(){};
-$dswork.doAjax = true;
 $dswork.doAjaxObject = new $dswork.doAjaxControl();
 $dswork.showRequest  = function(formData, jqForm, options){$dswork.readySubmit();$dswork.doAjaxObject.show("正在处理，请稍候<img src='/web/js/dswork/loading.gif' />");return true;};
 $dswork.showResponse = function(res, status, xhr){$dswork.doAjaxObject.autoDelayHide($dswork.checkResult(res), 2000);$dswork.doAjaxObject.callBack = $dswork.callback;};
 $dswork.doAjaxShow   = function(res, callback)   {$dswork.doAjaxObject.autoDelayHide($dswork.checkResult(res), 2000);$dswork.doAjaxObject.callBack = callback;};
 $dswork.doAjaxOption = {beforeSubmit:$dswork.showRequest,success:$dswork.showResponse};
+$dswork.doAjax       = true;
 $dswork.showTree = function(p){if(typeof(p)!="object"){p={};}
 	var ini = {id:"showTree"
 		,title:"请选择"
