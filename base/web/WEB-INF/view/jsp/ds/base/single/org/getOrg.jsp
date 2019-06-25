@@ -36,7 +36,7 @@ $("#listFormMoveAll").click(function(){
 				$("#moveForm").ajaxSubmit({
 					beforeSubmit:$dswork.showRequest,
 					success:function(data){
-						$dswork.doAjaxShow(data, function(){if($dswork.result.code == 1){
+						$dswork.showResponse(data, function(){if($dswork.result.code == 1){
 							parent.$dswork.ztree.expandAll(false);//收缩掉其余的
 							parent.$dswork.ztree.moveUpdate("${pid}", $("#movepid").val());
 						}});

@@ -8,8 +8,10 @@
 <%@include file="/commons/include/web.jsp"%>
 <style type="text/css">.menuTool-save {background-position:center left;}</style>
 <script type="text/javascript">
-$dswork.doAjax = true;
-$dswork.callback = function(){if($dswork.result.code == 1){parent.refreshNode(true);}};
+var reloadall = false;
+$dswork.callback = function(){if($dswork.result.code == 1){
+	if(reloadall){parent.location.reload();}else{parent.refreshNode(true);}
+}};
 $(function(){
 $dswork.page.menu("", "updOrg1.htm", "getOrgById.htm", "");
 $("#listFormMoveAll").click(function(){
@@ -37,16 +39,8 @@ $("#listFormMoveAll").click(function(){
 					alert("岗位不能移到单位节点！");return false;
 				}
 				$("#movepid").val(re.id);
-				$("#moveForm").ajaxSubmit({
-					beforeSubmit:$dswork.showRequest,
-					success:function(data){
-						$dswork.doAjaxShow(data, function(){if($dswork.result.code == 1){
-							parent.$dswork.ztree.expandAll(false);//收缩掉其余的
-							parent.$dswork.ztree.moveUpdate("${pid}", $("#movepid").val());
-						}});
-					}
-				});
-				$jskey.dialog.close();
+				reloadall = true;
+				$("#moveForm").ajaxSubmit($dswork.doAjaxOption);
 			}
 			else{alert("请选择需要移动的目标节点位置");}
 		}}];

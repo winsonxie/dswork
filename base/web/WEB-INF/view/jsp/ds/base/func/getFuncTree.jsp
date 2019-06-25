@@ -41,7 +41,7 @@ $(function(){
 		if(confirm("以下情况删除失败：下级节点不为空\n是否删除？")){
 			$dswork.showRequest();
 			$.post("delFunc.htm",{keyIndex:_node.id},function(data){
-				$dswork.doAjaxShow(data, function(){
+				$dswork.showResponse(data, function(){
 					if($dswork.result.code == 1){attachUrl("");$z.refreshNode(true);}
 				});
 			});
@@ -54,7 +54,7 @@ $(function(){
 		if(0 == _node.id && confirm("重要操作：确定清空所有功能资源？")){
 			$dswork.showRequest();
 			$.post("delFuncBySystem.htm",{systemid:"${systemid}"},function(data){
-				$dswork.doAjaxShow(data, function(){
+				$dswork.showResponse(data, function(){
 					if($dswork.result.code == 1){attachUrl("");$z.refreshNode(true);}
 				});
 			});

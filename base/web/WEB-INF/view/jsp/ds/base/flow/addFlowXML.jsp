@@ -37,7 +37,7 @@ $dswork.validCallBack = function(){
 		$("#flowxml").val($dswork.flow.p.flow.toXml());
 		return true;
 	}else{
-		$dswork.doAjaxObject.autoDelayHide(msg.replace("\n", "<br/>"), 2000);
+		$dswork.show(msg.replace("\n", "<br/>"));
 		$("#flowxml").val("");
 		return false;
 	}

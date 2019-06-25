@@ -40,7 +40,7 @@ $(function(){
 		if(confirm("以下情况删除失败：下级节点不为空\n是否删除？")){
 			$dswork.showRequest();
 			$.post("delOrg.htm",{keyIndex:_node.id},function(data){
-				$dswork.doAjaxShow(data, function(){
+				$dswork.showResponse(data, function(){
 					if($dswork.result.code == 1){attachUrl("");$z.refreshNode(true);}
 				});
 			});
