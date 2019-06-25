@@ -90,7 +90,7 @@ $dswork.checkResult = function(res){
 
 /**
  * 信息控件
- * var o=new MaskControl();//初始化
+ * var o=new $dswork.doAjaxControl();//初始化
  * o.show("显示提示信息");
  * o.hide();//隐藏提示信息
  * o.autoDelayHide=function(html,time)//显示提示信息，并隔time毫秒后关闭
