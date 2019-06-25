@@ -1,10 +1,8 @@
 //jquery.js和jskey_core.js支持
 if(typeof($dswork)!="object"){$dswork={};}
-$dswork.doAjax = true;
 $dswork.confirm = "确定保存吗？";
 $dswork.date = {};
-$dswork.date.callback = function(o, p){
-};
+$dswork.date.callback = function(o, p){};
 $dswork.date.show = function(){
 	var o = arguments[0];
 	var f = arguments[1] || "yyyy-MM-dd";
@@ -139,6 +137,7 @@ function MaskControl(){
 	this.hide = function(){var m = $("#div_maskContainer");if(m.length == 0){return;}m.remove();if(self.callBack != null){self.callBack();}this.callBack = null;};
 	this.autoDelayHide = function(html, timeOut){var m = $("#div_maskContainer");if(m.length == 0){this.show(html);}else{$("#div_maskMessage").html(html);}if(timeOut == undefined){timeOut = 3000;}window.setTimeout(this.hide, timeOut);};
 }
+$dswork.doAjax = true;
 $dswork.doAjaxObject = new MaskControl();
 $dswork.showRequest = function(formData, jqForm, options){
 	$dswork.doAjaxObject.show("正在处理，请稍候<img src='/web/js/dswork/loading.gif' />");return true;
