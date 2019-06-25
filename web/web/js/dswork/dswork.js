@@ -107,6 +107,7 @@ $dswork.checkResult = function(res){
 	catch(e){}
 	return $dswork.result.msg;
 };
+
 /**
  * 信息控件
  * var o=new MaskControl();//初始化
@@ -114,7 +115,7 @@ $dswork.checkResult = function(res){
  * o.hide();//隐藏提示信息
  * o.autoDelayHide=function(html,time)//显示提示信息，并隔time毫秒后关闭
  */
-function MaskControl(){
+$dswork.doAjaxControl = function(){
 	this.callBack = null;
 	var self = this;
 	this.show = function(html){
@@ -136,26 +137,15 @@ function MaskControl(){
 	};
 	this.hide = function(){var m = $("#div_maskContainer");if(m.length == 0){return;}m.remove();if(self.callBack != null){self.callBack();}this.callBack = null;};
 	this.autoDelayHide = function(html, timeOut){var m = $("#div_maskContainer");if(m.length == 0){this.show(html);}else{$("#div_maskMessage").html(html);}if(timeOut == undefined){timeOut = 3000;}window.setTimeout(this.hide, timeOut);};
-}
+};
+$dswork.beforeSubmit = function(){if(!$dswork.validCallBack()){return false;}return $jskey.validator.Validate("dataForm", $dswork.validValue || 3);};
+$dswork.readySubmit  = function(){};
 $dswork.doAjax = true;
-$dswork.doAjaxObject = new MaskControl();
-$dswork.showRequest = function(formData, jqForm, options){
-	$dswork.doAjaxObject.show("正在处理，请稍候<img src='/web/js/dswork/loading.gif' />");return true;
-};
-$dswork.showResponse = function(data, status, xhr){
-	$dswork.doAjaxObject.autoDelayHide($dswork.checkResult(data), 2000);
-	$dswork.doAjaxObject.callBack = $dswork.callback;
-};
-$dswork.doAjaxShow = function(data, callback){
-	$dswork.doAjaxObject.autoDelayHide($dswork.checkResult(data), 2000);
-	$dswork.doAjaxObject.callBack = callback;
-};
+$dswork.doAjaxObject = new $dswork.doAjaxControl();
+$dswork.showRequest  = function(formData, jqForm, options){$dswork.readySubmit();$dswork.doAjaxObject.show("正在处理，请稍候<img src='/web/js/dswork/loading.gif' />");return true;};
+$dswork.showResponse = function(res, status, xhr){$dswork.doAjaxObject.autoDelayHide($dswork.checkResult(res), 2000);$dswork.doAjaxObject.callBack = $dswork.callback;};
+$dswork.doAjaxShow   = function(res, callback)   {$dswork.doAjaxObject.autoDelayHide($dswork.checkResult(res), 2000);$dswork.doAjaxObject.callBack = callback;};
 $dswork.doAjaxOption = {beforeSubmit:$dswork.showRequest,success:$dswork.showResponse};
-$dswork.readySubmit = function(){};
-$dswork.beforeSubmit = function(){
-	if(!$dswork.validCallBack()){return false;}
-	return $jskey.validator.Validate("dataForm", $dswork.validValue || 3);
-};
 $dswork.showTree = function(p){if(typeof(p)!="object"){p={};}
 	var ini = {id:"showTree"
 		,title:"请选择"
@@ -401,7 +391,6 @@ $(function(){
 	try{
 	$("#dataFormSave").click(function(){
 		if($dswork.beforeSubmit()){if(confirm($dswork.confirm)){
-			$dswork.readySubmit();
 			if($dswork.doAjax){$("#dataForm").ajaxSubmit($dswork.doAjaxOption);}
 			else{$("#dataForm").submit();}
 		}}
@@ -412,6 +401,7 @@ $(function(){
 	try{
 	$("#dataForm").submit(function(event){
 		if($dswork.doAjax){event.preventDefault();try{$("#dataFormSave").click();}catch(e){}}
+		else{$dswork.readySubmit();}
 	});
 	}catch(e){}
 
