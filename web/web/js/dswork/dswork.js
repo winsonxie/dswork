@@ -389,6 +389,19 @@ $(function(){
 	});
 	
 	try{
+	$("#_querySubmit_[type=button]").click(function(event){$("#queryForm").submit();});
+	$("#queryForm").keydown(function(e){
+		var v = e || event;
+		var keycode = v.which || v.keyCode;
+		if (keycode==13) {$("#_querySubmit_[type=button]").click();}
+	});
+	}catch(e){}
+	
+	try{
+	$("#dataForm").submit(function(event){
+		if($dswork.doAjax){event.preventDefault();try{$("#dataFormSave").click();}catch(e){}}
+		else{$dswork.readySubmit();}
+	});
 	$("#dataFormSave").click(function(){
 		if($dswork.beforeSubmit()){if(confirm($dswork.confirm)){
 			if($dswork.doAjax){$("#dataForm").ajaxSubmit($dswork.doAjaxOption);}
@@ -398,29 +411,12 @@ $(function(){
 	});
 	}catch(e){}
 	
-	try{
-	$("#dataForm").submit(function(event){
-		if($dswork.doAjax){event.preventDefault();try{$("#dataFormSave").click();}catch(e){}}
-		else{$dswork.readySubmit();}
-	});
-	}catch(e){}
-
-	try{
-	$("#_querySubmit_[type=button]").click(function(event){$("#queryForm").submit();});
-	$("#queryForm").keydown(function(e){
-		var v = e || event;
-		var keycode = v.which || v.keyCode;
-		if (keycode==13) {$("#_querySubmit_[type=button]").click();}
-	});
-	}catch(e){}
-	
 	try{$(".form_title").css("width", "20%");}catch(e){}
 	
 	var hasList = $("#listForm").length > 0 || $("#dataTable").length > 0;
 	if(!hasList){
 		return;
 	}
-	
 	try{
 	$(".listTable").css({"margin-bottom":"35px"});
 	var isIe6 = false;
