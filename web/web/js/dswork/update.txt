@@ -1,0 +1,17 @@
+调用修改：
+	$dswork.doAjaxObject.show(
+	改为调用
+	$dswork.showRequest(
+	
+	
+	$dswork.doAjaxObject.autoDelayHide(
+	改为调用
+	$dswork.show(
+	
+	$dswork.doAjaxShow(
+	改为调用
+	$dswork.showResponse(
+
+$dswork.doAjaxObject.autoDelayHide(
+
+
