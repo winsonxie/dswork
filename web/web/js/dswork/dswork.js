@@ -123,10 +123,10 @@ $dswork.validCallBack= function(){return true;};
 $dswork.beforeSubmit = function(){if(!$dswork.validCallBack()){return false;}return $jskey.validator.Validate("dataForm", $dswork.validValue || 3);};
 $dswork.readySubmit  = function(){};
 $dswork.doAjaxObject = new $dswork.doAjaxControl();
-$dswork.showRequest  = function(formData, jqForm, options){$dswork.readySubmit();$dswork.doAjaxObject.show("正在处理，请稍候<img src='/web/js/dswork/loading.gif' />");return true;};
-$dswork.showResponse = function(res, status, xhr){$dswork.doAjaxObject.autoDelayHide($dswork.checkResult(res), 2000);$dswork.doAjaxObject.callBack = $dswork.callback;};
-$dswork.doAjaxShow   = function(res, callback)   {$dswork.doAjaxObject.autoDelayHide($dswork.checkResult(res), 2000);$dswork.doAjaxObject.callBack = callback;};
-$dswork.doAjaxOption = {beforeSubmit:$dswork.showRequest,success:$dswork.showResponse};
+$dswork.showRequest  = function(){$dswork.doAjaxObject.show("正在处理，请稍候<img src='/web/js/dswork/loading.gif' />");return true;};
+$dswork.showResponse = function(res, callback){$dswork.doAjaxObject.autoDelayHide($dswork.checkResult(res), 2000);$dswork.doAjaxObject.callBack = callback||$dswork.callback;};
+$dswork.doAjaxShow   = $dswork.showResponse;
+$dswork.doAjaxOption = {beforeSubmit:function(formData, jqForm, options){return $dswork.showRequest();},success:function(res, status, xhr){$dswork.showResponse(res);}};
 $dswork.doAjax       = true;
 $dswork.showTree = function(p){if(typeof(p)!="object"){p={};}
 	var ini = {id:"showTree"
@@ -300,106 +300,69 @@ $dswork.page.del = function(event, url, id, page, tdObject){
 $dswork.page.upd = function(event, url, id, page, tdObject){$dswork.page.ini(url, id, page);};
 $dswork.page.getById = function(event, url, id, page, tdObject){$dswork.page.ini(url, id, page);};
 $dswork.page.join = function(td, menu, id){};
-$dswork.page.menu = function(delURL, updURL, getByIdURL, page, showContext){
-	$("#dataTable>tbody>tr>td.menuTool").each(function(){
-		var o = $(this);
-		var id = o.attr("keyIndex");
-		if(id == null || typeof(id)=="undefined"){return true;}
-		var _menu = $('<div class="easyui-menu" style="width:150px;"></div>');
-		$dswork.page.join(o, _menu, id);
-		if(updURL != null && updURL.length > 0)
-		{_menu.append($('<div iconCls="menuTool-update">修改</div>').bind("click", function(event){
-			$dswork.page.upd(event, updURL, id, page, o);
-		}));}
-		if(delURL != null && delURL.length > 0)
-		{_menu.append($('<div iconCls="menuTool-delete">删除</div>').bind("click", function(event){
-			if(confirm("确认删除吗？")){$dswork.page.del(event, delURL, id, page, o);}
-		}));}
-		if(getByIdURL != null && getByIdURL.length > 0)
-		{_menu.append($('<div iconCls="menuTool-select">明细</div>').bind("click", function(event){
-			$dswork.page.getById(event, getByIdURL, id, page, o);
-		}));o.parent().css("cursor", "pointer").bind("dblclick", function(event){$dswork.page.getById(event, getByIdURL, id, page, o);});}
-		o.append(_menu).append($('<a class="menuTool-rightarrow" href="#">&nbsp;</a>').bind("mouseover", function(event){
-			$(".easyui-menu").menu("hide");
-			$(_menu).menu('show', {left: $(this).offset().left + 16, top: o.offset().top + 3});
-			event.preventDefault();
-		}).bind("click", function(event){
-			$(".easyui-menu").menu("hide");
-			$(_menu).menu('show', {left: $(this).offset().left + 16, top: o.offset().top + 3});
-			event.preventDefault();
-		}).bind("mousemove", function(event){
-			$(".easyui-menu").menu("hide");
-			$(_menu).menu('show', {left: $(this).offset().left + 16, top: o.offset().top + 3});
-			event.preventDefault();
-		}));
-		if(showContext == null || showContext){
-			o.parent().bind("contextmenu", function(event){
-				$(".easyui-menu").menu("hide");
-				$(_menu).menu('show', {left: event.clientX, top: o.offset().top + 3});
-				event.preventDefault();
-			});
-		}
-		_menu.menu();
-	});
-};
+$dswork.page.menu = function(delURL, updURL, getByIdURL, page, showContext){$("#dataTable>tbody>tr>td.menuTool").each(function(){
+	var o = $(this);var id = o.attr("keyIndex");
+	if(id == null || typeof(id)=="undefined"){return true;}
+	var _menu = $('<div class="easyui-menu" style="width:150px;"></div>');
+	$dswork.page.join(o, _menu, id);
+	if(updURL != null && updURL.length > 0)
+	{_menu.append($('<div iconCls="menuTool-update">修改</div>').bind("click", function(event){
+		$dswork.page.upd(event, updURL, id, page, o);
+	}));}
+	if(delURL != null && delURL.length > 0)
+	{_menu.append($('<div iconCls="menuTool-delete">删除</div>').bind("click", function(event){
+		if(confirm("确认删除吗？")){$dswork.page.del(event, delURL, id, page, o);}
+	}));}
+	if(getByIdURL != null && getByIdURL.length > 0)
+	{_menu.append($('<div iconCls="menuTool-select">明细</div>').bind("click", function(event){
+		$dswork.page.getById(event, getByIdURL, id, page, o);
+	}));o.parent().css("cursor", "pointer").bind("dblclick", function(event){$dswork.page.getById(event, getByIdURL, id, page, o);});}
+	o.append(_menu).append($('<a class="menuTool-rightarrow" href="#">&nbsp;</a>').bind("mouseover", function(event){
+		$(".easyui-menu").menu("hide");$(_menu).menu('show', {left: $(this).offset().left + 16, top: o.offset().top + 3});event.preventDefault();
+	}).bind("click", function(event){
+		$(".easyui-menu").menu("hide");$(_menu).menu('show', {left: $(this).offset().left + 16, top: o.offset().top + 3});event.preventDefault();
+	}).bind("mousemove", function(event){
+		$(".easyui-menu").menu("hide");$(_menu).menu('show', {left: $(this).offset().left + 16, top: o.offset().top + 3});event.preventDefault();
+	}));
+	if(showContext == null || showContext){
+		o.parent().bind("contextmenu", function(event){$(".easyui-menu").menu("hide");$(_menu).menu('show', {left: event.clientX, top: o.offset().top + 3});event.preventDefault();});
+	}
+	_menu.menu();
+});};
 $dswork.confirm = "确定保存吗？";
 $(function(){
-	$("input").each(function(){
-		var o = $(this);
-		if(o.hasClass("WebDate") && o.attr("format")){
-			o.bind("click", function(event){
-				$dswork.date.show(this, o.attr("format"));
-			});
-			o.prop("readonly", true);
-		}
-	});
-	$("select").each(function(){
-		var o = $(this);
-		var v = o.attr("v");
+	$("input").each(function(){var o = $(this);if(o.hasClass("WebDate") && o.attr("format")){o.bind("click", function(event){$dswork.date.show(this, o.attr("format"));});o.prop("readonly", true);}});
+	$("select").each(function(){var o = $(this);var v = o.attr("v");
 		if(v == null || typeof(v)=="undefined"){return true;}// false为跳出each循环，true为跳出当前循环
-		try{o.val(v);}catch(e){}
-		try{if(o.val() != v){o.prop("selectedIndex", 0);}}catch(e){}
+		try{o.val(v);}catch(e){}try{if(o.val() != v){o.prop("selectedIndex", 0);}}catch(e){}
 	});
-	$("input[type='radio']").each(function(){
-		var o = $(this);
-		var v = o.attr("v");
-		var n = o.attr("name");
+	$("input[type='radio']").each(function(){var o = $(this);var v = o.attr("v");var n = o.attr("name");
 		if(v == null || typeof(v)=="undefined"){return true;}
-		try{var _c = false, _e = $jskey.$byName(n);
-			for(var i = 0;i < _e.length;i++){if(_e[i].value == v){_e[i].checked = true;_c = true;}}
-			if(!_c){_e[0].checked = true;}
-		}catch(e){}
+		try{var _c = false, _e = $jskey.$byName(n);for(var i = 0;i < _e.length;i++){if(_e[i].value == v){_e[i].checked = true;_c = true;}}if(!_c){_e[0].checked = true;}}catch(e){}
 	});
 	
 	try{
 	$("#_querySubmit_[type=button]").click(function(event){$("#queryForm").submit();});
-	$("#queryForm").keydown(function(e){
-		var v = e || event;
-		var keycode = v.which || v.keyCode;
-		if (keycode==13) {$("#_querySubmit_[type=button]").click();}
-	});
+	$("#queryForm").keydown(function(e){var v = e||event;var keycode = v.which||v.keyCode;if (keycode==13) {$("#_querySubmit_[type=button]").click();}});
 	}catch(e){}
 	
 	try{
 	$("#dataForm").submit(function(event){
 		if($dswork.doAjax){event.preventDefault();try{$("#dataFormSave").click();}catch(e){}}
-		else{$dswork.readySubmit();}
 	});
 	$("#dataFormSave").click(function(){
 		if($dswork.beforeSubmit()){if(confirm($dswork.confirm)){
+			$dswork.readySubmit();
 			if($dswork.doAjax){$("#dataForm").ajaxSubmit($dswork.doAjaxOption);}
 			else{$("#dataForm").submit();}
-		}}
-		return false;
+		}}return false;
 	});
 	}catch(e){}
 	
 	try{$(".form_title").css("width", "20%");}catch(e){}
 	
 	var hasList = $("#listForm").length > 0 || $("#dataTable").length > 0;
-	if(!hasList){
-		return;
-	}
+	if(!hasList){return;}
 	try{
 	$(".listTable").css({"margin-bottom":"35px"});
 	var isIe6 = false;
