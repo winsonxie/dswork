@@ -3,7 +3,6 @@
 	改为调用
 	$dswork.showRequest(
 	
-	
 	$dswork.doAjaxObject.autoDelayHide(
 	改为调用
 	$dswork.show(
