@@ -23,6 +23,7 @@ a:hover{outline:none;color:#205e92;text-decoration:underline;}
 a:focus{outline:none;}
 a:hover,a:active{outline:none;}:focus{outline:none;}
 img{border:0;vertical-align:middle;-ms-interpolation-mode:bicubic;}
+label{cursor:pointer;}
 
 .menuTool{white-space:nowrap;}
 .menuTool a{padding:0 0 2px 18px;}
