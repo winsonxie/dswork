@@ -230,6 +230,9 @@ td.form_bottom{height:39px;background-color:#fff;text-align:left;vertical-align:
 .panel-header{padding:0!important;height:28px!important;}
 .panel-header .panel-title input.text,
 .panel-header .panel-title input[type="text"]{height:28px!important;margin:0!important;border:none;}
+.ke-dialog input[type="file"], 
+.ke-dialog input[type="button"], 
+.ke-dialog input.button{padding:0 14px 0 12px!important;margin:0!important;}
 
 @media only screen and (max-width:600px){
 .pageview a,
