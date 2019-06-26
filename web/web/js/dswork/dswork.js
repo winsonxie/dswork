@@ -134,7 +134,7 @@ $dswork.showTree = function(p){if(typeof(p)!="object"){p={};}
 		,title:"请选择"
 		,url:function(node){return "";}
 		,width:400,height:300,left:0,top:0
-		,click:function(id, node){return true;}
+		,click:function(event, treeId, node){return true;}
 		,dataFilter:function(id, pnode, data){return data;}
 		,check:function(treeId, node){}
 		,async:true,checkEnable:true,chkStyle:"radio"
