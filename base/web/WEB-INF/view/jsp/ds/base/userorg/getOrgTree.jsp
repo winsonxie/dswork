@@ -59,7 +59,7 @@ function callfn(isuser, title, id, url, uList, oList){
 </script>
 </head>
 <body class="easyui-layout treebody" fit="true">
-<div region="north" style="overflow:hidden;border:0px;height:30px;">
+<div region="north" style="overflow:hidden;border:0px;" class="treeheader">
 <table border="0" cellspacing="0" cellpadding="0" class="listLogo">
 	<tr>
 		<td class="title">用户岗位管理</td>
