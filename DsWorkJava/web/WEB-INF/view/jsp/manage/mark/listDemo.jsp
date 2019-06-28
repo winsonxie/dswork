@@ -13,7 +13,6 @@ $dswork.page.join = function(td, menu, id){
 		location.href = "list.htm?page=${pageModel.page}&keyIndex=" + id;
 	}));
 };
-$dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "listDemo.htm?page=${pageModel.page}";
 }};
