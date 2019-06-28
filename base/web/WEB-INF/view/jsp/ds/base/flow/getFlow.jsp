@@ -37,7 +37,6 @@ $dswork.page.join = function(td, menu, id){
 $(function(){
 	$dswork.page.menu("", "updFlow1.htm", "getFlowById.htm", "1");
 });
-$dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getFlow.htm?categoryid=${fn:escapeXml(param.categoryid)}";
 }};

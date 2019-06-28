@@ -28,7 +28,6 @@ $dswork.page.join = function(td, menu, id){
 	}));
 	td.parent().css("cursor", "pointer").bind("dblclick", function(event){getDictDataTree(id);});
 };
-$dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getDict.htm?mark=${fn:escapeXml(param.mark)}&islist=${fn:escapeXml(param.islist)}&page=${pageModel.page}";
 }};

@@ -7,7 +7,6 @@
 <title></title>
 <%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
-$dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.code == 1){parent.refreshNode(true);}};
 $(function(){
 $dswork.page.menu("", "updDictData1.htm", "getDictDataById.htm?mark=${fn:escapeXml(param.mark)}&name=${po.name}", "");

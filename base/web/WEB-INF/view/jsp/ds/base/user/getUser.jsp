@@ -7,7 +7,6 @@
 <title></title>
 <%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
-$dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getUser.htm?xtype=${fn:escapeXml(param.xtype)}&page=${pageModel.page}";
 }};

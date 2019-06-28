@@ -8,7 +8,6 @@
 <%@include file="/commons/include/web.jsp"%>
 <style type="text/css">.menuTool-save {background-position:center left;}</style>
 <script type="text/javascript">
-$dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.code == 1){parent.refreshNode(true);}};
 $(function(){
 $dswork.page.menu("", "updOrg1.htm", "getOrgById.htm", "");

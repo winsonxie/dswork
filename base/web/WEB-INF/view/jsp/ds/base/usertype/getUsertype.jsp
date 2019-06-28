@@ -10,7 +10,6 @@
 $(function(){
 	$dswork.page.menu("delUsertype.htm", "updUsertype1.htm", "getUsertypeById.htm", "${pageModel.page}");
 });
-$dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getUsertype.htm?page=${pageModel.page}";
 }};

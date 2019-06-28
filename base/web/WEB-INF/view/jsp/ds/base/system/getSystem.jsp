@@ -39,7 +39,6 @@ function updSystemSeq(){
 function updSystemSeqCallback(){
 	location.href = "getSystem.htm?page=${pageModel.page}";
 }
-$dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getSystem.htm?page=${pageModel.page}";
 }};
