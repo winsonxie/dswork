@@ -6,4 +6,4 @@
 <script type="text/javascript" src="/web/js/easyui/jquery.easyui.js"></script>
 <script type="text/javascript" src="/web/js/jquery/jquery.form.js"></script>
 <script type="text/javascript" src="/web/js/jskey/jskey_core.js"></script>
-<script type="text/javascript" src="/web/js/dswork/dswork.js"></script>
+<script type="text/javascript" src="/web/js/dswork/dswork.js?version=1"></script>
