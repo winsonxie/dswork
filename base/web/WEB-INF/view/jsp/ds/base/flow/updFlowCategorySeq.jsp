@@ -7,12 +7,10 @@
 <title></title>
 <%@include file="/commons/include/web.jsp"%>
 <script type="text/javascript">
+$dswork.readySubmit = function(){
+	$jskey.select.reselect('keyIndex', true);
+};
 $(function(){
-	$("#dataForm").submit(function(event){
-		event.preventDefault();
-		$jskey.select.reselect('keyIndex', true);
-		$("#dataForm").ajaxSubmit($dswork.doAjaxOption);
-	});
 	try{$(".form_title").css("width", "70%");}catch(e){}
 });
 $dswork.callback = function(){
