@@ -10,7 +10,6 @@
 $(function(){
 	$dswork.page.menu("delSite.htm", "updSite1.htm", "getSiteById.htm", "");
 });
-$dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getSite.htm";
 }};

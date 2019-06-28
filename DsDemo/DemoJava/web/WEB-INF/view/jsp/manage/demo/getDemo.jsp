@@ -16,7 +16,6 @@ $dswork.page.join = function(td, menu, id){
 $(function(){
 	$dswork.page.menu("delDemo.htm", "updDemo1.htm", "getDemoById.htm", "${pageModel.page}");
 });
-$dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getDemo.htm?page=${pageModel.page}";
 }};

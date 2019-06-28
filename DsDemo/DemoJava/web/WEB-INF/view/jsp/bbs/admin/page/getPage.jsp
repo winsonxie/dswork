@@ -10,7 +10,6 @@
 $(function(){
 	$dswork.page.menu("delPage.htm?id=${po.id}", "updPage1.htm", "", "${pageModel.page}");
 });
-$dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getPage.htm?id=${po.id}&page=${pageModel.page}";
 }};

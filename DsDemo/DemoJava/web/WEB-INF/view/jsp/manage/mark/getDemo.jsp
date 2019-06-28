@@ -13,7 +13,6 @@ $dswork.page.join = function(td, menu, id){
 		location.href = "getMark.htm?page=${pageModel.page}&keyIndex=" + id;
 	}));
 };
-$dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getDemo.htm?page=${pageModel.page}";
 }};

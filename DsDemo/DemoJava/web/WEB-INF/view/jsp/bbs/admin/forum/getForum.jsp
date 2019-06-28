@@ -35,7 +35,6 @@ $(function(){
 		}
 	});
 });
-$dswork.doAjax = true;
 $dswork.callback = function(){if($dswork.result.code == 1){
 	location.href = "getForum.htm?siteid=${siteid}";
 }};
