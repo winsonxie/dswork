@@ -146,6 +146,8 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 		
 		try
 		{
+			// System.setProperty("rootDir", context.getRealPath("/"));
+			// System.setProperty("contextPath", context.getContextPath());
 			if((new File(context.getRealPath("/") + log4j2)).isFile())
 			{
 				org.apache.logging.log4j.core.LoggerContext c = (org.apache.logging.log4j.core.LoggerContext)LogManager.getContext(false);
