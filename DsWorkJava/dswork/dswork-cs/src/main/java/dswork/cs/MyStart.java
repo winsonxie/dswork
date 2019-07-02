@@ -30,10 +30,14 @@ public class MyStart
 			String log4j2 = "/config/log4j2_local.xml";
 			String dsworkconfig = "classpath:/config/config.properties";
 			String spring = ",classpath*:/config/spring-*.xml";
-			
+
+			String pathRoot = MyStart.class.getResource("/").getPath();
+			if(pathRoot.endsWith("/"))
+			{
+				pathRoot = pathRoot.substring(0, pathRoot.length() - 1);
+			}
 			if(active.length() > 0)
 			{
-				String pathRoot = MyStart.class.getResource("/").getPath();
 				System.out.println("Root=" + pathRoot);
 				File devfiles = new File(pathRoot + "/config/" + active + "/");
 				if(devfiles.isDirectory())
@@ -144,6 +148,10 @@ public class MyStart
 				for(i = 1; i < 6; i++){if(mapperArray[i] != null){System.setProperty("dswork.m" + i, mapperArray[i]);}}
 				
 			}
+			System.setProperty("rootDir", pathRoot);
+			System.setProperty("logsDir", pathRoot + "/logs");
+			System.setProperty("contextPath", pathRoot.substring(pathRoot.lastIndexOf("/")));
+			
 			System.setProperty("contextConfigLocation", "classpath*:/dswork/config/spring/spring-property.xml,classpath*:/dswork/config/spring/spring-mybatis.xml,classpath*:/dswork/config/spring/spring-project.xml" + spring);
 			spring = null;
 			
