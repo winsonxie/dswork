@@ -157,17 +157,18 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 			File f = new File(context.getRealPath("/") + log4j2);
 			if(f.isFile())
 			{
+				Class.forName("org.apache.logging.log4j.core.LoggerContext");
+				//Class.forName("org.apache.logging.log4j.web.Log4jServletContextListener");
+				//context.addListener("org.apache.logging.log4j.web.Log4jServletContextListener");
 				//org.apache.logging.log4j.core.LoggerContext c = (org.apache.logging.log4j.core.LoggerContext)org.apache.logging.log4j.LogManager.getContext(false);
 				//c.setConfigLocation(context.getResource(log4j2).toURI());
 				//c.reconfigure();
-				org.apache.logging.log4j.core.config.ConfigurationSource source;
-				source = new org.apache.logging.log4j.core.config.ConfigurationSource(new java.io.FileInputStream(f), context.getResource(log4j2));
-				org.apache.logging.log4j.core.config.Configurator.initialize(null, source);
+				//org.apache.logging.log4j.core.config.ConfigurationSource source = new org.apache.logging.log4j.core.config.ConfigurationSource(new java.io.FileInputStream(f), context.getResource(log4j2));
+				org.apache.logging.log4j.core.config.Configurator.initialize(null, (new org.apache.logging.log4j.core.config.ConfigurationSource(new java.io.FileInputStream(f), context.getResource(log4j2))));
 			}
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
 		}
 		
 		context.addListener("org.springframework.web.util.IntrospectorCleanupListener");
