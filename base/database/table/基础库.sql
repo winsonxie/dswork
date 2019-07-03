@@ -92,6 +92,24 @@ CREATE TABLE DS_BASE_USER (
   PRIMARY KEY (ID)
 ) COMMENT='系统用户';
 
+DROP TABLE IF EXISTS DS_BASE_USER_BIND;
+CREATE TABLE DS_BASE_USER_BIND (
+  ID                    BIGINT(18)    COMMENT '主键，登录时读到的用户只有id=id这个账号' NOT NULL,
+  BINDID                BIGINT(18)    COMMENT '所属来源应用ID',
+  USERID                BIGINT(18)    COMMENT '主用户ID',
+  openid                VARCHAR(512)  COMMENT 'openid',
+  unionid               VARCHAR(512)  COMMENT 'unionid',
+  NAME                  VARCHAR(30)   COMMENT '昵称',
+  SEX                   INT(1)        COMMENT '性别(0未知,1男,2女)',
+  COUNTRY               VARCHAR(60)   COMMENT '国家',
+  PROVINCE              VARCHAR(60)   COMMENT '省份',
+  CITY                  VARCHAR(60)   COMMENT '城市',
+  AVATAR                VARCHAR(300)  COMMENT '头像',
+  CREATETIME            VARCHAR(19)   COMMENT '创建时间',
+  LASTTIME              BIGINT(18)    COMMENT '最后更新时间',
+  PRIMARY KEY (ID)
+) COMMENT='第三方用户表';
+
 DROP TABLE IF EXISTS DS_BASE_SYSTEM;
 CREATE TABLE DS_BASE_SYSTEM
 (
