@@ -145,7 +145,7 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 		try
 		{
 			System.setProperty("rootDir", context.getRealPath("/").replaceAll("\\\\", "/"));
-			System.setProperty("logsDir", (new java.io.File(context.getRealPath("/") + "/../../logs")).getCanonicalPath().replaceAll("\\\\", "/"));
+			System.setProperty("logsDir", (new File(context.getRealPath("/") + "/../../logs")).getCanonicalPath().replaceAll("\\\\", "/"));
 			System.setProperty("contextPath", context.getContextPath());
 		}
 		catch(Exception e)
@@ -154,12 +154,15 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 		}
 		try
 		{
-			if((new File(context.getRealPath("/") + log4j2)).isFile())
+			File f = new File(context.getRealPath("/") + log4j2);
+			if(f.isFile())
 			{
-				org.apache.logging.log4j.core.LoggerContext c = (org.apache.logging.log4j.core.LoggerContext)org.apache.logging.log4j.LogManager.getContext(false);
-				c.setConfigLocation(context.getResource(log4j2).toURI());
-				c.reconfigure();
-				c.updateLoggers();
+				//org.apache.logging.log4j.core.LoggerContext c = (org.apache.logging.log4j.core.LoggerContext)org.apache.logging.log4j.LogManager.getContext(false);
+				//c.setConfigLocation(context.getResource(log4j2).toURI());
+				//c.reconfigure();
+				org.apache.logging.log4j.core.config.ConfigurationSource source;
+				source = new org.apache.logging.log4j.core.config.ConfigurationSource(new java.io.FileInputStream(f), context.getResource(log4j2));
+				org.apache.logging.log4j.core.config.Configurator.initialize(null, source);
 			}
 		}
 		catch(Exception e)
