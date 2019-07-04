@@ -125,7 +125,7 @@ $dswork.readySubmit  = function(){};
 $dswork.doAjaxObject = new $dswork.doAjaxControl();
 $dswork.show         = function(msg, times){$dswork.doAjaxObject.autoDelayHide(msg, times||2000);};
 $dswork.showRequest  = function(msg){msg = msg||"正在处理，请稍候";$dswork.doAjaxObject.show(msg+"<img src='/web/js/dswork/loading.gif' />");return true;};
-$dswork.showResponse = function(res, callback){$dswork.doAjaxObject.autoDelayHide($dswork.checkResult(res), 2000);$dswork.doAjaxObject.callback = callback||$dswork.callback;};
+$dswork.showResponse = function(res, callback){$dswork.doAjaxObject.callback = callback||$dswork.callback;$dswork.doAjaxObject.autoDelayHide($dswork.checkResult(res), 2000);};
 $dswork.doAjaxShow   = $dswork.showResponse;
 $dswork.doAjaxOption = {beforeSubmit:function(formData, jqForm, options){return $dswork.showRequest();},success:function(res, status, xhr){$dswork.showResponse(res);}};
 $dswork.doAjax       = true;
