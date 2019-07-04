@@ -13,7 +13,6 @@
 	<classpathentry kind="src" path="dswork.base.user"/>
 	<classpathentry kind="src" path="dswork.base.user.org"/>
 	<classpathentry kind="src" path="dswork.base.extends"/>
-	<classpathentry kind="src" path="dswork.base.single"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JAVAEE">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>

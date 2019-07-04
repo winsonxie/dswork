@@ -31,8 +31,8 @@ var treedata = [
 	{id:100002,name:'应用系统管理', img:"", imgOpen:"", url:'/ds/base/system/getSystem.htm', items:[]}
 	,{id:100003,name:'组织机构管理', img:"", imgOpen:"", url:'/ds/base/org/getOrgTree.htm', items:[]}
 	,{id:100004,name:'访问授权管理', img:"", imgOpen:"", url:'/ds/base/orgrole/getOrgTree.htm', items:[]}
-	,{id:100006,name:'用户类型管理', img:"", imgOpen:"", url:'/ds/base/usertype/getUsertype.htm', items:[]}
 	,{id:100007,name:'门户用户管理', img:"", imgOpen:"", url:'/ds/base/user/getUser.htm', items:[]}
+	,{id:100006,name:'用户类型管理', img:"", imgOpen:"", url:'/ds/base/usertype/getUsertype.htm', items:[]}
 	,{id:100008,name:'用户岗位管理', img:"", imgOpen:"", url:'/ds/base/userorg/getOrgTree.htm', items:[]}
 	,{id:100009,name:'门户登录日志', img:"", imgOpen:"", url:'/ds/base/log/getBaseLogin.jsp', items:[]}
 	,{id:100010,name:'多级管理', img:"", imgOpen:"", url:'', items:[

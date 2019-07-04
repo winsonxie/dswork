@@ -6,9 +6,13 @@
 
 <insert id="insert" parameterType="dswork.base.model.DsBaseUser">
 	insert into DS_BASE_USER
-	(ID, ACCOUNT, PASSWORD, NAME, IDCARD, STATUS, EMAIL, MOBILE, PHONE, CAKEY, WORKCARD, CREATETIME, ORGPID, ORGID, TYPE, TYPENAME, EXALIAS, EXNAME)
+	(ID, STATUS, SSQY, NAME, MOBILE, ACCOUNT, PASSWORD, 
+	WORKCARD, SEX, AVATAR, IDCARD, EMAIL, PHONE, 
+	ORGPID, ORGID, TYPE, TYPENAME, EXALIAS, EXNAME, CREATETIME, LASTTIME)
 	values
-	(#{id}, LOWER(#{account}), #{password}, #{name}, #{idcard}, #{status}, #{email}, #{mobile}, #{phone}, #{cakey}, #{workcard}, #{createtime}, #{orgpid}, #{orgid}, #{type}, #{typename}, #{exalias}, #{exname})
+	(#{id}, #{status}, #{ssqy}, #{name}, #{mobile}, #{account}, #{password}, 
+	#{workcard}, #{sex}, #{avatar}, #{idcard}, #{email}, #{phone}, 
+	#{orgpid}, #{orgid}, #{type}, #{typename}, #{exalias}, #{exname}, #{createtime}, #{lasttime})
 </insert>
 <insert id="insertBm" parameterType="dswork.base.model.DsBaseUserBm">
 	insert into DS_BASE_USER_BM
