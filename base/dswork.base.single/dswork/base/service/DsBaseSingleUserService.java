@@ -80,11 +80,6 @@ public class DsBaseSingleUserService extends BaseService<DsBaseUser, Long>
 		return 1;
 	}
 
-	public void updateCAKey(long id, String cakey)
-	{
-		dao.updateCAKey(id, cakey);
-	}
-
 	public void updateOrg(long id, Long orgpid, Long orgid)
 	{
 		orgDao.updatePid(id, orgid);

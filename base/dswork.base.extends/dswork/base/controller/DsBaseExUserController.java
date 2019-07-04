@@ -1,6 +1,7 @@
 package dswork.base.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -92,6 +93,7 @@ public class DsBaseExUserController extends BaseController
 			}
 			else
 			{
+				po.setAccount(po.getAccount().toLowerCase(Locale.ENGLISH));
 				if(!"root".equals(po.getAccount()) && !"admin".equals(po.getAccount()) && !service.isExistsByAccount(po.getAccount()))
 				{
 					po.setId(IdUtil.genId());

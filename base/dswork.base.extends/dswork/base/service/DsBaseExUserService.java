@@ -42,11 +42,6 @@ public class DsBaseExUserService extends BaseService<DsBaseUser, java.lang.Long>
 		return dao;
 	}
 
-	public void updateCAKey(long id, String cakey)
-	{
-		dao.updateCAKey(id, cakey);
-	}
-
 	public void updateOrg(long id, Long orgpid, Long orgid)
 	{
 		dao.updateOrg(id, orgpid, orgid);

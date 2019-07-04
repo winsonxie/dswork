@@ -7,28 +7,30 @@ public class DsBaseUser
 {
 	// ID
 	private Long id = 0L;
+	// 状态(1启用,0禁用)
+	private int status = 1;
+	// 最长12位的区域编码-区域名称
+	private String ssqy = "";
+	// 姓名
+	private String name = "";
+	// 手机
+	private String mobile = "";
 	// 帐号
 	private String account = "";
 	// 密码
 	private String password = "";
-	// 姓名
-	private String name = "";
-	// 身份证号
-	private String idcard = "";
-	// 状态(1启用,0禁用)
-	private Integer status = 1;
-	// 电子邮件
-	private String email = "";
-	// 手机
-	private String mobile = "";
-	// 电话
-	private String phone = "";
-	// CA证书的KEY
-	private String cakey = "";
 	// 工作证号
 	private String workcard = "";
-	// 创建时间
-	private String createtime = "";
+	// 性别(0未知,1男,2女)
+	private int sex = 0;
+	// 头像
+	private String avatar = "";
+	// 身份证号
+	private String idcard = "";
+	// 电子邮箱
+	private String email = "";
+	// 电话
+	private String phone = "";
 	// 所属单位ID
 	private Long orgpid = 0L;
 	// 所属部门ID
@@ -45,6 +47,10 @@ public class DsBaseUser
 	private String exalias = "";
 	// 类型扩展名称
 	private String exname = "";
+	// 创建时间
+	private String createtime = "";
+	// 创建时间
+	private long lasttime = 0L;
 
 	public Long getId()
 	{
@@ -54,6 +60,46 @@ public class DsBaseUser
 	public void setId(Long id)
 	{
 		this.id = id;
+	}
+
+	public int getStatus()
+	{
+		return status;
+	}
+
+	public void setStatus(int status)
+	{
+		this.status = status != 1 ? 0 : 1;
+	}
+
+	public String getSsqy()
+	{
+		return ssqy;
+	}
+
+	public void setSsqy(String ssqy)
+	{
+		this.ssqy = ssqy;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
+	public String getMobile()
+	{
+		return mobile;
+	}
+
+	public void setMobile(String mobile)
+	{
+		this.mobile = mobile;
 	}
 
 	public String getAccount()
@@ -76,14 +122,34 @@ public class DsBaseUser
 		this.password = password;
 	}
 
-	public String getName()
+	public String getWorkcard()
 	{
-		return name;
+		return workcard;
 	}
 
-	public void setName(String name)
+	public void setWorkcard(String workcard)
 	{
-		this.name = name;
+		this.workcard = workcard;
+	}
+
+	public int getSex()
+	{
+		return sex;
+	}
+
+	public void setSex(int sex)
+	{
+		this.sex = sex;
+	}
+
+	public String getAvatar()
+	{
+		return avatar;
+	}
+
+	public void setAvatar(String avatar)
+	{
+		this.avatar = avatar;
 	}
 
 	public String getIdcard()
@@ -96,16 +162,6 @@ public class DsBaseUser
 		this.idcard = idcard;
 	}
 
-	public Integer getStatus()
-	{
-		return status;
-	}
-
-	public void setStatus(Integer status)
-	{
-		this.status = (status == null || status.intValue() != 1) ? 0 : 1;
-	}
-
 	public String getEmail()
 	{
 		return email;
@@ -116,16 +172,6 @@ public class DsBaseUser
 		this.email = email;
 	}
 
-	public String getMobile()
-	{
-		return mobile;
-	}
-
-	public void setMobile(String mobile)
-	{
-		this.mobile = mobile;
-	}
-
 	public String getPhone()
 	{
 		return phone;
@@ -134,36 +180,6 @@ public class DsBaseUser
 	public void setPhone(String phone)
 	{
 		this.phone = phone;
-	}
-
-	public String getCakey()
-	{
-		return cakey;
-	}
-
-	public void setCakey(String cakey)
-	{
-		this.cakey = cakey;
-	}
-
-	public String getWorkcard()
-	{
-		return workcard;
-	}
-
-	public void setWorkcard(String workcard)
-	{
-		this.workcard = workcard;
-	}
-
-	public String getCreatetime()
-	{
-		return createtime;
-	}
-
-	public void setCreatetime(String createtime)
-	{
-		this.createtime = createtime;
 	}
 
 	public Long getOrgpid()
@@ -246,16 +262,36 @@ public class DsBaseUser
 		this.exname = exname;
 	}
 
+	public String getCreatetime()
+	{
+		return createtime;
+	}
+
+	public void setCreatetime(String createtime)
+	{
+		this.createtime = createtime;
+	}
+
+	public long getLasttime()
+	{
+		return lasttime;
+	}
+
+	public void setLasttime(long lasttime)
+	{
+		this.lasttime = lasttime;
+	}
+
 	@Override
 	public String toString()
 	{
 		try
 		{
-			return new StringBuilder().append("{id:").append(id).append(",name:\"").append(name.replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\\\\\"")).append("\"}").toString();
+			return new StringBuilder().append("{\"id\":").append(id).append(",\"name\":\"").append(name.replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\\\\\"")).append("\"}").toString();
 		}
 		catch(Exception e)
 		{
-			return "{id:0,name:\"\"}";
+			return "{\"id\":0,\"name\":\"\"}";
 		}
 	}
 }

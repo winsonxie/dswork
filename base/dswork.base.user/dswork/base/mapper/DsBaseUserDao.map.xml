@@ -10,9 +10,18 @@
 	values
 	(#{id}, LOWER(#{account}), #{password}, #{name}, #{idcard}, #{status}, #{email}, #{mobile}, #{phone}, #{cakey}, #{workcard}, #{createtime}, #{orgpid}, #{orgid}, #{type}, #{typename}, #{exalias}, #{exname})
 </insert>
+<insert id="insertBm" parameterType="dswork.base.model.DsBaseUserBm">
+	insert into DS_BASE_USER_BM
+	(BM, USERID, TYPE)
+	values
+	(#{bm}, #{userid}, #{type})
+</insert>
 
 <delete id="delete">
 	delete from DS_BASE_USER where ID=#{id}
+</delete>
+<delete id="deleteBmByUserid">
+	delete from DS_BASE_USER_BM where USERID=#{userid}
 </delete>
 
 <update id="update" parameterType="dswork.base.model.DsBaseUser">
@@ -28,9 +37,6 @@
 		EXALIAS=#{exalias},
 		EXNAME=#{exname}
 	where ID=#{id}
-</update>
-<update id="updateCakey">
-	update DS_BASE_USER set CAKEY=#{cakey} where ID=#{id}
 </update>
 <update id="updatePassword">
 	update DS_BASE_USER set PASSWORD=#{password} where ID=#{id}

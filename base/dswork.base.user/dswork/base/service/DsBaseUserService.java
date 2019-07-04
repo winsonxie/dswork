@@ -34,16 +34,6 @@ public class DsBaseUserService extends BaseService<DsBaseUser, java.lang.Long>
 	}
 
 	/**
-	 * 修改CA证书
-	 * @param id 用户对象ID
-	 * @param cakey ca证书
-	 */
-	public void updateCAKey(long id, String cakey)
-	{
-		userDao.updateCAKey(id, cakey);
-	}
-
-	/**
 	 * 修改用户组织机构
 	 * @param id 用户对象ID
 	 * @param orgpid 单位ID

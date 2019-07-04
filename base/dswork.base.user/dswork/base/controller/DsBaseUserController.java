@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +51,7 @@ public class DsBaseUserController extends BaseController
 		put("typeList", list);
 		return "/ds/base/user/addUser.jsp";
 	}
+	
 	@RequestMapping("/addUser2")
 	public void addUser2(DsBaseUser po)
 	{
@@ -61,6 +63,7 @@ public class DsBaseUserController extends BaseController
 			}
 			else
 			{
+				po.setAccount(po.getAccount().toLowerCase(Locale.ENGLISH));
 				if(!"root".equals(po.getAccount()) && !"admin".equals(po.getAccount()) && !service.isExistsByAccount(po.getAccount()))
 				{
 					po.setId(IdUtil.genId());

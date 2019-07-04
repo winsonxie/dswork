@@ -4,12 +4,13 @@
 package dswork.base.dao;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
 import dswork.base.model.DsBaseUser;
+import dswork.base.model.DsBaseUserBm;
 import dswork.core.db.BaseDao;
 
 @Repository
@@ -23,16 +24,33 @@ public class DsBaseUserDao extends BaseDao<DsBaseUser, Long>
 	}
 
 	/**
-	 * 修改CA证书
-	 * @param id 用户对象ID
-	 * @param cakey ca证书
+	 * 新增用户
+	 * @param entity 需要新增的对象模型
+	 * @return int
 	 */
-	public void updateCAKey(long id, String cakey)
+	@Override
+	public int save(DsBaseUser entity)
 	{
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("id", id);
-		map.put("cakey", cakey);
-		executeUpdate("updateCAKey", map);
+		entity.setAccount(entity.getAccount().toLowerCase(Locale.ENGLISH));
+		executeInsert("insert", entity);
+		DsBaseUserBm bm = new DsBaseUserBm();
+		bm.setBm(entity.getAccount());
+		bm.setUserid(entity.getId());
+		bm.setType(0);
+		executeInsert("insertBm", bm);
+		return 1;
+	}
+
+	/**
+	 * 删除用户
+	 * @param primaryKey 用户ID
+	 * @return int
+	 */
+	@Override
+	public int delete(Long primaryKey)
+	{
+		executeDelete("deleteBmByUserid", primaryKey);
+		return executeDelete("delete", primaryKey);
 	}
 
 	/**
