@@ -65,20 +65,16 @@ DROP TABLE IF EXISTS DS_BASE_USER;
 CREATE TABLE DS_BASE_USER (
   ID                    BIGINT(18)    COMMENT '主键ID' NOT NULL,
   STATUS                INT(1)        COMMENT '状态(1启用,0禁用)',
-  BM                    VARCHAR(128)  COMMENT '唯一标识(可为id或身份证等信息)',
-  SSQY                  VARCHAR(12)   COMMENT '最长12位的区域编码',
+  SSQY                  VARCHAR(64)   COMMENT '最长12位的区域编码-区域名称',
   NAME                  VARCHAR(30)   COMMENT '姓名',
   MOBILE                VARCHAR(30)   COMMENT '手机',
   ACCOUNT               VARCHAR(64)   COMMENT '自定义账号',
   PASSWORD              VARCHAR(64)   COMMENT '密码',
   WORKCARD              VARCHAR(64)   COMMENT '工作证号',
   SEX                   INT(1)        COMMENT '性别(0未知,1男,2女)',
-  COUNTRY               VARCHAR(60)   COMMENT '国家',
-  PROVINCE              VARCHAR(60)   COMMENT '省份',
-  CITY                  VARCHAR(60)   COMMENT '城市',
   AVATAR                VARCHAR(300)  COMMENT '头像',
   IDCARD                VARCHAR(18)   COMMENT '身份证号',
-  EMAIL                 VARCHAR(300)  COMMENT '电子邮件',
+  EMAIL                 VARCHAR(300)  COMMENT '电子邮箱',
   PHONE                 VARCHAR(30)   COMMENT '电话',
   ORGPID                BIGINT(18)    COMMENT '单位ID',
   ORGID                 BIGINT(18)    COMMENT '部门ID',
@@ -88,17 +84,16 @@ CREATE TABLE DS_BASE_USER (
   EXNAME                VARCHAR(300)  COMMENT '类型扩展名称',
   CREATETIME            VARCHAR(19)   COMMENT '创建时间',
   LASTTIME              BIGINT(18)    COMMENT '最后更新时间',
-  CAKEY                 VARCHAR(32)   COMMENT 'CA证书的KEY',
   PRIMARY KEY (ID)
 ) COMMENT='系统用户';
 
 DROP TABLE IF EXISTS DS_BASE_USER_BM;
 CREATE TABLE DS_BASE_USER_BM (
-  BM                    VARCHAR(64)   COMMENT '唯一标识'  NOT NULL,
+  BM                    VARCHAR(64)   COMMENT '账号唯一标识'  NOT NULL,
   USERID                BIGINT(18)    COMMENT 'USERID',
   TYPE                  INT(1)        COMMENT '类型(0账号,1手机号,2身份证)',
   PRIMARY KEY (BM)
-) COMMENT='用户账号';
+) COMMENT='登录用户账号';
 
 DROP TABLE IF EXISTS DS_BASE_USER_BIND;
 CREATE TABLE DS_BASE_USER_BIND (
