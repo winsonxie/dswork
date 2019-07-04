@@ -43,9 +43,6 @@ var treedata = [
 	,{id:100011,name:'单系统', img:"", imgOpen:"", url:'', items:[
 		{id:1000111,name:'资源管理', img:"", imgOpen:"", url:'/ds/base/func/getFuncTree.htm?systemid=1', items:[]}
 		,{id:1000112,name:'角色管理', img:"", imgOpen:"", url:'/ds/base/role/getRoleTree.htm?systemid=1', items:[]}
-		,{id:1000113,name:'组织管理', img:"", imgOpen:"", url:'/ds/base/single/org/getOrgTree.htm', items:[]}
-		,{id:1000114,name:'用户管理', img:"", imgOpen:"", url:'/ds/base/single/user/getOrgTree.htm', items:[]}
-		,{id:1000115,name:'授权管理', img:"", imgOpen:"", url:'/ds/base/single/userrole/getOrgTree.htm?systemid=1', items:[]}
 	]}
 ]}
 ,{id:200000, name:'业务管理', img:"", imgOpen:"", url:"", items:[
