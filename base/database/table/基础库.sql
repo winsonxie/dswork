@@ -92,6 +92,14 @@ CREATE TABLE DS_BASE_USER (
   PRIMARY KEY (ID)
 ) COMMENT='系统用户';
 
+DROP TABLE IF EXISTS DS_BASE_USER_BM;
+CREATE TABLE DS_BASE_USER_BM (
+  BM                    VARCHAR(64)   COMMENT '唯一标识'  NOT NULL,
+  USERID                BIGINT(18)    COMMENT 'USERID',
+  TYPE                  INT(1)        COMMENT '类型(0账号,1手机号,2身份证)',
+  PRIMARY KEY (BM)
+) COMMENT='用户账号';
+
 DROP TABLE IF EXISTS DS_BASE_USER_BIND;
 CREATE TABLE DS_BASE_USER_BIND (
   ID                    BIGINT(18)    COMMENT '主键，登录时读到的用户只有id=id这个账号' NOT NULL,
