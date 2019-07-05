@@ -387,7 +387,10 @@ $(function(){
 	//jquery1.5-//$("#chkall").click(function(){$("input[name='keyIndex']").attr("checked", $(this).attr("checked"));});
 	$("#chkall").click(function(){$("input[name='keyIndex']").prop("checked", $(this).prop("checked"));});
 	$("table.listTable td a.delete").click(function(){
-		if(confirm("确认删除吗？")){if($dswork.doAjax){var url = $(this).attr("href");$dswork.showRequest();$.post(url,{},function(data){$dswork.showResponse(data);});return false;}return true;}else{return false;}
+		var url = $(this).attr("href");
+		if(url != "#"){
+			if(confirm("确认删除吗？")){if($dswork.doAjax){$dswork.showRequest();$.post(url,{},function(data){$dswork.showResponse(data);});return false;}return true;}else{return false;}
+		}
 	});
 	if(!$dswork.tableCSS){
 		$("table.listTable tr").each(function(){var t = $(this);
