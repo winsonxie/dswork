@@ -54,7 +54,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<v-log4j>2.3</v-log4j>
-		<v-spring>4.3.23.RELEASE</v-spring>
+		<v-spring>4.3.24.RELEASE</v-spring>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -66,7 +66,6 @@
 			<dependency><groupId>commons-logging    </groupId><artifactId>commons-logging    </artifactId><version>1.2</version></dependency>
 			
 			<dependency><groupId>org.apache.logging.log4j</groupId><artifactId>log4j-api       </artifactId><version>${v-log4j}</version></dependency>
-			<dependency><groupId>org.apache.logging.log4j</groupId><artifactId>log4j-web       </artifactId><version>${v-log4j}</version></dependency>
 			<dependency><groupId>org.apache.logging.log4j</groupId><artifactId>log4j-core      </artifactId><version>${v-log4j}</version></dependency>
 			<dependency><groupId>org.apache.logging.log4j</groupId><artifactId>log4j-slf4j-impl</artifactId><version>${v-log4j}</version></dependency>
 			
