@@ -248,7 +248,6 @@ public class MyStart
 		}
 		catch(Exception e)
 		{
-			// TODO: handle exception
 		}
 	}
 }
