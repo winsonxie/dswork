@@ -51,10 +51,6 @@
 		<td class="form_input">${fn:escapeXml(po.workcard)}</td>
 	</tr>
 	<tr>
-		<td class="form_title">CA证书</td>
-		<td class="form_input">${fn:escapeXml(po.cakey)}</td>
-	</tr>
-	<tr>
 		<td class="form_title">状态</td>
 		<td class="form_input">${fn:escapeXml(1==po.status?"启用":"禁用")}</td>
 	</tr>
