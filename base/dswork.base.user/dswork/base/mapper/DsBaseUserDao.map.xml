@@ -62,7 +62,6 @@
 	<result property="email" column="EMAIL" />
 	<result property="mobile" column="MOBILE" />
 	<result property="phone" column="PHONE" />
-	<result property="cakey" column="CAKEY" />
 	<result property="workcard" column="WORKCARD" />
 	<result property="createtime" column="CREATETIME" />
 	<result property="orgpid" column="ORGPID" />
@@ -76,7 +75,7 @@
 </resultMap>
 
 <sql id="columns">
-	u.ID, u.ACCOUNT, u.PASSWORD, u.NAME, u.IDCARD, u.STATUS, u.EMAIL, u.MOBILE, u.PHONE, u.CAKEY, u.WORKCARD, u.CREATETIME, u.ORGPID, u.ORGID
+	u.ID, u.ACCOUNT, u.PASSWORD, u.NAME, u.IDCARD, u.STATUS, u.EMAIL, u.MOBILE, u.PHONE, u.WORKCARD, u.CREATETIME, u.ORGPID, u.ORGID
 	,upo.NAME as ORGPNAME, uo.NAME as ORGNAME, u.TYPE, u.TYPENAME, u.EXALIAS, u.EXNAME
 </sql>
 
