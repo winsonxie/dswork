@@ -1,5 +1,5 @@
 /**
- * 岗位角色Service
+ * 组织机构角色Service
  */
 package dswork.base.service;
 
@@ -24,7 +24,7 @@ public class DsBaseOrgRoleService
 
 	/**
 	 * 新增对象
-	 * @param orgid 岗位ID
+	 * @param orgid 组织机构ID
 	 * @param roleidList 角色ID集合
 	 */
 	public void save(Long orgid, List<Long> roleidList)
@@ -44,8 +44,8 @@ public class DsBaseOrgRoleService
 	}
 
 	/**
-	 * 根据岗位获得授权角色
-	 * @param orgid 岗位主键
+	 * 根据组织机构获得授权角色
+	 * @param orgid 组织机构主键
 	 * @return List&lt;DsBaseOrgRole&gt;
 	 */
 	public List<DsBaseOrgRole> queryList(Long orgid)

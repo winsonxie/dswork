@@ -1,5 +1,5 @@
 /**
- * 岗位角色Dao
+ * 组织机构角色Dao
  */
 package dswork.base.dao;
 

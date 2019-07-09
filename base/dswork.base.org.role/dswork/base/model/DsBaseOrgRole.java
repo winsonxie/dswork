@@ -1,5 +1,5 @@
 /**
- * 岗位角色Model
+ * 组织机构角色Model
  */
 package dswork.base.model;
 
@@ -7,7 +7,7 @@ public class DsBaseOrgRole
 {
 	// ID
 	private Long id = 0L;
-	// 岗位ID
+	// 组织ID
 	private Long orgid = 0L;
 	// 角色ID
 	private Long roleid = 0L;
