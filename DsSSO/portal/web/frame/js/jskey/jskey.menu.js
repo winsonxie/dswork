@@ -7,34 +7,19 @@
 
 
 var i_close = "&#xf1016;",i_open = "&#xf1017;",i_N  = "&nbsp;", i_TC, i_TO, i_LC, i_LO, i_T, i_L, i_I;
-var has3 = true;
 
-if(has3){/*三角模式*/
-	i_TC = "&#xf1016;";// T close
-	i_TO = "&#xf1017;";// T open
-	i_LC = "&#xf1016;";// L close
-	i_LO = "&#xf1017;";// L open
-	i_T  = "&nbsp;";// T
-	i_L  = "&nbsp;";// L
-	i_I  = "&nbsp;";// I
-	document.write('<style type="text/css">.jskeymenu .cell{padding:0 0 0 12px;}.jskeymenu .treenodes i{font-size:12px;margin-right:2px;width:auto;}</style>');
-}
-else{
-	// 加减模式
-	i_TC = "&#xf1046;";// T close
-	i_TO = "&#xf1047;";// T open
-	i_LC = "&#xf1043;";// L close
-	i_LO = "&#xf1044;";// L open
-	i_T  = "&#xf1045;";// T
-	i_L  = "&#xf1042;";// L
-	i_I  = "&#xf1041;";// I
-}
+i_TC = "&#xf1016;";// T close
+i_TO = "&#xf1017;";// T open
+i_LC = "&#xf1016;";// L close
+i_LO = "&#xf1017;";// L open
+i_T  = "&nbsp;";// T
+i_L  = "&nbsp;";// L
+i_I  = "&nbsp;";// I
 
 $jskey.menu =
 {
 num:1,
 list:[],
-hidden:true,//隐藏所有菜单
 load:function(index, id){},//异步加载菜单
 root:"",
 path:"",
@@ -43,30 +28,30 @@ $:function(id){return document.getElementById(id);},
 //初始化操作
 reset:function(){this.list = [];},
 //添加一级菜单下的一组子菜单的菜单项
-put:function(i, title, id, html){
-	this.list[this.list.length] = {"index":i, "title":title, "id":id, "html":html};//index位置索引,id一级菜单的id,title一级菜单的name
+put:function(title, id, html){
+	this.list[this.list.length] = {"title":title, "id":id, "html":html};
 },
 //创建一层菜单内容
-createCell:function(obj, c){
-	var html = '<tr>';
-	html += '<td id="JskeyMT_' + c + '" class="menu menu-close" onclick="$jskey.menu.clickBar(' + c + ')"' + ((c == this.list.length)?' style="display:none;"':'') + '>';
+createCell:function(o, c, last){
+	var html = '';//<tr>
+	html += '<div id="JskeyMT_' + c + '" class="menu menu-close" onclick="$jskey.menu.clickBar(' + c + ')"' + (last?' style="display:none;"':'') + '>';
 	html += '<i id="JskeyI' + 'JskeyMT_' + c + '">'+i_close+'</i>';
-	html += obj.title + '</td>';
-	html += '</tr><tr>';
-	html += '<td id="JskeyMC_' + c + '" valign="top" class="cell cell-close" style="' + ((c == this.list.length)?'display:;height:100%':'display:none;height:') + '">';
+	html += o.title + '</div>';
+	html += '';//</tr><tr>
+	html += '<div id="JskeyMC_' + c + '" valign="top" class="cell cell-close" style="' + (last?'display:;height:50px;':'display:none;height:') + '">';
 	html += '<div class="cell-content" id="JskeyMCD_' + c + '">';
-	html += ((obj.html != "")?obj.html:' ');
-	html += '</div></td></tr>';
+	html += ((o.html != "")?o.html:' ');
+	html += '</div></div>';//</tr>
 	return html;
 },
 //创建一层菜单内容
 create:function(){
 	var len = this.list.length;
 	if(len < 1){return;}
-	var html = '<table id="JskeyMG" class="jskeymenu" style="height:'+(this.hidden?'100%':'auto')+'" cellspacing="0" cellpadding="0">';
-	for(var c = 0;c < len;c++){html += this.createCell(this.list[c], c);}
-	html += this.createCell({"index":len, "title":"", "id":"", "html":""}, len);// 在最后补一个看不见的，用于收缩
-	html += '</table>';
+	var html = '<div id="JskeyMG" class="jskeymenu">';
+	for(var c = 0;c < len;c++){html += this.createCell(this.list[c], c, false);}
+	html += this.createCell({"title":"", "id":"", "html":""}, len, true);// 在最后补一个看不见的，用于收缩
+	html += '</div>';// </table>
 	try{if(this.$("JskeyMG") != null){document.body.removeChild(this.$("JskeyMG"));}}catch(e){}
 	document.body.innerHTML += html;
 },
@@ -99,63 +84,14 @@ clickBar:function(c){
 		if(isClose){
 			this.$("JskeyMT_" + c).className = "menu menu-close";
 			this.$("JskeyMC_" + c).className = "cell cell-close";
-			//this.$("JskeyI" + "JskeyMT_" + c).src = this.imgPath + "right.gif";
 			this.$("JskeyI" + "JskeyMT_" + c).innerHTML = i_close;
-			if(this.hidden == null){
-				this.$("JskeyMC_" + c).style.height = "auto";
-				this.$("JskeyMC_" + c).style.display = "none";
-				this.$("JskeyMC_" + this.list.length).style.display = "";
-			}
-			else if(this.hidden){
-				this.$("JskeyMC_" + c).style.height = "100%";
-				this.$("JskeyMC_" + this.list.length).style.display = "";
-				this.smoothMenu(this.list.length, c, 0);// 需要将最后一个展开
-			}
-			else{
-				this.$("JskeyMC_" + c).style.height = "auto";
-				this.$("JskeyMC_" + c).style.display = "none";
-			}
+			this.$("JskeyMC_" + c).style.display = "none";
 		}
 		else{
 			this.$("JskeyMT_" + c).className = "menu menu-open";
 			this.$("JskeyMC_" + c).className = "cell cell-open";
 			this.$("JskeyI" + "JskeyMT_" + c).innerHTML = i_open;
-			if(this.hidden == null){
-				for(var i = 0;i < this.list.length;i++){
-					if(i != c && this.$("JskeyMC_" + i).style.display == ""){// 找到有其他被打开的就直接关掉并返回
-						this.$("JskeyMT_" + i).className = "menu menu-close";
-						this.$("JskeyMC_" + i).className = "cell cell-close";
-						this.$("JskeyMC_" + i).style.height = "auto";
-						this.$("JskeyMC_" + i).style.display = "none";
-						this.$("JskeyMC_" + c).style.height = "auto";
-						this.$("JskeyMC_" + c).style.display = "";
-						this.$("JskeyI" + "JskeyMT_" + i).innerHTML = i_close;
-						return;
-					}
-				}
-				this.$("JskeyMC_" + c).style.height = "auto";
-				this.$("JskeyMC_" + c).style.display = "";
-				this.$("JskeyMC_" + this.list.length).style.height = "auto";
-				this.$("JskeyMC_" + this.list.length).style.display = "none";
-			}
-			else if(this.hidden){
-				this.$("JskeyMC_" + c).style.height = "100%";
-				for(var i = 0;i < this.list.length;i++){
-					if(i != c && this.$("JskeyMC_" + i).style.display == ""){// 找到有其他被打开的就直接关掉并返回
-						this.$("JskeyMT_" + i).className = "menu menu-close";
-						this.$("JskeyMC_" + i).className = "cell cell-close";
-						this.$("JskeyMC_" + i).style.height = "100%";
-						this.$("JskeyI" + "JskeyMT_" + i).innerHTML = i_close;
-						this.smoothMenu(c, i, 0);
-						return;
-					}
-				}
-				this.smoothMenu(c, this.list.length, 0);// 找不到被打开的，就关掉最后一个
-			}
-			else{
-				this.$("JskeyMC_" + c).style.height = "auto";
-				this.$("JskeyMC_" + c).style.display = "";
-			}
+			this.$("JskeyMC_" + c).style.display = "";
 		}
 	}
 },
@@ -207,7 +143,7 @@ getCellHTML:function(obj, pnodeName, icoString){
 		}
 		var _img = ((obj.img == null || obj.img == "")?(this.path + "default.gif"):(this.path + obj.img));// 父节点的图标是否由json来决定
 		var _imgOpen = ((obj.imgOpen == null || obj.imgOpen == "")?(this.path + "default.gif"):(this.path + obj.imgOpen));
-		html += "<div class='treenode treenodeout' onmouseover='this.className = \"treenode treenodeover\"' onmouseout='this.className = \"treenode treenodeout\"' ondblclick=\"$jskey.menu.reChangeURL('" + pnodeName + "','" + obj.name + "','" + url + "')\" onclick=\"$jskey.menu.changeURL('" + pnodeName + "','" + obj.name + "','" + url + "')\">";
+		html += "<div id='" + obj.id + "' class='treenode treenodeout' onmouseover='this.className = \"treenode treenodeover\"' onmouseout='this.className = \"treenode treenodeout\"' ondblclick=\"$jskey.menu.reChangeURL('" + pnodeName + "','" + obj.name + "','" + url + "')\" onclick=\"$jskey.menu.changeURL('" + pnodeName + "','" + obj.name + "','" + url + "')\">";
 		if(len > 0){
 			for(var c = 0;c < len - 1;c++){
 				html += "<i>" + (icoString.charAt(c)=='0' ? i_I : i_N) + "</i>";
@@ -224,7 +160,7 @@ getCellHTML:function(obj, pnodeName, icoString){
 	else{
 		var _img = ((obj.img == null || obj.img == "")?(this.imgPath + "close.gif"):(this.path + obj.img));// 父节点的图标是否由json来决定
 		var _imgOpen = ((obj.imgOpen == null || obj.imgOpen == "")?(this.imgPath + "open.gif"):(this.path + obj.imgOpen));
-		html += "<div class='treenode treenodeout' onmouseover='this.className = \"treenode treenodeover\"' onmouseout='this.className = \"treenode treedivout\"' onclick='$jskey.menu.expandNode(\"JskeyI"+v+"\", \"DIV"+v+"\", \"" + _img + "\", \"" + _imgOpen + "\");'>";
+		html += "<div id='" + obj.id + "' class='treenode treenodeout' onmouseover='this.className = \"treenode treenodeover\"' onmouseout='this.className = \"treenode treedivout\"' onclick='$jskey.menu.expandNode(\"JskeyI"+v+"\", \"DIV"+v+"\", \"" + _img + "\", \"" + _imgOpen + "\");'>";
 		for(var i = 0;i < len - 1;i++){
 			html += "<i>" + (icoString.charAt(i)=='0' ? i_I : i_N) + "</i>";
 		}
@@ -237,9 +173,6 @@ getCellHTML:function(obj, pnodeName, icoString){
 		html += "<img id='JskeyI"+v+"_node' class='img' align='absmiddle' src='" + _imgOpen + "' onclick='$jskey.menu.expandNode(\"JskeyI"+v+"\", \"DIV"+v+"\", \"" + _img + "\", \"" + _imgOpen + "\");'/>";
 		html += obj.name;
 		html += "</div>";
-		
-		// html += "</div>";
-		
 		html += "<div class='treenodes' id='DIV"+v+"' style='display:;'>";
 		var last = items.length - 1;
 		var item;
@@ -263,8 +196,7 @@ getNodeHtml:function(obj){//{name:"",items:[]}
 	var item;
 	var isTree = false;
 	for(var i = 0;i < items.length;i++){
-		//子节点，无下级节点
-		if(items[i].items.length > 0){
+		if(items[i].items.length > 0){//子节点，无下级节点
 			isTree = true;
 			break;
 		}
@@ -319,9 +251,8 @@ $jskey.menu.jsSrc = "" + document.getElementsByTagName("script")[document.getEle
 //当前js的引用路径
 $jskey.menu.jsPath = $jskey.menu.jsSrc.substring(0, $jskey.menu.jsSrc.lastIndexOf("/"));
 
-$jskey.menu.show = function(items, isHidden, _root){
-	_root = _root || $jskey.menu.root;
-	$jskey.menu.hidden = isHidden;
+$jskey.menu.show = function(items, _root, _root2){
+	_root = _root2 || _root || $jskey.menu.root;
 	if($jskey.menu.path == "") $jskey.menu.path = $jskey.menu.jsPath + "/themes/menu/ico/";
 	if($jskey.menu.imgPath == "") $jskey.menu.imgPath = $jskey.menu.jsPath + "/themes/menu/img/";
 	$jskey.menu.reset();
@@ -329,7 +260,7 @@ $jskey.menu.show = function(items, isHidden, _root){
 		var item = items[i];
 		item._root = _root;
 		var html = $jskey.menu.getNodeHtml(item);
-		$jskey.menu.put(i, item.name, item.id, html);
+		$jskey.menu.put(item.name, item.id, html);
 	}
 	$jskey.menu.create();
 };
@@ -339,20 +270,14 @@ $jskey.menu.changeURL = function(parentname, nodename, url){
 	if(url.indexOf("^") == 0){
 		url = url.substring(1, url.length);
 	}
-//	else if($jskey.menu.root != ""){
-//		if(url.indexOf("http") != 0 && url.indexOf($jskey.menu.root) != 0){
-//			url = $jskey.menu.root + url;
-//		}
-//	}
 	if(url != ""){try{
 		var s = nodename;//parentname + '-'+nodename;
 		if(parent.$('#tt').tabs('exists', s)){
 			parent.$('#tt').tabs('select', s);
 		}
 		else{
-			// 为了处理新增tab高度不适应bug
 			parent.$('#tt').tabs('add',{});// 增加空白tab
-			var tab = parent.$('#tt').tabs('getSelected');
+			var tab = parent.$('#tt').tabs('getSelected');// 为了处理新增tab高度不适应bug
 			parent.$('#tt').tabs('update',{
 				tab:tab,
 				options:{
@@ -370,11 +295,6 @@ $jskey.menu.reChangeURL = function(parentname, nodename, url){
 	if(url.indexOf("^") == 0){
 		url = url.substring(1, url.length);
 	}
-//	else if($jskey.menu.root != ""){
-//		if(url.indexOf("http") != 0 && url.indexOf($jskey.menu.root) != 0){
-//			url = $jskey.menu.root + url;
-//		}
-//	}
 	if(url != ""){try{
 		var s = nodename;//parentname + '-'+nodename;
 		var tab = null;
@@ -383,11 +303,6 @@ $jskey.menu.reChangeURL = function(parentname, nodename, url){
 			tab = parent.$('#tt').tabs('getTab', s);//.find('iframe')[0].src = url;
 		}
 		else{
-			//parent.$('#tt').tabs('add',{
-			//	title:s,
-			//	content:'<div style="overflow:hidden;width:100%;height:100%;padding:0px;margin:0px;"><iframe scrolling="yes" frameborder="0" src="' + url + '"></iframe></div>',
-			//	closable:true
-			//});
 			parent.$('#tt').tabs('add',{});// 增加空白tab
 			tab = parent.$('#tt').tabs('getSelected');
 		}
