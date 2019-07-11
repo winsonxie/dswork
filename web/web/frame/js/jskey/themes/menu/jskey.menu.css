@@ -2,7 +2,7 @@
 * {filter:expression(document.execCommand("BackgroundImageCache", false, true));}
 html {height:100%;margin:0;padding:0;border:none;overflow:auto;}
 body {height:100%;margin:0;padding:0;border:none;text-align:center;overflow:auto;background-color:#e0ecff;background-color:#fff;}
-body::-webkit-scrollbar {width:8px;}
+body::-webkit-scrollbar {width:8px;height:0;}
 body::-webkit-scrollbar-thumb {background-color:#95b8e7;border-radius:2px;}
 body::-webkit-scrollbar-track {background-color:#eeeeee;opacity:0.1;}
 @font-face {font-family:"treefont";font-weight:normal;font-style:normal;
@@ -12,7 +12,7 @@ body::-webkit-scrollbar-track {background-color:#eeeeee;opacity:0.1;}
 		url('font/tree.ttf') format('truetype'),/* chrome,firefox,opera,Safari,Android,iOS4.2+ */
 		url('font/tree.svg#dsworkfont') format('svg');/* iOS4.1- */
 }
-.jskeymenu {box-sizing:border-box;width:100%;border:0px;font-family:Helvetica;padding-top:3px;}
+.jskeymenu {box-sizing:border-box;width:100%;border:none;font-family:Helvetica;padding-top:3px;}
 .jskeymenu div{font-size:14px;font-weight:normal;}
 
 /*分层菜单的样式设置*/
@@ -37,7 +37,7 @@ body::-webkit-scrollbar-track {background-color:#eeeeee;opacity:0.1;}
 .jskeymenu .treenodes:hover i{opacity:1;}
 
 .jskeymenu .treenode {height:22px;line-height:22px;cursor:pointer;display:block;box-sizing:border-box;width:100%;padding-left:5px;white-space:nowrap;vertical-align:top;text-align:left;}
-.jskeymenu .treenode .img {border:0px;width:20px;height:20px;margin-right:3px;}
+.jskeymenu .treenode .img {border:none;width:20px;height:20px;margin-right:3px;}
 .jskeymenu .treenode:hover .img {opacity:1;}
 .jskeymenu .treenodeout {color:#333333;}
 .jskeymenu .treenodeover {color:#ff0000;text-decoration:underline;}
