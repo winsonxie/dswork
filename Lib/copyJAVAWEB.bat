@@ -11,14 +11,20 @@ if exist %1\ (
 	for /r "%~dp0/common/dswork" %%v in (*.jar) do (
 		xcopy "%%v" "%1" /y
 	)
-	for /r "%~dp0/common/spring" %%v in (*.jar) do (
-		xcopy "%%v" "%1" /y
-	)
 	for /r "%~dp0/common/log/log4j2" %%v in (*.jar) do (
 		xcopy "%%v" "%1" /y
 	)
 	xcopy "%~dp0\mybatis\mybatis-3.4.6.jar" "%1" /y
 	xcopy "%~dp0\mybatis\mybatis-spring-1.3.2.jar" "%1" /y
+	xcopy "%~dp0\spring\spring-aop.jar" "%1" /y
+	xcopy "%~dp0\spring\spring-beans.jar" "%1" /y
+	xcopy "%~dp0\spring\spring-context.jar" "%1" /y
+	xcopy "%~dp0\spring\spring-core.jar" "%1" /y
+	xcopy "%~dp0\spring\spring-expression.jar" "%1" /y
+	xcopy "%~dp0\spring\spring-jdbc.jar" "%1" /y
+	xcopy "%~dp0\spring\spring-tx.jar" "%1" /y
+	xcopy "%~dp0\spring\spring-web.jar" "%1" /y
+	xcopy "%~dp0\spring\spring-webmvc.jar" "%1" /y
 	xcopy "%~dp0\database\mysql\mysql-connector-java-5.1.45-bin.jar" "%1" /y
 	xcopy "%~dp0\module\dswork\portal\dswork-sso.jar" "%1" /y
 	endlocal

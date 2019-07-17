@@ -10,21 +10,6 @@
         <archive path="/Lib/common/commons/commons-lang-2.6.jar"/>
         <archive path="/Lib/common/commons/commons-logging-1.2.jar"/>
         <archive path="/Lib/common/commons/commons-pool-1.6.jar"/>
-        <archive path="/Lib/common/log/slf4j-api-1.7.26.jar"/>
-        <archive path="/Lib/common/log/log4j2/log4j-api-2.3.jar"/>
-        <archive path="/Lib/common/log/log4j2/log4j-core-2.3.jar"/>
-        <archive path="/Lib/common/log/log4j2/log4j-slf4j-impl-2.3.jar"/>
-        <archive path="/Lib/common/spring/spring-aop.jar"/>
-        <archive path="/Lib/common/spring/spring-beans.jar"/>
-        <archive path="/Lib/common/spring/spring-context.jar"/>
-        <archive path="/Lib/common/spring/spring-core.jar"/>
-        <archive path="/Lib/common/spring/spring-expression.jar"/>
-        <archive path="/Lib/common/spring/spring-jdbc.jar"/>
-        <archive path="/Lib/common/spring/spring-tx.jar"/>
-        <archive path="/Lib/common/spring/spring-web.jar"/>
-        <archive path="/Lib/common/spring/spring-webmvc.jar"/>
-        <archive path="/Lib/mybatis/mybatis-3.4.6.jar"/>
-        <archive path="/Lib/mybatis/mybatis-spring-1.3.2.jar"/>
         
         <archive path="/Lib/common/dswork/dswork-config.jar"/>
         <archive path="/Lib/common/dswork/dswork-core.jar"/>
@@ -34,5 +19,23 @@
         <archive path="/Lib/common/dswork/dswork-ognl.jar"/>
         <archive path="/Lib/common/dswork/dswork-spring.jar"/>
         <archive path="/Lib/common/dswork/dswork-web.jar"/>
+        
+        <archive path="/Lib/common/log/slf4j-api-1.7.26.jar"/>
+        <archive path="/Lib/common/log/log4j2/log4j-api-2.3.jar"/>
+        <archive path="/Lib/common/log/log4j2/log4j-core-2.3.jar"/>
+        <archive path="/Lib/common/log/log4j2/log4j-slf4j-impl-2.3.jar"/>
+        
+        <archive path="/Lib/mybatis/mybatis-3.4.6.jar"/>
+        <archive path="/Lib/mybatis/mybatis-spring-1.3.2.jar"/>
+        
+        <archive path="/Lib/spring/spring-aop.jar"/>
+        <archive path="/Lib/spring/spring-beans.jar"/>
+        <archive path="/Lib/spring/spring-context.jar"/>
+        <archive path="/Lib/spring/spring-core.jar"/>
+        <archive path="/Lib/spring/spring-expression.jar"/>
+        <archive path="/Lib/spring/spring-jdbc.jar"/>
+        <archive path="/Lib/spring/spring-tx.jar"/>
+        <archive path="/Lib/spring/spring-web.jar"/>
+        <archive path="/Lib/spring/spring-webmvc.jar"/>
     </library>
 </eclipse-userlibraries>
