@@ -205,13 +205,16 @@ $dswork.upload.prototype = {
 	this.count++;
 	var defaults = {url:this.url,uploadone:"true",vid:"",sessionKey:this.sessionKey,fileKey:this.fileKey+this.count,show:this.show,limit:this.limit,ext:this.ext,name:this.name};
 	var p = $.extend(defaults, op);
+	p.$input = $("#" + p.id);
+	if(p.$input.length == 0){try{console.log("ID为"+p.$bid+"的按钮不存在，无法初始化上传控件");}catch(x){}
+		return false;
+	}
 	p.sessionKey = parseInt(p.sessionKey);
 	p.fileKey = parseInt(p.fileKey);
 	p.limit = parseInt(p.limit);
 	p.buttonid = p.buttonid || "";
 	p.$bid = p.buttonid == "" ? p.id + "_span" : p.buttonid;
 	p.$sid = p.id + "_showdiv";
-	p.$input = $("#" + p.id);
 	
 	p.$vInput = null;
 	if(p.vid != ""){p.$vInput = $("#" + p.vid);}
