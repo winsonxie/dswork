@@ -1,7 +1,7 @@
 //jquery.js和jskey_core.js支持
 if(typeof($dswork)!="object"){$dswork={};}
 $dswork.date = {};
-$dswork.date.callback = function(o, p){};
+$dswork.date.callback = function(p){};
 $dswork.date.show = function(){
 	var o = arguments[0];
 	var f = arguments[1] || "yyyy-MM-dd";

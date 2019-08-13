@@ -1,7 +1,7 @@
 /**
  * 日历类
- * @version 10
- * @datetime 2019-05-23 15:06
+ * @version 11
+ * @datetime 2019-08-13 18:25
  * @author skey_chen
  * @copyright 2011-2019 &copy; skey_chen@163.com
  * @license LGPL
@@ -760,9 +760,10 @@ $jskey.Calendar.prototype = {
 			o.value = dt;
 		}
 		E.$hide();
+		E.$param.value = dt;// 增加返回value
 		try{
 			if(E.$param.fn){
-				var fn = function(){};
+				var fn;
 				eval("fn=" + E.$param.fn);
 				fn(E.$param);
 			}
