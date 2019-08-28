@@ -10,6 +10,10 @@ import java.util.Locale;
  */
 public class TimeUtil
 {
+	public final static int YEAR = Calendar.YEAR;
+	public final static int MONTH = Calendar.MONTH;
+	public final static int DATE = Calendar.DATE;
+	
 	/**
 	 * Locale.CHINA返回当前的时间，格式为：yyyy-MM-dd HH:mm:ss
 	 * @return String
@@ -56,6 +60,39 @@ public class TimeUtil
 			}
 			SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.CHINA);
 			return sdf.format(date);
+		}
+		catch(Exception ex)
+		{
+			return "";
+		}
+	}
+
+	/**
+	 * Locale.CHINA格式化时间
+	 * @param type TimeUtil.YEAR|TimeUtil.MONTH|TimeUtil.DATE
+	 * @param diff 需要加减的数量
+	 * @param format 需要显示的格式化参数，如：yyyy-MM-dd
+	 * @return String
+	 */
+	public static String formatDate(int type, int diff, String format)
+	{
+		try
+		{
+			Calendar cal = Calendar.getInstance();
+			switch(type)
+			{
+				case YEAR:
+					cal.add(Calendar.YEAR, diff);
+					break;
+				case MONTH:
+					cal.add(Calendar.MONTH, diff);
+					break;
+				case DATE:
+					cal.add(Calendar.DATE, diff);
+					break;
+			}
+			SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.CHINA);
+			return sdf.format(cal.getTime());
 		}
 		catch(Exception ex)
 		{

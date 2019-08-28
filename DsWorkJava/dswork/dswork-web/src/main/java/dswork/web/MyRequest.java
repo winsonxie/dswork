@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 public class MyRequest
 {
 	private HttpServletRequest request;
-	
 	// post的数据流，与Form数据冲突
 	private byte[] databody = null;
 	private Map<String, ArrayList<MyFile>> formFiles;
@@ -87,7 +86,7 @@ public class MyRequest
 				{
 					MyRequestUpload reqUpload = new MyRequestUpload(request);
 					reqUpload.setMaxFileSize(maxFileSize);
-					//reqUpload.setTotalMaxFileSize(totalMaxFileSize);
+					// reqUpload.setTotalMaxFileSize(totalMaxFileSize);
 					reqUpload.setAllowedFilesList(allowedFilesList);
 					reqUpload.setDeniedFilesList(deniedFilesList);
 					reqUpload.uploadStream();
@@ -96,11 +95,14 @@ public class MyRequest
 				else if(contentType.contains("application/json"))
 				{
 					int size = request.getContentLength();// 因为只有一个文件，所以判断单个大小即可
-					databody = new byte[size];
-					int j = 0, k = 0;
-					while(j < size && (k = request.getInputStream().read(databody, j, size - j)) != -1)
+					if(size >= 0)
 					{
-						j += k;
+						databody = new byte[size];
+						int j = 0, k = 0;
+						while(j < size && (k = request.getInputStream().read(databody, j, size - j)) != -1)
+						{
+							j += k;
+						}
 					}
 				}
 			}
@@ -189,12 +191,12 @@ public class MyRequest
 		}
 		return urlThisPage.substring(0, urlThisPage.length() - 1);
 	}
-	
+
 	public String getDatabody()
 	{
 		return getDatabody("UTF-8");
 	}
-	
+
 	public String getDatabody(String charsetName)
 	{
 		try
