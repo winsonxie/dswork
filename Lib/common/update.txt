@@ -1,4 +1,6 @@
-
+2019-08-28
+	dswork修改了dswork.web中的MyRequest类，使application/json的上传文件，跳过request.getContentLength()为-1时的情况
+	dswork修改了dswork.core中的TimeUtil类，增加formatDate(int type, int diff, String format)用于处理简单的日期加减
 2019-04-24
 	dswork修改了dswork.http中的HttpUtil类，使支持处理gzip的请求
 	DsWorkJava项目整体结构升级为maven结构，新目录结构支持vscode及eclipse等多种IDE
