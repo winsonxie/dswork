@@ -10,6 +10,22 @@
 	//{
 	//	return this.replace(/(^\s*)|(\s*$)/g, "");//移除首尾空格
 	//};
+	// 目前$jskey.extend仅用在$jskey.page
+	$jskey.extend = function(d, s){
+		for(var p in s) {
+			document.write(p + " = " + (typeof s[p]) + "<br>");
+			if(typeof s[p] == 'object'){
+				d[p] = d[p] || {};
+				$jskey.extend(d[p], s[p]);
+			}else{
+				d[p] = s[p];
+			}
+		}
+		return d;
+	};
+
+
+
 	$jskey.on = function($e, et, fn)
 	{
 		$e.attachEvent ? 
