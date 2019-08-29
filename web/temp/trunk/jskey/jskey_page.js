@@ -8,7 +8,7 @@ $jskey.extend = function(d, s){
 			d[p] = d[p] || {};
 			$jskey.extend(d[p], s[p]);
 		}else{
-			d[p] = s[p];
+			d[p] = d[p]||s[p];
 		}
 	}
 	return d;
@@ -156,7 +156,7 @@ $jskey.Page.prototype.config_ = function(){
 	var C = this.config;
 	var d = {tag:"div", style:{className:"jskey_page"}, item:{tag:"a", begin:"", end:"", style:{className:"", selected:"selected", disabled:"disabled"}}};
 	C.dom = C.dom||{};
-	C.dom = $jskey.extend(d, C.dom);
+	$jskey.extend(C.dom, d);
 	C.dom.tag = C.dom.tag.toLowerCase();
 	C.dom.item.tag = C.dom.item.tag.toLowerCase();
 };

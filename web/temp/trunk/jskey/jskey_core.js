@@ -18,7 +18,7 @@
 				d[p] = d[p] || {};
 				$jskey.extend(d[p], s[p]);
 			}else{
-				d[p] = s[p];
+				d[p] = d[p]||s[p];
 			}
 		}
 		return d;
