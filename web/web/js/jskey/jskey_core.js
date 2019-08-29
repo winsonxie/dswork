@@ -1,7 +1,7 @@
 ﻿/**
  * jskey库合集
- * @version 8.8.4
- * @datetime 2019-08-13 18:25
+ * @version 8.8.5
+ * @datetime 2019-08-29 11:47
  * @author skey_chen
  * @copyright 2011-2019 &copy; 249725997@qq.com
  * @license LGPL-3.0 https://github.com/skeychen/dswork/blob/master/LICENSE
