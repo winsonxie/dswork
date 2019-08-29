@@ -12,10 +12,17 @@
 var fn = function(e){$jskey.$('show').innerHTML=$jskey.$('show').innerHTML + "<br />" + "name=" + e.object + ",page=" + e.page + ",pagesize=" + e.pagesize + ",size=" + e.size + ",lastpage=" + e.totalpage;}
 </script>
 点击结果：<span id="show"></span><br />
-<br /><br />使用template可以设置自己的展示模板，如果template直接设置值:1-4可使用默认的四种模板
+<br /><br />使用template可以设置自己的展示模板，如果template直接设置值:0-4可使用默认的五种模板，不设置则为默认0
 <br /><br />template中可使用的变量为：{pageview} {size} {page} {totalpage} {prev} {first} {pagelist} {last} {next} {skip} {go} {pagesize}
 <br /><br />下面是比较全面的演示及说明，相关使用请查看"网页源代码"吧，就不另写说明了，麻烦
 <br />
+<br /><div id="p0"></div>
+<script type="text/javascript">
+$jskey.page({
+	object:'p0',size:990,page:5,
+    fn:fn
+});
+</script>
 <br /><div id="p1"></div>
 <script type="text/javascript">
 $jskey.page({
@@ -57,7 +64,7 @@ $jskey.page({
 <style type="text/css">
 .jskey_page_skin_my a    {border:1px solid #ccc;background-color:#dddddd;color:#333333;}
 .jskey_page_skin_my span {color:#ff0000;}
-.jskey_page_skin_my .page{font-weight:700;color:#ffffff;background-color:#ff0000;}
+.jskey_page_skin_my .selected{font-weight:700;color:#ffffff;background-color:#ff0000;}
 .jskey_page_skin_my input {background-color:#999999;color:#ffffff;}
 .jskey_page_skin_my button{background-color:#999999;color:#ffffff;}
 .jskey_page_skin_my select{background-color:#999999;color:#ffffff;}
@@ -152,6 +159,7 @@ $jskey.page({
 <br /><div id="p8"></div>
 <br /><div id="p9"></div>
 <br /><div id="p10"></div>
+<br /><div id="p11"></div>
 <script type="text/javascript">
 var mypageobj = $jskey.page({
 	template:"{pageview}<span>共{size}条&nbsp;第{page}/{totalpage}页&nbsp;</span>",
@@ -159,7 +167,8 @@ var mypageobj = $jskey.page({
 	arr:[
 		{template:3,object:'p8'},
 		{template:2,object:'p9'},
-		{template:1,object:'p10'}
+		{template:1,object:'p10'},
+		{template:0,object:'p11'}
 	],
     fn:fn
 });
