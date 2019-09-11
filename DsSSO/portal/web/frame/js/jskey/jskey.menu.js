@@ -24,6 +24,7 @@ load:function(index, id){},//异步加载菜单
 root:"",
 path:"",
 imgPath:"",
+isTabs:true,// 是否开启选项卡,
 $:function(id){return document.getElementById(id);},
 //初始化操作
 reset:function(){this.list = [];},
@@ -143,7 +144,7 @@ getCellHTML:function(obj, pnodeName, icoString){
 		}
 		var _img = ((obj.img == null || obj.img == "")?(this.path + "default.gif"):(this.path + obj.img));// 父节点的图标是否由json来决定
 		var _imgOpen = ((obj.imgOpen == null || obj.imgOpen == "")?(this.path + "default.gif"):(this.path + obj.imgOpen));
-		html += "<div id='" + obj.id + "' class='treenode treenodeout' onmouseover='this.className = \"treenode treenodeover\"' onmouseout='this.className = \"treenode treenodeout\"' ondblclick=\"$jskey.menu.reChangeURL('" + pnodeName + "','" + obj.name + "','" + url + "')\" onclick=\"$jskey.menu.changeURL('" + pnodeName + "','" + obj.name + "','" + url + "')\">";
+		html += "<div id='" + obj.id + "' class='treenode treenodeout' onmouseover='this.className = \"treenode treenodeover\"' onmouseout='this.className = \"treenode treenodeout\"' ondblclick=\"$jskey.menu.reChangeURL('" + pnodeName + "','" + obj.name + "','" + url + "')\" onclick=\"$jskey.menu.changeURL('" + pnodeName + "','" + obj.name + "','" + url + "', this)\">";
 		if(len > 0){
 			for(var c = 0;c < len - 1;c++){
 				html += "<i>" + (icoString.charAt(c)=='0' ? i_I : i_N) + "</i>";
@@ -265,12 +266,40 @@ $jskey.menu.show = function(items, _root, _root2){
 	$jskey.menu.create();
 };
 //改变URL，可以覆盖此方法，用于自定义不同的方式
-$jskey.menu.changeURL = function(parentname, nodename, url){
+$jskey.menu.changeURL = function(parentname, nodename, url, elementObject){
 	if(url == null || url == "" || url == "null"){url = "";}
 	if(url.indexOf("^") == 0){
 		url = url.substring(1, url.length);
 	}
 	if(url != ""){try{
+		if(!$jskey.menu.isTabs){
+			try{
+				$(".treenodeselected").each(function(){
+					$(this).removeClass("treenodeselected");
+					$(this).isselected = false;
+				});
+				if(elementObject){
+					var x = $(elementObject);
+					x.attr("class", "treenode treenodeselected");
+					x.isselected = true;
+					if(!x.isclicked){
+						x.isclicked = true;
+						x.get(0).removeAttribute("onmouseover");
+						x.get(0).removeAttribute("onmouseout");
+						x.on("mouseover"), function(){
+							var z = $(this);
+							z.attr("class", "treenode treenodeover" + (z.isselected?" treenodeselected" : ""));
+						};
+						x.on("onmouseout"), function(){
+							var z = $(this);
+							z.attr("class", "treenode treenodeout" + (z.isselected?" treenodeselected" : ""));
+						};
+					}
+				}
+				parent.$("#tt").attr("src", url);
+			}catch(ee){}
+			return;
+		}
 		var s = nodename;//parentname + '-'+nodename;
 		if(parent.$('#tt').tabs('exists', s)){
 			parent.$('#tt').tabs('select', s);
@@ -291,6 +320,9 @@ $jskey.menu.changeURL = function(parentname, nodename, url){
 	}catch(e){}}
 };
 $jskey.menu.reChangeURL = function(parentname, nodename, url){
+	if(!$jskey.menu.isTabs){
+		return;
+	}
 	if(url == null || url == "" || url == "null"){url = "";}
 	if(url.indexOf("^") == 0){
 		url = url.substring(1, url.length);

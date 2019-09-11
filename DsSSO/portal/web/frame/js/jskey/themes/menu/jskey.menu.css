@@ -41,7 +41,7 @@ body::-webkit-scrollbar-track {background-color:#eeeeee;opacity:0.1;}
 .jskeymenu .treenode:hover .img {opacity:1;}
 .jskeymenu .treenodeout {color:#333333;}
 .jskeymenu .treenodeover {color:#ff0000;text-decoration:underline;}
-.jskeymenu .treenodeselect {color:#ff0000;text-decoration:underline;}
+.jskeymenu .treenodeselected {color:#ff0000;text-decoration:underline;}
 
 
 

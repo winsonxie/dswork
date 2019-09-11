@@ -12,6 +12,7 @@ if(request.getQueryString() != null)
 {
 	response.sendRedirect(path + "/frame/index.jsp");
 }
+boolean isTabs = true;// 是否开启选项卡
 %><!DOCTYPE html>
 <html>
 <head>
@@ -53,9 +54,10 @@ if(top.location != this.location){top.location = "<%=path %>/frame/index.jsp";}
 <div id="titleDIV" class="minititle">计算机管理控制程序</div>
 </div>
 <div region="west" data-options="collapsed:false,split:true" style="width:200px;overflow:hidden;">
-	<iframe id="leftFrame" name="leftFrame" scrolling="no" frameborder="0" src="left.jsp"></iframe>
+	<iframe id="leftFrame" name="leftFrame" scrolling="no" frameborder="0" src="left.jsp?isTabs=<%=isTabs%>"></iframe>
 </div>
 <div region="center" data-options="border:false" style="overflow:hidden;">
+<%if(isTabs){%>
 	<div id="tt" class="easyui-tabs" data-options="fit:true,plain:false,tools:'#tab-tools'" style="overflow:hidden;">
 		<%--<div title="首页" style="overflow:hidden;" closable="false">
 			<div style="overflow:hidden;width:100%;height:100%;"><iframe id="rightFrame" name="rightFrame" scrolling="no" frameborder="0" src="../portlet.jsp"></iframe></div>
@@ -65,6 +67,9 @@ if(top.location != this.location){top.location = "<%=path %>/frame/index.jsp";}
 		<a class="easyui-linkbutton" title="关闭当前" data-options="plain:true,iconCls:'icon-closeone'" onclick="if(true){var t=$('#tt').tabs('getSelected');if(t.panel('options').closable){$('#tt').tabs('close',$('#tt').tabs('getTabIndex',t));}}return false;" href="#"></a>
 		<a class="easyui-linkbutton" title="关闭所有" data-options="plain:true,iconCls:'icon-closeall'" onclick="if(true){var v=$('#tt').tabs('tabs').length;while(v>0){var t=$('#tt').tabs('getTab',v-1);if(t.panel('options').closable){$('#tt').tabs('close',$('#tt').tabs('getTabIndex',t));}v--;}}return false;" href="#"></a>
 	</div>
+<%}else{%>
+	<iframe id="tt" name="tt" scrolling="no" frameborder="0" src="about:blank"></iframe>
+<%}%>
 </div>
 <div region="south" data-options="border:false" style="height:24px;overflow:hidden;"><div class="bottomframe">
 	<span class="copyRight">&copy;</span>&nbsp;2014-2018&nbsp;249725997@qq.com
@@ -76,7 +81,7 @@ if(top.location != this.location){top.location = "<%=path %>/frame/index.jsp";}
 
 <script language="javascript">
 if(top.location != this.location){top.location = "<%=path %>/frame/index.jsp";}
-function re(){$('#tt').tabs('resize');}
+function re(){<%if(isTabs){%>$('#tt').tabs('resize');<%}%>}
 function GoDorp(o){
 	var m=document.getElementById("menu");
 	if(m.style.display=="none"){

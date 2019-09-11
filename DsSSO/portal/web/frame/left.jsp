@@ -12,8 +12,8 @@ ISystem[] arr = AuthFactory.getSystemByUser(user.getAccount());
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui"/>
 <title></title>
-<link rel="stylesheet" type="text/css" href="${ctx}/frame/js/jskey/themes/menu/jskey.menu.css" />
-<script type="text/javascript" src="${ctx}/frame/js/jskey/jskey.menu.js?version=1"></script>
+<link rel="stylesheet" type="text/css" href="${ctx}/frame/js/jskey/themes/menu/jskey.menu.css?version=20190911" />
+<script type="text/javascript" src="${ctx}/frame/js/jskey/jskey.menu.js?version=20190911"></script>
 <script type="text/javascript" src="${ctx}/frame/js/jquery.js"></script>
 <script type="text/javascript">
 if(top.location == this.location){top.location = "${ctx}/index.jsp";}
@@ -95,6 +95,7 @@ function init(){menuload(sys[0]);}
 <body onselectstart="return false;" oncontextmenu="return true;">
 </body>
 <script type="text/javascript">
+$jskey.menu.isTabs = <%=String.valueOf(request.getParameter("isTabs")).equalsIgnoreCase("true") ? "true" : "false"%>;
 init();
 </script>
 </html>
