@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="dswork.common.dao.DsBaseDao">
+
+<resultMap id="resultUnit" type="dswork.common.model.IUnit">
+	<id property="id" column="ID" />
+	<result property="status" column="STATUS" />
+	<result property="name" column="NAME" />
+	<result property="appid" column="APPID" />
+	<result property="appsecret" column="APPSECRET" />
+	<result property="returnurl" column="RETURNURL" />
+	<result property="type" column="TYPE" />
+	<result property="createtime" column="CREATETIME" />
+	<result property="lasttime" column="LASTTIME" />
+	<result property="memo" column="MEMO" />
+</resultMap>
+<sql id="columnsUnit">ID, STATUS, NAME, APPID, APPSECRET, RETURNURL, TYPE, CREATETIME, LASTTIME, MEMO</sql>
+<select id="queryUnit" resultMap="resultUnit">
+	select <include refid="columnsUnit" /> from DS_BASE_UNIT
+	where STATUS=1
+</select>
+
+<resultMap id="resultBind" type="dswork.common.model.IBind">
+	<id property="id" column="ID" />
+	<result property="status" column="STATUS" />
+	<result property="name" column="NAME" />
+	<result property="appid" column="APPID" />
+	<result property="appsecret" column="APPSECRET" />
+	<result property="appkeyprivate" column="APPKEYPRIVATE" />
+	<result property="appkeypublic" column="APPKEYPUBLIC" />
+	<result property="appreturnurl" column="APPRETURNURL" />
+	<result property="apptype" column="APPTYPE" />
+	<result property="createtime" column="CREATETIME" />
+	<result property="lasttime" column="LASTTIME" />
+	<result property="memo" column="MEMO" />
+</resultMap>
+
+<sql id="columnsBind">ID, STATUS, NAME, APPID, APPSECRET, APPKEYPRIVATE, APPKEYPUBLIC, APPRETURNURL, APPTYPE, CREATETIME, LASTTIME, MEMO</sql>
+<select id="queryBind" resultMap="resultBind">
+	select <include refid="columnsBind" /> from DS_BASE_BIND
+	where STATUS=1
+</select>
+
+</mapper>

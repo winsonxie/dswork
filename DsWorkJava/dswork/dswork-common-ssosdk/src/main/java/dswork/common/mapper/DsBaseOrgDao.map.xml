@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="dswork.common.dao.DsBaseOrgDao">
+
+<sql id="columnsOrg">
+	o.ID as O_ID, o.PID as O_PID, o.NAME as O_NAME, o.DUTYSCOPE as O_DUTYSCOPE, o.MEMO as O_MEMO, o.STATUS as O_STATUS, o.SEQ as O_SEQ
+</sql>
+<resultMap id="resultOrg" type="dswork.common.model.IOrg">
+	<id property="id" column="O_ID" />
+	<result property="pid" column="O_PID" />
+	<result property="name" column="O_NAME" />
+	<result property="dutyscope" column="O_DUTYSCOPE" />
+	<result property="memo" column="O_MEMO" />
+	<result property="status" column="O_STATUS" />
+	<result property="seq" column="O_SEQ" />
+</resultMap>
+<select id="getOrgByOrgid" resultMap="resultOrg" parameterType="String">
+	select <include refid="columnsOrg" /> from DS_BASE_ORG o where o.ID=#{orgid}
+</select>
+<select id="queryOrgByOrgpid" resultMap="resultOrg">
+	select <include refid="columnsOrg" /> from DS_BASE_ORG o
+	where <if test="orgpid &gt; 0"> o.PID=#{orgpid} </if><if test="orgpid &lt;= 0"> o.PID is null </if>
+	order by o.STATUS,o.SEQ,o.ID
+</select>
+<select id="queryPostByUserId" resultMap="resultOrg" parameterType="String">
+	select <include refid="columnsOrg"/> from DS_BASE_ORG o
+	left join DS_BASE_USERORG uo on p.ID=uo.ORGID 
+	where uo.USERID=#{userid}
+</select>
+
+</mapper>

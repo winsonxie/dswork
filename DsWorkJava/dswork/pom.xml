@@ -11,6 +11,7 @@
 	<modules>
 		<module>dswork-analyzer</module>
 		<module>dswork-builder</module>
+		<module>dswork-common-ssosdk</module>
 		<module>dswork-core</module>
 		<module>dswork-db</module>
 		<module>dswork-flow</module>
@@ -96,6 +97,7 @@
 		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-jdbc    </artifactId><version>${project.version}</version></dependency>
 		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-spring  </artifactId><version>${project.version}</version></dependency>
 		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-sso     </artifactId><version>${project.version}</version></dependency>
+		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-sso-common</artifactId><version>${project.version}</version></dependency>
 		<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-web     </artifactId><version>${project.version}</version></dependency>
 		</dependencies>
 	</dependencyManagement>

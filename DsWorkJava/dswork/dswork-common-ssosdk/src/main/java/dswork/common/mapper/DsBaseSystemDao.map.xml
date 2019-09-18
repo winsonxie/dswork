@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="dswork.common.dao.DsBaseSystemDao">
+
+<sql id="columnsSystem">
+	s.ID as S_ID, s.NAME as S_NAME, s.ALIAS as S_ALIAS, s.PASSWORD as S_PASSWORD, s.MEMO as S_MEMO, s.DOMAINURL as S_DOMAINURL, s.ROOTURL as S_ROOTURL, s.MENUURL as S_MENUURL, s.STATUS as S_STATUS
+</sql>
+<resultMap id="resultSystem" type="dswork.common.model.ISystem">
+	<id property="id" column="S_ID" />
+	<result property="name" column="S_NAME" />
+	<result property="alias" column="S_ALIAS" />
+	<result property="password" column="S_PASSWORD" />
+	<result property="memo" column="S_MEMO" />
+	<result property="domainurl" column="S_DOMAINURL" />
+	<result property="rooturl" column="S_ROOTURL" />
+	<result property="menuurl" column="S_MENUURL" />
+	<result property="status" column="S_STATUS" />
+</resultMap>
+<select id="querySystem" resultMap="resultSystem">
+	select <include refid="columnsSystem" /> from DS_BASE_SYSTEM s where s.ID&gt;0
+</select>
+<select id="querySystemByAccount" resultMap="resultSystem" parameterType="String">
+	select <include refid="columnsSystem" /> from DS_BASE_SYSTEM s where s.STATUS=1 and s.ID&gt;0 and s.ID in (
+	  select distinct _r.SYSTEMID from DS_BASE_ROLE _r where _r.ID in (
+	    select distinct _or.ROLEID from DS_BASE_ORGROLE _or where _or.ORGID in (
+	      select distinct _uo.ORGID from DS_BASE_USERORG _uo where _uo.USERID in (
+	        select u.ID from DS_BASE_USER u where u.ACCOUNT=#{account}
+	      )
+	      union
+	      select u.ORGID from DS_BASE_USER u where u.ACCOUNT=#{account}
+	      union
+	      select u.ORGPID from DS_BASE_USER u where u.ACCOUNT=#{account}
+	    )
+	  )
+	)
+	order by s.SEQ
+</select>
+
+
+
+<sql id="columnsFunc">
+	f.ID as F_ID, f.PID as F_PID, f.SYSTEMID as F_SYSTEMID, f.NAME F_NAME, f.ALIAS as F_ALIAS, f.URI as F_URI, f.IMG as F_IMG, f.STATUS as F_STATUS, f.SEQ as F_SEQ, f.MEMO as F_MEMO, f.RESOURCES as F_RESOURCES
+</sql>
+<resultMap id="resultFunc" type="dswork.common.model.IFunc">
+	<id property="id" column="F_ID" />
+	<result property="pid" column="F_PID" />
+	<result property="systemid" column="F_SYSTEMID" />
+	<result property="name" column="F_NAME" />
+	<result property="alias" column="F_ALIAS" />
+	<result property="uri" column="F_URI" />
+	<result property="img" column="F_IMG" />
+	<result property="status" column="F_STATUS" />
+	<result property="seq" column="F_SEQ" />
+	<result property="memo" column="F_MEMO" />
+	<result property="resources" column="F_RESOURCES" />
+</resultMap>
+<select id="queryFuncBySystemid" resultMap="resultFunc" parameterType="String">
+	select <include refid="columnsFunc"/> from DS_BASE_FUNC f
+	where f.SYSTEMID=#{systemid}
+	order by f.SEQ asc
+</select>
+<select id="getFuncBySystemidAndAccount" resultMap="resultFunc">
+	select <include refid="columnsFunc"/> from DS_BASE_FUNC f
+	where f.SYSTEMID=#{systemid} and exists
+	(
+		select 'X' from DS_BASE_ROLEFUNC _rf
+		left join DS_BASE_ORGROLE _or on _or.ROLEID=_rf.ROLEID
+		where _rf.SYSTEMID=#{systemid} 
+		and _or.ORGID in(
+			select u.ORGPID  from DS_BASE_USER u where u.ACCOUNT=#{account} and u.ORGPID &gt; 0
+			union
+			select u.ORGID   from DS_BASE_USER u where u.ACCOUNT=#{account} and u.ORGID &gt; 0
+			union
+			select _ur.ORGID from DS_BASE_USERORG _ur where _ur.USERID in (select u.ID from DS_BASE_USER u where u.ACCOUNT=#{account})
+		)
+		and f.ID=_rf.FUNCID
+	)
+	order by f.SEQ asc
+</select>
+<select id="getFuncBySystemidAndOrgid" resultMap="resultFunc">
+	select <include refid="columnsFunc"/> from DS_BASE_FUNC f
+	where f.SYSTEMID=#{systemid} and exists
+	(
+		select 'X' from DS_BASE_ROLEFUNC _rf
+		left join DS_BASE_ORGROLE _or on _or.ROLEID=_rf.ROLEID
+		where _rf.SYSTEMID=#{systemid} and _or.ORGID=#{orgid}
+		and f.ID=_rf.FUNCID
+	)
+</select>
+
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="dswork.common.dao.DsBaseUserBindDao">
+
+<resultMap id="resultUserBind" type="dswork.common.model.IUserBind">
+	<id property="id" column="ID" />
+	<result property="bindid" column="BINDID" />
+	<result property="userid" column="USERID" />
+	<result property="openid" column="OPENID" />
+	<result property="unionid" column="UNIONID" />
+	<result property="name" column="NAME" />
+	<result property="sex" column="SEX" />
+	<result property="country" column="COUNTRY" />
+	<result property="province" column="PROVINCE" />
+	<result property="city" column="CITY" />
+	<result property="avatar" column="AVATAR" />
+	<result property="createtime" column="CREATETIME" />
+	<result property="lasttime" column="LASTTIME" />
+</resultMap>
+
+<sql id="columnsUserBind">
+	ID, BINDID, USERID, OPENID, UNIONID, NAME, SEX, COUNTRY, PROVINCE, CITY, AVATAR, CREATETIME, LASTTIME 
+</sql>
+<insert id="insertUserBind" parameterType="dswork.common.model.IUserBind">
+	insert into DS_BASE_USER_BIND
+	(<include refid="columnsUserBind" />)
+	values
+	(#{id},#{bindid},#{userid},#{openid},#{unionid},#{name},#{sex},#{country},#{province},#{city},#{avatar},#{createtime},#{lasttime})
+</insert>
+<update id="updateUserBind" parameterType="dswork.common.model.IUserBind">
+	update DS_BASE_USER_BIND set
+		BINDID=#{bindid},
+		USERID=#{userid},
+		OPENID=#{openid},
+		UNIONID=#{unionid},
+		NAME=#{name},
+		SEX=#{sex},
+		COUNTRY=#{country},
+		PROVINCE=#{province},
+		CITY=#{city},
+		AVATAR=#{avatar},
+		LASTTIME=#{lasttime}
+	where ID=#{id}
+</update>
+
+<sql id="dynamicWhere">
+	<where>
+		<if test="@Ognl@isNotEmpty(id)"> and ID=#{id} </if>
+		<if test="@Ognl@isNotEmpty(openid)"> and OPENID=#{openid} </if>
+		<if test="@Ognl@isNotEmpty(unionid)"> and UNIONID=#{unionid} </if>
+		<if test="@Ognl@isNotEmpty(bindid)"> and BINDID=#{bindid} </if>
+	</where>
+</sql>
+
+<select id="queryUserBind" resultMap="resultUserBind">
+	select <include refid="columnsUserBind" /> from DS_BASE_USER_BIND
+	<include refid="dynamicWhere" />
+</select>
+
+</mapper>

@@ -58,7 +58,7 @@
 		</property>
 		<property name="mapperLocations">
 			<list>
-				<value>classpath*:/dswork/common/mapper/DsCommonDaoCommon*.map.xml</value>
+				<value>classpath*:/dswork/common/mapper/**/*.map.xml</value>
 			</list>
 		</property>
 		<property name="dataSource" ref="dataSourceCommon"/>

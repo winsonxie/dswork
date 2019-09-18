@@ -3,6 +3,7 @@
         <wb-resource deploy-path="/" source-path="/web"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-analyzer/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-builder/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-common-ssosdk/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-config/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-core/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-db/src/main/java"/>
