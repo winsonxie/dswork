@@ -139,6 +139,10 @@ input.text.disabled:focus,input[type="text"].disabled:focus,input[type="password
 .info{color:#5bc0de!important;}
 .warn{color:#f0ad4e!important;}
 
+.blue{color:blue;}
+.green{color:green;}
+.red{color:red;}
+
 span.msg{color:#0000ff;}
 span.tips{color:#0000ff;}
 span.imp{padding-left:3px;color:#ff0000;font-weight:bold;}
