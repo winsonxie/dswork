@@ -86,6 +86,7 @@
 		</property>
 		<property name="mapperLocations">
 			<list>
+				<value>classpath*:/dswork/config/mybatis/${jdbc.common.dialect.name:mysql}.map.xml</value>
 				<value>classpath*:/dswork/common/mapper/**/*.map.xml</value>
 			</list>
 		</property>
