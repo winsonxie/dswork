@@ -156,15 +156,15 @@ input.text.disabled:focus,input[type="text"].disabled:focus,input[type="password
        -moz-box-shadow:inset 0 2px 2px #e8e7e7;
             box-shadow:inset 0 2px 2px #e8e7e7;}
 
-.success{color:#5cb85c!important;}
-.fail{color:#d9534f!important;}
-.none{color:#999999!important;}
-.info{color:#5bc0de!important;}
-.warn{color:#f0ad4e!important;}
+.success{color:#5cb85c!important;}.bg-success{background-color:#5cb85c!important;}
+.fail   {color:#d9534f!important;}.bg-fail   {background-color:#d9534f!important;}
+.none   {color:#999999!important;}.bg-none   {background-color:#999999!important;}
+.info   {color:#5bc0de!important;}.bg-info   {background-color:#5bc0de!important;}
+.warn   {color:#f0ad4e!important;}.bg-warn   {background-color:#f0ad4e!important;}
 
-.blue{color:blue;}
-.green{color:green;}
-.red{color:red;}
+.blue {color:blue;} .bg-blue {background-color:blue;}
+.green{color:green;}.bg-green{background-color:green;}
+.red  {color:red;}  .bg-red  {background-color:red;}
 
 span.msg{color:#0000ff;}
 span.tips{color:#0000ff;}
