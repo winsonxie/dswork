@@ -535,7 +535,7 @@ $jskey.Calendar.prototype = {
 	},
 	//取得HTML控件绝对位置
 	$getPoint:function(e){
-		var x = e.offsetLeft, y = e.offsetTop;
+		var x = e.offsetLeft - e.scrollLeft, y = e.offsetTop - e.scrollTop;
 		while(e = e.offsetParent){// 递归加上父窗口的
 			x += e.offsetLeft - e.scrollLeft;
 			y += e.offsetTop - e.scrollTop;
