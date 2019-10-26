@@ -5,6 +5,36 @@
 	        http://www.springframework.org/schema/beans 
 	        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
 	   default-autowire="byName" default-lazy-init="false">
+	<bean id="dataSource" class="${dswork.datasource:dswork.config.BasicDataSource}" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName:dswork.jdbc.DriverSpy}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="${jdbc.minEvictableIdleTimeMillis:900000}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis:900000}" />
+		
+		<property name="initialSize" value="${jdbc.initialSize:1}" />
+		<property name="minIdle" value="${jdbc.minIdle:1}" />
+		<property name="maxIdle" value="${jdbc.maxIdle:64}" />
+		<property name="maxActive" value="${jdbc.maxActive:64}" />
+		<property name="maxWait" value="${jdbc.maxWait:60000}" />
+		
+		<property name="validationQuery" value="${jdbc.validationQuery:select 'x'}" />
+		<property name="testWhileIdle" value="${jdbc.testWhileIdle:true}" />
+		<property name="testOnBorrow" value="${jdbc.testOnBorrow:true}" />
+		<property name="testOnReturn" value="${jdbc.testOnReturn:false}" />
+		
+		<property name="poolPreparedStatements" value="${jdbc.poolPreparedStatements:false}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize" value="${jdbc.maxPoolPreparedStatementPerConnectionSize:-1}" />
+		
+		<property name="filters" value="${jdbc.filters:}" />
+	</bean>
+	
+	
+	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="plugins">
 			<list>
@@ -47,5 +77,40 @@
 	</bean>
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	
+	
+	
+	<bean id="transactionManager" class="dswork.core.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="get*">PROPAGATION_NEVER,readOnly</prop>
+				<prop key="query*">PROPAGATION_NEVER,readOnly</prop>
+				<prop key="*">PROPAGATION_NEVER,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	
+	
+	
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="proxyTargetClass" value="true" />
+		<property name="beanNames">
+			<list>
+				<value>*Service</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>transactionInterceptor</value>
+			</list>
+		</property>
 	</bean>
 </beans>
