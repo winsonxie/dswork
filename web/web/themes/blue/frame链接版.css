@@ -26,11 +26,48 @@ img{border:0;vertical-align:middle;-ms-interpolation-mode:bicubic;}
 label{cursor:pointer;}
 
 .menuTool{white-space:nowrap;}
-.menuTool a{text-decoration:none;color:#fff;cursor:pointer;margin:5px;border-radius:2px;padding:0.2em 1em 0.3em 1em;line-height:1.5em;display:inline-block;vertical-align:middle;background:#1188EE;}
-.menuTool a:hover{filter:alpha(opacity:80);opacity:0.8;box-shadow:0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);}
+.menuTool a{padding:0 4px 0 24px;line-height:24px;}
 .menuTool .vline {background-color:silver;padding-left:1px;padding-right:0px;margin:0px 2px 0px 2px;}
 
-.menuTool .back   {background:#bd362f;}
+.menuTool a.excel{background:url(img/file/excel.png) no-repeat 4px 0px;}
+.menuTool a.pdf  {background:url(img/file/pdf.png)   no-repeat 4px 0px;}
+.menuTool a.word {background:url(img/file/word.png)  no-repeat 4px 0px;}
+
+.menuTool a.insert  {background:url(img/menu.png) no-repeat 4px  -12px;}
+.menuTool a.delete  {background:url(img/menu.png) no-repeat 4px  -42px;}
+.menuTool a.update  {background:url(img/menu.png) no-repeat 4px  -72px;}
+.menuTool a.select  {background:url(img/menu.png) no-repeat 4px -102px;}
+.menuTool a.check   {background:url(img/menu.png) no-repeat 4px -132px;}
+.menuTool a.clock   {background:url(img/menu.png) no-repeat 4px -162px;}
+.menuTool a.copy    {background:url(img/menu.png) no-repeat 4px -192px;}
+.menuTool a.edit    {background:url(img/menu.png) no-repeat 4px -222px;}
+.menuTool a.go      {background:url(img/menu.png) no-repeat 4px -252px;}
+.menuTool a.graph   {background:url(img/menu.png) no-repeat 4px -282px;}
+.menuTool a.key     {background:url(img/menu.png) no-repeat 4px -312px;}
+.menuTool a.lock    {background:url(img/menu.png) no-repeat 4px -342px;}
+.menuTool a.look    {background:url(img/menu.png) no-repeat 4px -372px;}
+.menuTool a.move    {background:url(img/menu.png) no-repeat 4px -402px;}
+.menuTool a.pause   {background:url(img/menu.png) no-repeat 4px -432px;}
+.menuTool a.pic     {background:url(img/menu.png) no-repeat 4px -462px;}
+.menuTool a.recheck {background:url(img/menu.png) no-repeat 4px -492px;}
+.menuTool a.refresh {background:url(img/menu.png) no-repeat 4px -522px;}
+.menuTool a.sort    {background:url(img/menu.png) no-repeat 4px -552px;}
+.menuTool a.start   {background:url(img/menu.png) no-repeat 4px -582px;}
+.menuTool a.tool    {background:url(img/menu.png) no-repeat 4px -612px;}
+.menuTool a.uncheck {background:url(img/menu.png) no-repeat 4px -642px;}
+.menuTool a.user    {background:url(img/menu.png) no-repeat 4px -672px;}
+.menuTool a.null    {background:url(img/menu.png) no-repeat 4px -702px;}
+.menuTool a.download{background:url(img/menu.png) no-repeat 4px -732px;}
+.menuTool a.upload  {background:url(img/menu.png) no-repeat 4px -762px;}
+.menuTool a.bar     {background:url(img/menu.png) no-repeat 4px -792px;}
+.menuTool a.pie     {background:url(img/menu.png) no-repeat 4px -822px;}
+
+.menuTool .back   {background:url(img/menu/back.png)    no-repeat 4px 0px;}
+.menuTool .close  {background:url(img/menu/close.png)   no-repeat 4px 0px;}
+.menuTool .commit {background:url(img/menu/commit.png)  no-repeat 4px 0px;}
+.menuTool .save   {background:url(img/menu/save.png)    no-repeat 4px 0px;}
+.menuTool .submit {background:url(img/menu/submit.png)  no-repeat 4px 0px;}
+.menuTool .printer{background:url(img/menu/printer.png) no-repeat 4px 0px;}
 
 .menuTool-back    {background:url(img/menu/back.png)    no-repeat 0px 0px!important;padding:0 0 0 18px;}
 .menuTool-close   {background:url(img/menu/close.png)   no-repeat 0px 0px!important;padding:0 0 0 18px;}

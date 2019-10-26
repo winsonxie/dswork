@@ -26,11 +26,48 @@ img{border:0;vertical-align:middle;-ms-interpolation-mode:bicubic;}
 label{cursor:pointer;}
 
 .menuTool{white-space:nowrap;}
-.menuTool a{text-decoration:none;color:#fff;cursor:pointer;margin:5px;border-radius:2px;padding:0.2em 1em 0.3em 1em;line-height:1.5em;display:inline-block;vertical-align:middle;background:#1188EE;}
-.menuTool a:hover{filter:alpha(opacity:80);opacity:0.8;box-shadow:0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);}
+.menuTool a{color:#fff;cursor:pointer;margin:5px;border-radius:2px;padding:0.2em 1em 0.3em 30px;line-height:1.5em;display:inline-block;vertical-align:middle;}
 .menuTool .vline {background-color:silver;padding-left:1px;padding-right:0px;margin:0px 2px 0px 2px;}
 
-.menuTool .back   {background:#bd362f;}
+.menuTool a.excel   {background:url(img/file/excel.png) no-repeat 8px 4px #1188EE;}
+.menuTool a.pdf     {background:url(img/file/pdf.png)   no-repeat 8px 4px #1188EE;}
+.menuTool a.word    {background:url(img/file/word.png)  no-repeat 8px 4px #1188EE;}
+
+.menuTool a.insert  {background:url(img/menu.png) no-repeat 12px  -8px #1188EE;}
+.menuTool a.delete  {background:url(img/menu.png) no-repeat 12px  -38px #1188EE;}
+.menuTool a.update  {background:url(img/menu.png) no-repeat 12px  -68px #1188EE;}
+.menuTool a.select  {background:url(img/menu.png) no-repeat 12px  -98px #1188EE;}
+.menuTool a.check   {background:url(img/menu.png) no-repeat 12px -128px #1188EE;}
+.menuTool a.clock   {background:url(img/menu.png) no-repeat 12px -158px #1188EE;}
+.menuTool a.copy    {background:url(img/menu.png) no-repeat 12px -188px #1188EE;}
+.menuTool a.edit    {background:url(img/menu.png) no-repeat 12px -218px #1188EE;}
+.menuTool a.go      {background:url(img/menu.png) no-repeat 12px -248px #1188EE;}
+.menuTool a.graph   {background:url(img/menu.png) no-repeat 12px -278px #1188EE;}
+.menuTool a.key     {background:url(img/menu.png) no-repeat 12px -308px #1188EE;}
+.menuTool a.lock    {background:url(img/menu.png) no-repeat 12px -338px #1188EE;}
+.menuTool a.look    {background:url(img/menu.png) no-repeat 12px -368px #1188EE;}
+.menuTool a.move    {background:url(img/menu.png) no-repeat 12px -398px #1188EE;}
+.menuTool a.pause   {background:url(img/menu.png) no-repeat 12px -428px #1188EE;}
+.menuTool a.pic     {background:url(img/menu.png) no-repeat 12px -458px #1188EE;}
+.menuTool a.recheck {background:url(img/menu.png) no-repeat 12px -488px #1188EE;}
+.menuTool a.refresh {background:url(img/menu.png) no-repeat 12px -518px #1188EE;}
+.menuTool a.sort    {background:url(img/menu.png) no-repeat 12px -548px #1188EE;}
+.menuTool a.start   {background:url(img/menu.png) no-repeat 12px -578px #1188EE;}
+.menuTool a.tool    {background:url(img/menu.png) no-repeat 12px -608px #1188EE;}
+.menuTool a.uncheck {background:url(img/menu.png) no-repeat 12px -638px #1188EE;}
+.menuTool a.user    {background:url(img/menu.png) no-repeat 12px -668px #1188EE;}
+.menuTool a.null    {background:url(img/menu.png) no-repeat 12px -698px #1188EE;}
+.menuTool a.download{background:url(img/menu.png) no-repeat 12px -728px #1188EE;}
+.menuTool a.upload  {background:url(img/menu.png) no-repeat 12px -758px #1188EE;}
+.menuTool a.bar     {background:url(img/menu.png) no-repeat 12px -788px #1188EE;}
+.menuTool a.pie     {background:url(img/menu.png) no-repeat 12px -818px #1188EE;}
+
+.menuTool .back   {background:url(img/menu/back.png)    no-repeat 12px 4px #1188EE;}
+.menuTool .close  {background:url(img/menu/close.png)   no-repeat 12px 4px #1188EE;}
+.menuTool .commit {background:url(img/menu/commit.png)  no-repeat 12px 4px #1188EE;}
+.menuTool .save   {background:url(img/menu/save.png)    no-repeat 12px 4px #1188EE;}
+.menuTool .submit {background:url(img/menu/submit.png)  no-repeat 12px 4px #1188EE;}
+.menuTool .printer{background:url(img/menu/printer.png) no-repeat 12px 4px #1188EE;}
 
 .menuTool-back    {background:url(img/menu/back.png)    no-repeat 0px 0px!important;padding:0 0 0 18px;}
 .menuTool-close   {background:url(img/menu/close.png)   no-repeat 0px 0px!important;padding:0 0 0 18px;}
