@@ -26,7 +26,7 @@
 <update id="update" parameterType="${namespace}.model.${model}">
 	update ${table.nameUpperCase} set
 <#list table.columnNokey as c>
-		${c.nameUpperCase}=${'#'}{${c.nameLowerCamel}}
+		${c.nameUpperCase}=${'#'}{${c.nameLowerCamel}},
 </#list>
 		LASTTIME=LASTTIME+1
 	where <#list table.columnKey as c>${c.nameUpperCase}=${'#'}{${c.nameLowerCamel}}<#if c_has_next> and </#if></#list> and LASTTIME=${'#'}{lasttime}
