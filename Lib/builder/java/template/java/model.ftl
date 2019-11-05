@@ -26,14 +26,16 @@ public class ${model}
 	}
 
 	<#if c.type == 'date'>
-	public void set${c.nameUpperCamel}(java.util.Date ${c.nameLowerCamel})
+	public ${model} set${c.nameUpperCamel}(java.util.Date ${c.nameLowerCamel})
 	{
 		this.${c.nameLowerCamel} = ${c.nameLowerCamel};
+		return this;
 	}
 	<#else>
-	public void set${c.nameUpperCamel}(${c.type} ${c.nameLowerCamel})
+	public ${model} set${c.nameUpperCamel}(${c.type} ${c.nameLowerCamel})
 	{
 		this.${c.nameLowerCamel} = ${c.nameLowerCamel};
+		return this;
 	}
 	</#if>
 </#list>
