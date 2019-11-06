@@ -1,4 +1,4 @@
-﻿if(typeof ($jskey) != "object"){$jskey = {};}
+﻿﻿if(typeof ($jskey) != "object"){$jskey = {};}
 
 
 ;!function(){"use strict";
@@ -80,7 +80,7 @@ smoothMenu:function(cOpen, cClose, stat){
 //判断点了对应的菜单块
 clickBar:function(c){
 	if(c >= 0){
-		try{this.click(c, this.list[c].id);this.load(c, this.list[c].id);}catch(e){}
+		try{this.load(c, this.list[c].id);}catch(e){}
 		var isClose = this.$("JskeyMC_" + c).style.display == "";
 		if(isClose){
 			this.$("JskeyMT_" + c).className = "menu menu-close";
@@ -105,7 +105,13 @@ showNodeHTML:function(index, html){
 	try{this.list[index].html = html;this.$("JskeyMCD_" + index).innerHTML = html;}catch(e){};
 },
 // 单击
-click:function(index, id){
+click:function(itemid){
+},// 单击
+before:function(id, url, pname, name){
+	return {"itemid":id, "url":url, "parentname":pname, "nodename":name};
+},
+beforeClick:function(p){
+	return p;
 },
 //鼠标移过
 imgMouse:function(obj, v, img, imgOpen, over){
@@ -139,12 +145,16 @@ getCellHTML:function(obj, pnodeName, icoString){
 	var items = obj.items;
 	if(items.length == 0){
 		var url = obj.url;
+		if(url == null || url == "" || url == "null"){url = "";}
 		if(obj._root != "" && url.indexOf("^") != 0 && url.indexOf("http") != 0 && url.indexOf(obj._root) != 0){
 			url = obj._root + url;
 		}
+		if(url.indexOf("^") == 0){
+			url = url.substring(1, url.length);
+		}
 		var _img = ((obj.img == null || obj.img == "")?(this.path + "default.gif"):(this.path + obj.img));// 父节点的图标是否由json来决定
 		var _imgOpen = ((obj.imgOpen == null || obj.imgOpen == "")?(this.path + "default.gif"):(this.path + obj.imgOpen));
-		html += "<div id='" + obj.id + "' class='treenode treenodeout' onmouseover='this.className = \"treenode treenodeover\"' onmouseout='this.className = \"treenode treenodeout\"' ondblclick=\"$jskey.menu.reChangeURL('" + pnodeName + "','" + obj.name + "','" + url + "')\" onclick=\"$jskey.menu.changeURL('" + pnodeName + "','" + obj.name + "','" + url + "', this)\">";
+		html += "<div id='JskeyItem" + obj.id + "' class='treenode treenodeout' onmouseover='this.className = \"treenode treenodeover\"' onmouseout='this.className = \"treenode treenodeout\"' ondblclick=\"$jskey.menu.reChangeURL($jskey.menu.before('" + obj.id + "','" + url + "','" + pnodeName + "','" + obj.name + "'))\" onclick=\"$jskey.menu.changeURL($jskey.menu.before('" + obj.id + "','" + url + "','" + pnodeName + "','" + obj.name + "'))\">";
 		if(len > 0){
 			for(var c = 0;c < len - 1;c++){
 				html += "<i>" + (icoString.charAt(c)=='0' ? i_I : i_N) + "</i>";
@@ -161,7 +171,7 @@ getCellHTML:function(obj, pnodeName, icoString){
 	else{
 		var _img = ((obj.img == null || obj.img == "")?(this.imgPath + "close.gif"):(this.path + obj.img));// 父节点的图标是否由json来决定
 		var _imgOpen = ((obj.imgOpen == null || obj.imgOpen == "")?(this.imgPath + "open.gif"):(this.path + obj.imgOpen));
-		html += "<div id='" + obj.id + "' class='treenode treenodeout' onmouseover='this.className = \"treenode treenodeover\"' onmouseout='this.className = \"treenode treedivout\"' onclick='$jskey.menu.expandNode(\"JskeyI"+v+"\", \"DIV"+v+"\", \"" + _img + "\", \"" + _imgOpen + "\");'>";
+		html += "<div id='JskeyItem" + obj.id + "' class='treenode treenodeout' onmouseover='this.className = \"treenode treenodeover\"' onmouseout='this.className = \"treenode treedivout\"' onclick='$jskey.menu.expandNode(\"JskeyI"+v+"\", \"DIV"+v+"\", \"" + _img + "\", \"" + _imgOpen + "\");'>";
 		for(var i = 0;i < len - 1;i++){
 			html += "<i>" + (icoString.charAt(i)=='0' ? i_I : i_N) + "</i>";
 		}
@@ -266,69 +276,37 @@ $jskey.menu.show = function(items, _root, _root2){
 	$jskey.menu.create();
 };
 //改变URL，可以覆盖此方法，用于自定义不同的方式
-$jskey.menu.changeURL = function(parentname, nodename, url, elementObject){
-	if(url == null || url == "" || url == "null"){url = "";}
-	if(url.indexOf("^") == 0){
-		url = url.substring(1, url.length);
-	}
+$jskey.menu.changeURL = function(p){
+	p = $jskey.menu.beforeClick(p);
+	var url = p.url;
 	if(url != ""){try{
-		if(!$jskey.menu.isTabs){
-			try{
-				$(".treenodeselected").each(function(){
-					$(this).removeClass("treenodeselected");
-					$(this).isselected = false;
-				});
-				if(elementObject){
-					var x = $(elementObject);
-					x.attr("class", "treenode treenodeselected");
-					x.isselected = true;
-					if(!x.isclicked){
-						x.isclicked = true;
-						x.get(0).removeAttribute("onmouseover");
-						x.get(0).removeAttribute("onmouseout");
-						x.on("mouseover"), function(){
-							var z = $(this);
-							z.attr("class", "treenode treenodeover" + (z.isselected?" treenodeselected" : ""));
-						};
-						x.on("onmouseout"), function(){
-							var z = $(this);
-							z.attr("class", "treenode treenodeout" + (z.isselected?" treenodeselected" : ""));
-						};
-					}
-				}
-				parent.$("#tt").attr("src", url);
-			}catch(ee){}
-			return;
-		}
-		var s = nodename;//parentname + '-'+nodename;
-		if(parent.$('#tt').tabs('exists', s)){
-			parent.$('#tt').tabs('select', s);
+		if($jskey.menu.isTabs){
+			var s = p.nodename;
+			if(parent.$('#tt').tabs('exists', s)){
+				parent.$('#tt').tabs('select', s);
+			}
+			else{
+				parent.$('#tt').tabs('add',{});// 增加空白tab
+				var tab = parent.$('#tt').tabs('getSelected');// 为了处理新增tab高度不适应bug
+				parent.$('#tt').tabs('update',{tab:tab, options:{title:s,closable:true,selected:true,
+					content:'<div style="overflow:hidden;width:100%;height:100%;padding:0px;margin:0px;"><iframe scrolling="yes" frameborder="0" src="' + url + '"></iframe></div>'
+				}});
+			}
 		}
 		else{
-			parent.$('#tt').tabs('add',{});// 增加空白tab
-			var tab = parent.$('#tt').tabs('getSelected');// 为了处理新增tab高度不适应bug
-			parent.$('#tt').tabs('update',{
-				tab:tab,
-				options:{
-					title:s,
-					content:'<div style="overflow:hidden;width:100%;height:100%;padding:0px;margin:0px;"><iframe scrolling="yes" frameborder="0" src="' + url + '"></iframe></div>',
-					closable:true,
-					selected:true
-				}
-			});
+			parent.$("#tt").attr("src", url);
 		}
 	}catch(e){}}
+	$jskey.menu.click(p.itemid);
 };
-$jskey.menu.reChangeURL = function(parentname, nodename, url){
+$jskey.menu.reChangeURL = function(p){
+	p = $jskey.menu.beforeClick(p);
 	if(!$jskey.menu.isTabs){
 		return;
 	}
-	if(url == null || url == "" || url == "null"){url = "";}
-	if(url.indexOf("^") == 0){
-		url = url.substring(1, url.length);
-	}
+	var url = p.url;
 	if(url != ""){try{
-		var s = nodename;//parentname + '-'+nodename;
+		var s = p.nodename;
 		var tab = null;
 		if(parent.$('#tt').tabs('exists', s)){
 			parent.$('#tt').tabs('select', s);
@@ -338,18 +316,46 @@ $jskey.menu.reChangeURL = function(parentname, nodename, url){
 			parent.$('#tt').tabs('add',{});// 增加空白tab
 			tab = parent.$('#tt').tabs('getSelected');
 		}
-		parent.$('#tt').tabs('update',{
-			tab:tab,
-			options:{
-				title:s,
-				content:'<div style="overflow:hidden;width:100%;height:100%;padding:0px;margin:0px;"><iframe scrolling="yes" frameborder="0" src="' + url + '"></iframe></div>',
-				closable:true,
-				selected:true
-			}
-		});
+		parent.$('#tt').tabs('update',{tab:tab, options:{title:s,closable:true,selected:true,
+			content:'<div style="overflow:hidden;width:100%;height:100%;padding:0px;margin:0px;"><iframe scrolling="yes" frameborder="0" src="' + url + '"></iframe></div>'
+		}});
 	}catch(e){}}
+	$jskey.menu.click(p.itemid);
 };
 
 
 
 }();
+
+
+
+$jskey.menu.click = function(itemid){
+	if(!$jskey.menu.isTabs){
+		try{
+			$(".treenodeselected").each(function(){
+				$(this).removeClass("treenodeselected");
+				$(this).isselected = false;
+			});
+			var x = $("JskeyItem" + itemid);
+			if(x.length > 0){
+				x.attr("class", "treenode treenodeselected");
+				x.isselected = true;
+				if(!x.isclicked){
+					x.isclicked = true;
+					x.get(0).removeAttribute("onmouseover");
+					x.get(0).removeAttribute("onmouseout");
+					x.on("mouseover"), function(){
+						var z = $(this);
+						z.attr("class", "treenode treenodeover" + (z.isselected?" treenodeselected" : ""));
+					};
+					x.on("onmouseout"), function(){
+						var z = $(this);
+						z.attr("class", "treenode treenodeout" + (z.isselected?" treenodeselected" : ""));
+					};
+				}
+			}
+			parent.$("#tt").attr("src", url);
+		}catch(ee){}
+		return;
+	}
+};
