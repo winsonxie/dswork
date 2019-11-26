@@ -6,9 +6,9 @@
 <mapper namespace="dswork.common.dao.DsBaseLoginDao">
 <insert id="insertLoginLog">
 	insert into DS_BASE_LOGIN
-	(ID, LOGINTIME, LOGOUTTIME, TICKET, IP, ACCOUNT, NAME, STATUS)
+	(ID, LOGINTIME, LOGOUTTIME, APPID, TICKET, IP, BM, NAME, STATUS)
 	values
-	(#{id}, #{logintime}, #{logouttime}, #{ticket}, #{ip}, #{account}, #{name}, #{status})
+	(#{id}, #{logintime}, #{logouttime}, #{appid}, #{ticket}, #{ip}, #{bm}, #{name}, #{status})
 </insert>
 <update id="updateLoginLog">
 	update DS_BASE_LOGIN set LOGOUTTIME=#{logouttime}, TIMEOUTTIME=#{timeouttime}, PWDTIME=#{pwdtime} where TICKET=#{ticket}

@@ -30,6 +30,8 @@ public class SsoDao extends MyBatisDao
 	private DsBaseSystemDao systemDao;
 	@Autowired
 	private DsBaseOrgDao orgDao;
+	@Autowired
+	private DsBaseLoginDao logDao;
 
 	@Override
 	protected Class<SsoDao> getEntityClass()
@@ -69,6 +71,11 @@ public class SsoDao extends MyBatisDao
 	public int updateUser(IUser user)
 	{
 		return userDao.updateUser(user);
+	}
+
+	public int updateUserData(IUser user)
+	{
+		return userDao.updateUserData(user);
 	}
 
 	public int updateUserPassword(long userid, String password)
@@ -132,9 +139,9 @@ public class SsoDao extends MyBatisDao
 		return userBind;
 	}
 
-	public int updateUserid(String oldBm, String newBm)
+	public int updateUserid(IUser user, String oldBm, String newBm)
 	{
-		return userDao.updateUserid(oldBm, newBm);
+		return userDao.updateUserid(user, oldBm, newBm);
 	}
 
 	public int saveUser(IUser user, String reg_type)
@@ -292,5 +299,15 @@ public class SsoDao extends MyBatisDao
 		{
 		}
 		return null;
+	}
+
+	public void saveLogLogin(String appid, String ticket, String ip, String bm, String name, boolean isSuccess)
+	{
+		logDao.saveLogLogin(appid, ticket, ip, bm, name, isSuccess);
+	}
+
+	public void saveLogLogout(String ticket, boolean isTimeout, boolean isUpdatePassword)
+	{
+		logDao.saveLogLogout(ticket, isTimeout, isUpdatePassword);
 	}
 }

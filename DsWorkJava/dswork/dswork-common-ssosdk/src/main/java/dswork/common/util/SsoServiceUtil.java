@@ -52,6 +52,11 @@ public class SsoServiceUtil
 		return service.updateUser(user);
 	}
 
+	public int updateUserData(IUser user)
+	{
+		return service.updateUserData(user);
+	}
+
 	public int updateUserPassword(long userid, String password)
 	{
 		return service.updateUserPassword(userid, password);
@@ -62,9 +67,9 @@ public class SsoServiceUtil
 		return service.saveOrUpdateUserBind(userBind, isCreateUser, userType);
 	}
 
-	public int updateUserid(String oldBm, String newBm)
+	public int updateUserid(IUser user, String oldBm, String newBm)
 	{
-		return service.updateUserid(oldBm, newBm);
+		return service.updateUserid(user, oldBm, newBm);
 	}
 
 	public int saveUser(IUser user, String reg_type)
@@ -144,5 +149,15 @@ public class SsoServiceUtil
 	public IOrg[] queryOrgByOrgPid(String orgpid)
 	{
 		return service.queryOrgByOrgPid(orgpid);
+	}
+
+	public void saveLogLogin(String appid, String ticket, String ip, String bm, String name, boolean isSuccess)
+	{
+		service.saveLogLogin(appid, ticket, ip, bm, name, isSuccess);
+	}
+
+	public void saveLogLogout(String ticket, boolean isTimeout, boolean isUpdatePassword)
+	{
+		service.saveLogLogout(ticket, isTimeout, isUpdatePassword);
 	}
 }

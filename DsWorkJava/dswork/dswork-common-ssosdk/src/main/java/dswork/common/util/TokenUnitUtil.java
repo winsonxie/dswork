@@ -14,7 +14,7 @@ public class TokenUnitUtil
 	private static ConcurrentMap<String, String> unitTokenTempMap = new ConcurrentHashMap<String, String>();
 	// 3600000小时-60000分钟-1000秒
 	public static final int token_timeout = 12 * 3600000;
-	public static final int token_timeout_seond = token_timeout/1000;
+	public static final int token_timeout_second = token_timeout/1000;
 	private static final String secret = "TokenUnitUtil";
 	
 	/**
@@ -28,7 +28,7 @@ public class TokenUnitUtil
 	{
 		long time = System.currentTimeMillis() + token_timeout;
 		String access_token = dswork.core.util.EncryptUtil.encryptDes(time + "", secret);
-		ZAuthtoken token = new ZAuthtoken(access_token, token_timeout_seond, "", "");
+		ZAuthtoken token = new ZAuthtoken(access_token, token_timeout_second, "", "");
 		if(ResponseUtil.USE_REDIS)
 		{
 			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
@@ -52,7 +52,7 @@ public class TokenUnitUtil
 				}
 			}
 			db.set(ukey1, access_token);
-			db.expire(ukey1, token_timeout_seond);
+			db.expire(ukey1, token_timeout_second);
 			db.close();
 		}
 		else
@@ -95,7 +95,7 @@ public class TokenUnitUtil
 		{
 			if(ResponseUtil.USE_REDIS)
 			{
-				redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
+				redis.clients.jedis.Jedis db = RedisUtil.db.getReadJedis();
 				String ukey1 = "u1" + appid;
 				String ukey2 = "u2" + appid;
 				if(access_token.equals(db.get(ukey1)))

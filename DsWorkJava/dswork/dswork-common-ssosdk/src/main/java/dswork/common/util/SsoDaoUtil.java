@@ -62,6 +62,12 @@ public class SsoDaoUtil
 		return dao.updateUser(user);
 	}
 
+	public int updateUserData(IUser user)
+	{
+		init();
+		return dao.updateUserData(user);
+	}
+
 	public int updateUserPassword(long userid, String password)
 	{
 		init();
@@ -74,10 +80,10 @@ public class SsoDaoUtil
 		return dao.saveOrUpdateUserBind(userBind, isCreateUser, userType);
 	}
 
-	public int updateUserid(String oldBm, String newBm)
+	public int updateUserid(IUser user, String oldBm, String newBm)
 	{
 		init();
-		return dao.updateUserid(oldBm, newBm);
+		return dao.updateUserid(user, oldBm, newBm);
 	}
 
 	public int saveUser(IUser user, String reg_type)
@@ -173,5 +179,17 @@ public class SsoDaoUtil
 	{
 		init();
 		return dao.queryOrgByOrgPid(orgpid);
+	}
+
+	public void saveLogLogin(String appid, String ticket, String ip, String bm, String name, boolean isSuccess)
+	{
+		init();
+		dao.saveLogLogin(appid, ticket, ip, bm, name, isSuccess);
+	}
+
+	public void saveLogLogout(String ticket, boolean isTimeout, boolean isUpdatePassword)
+	{
+		init();
+		dao.saveLogLogout(ticket, isTimeout, isUpdatePassword);
 	}
 }

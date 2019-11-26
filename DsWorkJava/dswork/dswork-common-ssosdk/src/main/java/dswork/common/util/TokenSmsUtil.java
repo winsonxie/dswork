@@ -11,7 +11,7 @@ public class TokenSmsUtil
 	private static ConcurrentMap<String, String> smsMap = new ConcurrentHashMap<String, String>();
 	// 1000(1秒)|60000(1分钟)|3600000(1小时)|86400000(1天)
 	public static final int sms_timeout = 20 * 60000;
-	public static final int sms_timeout_seond = 20 * 60;
+	public static final int sms_timeout_second = 20 * 60;
 
 	/**
 	 * 存入值
@@ -36,7 +36,7 @@ public class TokenSmsUtil
 			String mkey = "u0" + key;
 			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
 			db.set(mkey, code);
-			db.expire(mkey, sms_timeout_seond);
+			db.expire(mkey, sms_timeout_second);
 			db.close();
 		}
 		else

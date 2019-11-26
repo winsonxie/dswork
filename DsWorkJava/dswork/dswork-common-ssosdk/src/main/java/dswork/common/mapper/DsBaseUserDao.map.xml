@@ -11,6 +11,9 @@
 <update id="updateUserBm" parameterType="dswork.common.model.IUserBm">
 	update DS_BASE_USER_BM set USERID=<if test="userid==0">null</if><if test="0!=userid">#{userid}</if> where BM=#{bm}
 </update>
+<update id="updateUserMobile" parameterType="dswork.common.model.IUser">
+	update DS_BASE_USER set MOBILE=#{mobile} where ID=#{id}
+</update>
 <resultMap id="resultUserBm" type="dswork.common.model.IUserBm">
 	<id property="bm" column="BM" />
 	<result property="userid" column="USERID" />
@@ -42,6 +45,9 @@
 	<if test="@Ognl@isNotEmpty(phone)"> PHONE=#{phone}, </if>
 	LASTTIME=LASTTIME+1 where ID=#{id}
 </update>
+<update id="updateUserData" parameterType="dswork.common.model.IUser">
+	update DS_BASE_USER set DATA=#{data}, LASTTIME=LASTTIME+1 where ID=#{id}
+</update>
 <resultMap id="resultUser" type="dswork.common.model.IUser">
 	<id property="id" column="ID" />
 	<result property="status" column="STATUS" />
@@ -64,12 +70,13 @@
 	<result property="exname" column="EXNAME" />
 	<result property="createtime" column="CREATETIME" />
 	<result property="lasttime" column="LASTTIME" />
+	<result property="data" column="DATA" />
 	<result property="sid" column="SID" />
 </resultMap>
 <sql id="columnsUser">
 	u.ID, u.STATUS, u.SSQY, u.NAME, u.MOBILE, u.ACCOUNT, u.PASSWORD, 
 	u.WORKCARD, u.SEX, u.AVATAR, u.IDCARD, u.EMAIL, u.PHONE, 
-	u.ORGPID, u.ORGID, u.TYPE, u.TYPENAME, u.EXALIAS, u.EXNAME, u.CREATETIME, u.LASTTIME 
+	u.ORGPID, u.ORGID, u.TYPE, u.TYPENAME, u.EXALIAS, u.EXNAME, u.CREATETIME, u.LASTTIME , u.DATA 
 </sql>
 <select id="getUserById" resultMap="resultUser">
 	select <include refid="columnsUser" />, 0 as SID from DS_BASE_USER u where u.ID=#{id}

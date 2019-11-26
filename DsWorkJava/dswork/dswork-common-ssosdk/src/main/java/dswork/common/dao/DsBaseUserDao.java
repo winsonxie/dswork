@@ -28,12 +28,16 @@ public class DsBaseUserDao extends MyBatisDao
 		return executeInsert("insertUserBm", bm);
 	}
 
-	public int updateUserid(String oldBm, String newBm)
+	public int updateUserid(IUser user, String oldBm, String newBm)
 	{
 		oldBm = oldBm.toLowerCase(Locale.ENGLISH);
-		IUserBm o = getUserBm(oldBm);
-		if(o != null)
+		IUserBm o = getUserBm(oldBm);// bm的userid有可能为空或不是自己
+		if(o != null && user != null)
 		{
+			if(o.getUserid() == 0 || user.getId() != o.getUserid())
+			{
+				o.setUserid(user.getId());
+			}
 			newBm = newBm.toLowerCase(Locale.ENGLISH);
 			IUserBm bm = getUserBm(newBm);
 			if(bm == null)
@@ -48,10 +52,17 @@ public class DsBaseUserDao extends MyBatisDao
 			{
 				bm.setUserid(o.getUserid());
 				bm.setType(o.getType());
-				executeInsert("updateUserBm", bm);
+				executeUpdate("updateUserBm", bm);
 			}
-			o.setUserid(0L);
-			return executeInsert("updateUserBm", o);
+			if(!oldBm.equals(newBm))
+			{
+				o.setUserid(0L);
+			}
+			IUser u = new IUser();
+			u.setId(user.getId());
+			u.setMobile(newBm);
+			executeUpdate("updateUserMobile", u);
+			return executeUpdate("updateUserBm", o);
 		}
 		return 0;
 	}
@@ -60,8 +71,6 @@ public class DsBaseUserDao extends MyBatisDao
 	{
 		return (IUserBm) executeSelect("getUserBm", bm);
 	}
-	
-	
 
 	public int saveUser(IUser user, String reg_type)
 	{
@@ -127,7 +136,7 @@ public class DsBaseUserDao extends MyBatisDao
 		}
 		return 1;
 	}
-	
+
 	public int delete(long id)
 	{
 		return executeDelete("delete", id);
@@ -136,6 +145,11 @@ public class DsBaseUserDao extends MyBatisDao
 	public int updateUser(IUser user)
 	{
 		return executeUpdate("updateUser", user);
+	}
+
+	public int updateUserData(IUser user)
+	{
+		return executeUpdate("updateUserData", user);
 	}
 
 	public int updateUserPassword(long id, String password)

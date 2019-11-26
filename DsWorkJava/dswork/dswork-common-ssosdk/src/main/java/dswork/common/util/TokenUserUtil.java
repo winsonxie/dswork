@@ -16,9 +16,9 @@ public class TokenUserUtil
 	private static ConcurrentMap<String, String> user = new ConcurrentHashMap<String, String>();
 	// 1000(1秒)|60000(1分钟)|3600000(1小时)|86400000(1天)
 	public static final int code_timeout = 10 * 60000;
-	public static final int code_timeout_seond = 10 * 60;
+	public static final int code_timeout_second = 10 * 60;
 	public static final long token_timeout = 30 * 86400000;
-	public static final int token_timeout_seond = 30 * 86400;
+	public static final int token_timeout_second = 30 * 86400;
 	private static final String secret = "TokenUserUtil";
 
 	/**
@@ -38,7 +38,7 @@ public class TokenUserUtil
 			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
 			String key = authorizecode;
 			db.set(key, ResponseUtil.toJson(code));
-			db.expire(key, code_timeout_seond);
+			db.expire(key, code_timeout_second);
 			db.close();
 		}
 		else
@@ -107,9 +107,9 @@ public class TokenUserUtil
 	{
 		if(ResponseUtil.USE_REDIS)
 		{
-			redis.clients.jedis.Jedis db = RedisUtil.db.getReadJedis();
+			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
 			db.set(openid, userinfoJSON == null ? "" : userinfoJSON);
-			db.expire(openid, token_timeout_seond);
+			db.expire(openid, token_timeout_second);
 			db.close();
 		}
 		else
@@ -129,15 +129,15 @@ public class TokenUserUtil
 	{
 		long time = System.currentTimeMillis() + token_timeout;
 		String access_token = dswork.core.util.EncryptUtil.encryptDes(time + "", secret);
-		ZAuthtoken token = new ZAuthtoken(access_token, token_timeout_seond, "", openid);
+		ZAuthtoken token = new ZAuthtoken(access_token, token_timeout_second, "", openid);
 		String key = appkey + "-" + openid;
 		if(ResponseUtil.USE_REDIS)
 		{
-			redis.clients.jedis.Jedis db = RedisUtil.db.getReadJedis();
+			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
 			db.set(key, access_token);
-			db.expire(key, token_timeout_seond);
+			db.expire(key, token_timeout_second);
 			db.set(openid, userinfoJSON == null ? "" : userinfoJSON);
-			db.expire(openid, token_timeout_seond);
+			db.expire(openid, token_timeout_second);
 			db.close();
 		}
 		else

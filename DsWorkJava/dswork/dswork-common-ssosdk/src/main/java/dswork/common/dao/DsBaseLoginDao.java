@@ -19,15 +19,16 @@ public class DsBaseLoginDao extends MyBatisDao
 		return DsBaseLoginDao.class;
 	}
 
-	public void saveLogLogin(String ticket, String ip, String account, String name, boolean isSuccess)
+	public void saveLogLogin(String appid, String ticket, String ip, String bm, String name, boolean isSuccess)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", IdUtil.genId());
 		map.put("logintime", TimeUtil.getCurrentTime());
 		map.put("logouttime", isSuccess ? "0" : TimeUtil.getCurrentTime());// 退出前标识为0
+		map.put("appid", appid);
 		map.put("ticket", ticket);
 		map.put("ip", ip);
-		map.put("account", account);
+		map.put("bm", bm);
 		map.put("name", name);
 		map.put("status", isSuccess ? "1" : "0");
 		executeInsert("insertLoginLog", map);
