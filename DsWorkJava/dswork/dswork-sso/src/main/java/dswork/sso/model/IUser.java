@@ -35,7 +35,7 @@ public class IUser implements Serializable
 	private String createtime = "";// 创建时间
 	private long lasttime = 0L;// 最后更新时间
 	private String ssoticket = "";// openid-access_token
-	private String data = "";// 用于存放自定义对象的json值
+	private String exdata = "";// 用于存放自定义对象的json值
 
 	public Long getId()
 	{
@@ -297,13 +297,13 @@ public class IUser implements Serializable
 		this.ssoticket = openid + "-" + access_token;
 	}
 
-	public String getData()
+	public String getExdata()
 	{
-		return data;
+		return exdata;
 	}
 
-	public void setData(String data)
+	public void setExdata(String exdata)
 	{
-		this.data = data;
+		this.exdata = exdata;
 	}
 }
