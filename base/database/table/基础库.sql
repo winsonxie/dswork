@@ -36,13 +36,14 @@ DROP TABLE IF EXISTS DS_BASE_LOGIN;
 CREATE TABLE DS_BASE_LOGIN
 (
   ID                   BIGINT(18)    COMMENT '主键ID' NOT NULL,
+  APPID                VARCHAR(128)  COMMENT '登录的APPID',
   LOGINTIME            VARCHAR(19)   COMMENT '登录时间',
   LOGOUTTIME           VARCHAR(19)   COMMENT '登出时间',
   TIMEOUTTIME          VARCHAR(19)   COMMENT '超时时间',
-  PWDTIME              VARCHAR(19)   COMMENT '密码修改时间,没修改则为空,修改成功后直接登出',
-  TICKET               VARCHAR(128)  COMMENT '登录标识',
+  PWDTIME              VARCHAR(19)   COMMENT '密码修改时间,没修改则为空',
+  TICKET               VARCHAR(128)  COMMENT '登录标识，格式：CODE或OPENID-ACCESS_TOKEN',
   IP                   VARCHAR(128)  COMMENT 'IP地址',
-  ACCOUNT              VARCHAR(64)   COMMENT '操作人账号',
+  ACCOUNT              VARCHAR(64)   COMMENT '操作人唯一标识(为自定义帐号、手机号、证件号等)',
   NAME                 VARCHAR(30)   COMMENT '操作人名称',
   STATUS               INT COMMENT '状态(0失败,1成功)',
   PRIMARY KEY (ID)
@@ -84,6 +85,7 @@ CREATE TABLE DS_BASE_USER (
   EXNAME                VARCHAR(300)  COMMENT '类型扩展名称',
   CREATETIME            VARCHAR(19)   COMMENT '创建时间',
   LASTTIME              BIGINT(18)    COMMENT '最后更新时间',
+  EXDATA                VARCHAR(64)   COMMENT '扩展字段，如需要放大数据，自动修改为TEXT或CLOB字段',
   PRIMARY KEY (ID)
 ) COMMENT='系统用户';
 
