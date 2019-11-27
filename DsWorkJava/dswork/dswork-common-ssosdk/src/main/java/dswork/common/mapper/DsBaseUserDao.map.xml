@@ -25,7 +25,7 @@
 
 <insert id="insertUser" parameterType="dswork.common.model.IUser">
 	insert into DS_BASE_USER
-	(ID, STATUS, SSQY, NAME, MOBILE, ACCOUNT, PASSWORD, WORKCARD, SEX, AVATAR, IDCARD, EMAIL, PHONE, ORGPID, ORGID, TYPE, TYPENAME, EXALIAS, EXNAME, CREATETIME, LASTTIME )
+	(ID, STATUS, SSQY, NAME, MOBILE, ACCOUNT, PASSWORD, WORKCARD, SEX, AVATAR, IDCARD, EMAIL, PHONE, ORGPID, ORGID, TYPE, TYPENAME, EXALIAS, EXNAME, CREATETIME, LASTTIME)
 	values
 	(#{id}, #{status}, #{ssqy}, #{name}, #{mobile}, #{account}, #{password}, #{workcard}, #{sex}, #{avatar}, #{idcard}, #{email}, #{phone}, #{orgpid}, #{orgid}, #{type}, #{typename}, #{exalias}, #{exname}, #{createtime}, #{lasttime})
 </insert>
@@ -46,7 +46,7 @@
 	LASTTIME=LASTTIME+1 where ID=#{id}
 </update>
 <update id="updateUserData" parameterType="dswork.common.model.IUser">
-	update DS_BASE_USER set DATA=#{data}, LASTTIME=LASTTIME+1 where ID=#{id}
+	update DS_BASE_USER set EXDATA=#{exdata}, LASTTIME=LASTTIME+1 where ID=#{id}
 </update>
 <resultMap id="resultUser" type="dswork.common.model.IUser">
 	<id property="id" column="ID" />
@@ -70,13 +70,13 @@
 	<result property="exname" column="EXNAME" />
 	<result property="createtime" column="CREATETIME" />
 	<result property="lasttime" column="LASTTIME" />
-	<result property="data" column="DATA" />
+	<result property="exdata" column="EXDATA" />
 	<result property="sid" column="SID" />
 </resultMap>
 <sql id="columnsUser">
 	u.ID, u.STATUS, u.SSQY, u.NAME, u.MOBILE, u.ACCOUNT, u.PASSWORD, 
 	u.WORKCARD, u.SEX, u.AVATAR, u.IDCARD, u.EMAIL, u.PHONE, 
-	u.ORGPID, u.ORGID, u.TYPE, u.TYPENAME, u.EXALIAS, u.EXNAME, u.CREATETIME, u.LASTTIME , u.DATA 
+	u.ORGPID, u.ORGID, u.TYPE, u.TYPENAME, u.EXALIAS, u.EXNAME, u.CREATETIME, u.LASTTIME , u.EXDATA 
 </sql>
 <select id="getUserById" resultMap="resultUser">
 	select <include refid="columnsUser" />, 0 as SID from DS_BASE_USER u where u.ID=#{id}
