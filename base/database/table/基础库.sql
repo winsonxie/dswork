@@ -36,14 +36,15 @@ DROP TABLE IF EXISTS DS_BASE_LOGIN;
 CREATE TABLE DS_BASE_LOGIN
 (
   ID                   BIGINT(18)    COMMENT '主键ID' NOT NULL,
-  APPID                VARCHAR(128)  COMMENT '登录的APPID',
+  APPID                VARCHAR(256)  COMMENT '登录的APPID',
   LOGINTIME            VARCHAR(19)   COMMENT '登录时间',
   LOGOUTTIME           VARCHAR(19)   COMMENT '登出时间',
   TIMEOUTTIME          VARCHAR(19)   COMMENT '超时时间',
   PWDTIME              VARCHAR(19)   COMMENT '密码修改时间,没修改则为空',
   TICKET               VARCHAR(128)  COMMENT '登录标识，格式：CODE或OPENID-ACCESS_TOKEN',
   IP                   VARCHAR(128)  COMMENT 'IP地址',
-  ACCOUNT              VARCHAR(64)   COMMENT '操作人唯一标识(为自定义帐号、手机号、证件号等)',
+  USERID               BIGINT(18)    COMMENT '用户ID',
+  BM                   VARCHAR(64)   COMMENT '操作人当前账号',
   NAME                 VARCHAR(30)   COMMENT '操作人名称',
   STATUS               INT COMMENT '状态(0失败,1成功)',
   PRIMARY KEY (ID)
