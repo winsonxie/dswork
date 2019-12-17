@@ -10,7 +10,7 @@ public PageRequest genSQL(PageRequest pr, boolean isCount){
 		sql.append(" count(1)");
 	}
 	else{
-		sql.append(" id, logintime, logouttime, timeouttime, pwdtime, ip, account, name, status");
+		sql.append(" id, logintime, logouttime, timeouttime, pwdtime, ip, bm, name, status");
 	}
 	sql.append(" from DS_BASE_LOGIN where 1=1");
 	if(isNotEmpty(pr, "logintime_begin")){
@@ -19,8 +19,8 @@ public PageRequest genSQL(PageRequest pr, boolean isCount){
 	if(isNotEmpty(pr, "logintime_end")){
 		sql.append(" and LOGINTIME<=#{logintime_end}");
 	}
-	if(isNotEmpty(pr, "account")){
-		sql.append(" and ACCOUNT like #{account, typeHandler=LikeTypeHandler}");
+	if(isNotEmpty(pr, "bm")){
+		sql.append(" and BM like #{bm, typeHandler=LikeTypeHandler}");
 	}
 	if(isNotEmpty(pr, "name")){
 		sql.append(" and NAME like #{name, typeHandler=LikeTypeHandler}");
@@ -50,7 +50,7 @@ public PageRequest getPageRequest(HttpServletRequest request)
 	{
 		pagesize = 10;
 	}
-	pagesize = req.getInt("pageSize", pagesize);
+	pagesize = req.getInt("pagesize", pagesize);
 	request.getSession().setAttribute("dswork_session_pagesize", pagesize);
 	pr.setPagesize(pagesize);
 	return pr;
@@ -85,7 +85,7 @@ request.setAttribute("pageNav", new PageNav<java.util.Map<String, Object>>(reque
 <table border="0" cellspacing="0" cellpadding="0" class="queryTable">
 	<tr>
 		<td class="input">
-			&nbsp;账号:<input name="account" style="width:100px;" value="${fn:escapeXml(param.account)}" />
+			&nbsp;账号:<input name="bm" style="width:100px;" value="${fn:escapeXml(param.bmd)}" />
 			姓名:<input name="name" style="width:80px;" value="${fn:escapeXml(param.name)}" />
 			状态：<select name="status" style="width:60px;" v="${fn:escapeXml(param.status)}"><option value="">全部</option><option value="1">成功</option><option value="0">失败</option></select>
 			登录时间：<input type="text" name="logintime_begin" class="WebDate" format="yyyy-MM-dd HH:mm:ss" style="width:145px;" value="${fn:escapeXml(param.logintime_begin)}" />
@@ -108,7 +108,7 @@ request.setAttribute("pageNav", new PageNav<java.util.Map<String, Object>>(reque
 	</tr>
 <c:forEach items="${pageModel.result}" var="d" varStatus="status">
 	<tr class="${status.index%2==0?'list_even':'list_odd'}">
-		<td class="L">${d.name}(${d.account})</td>
+		<td class="L">${d.name}(${d.bm})</td>
 		<td>${d.logintime}</td>
 		<td>登录${d.status == 1 ? '成功' : '失败'}</td>
 		<td>${d.ip}</td>
