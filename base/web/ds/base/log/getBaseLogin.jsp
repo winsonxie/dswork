@@ -85,7 +85,7 @@ request.setAttribute("pageNav", new PageNav<java.util.Map<String, Object>>(reque
 <table border="0" cellspacing="0" cellpadding="0" class="queryTable">
 	<tr>
 		<td class="input">
-			&nbsp;账号:<input name="bm" style="width:100px;" value="${fn:escapeXml(param.bmd)}" />
+			&nbsp;账号:<input name="bm" style="width:100px;" value="${fn:escapeXml(param.bm)}" />
 			姓名:<input name="name" style="width:80px;" value="${fn:escapeXml(param.name)}" />
 			状态：<select name="status" style="width:60px;" v="${fn:escapeXml(param.status)}"><option value="">全部</option><option value="1">成功</option><option value="0">失败</option></select>
 			登录时间：<input type="text" name="logintime_begin" class="WebDate" format="yyyy-MM-dd HH:mm:ss" style="width:145px;" value="${fn:escapeXml(param.logintime_begin)}" />
