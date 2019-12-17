@@ -22,9 +22,10 @@ public class DsBaseLoginDao extends MyBatisDao
 	public void saveLogLogin(String appid, String ticket, String ip, String bm, String name, boolean isSuccess)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
+		String time = TimeUtil.getCurrentTime();
 		map.put("id", IdUtil.genId());
-		map.put("logintime", TimeUtil.getCurrentTime());
-		map.put("logouttime", isSuccess ? "0" : TimeUtil.getCurrentTime());// 退出前标识为0
+		map.put("logintime", time);
+		map.put("logouttime", isSuccess ? "0" : time);// 退出前标识为0
 		map.put("appid", appid);
 		map.put("ticket", ticket);
 		map.put("ip", ip);
