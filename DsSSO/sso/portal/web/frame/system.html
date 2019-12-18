@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui"/>
+<title>选择系统</title>
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<style type="text/css">
+html{height:100%;padding:0; margin:0;}
+body{padding:0; margin:0;height:100%:}
+</style>
+<script type="text/javascript">
+var sys = window.dialogArguments.sys;
+var index = window.dialogArguments.index;
+function getReturnValue()
+{
+	var obj = document.getElementById("chooseSystem");
+	for(var i = 0;i < obj.options.length;i++)
+	{
+		if(obj.options[i].selected)
+		{
+			try
+			{
+				window.returnValue = obj.options[i].value;
+				window.close();
+			}
+			catch(e)
+			{
+			}
+			return true;
+		}
+	}
+	return false;
+}
+</script>
+</head>
+<body onselectstart="return false;" oncontextmenu="return false;">
+	<select id="chooseSystem" size="12" style="width:100%;height:100%;" onclick="getReturnValue()"></select>
+</body>
+<script type="text/javascript">
+try
+{
+	var obj = document.getElementById("chooseSystem");
+	for(var i = 0; i < sys.length; i++)
+	{
+		obj.options[obj.options.length] = new Option(sys[i].name, i);
+		if(i == index)
+		{
+			var obj = document.getElementById("chooseSystem");
+			obj.options[obj.options.length - 1].selected = true;
+		}
+	}
+}
+catch(e)
+{
+}
+</script>
+</html>

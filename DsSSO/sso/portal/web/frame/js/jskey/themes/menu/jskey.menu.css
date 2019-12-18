@@ -1,0 +1,65 @@
+/*IE6背景图片不缓存BUG*/
+* {filter:expression(document.execCommand("BackgroundImageCache", false, true));}
+html {height:100%;margin:0;padding:0;border:none;overflow:auto;}
+body {height:100%;margin:0;padding:0;border:none;text-align:center;overflow:auto;background-color:#e0ecff;background-color:#fff;}
+body::-webkit-scrollbar {width:8px;height:0;}
+body::-webkit-scrollbar-thumb {background-color:#95b8e7;border-radius:2px;}
+body::-webkit-scrollbar-track {background-color:#eeeeee;opacity:0.1;}
+@font-face {font-family:"treefont";font-weight:normal;font-style:normal;
+	src:url("font/tree.eot");/* IE9+ */
+	src:url('font/tree.eot?#iefix') format('embedded-opentype'),/* IE6-IE8 */
+		url('font/tree.woff') format('woff'),/* chrome,firefox */
+		url('font/tree.ttf') format('truetype'),/* chrome,firefox,opera,Safari,Android,iOS4.2+ */
+		url('font/tree.svg#dsworkfont') format('svg');/* iOS4.1- */
+}
+.jskeymenu {box-sizing:border-box;width:100%;border:none;font-family:Helvetica;padding-top:3px;}
+.jskeymenu div{font-size:14px;font-weight:normal;}
+
+/*分层菜单的样式设置*/
+.jskeymenu .menu {height:25px;line-height:25px;
+	box-sizing:border-box;overflow:hidden;width:100%;
+	padding:0 0 0 10px;cursor:pointer;border:none;
+	color:#333333;text-align:left;font-weight:bold;
+}
+.jskeymenu .menu-open{}
+.jskeymenu .menu-close{}
+
+.jskeymenu .cell{box-sizing:border-box;width:100%;padding:0 0 0 12px;}
+.jskeymenu .cell-open {}
+.jskeymenu .cell-close {height:0%;}
+.jskeymenu .cell-content {box-sizing:border-box;width:100%;overflow:hidden;}
+
+.jskeymenu i,
+.jskeymenu span{font-family:"treefont";font-size:inherit;display:inline-block;outline:0;font-weight:normal;font-style:normal;line-height:100%;text-align:left;}
+.jskeymenu .menu i{margin:0 4px 0 0;font-size:12px;}
+.jskeymenu .treenodes {color:#333333;display:block;box-sizing:border-box;width:100%;white-space:nowrap;vertical-align:top;text-align:left;padding:0;margin:0;}
+.jskeymenu .treenodes i {color:#333333;font-size:12px;margin-right:3px;width:auto;}
+.jskeymenu .treenodes:hover i{opacity:1;}
+
+.jskeymenu .treenode {height:22px;line-height:22px;cursor:pointer;display:block;box-sizing:border-box;width:100%;padding-left:5px;white-space:nowrap;vertical-align:top;text-align:left;}
+.jskeymenu .treenode .img {border:none;width:20px;height:20px;margin-right:3px;}
+.jskeymenu .treenode:hover .img {opacity:1;}
+.jskeymenu .treenodeout {color:#333333;}
+.jskeymenu .treenodeover {color:#ff0000;text-decoration:underline;}
+.jskeymenu .treenodeselected {color:#ff0000;text-decoration:underline;}
+
+
+
+/*
+<div id="JskeyMG" class="jskeymenu">
+	<div id="JskeyMT_c" class="menu menu-close/menu-open"><i><span></span></i>name</div>
+	<div id="JskeyMC_c" class="cell cell-open/cell-close">
+		<div id="JskeyMCD_c" class="cell-content">
+			<div class="treenodes">
+				<div class="treenode treenodeout/treenodeover"></div>
+				<div class="treenodes">
+					<div class="treenode treenodeout/treenodeover"></div>
+					<div class="treenode treenodeout/treenodeover"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+ </div>
+ */
+
+

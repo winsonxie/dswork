@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app metadata-complete="false">
+	<!--
+	<servlet>
+		<servlet-name>websso_logout</servlet-name>
+		<servlet-class>dswork.sso.WebLogoutServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping><servlet-name>websso_logout</servlet-name><url-pattern>/logout</url-pattern></servlet-mapping>
+	-->
+	<context-param>
+		<param-name>dsworkSSOConfiguration</param-name>
+		<param-value>/config/sso.properties</param-value>
+	</context-param>
+	<filter>
+		<filter-name>websso</filter-name>
+		<filter-class>dswork.sso.WebFilter</filter-class>
+	</filter>
+	<filter-mapping><filter-name>websso</filter-name><url-pattern>/manage/*</url-pattern></filter-mapping>
+	<filter-mapping><filter-name>websso</filter-name><url-pattern>/1.jsp</url-pattern>   </filter-mapping>
+	<filter-mapping><filter-name>websso</filter-name><url-pattern>/2.jsp</url-pattern>   </filter-mapping>
+	
+	<filter>
+		<filter-name>DsworkCasAuthFilter</filter-name>
+		<filter-class>dswork.sso.AuthFilter</filter-class>
+		<init-param><param-name>refreshTime</param-name>  <param-value>3600000</param-value></init-param>
+		<init-param><param-name>forbiddenPage</param-name><param-value>/x/40x.html</param-value></init-param>
+		<init-param><param-name>ignorePage</param-name>   <param-value>/menu.jsp,/m.jsp,/index.jsp,/manage/login.htm</param-value></init-param>
+		<init-param><param-name>fixSuffix</param-name>    <param-value>jsp,htm</param-value></init-param>
+		<init-param><param-name>checkParam</param-name>   <param-value>false</param-value></init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>DsworkCasAuthFilter</filter-name>
+		<url-pattern>/p/*</url-pattern>
+	</filter-mapping>
+
+
+
+	<error-page><error-code>400</error-code><location>/50x.jsp</location></error-page>
+	<error-page><error-code>404</error-code><location>/50x.jsp</location></error-page>
+	<error-page><error-code>500</error-code><location>/50x.jsp</location></error-page>
+	<session-config><session-timeout>120</session-timeout></session-config>
+	<welcome-file-list><welcome-file>index.jsp</welcome-file></welcome-file-list>
+</web-app>
