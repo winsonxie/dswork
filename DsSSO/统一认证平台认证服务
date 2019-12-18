@@ -1,0 +1,60 @@
+返回码：
+	  1：成功
+	400：请求失败或参数不正确(msg=appid|code|redirect_uri|authcode|response_type|grant_type)
+	401：用户未激活
+	402：密码不正确
+	403：用户被禁用
+	404：用户不存在
+	406：验证码无效，access_token无效
+	423：用户被锁定
+	
+总体说明：全部依赖dswork-base
+	dswork-sso-auth （账号密码登录API）
+		/user/access_token
+			说明：后端获取用户凭证(access_token)
+			参数：appid=应用ID&appsecret=应用密钥&grant_type=authorization_code&code=用户授权令牌
+			结果：成功{code:1,data:{access_token:用户凭证,expires_in:7200,openid:用户标识}}
+		/user/auth_token
+			说明：前端检查用户凭证(access_token)是否还有效
+			参数：appid=应用ID&openid=用户标识&access_token=用户凭证
+			结果：成功{code:1}，失败{code:400}
+		/user/authorize
+			说明：前端授权页面
+			参数：appid=应用ID&response_type=code&redirect_uri=重定向地址
+		/user/login
+			说明：前端登入认证，获取用户授权令牌(code)或用户凭证(access_token)
+			参数：账号密码登录：appid=应用ID&response_type=code|token&grant_type=password&redirect_uri=重定向地址&authtime=超时时间戳&authcode=应用认证码&account=账号&password=密码
+			参数：手机短信登录：appid=应用ID&response_type=code|token&grant_type=sms&redirect_uri=重定向地址&account=手机号码&password=6位短信验证码
+			注释：当grant_type=password时，authtime和authcode，authcode=MD5(authtime+MD5(应用密钥))，password=MD5(MD5(用户密码)+authcode)
+			注释：当grant_type=sms时，无需authtime和authcode，password=6位短信验证码
+			结果：成功{code:1,data:{code:用户授权令牌}}，失败{code:错误码, msg:"可能错误的参数类型"}
+		/user/logout
+			说明：前端登出认证，即取消用户凭证
+			参数：appid=应用ID&openid=用户标识&access_token=用户凭证
+			结果：成功{code:1}，失败{code:400}
+		/user/redirect
+			说明：前端授权后访问重定向地址
+			参数：appid=应用ID&code=用户授权令牌
+			结果：带着参数code重写向至授权地址
+		/user/userinfo
+			说明：前后端获取用户信息，因涉及用户隐私信息，建议只在后端调用
+			参数：appid=应用ID&openid=用户标识&access_token=用户凭证
+			结果：成功{code:1,data:{用户信息}}，参数错误{code:400}，凭证无效{code:406}
+		/unit/access_token
+			说明：后端获取应用凭证(access_token)
+			参数：appid=应用ID&appsecret=应用密钥&grant_type=client_credential
+			结果：成功{code:1,data:{access_token:应用凭证,expires_in:43200}}，失败{code:400}
+		/unit/auth_token
+			说明：后端检查应用凭证(access_token)是否还有效
+			参数：appid=应用ID&access_token=应用凭证
+			结果：成功{code:1}，失败{code:400}
+		
+		/sms/code
+			说明：前后端发送6位短信验证码，access_token和(authtime+authcode)二选一
+			参数：mobile=手机号码&appid=应用ID&access_token=应用凭证
+			参数：mobile=手机号码&appid=应用ID&authtime=超时时间戳&authcode=应用认证码
+			注释：authtime和authcode，authcode=MD5(authtime+MD5(应用密钥))
+			结果：成功{code:1}，失败{code:400}
+		
+		/api 依赖/oauth2
+		
