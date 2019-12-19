@@ -11,7 +11,6 @@ public class IUser implements Serializable
 	private Long id = 0L;// 主账号id
 	private long sid = 0L;// 实际登录用户id
 	private int status = 0;// 状态（0禁用，1启用）
-	private String bm = "";// 用户唯一标识（可为id或身份证等信息，用于标识多个账号是同一个用户）
 	private String ssqy = "";// 最长12位的区域编码
 	private String name = "";// 姓名
 	private String mobile = "";// 手机
@@ -65,16 +64,6 @@ public class IUser implements Serializable
 	public void setStatus(int status)
 	{
 		this.status = status;
-	}
-
-	public String getBm()
-	{
-		return bm;
-	}
-
-	public void setBm(String bm)
-	{
-		this.bm = bm;
 	}
 
 	public String getSsqy()
