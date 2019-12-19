@@ -13,12 +13,11 @@ import dswork.common.model.ISystem;
 import dswork.common.model.IUser;
 import dswork.common.model.IUserBind;
 import dswork.common.model.IUserBm;
-import dswork.core.db.MyBatisDao;
 import dswork.core.util.EncryptUtil;
 import dswork.core.util.TimeUtil;
 
 @Repository
-public class SsoDao extends MyBatisDao
+public class SsoDao
 {
 	@Autowired
 	private DsBaseUserDao userDao;
@@ -32,12 +31,6 @@ public class SsoDao extends MyBatisDao
 	private DsBaseOrgDao orgDao;
 	@Autowired
 	private DsBaseLoginDao logDao;
-
-	@Override
-	protected Class<SsoDao> getEntityClass()
-	{
-		return SsoDao.class;
-	}
 
 	public List<IBind> queryListBind()
 	{
