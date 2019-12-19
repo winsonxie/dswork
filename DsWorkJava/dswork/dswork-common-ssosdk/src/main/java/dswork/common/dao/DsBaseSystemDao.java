@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import dswork.common.model.IFunc;
@@ -20,6 +21,29 @@ import dswork.spring.BeanFactory;
 @SuppressWarnings("all")
 public class DsBaseSystemDao extends MyBatisDao
 {
+	private SqlSessionTemplate sqlSessionTemplateCommon;
+	private static boolean hasCommon = false;
+
+	@Override
+	protected SqlSessionTemplate getSqlSessionTemplate()
+	{
+		if(hasCommon)
+		{
+			return sqlSessionTemplateCommon;
+		}
+		return super.getSqlSessionTemplate();
+	}
+	
+	public void setSqlSessionTemplateCommon(SqlSessionTemplate sqlSessionTemplate)
+	{
+		if(log.isInfoEnabled())
+		{
+			log.info("======== DsCommonDaoCommonIDict call setSqlSessionTemplateCommon ========");
+		}
+		hasCommon = true;
+		this.sqlSessionTemplateCommon = sqlSessionTemplate;
+	}
+	
 	// system//////////////////////////////////////////////////////////////////
 	private static ConcurrentMap<String, ISystem> map = new ConcurrentHashMap<String, ISystem>();
 	// 1000(1秒)|60000(1分钟)|3600000(1小时)|86400000(1天)

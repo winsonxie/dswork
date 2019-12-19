@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import dswork.common.model.IUser;
@@ -17,6 +18,29 @@ import dswork.core.util.TimeUtil;
 @SuppressWarnings("all")
 public class DsBaseUserDao extends MyBatisDao
 {
+	private SqlSessionTemplate sqlSessionTemplateCommon;
+	private static boolean hasCommon = false;
+
+	@Override
+	protected SqlSessionTemplate getSqlSessionTemplate()
+	{
+		if(hasCommon)
+		{
+			return sqlSessionTemplateCommon;
+		}
+		return super.getSqlSessionTemplate();
+	}
+	
+	public void setSqlSessionTemplateCommon(SqlSessionTemplate sqlSessionTemplate)
+	{
+		if(log.isInfoEnabled())
+		{
+			log.info("======== DsCommonDaoCommonIDict call setSqlSessionTemplateCommon ========");
+		}
+		hasCommon = true;
+		this.sqlSessionTemplateCommon = sqlSessionTemplate;
+	}
+	
 	@Override
 	public Class getEntityClass()
 	{
