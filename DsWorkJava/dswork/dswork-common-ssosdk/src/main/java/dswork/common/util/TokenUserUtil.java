@@ -19,7 +19,7 @@ public class TokenUserUtil
 	public static final int code_timeout_second = 10 * 60;
 	public static final long token_timeout = 30 * 86400000;
 	public static final int token_timeout_second = 30 * 86400;
-	public static final int user_timeout_second = 10 * 365 * 86400;
+	public static final int user_timeout_second = 365 * 86400;
 	private static final String secret = "TokenUserUtil";
 
 	/**
