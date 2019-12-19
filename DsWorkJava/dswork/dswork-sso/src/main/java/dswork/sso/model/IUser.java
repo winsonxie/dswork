@@ -9,7 +9,6 @@ public class IUser implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private Long id = 0L;// 主账号id
-	private long sid = 0L;// 实际登录用户id
 	private int status = 0;// 状态（0禁用，1启用）
 	private String ssqy = "";// 最长12位的区域编码
 	private String name = "";// 姓名
@@ -18,9 +17,6 @@ public class IUser implements Serializable
 	// private String password = "";// 密码
 	private String workcard = "";// 工作证号
 	private int sex = 0;// 性别（0未知，1男，2女）
-	private String country = "";// 国家
-	private String province = "";// 省份
-	private String city = "";// 城市
 	private String avatar = "";// 头像
 	private String idcard = "";// 身份证号
 	private String email = "";// 电子邮件
@@ -33,8 +29,9 @@ public class IUser implements Serializable
 	private String exname = "";// 类型扩展名称
 	private String createtime = "";// 创建时间
 	private long lasttime = 0L;// 最后更新时间
-	private String ssoticket = "";// openid-access_token
 	private String exdata = "";// 用于存放自定义对象的json值
+	private long sid = 0L;// 实际登录用户id
+	private String ssoticket = "";// openid-access_token
 
 	public Long getId()
 	{
@@ -44,16 +41,6 @@ public class IUser implements Serializable
 	public void setId(Long id)
 	{
 		this.id = id;
-	}
-
-	public long getSid()
-	{
-		return sid;
-	}
-
-	public void setSid(long sid)
-	{
-		this.sid = sid;
 	}
 
 	public int getStatus()
@@ -124,36 +111,6 @@ public class IUser implements Serializable
 	public void setSex(int sex)
 	{
 		this.sex = sex;
-	}
-
-	public String getCountry()
-	{
-		return country;
-	}
-
-	public void setCountry(String country)
-	{
-		this.country = country;
-	}
-
-	public String getProvince()
-	{
-		return province;
-	}
-
-	public void setProvince(String province)
-	{
-		this.province = province;
-	}
-
-	public String getCity()
-	{
-		return city;
-	}
-
-	public void setCity(String city)
-	{
-		this.city = city;
 	}
 
 	public String getAvatar()
@@ -276,16 +233,6 @@ public class IUser implements Serializable
 		this.lasttime = lasttime;
 	}
 
-	public String getSsoticket()
-	{
-		return ssoticket;
-	}
-
-	public void setSsoticket(String openid, String access_token)
-	{
-		this.ssoticket = openid + "-" + access_token;
-	}
-
 	public String getExdata()
 	{
 		return exdata;
@@ -294,5 +241,25 @@ public class IUser implements Serializable
 	public void setExdata(String exdata)
 	{
 		this.exdata = exdata;
+	}
+
+	public long getSid()
+	{
+		return sid;
+	}
+
+	public void setSid(long sid)
+	{
+		this.sid = sid;
+	}
+
+	public String getSsoticket()
+	{
+		return ssoticket;
+	}
+
+	public void setSsoticket(String openid, String access_token)
+	{
+		this.ssoticket = openid + "-" + access_token;
 	}
 }
