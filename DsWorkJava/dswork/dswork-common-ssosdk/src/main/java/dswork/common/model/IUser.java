@@ -27,8 +27,8 @@ public class IUser
 	private String exname = "";// 类型扩展名称
 	private String createtime = "";// 创建时间
 	private long lasttime = 0L;// 最后更新时间
-	private long sid = 0L;// 子用户id，一般设置为当前登录用户
 	private String exdata = "";// 用于存放自定义对象的json值
+	private long sid = 0L;// 子用户id，一般设置为当前登录用户
 
 	public IUser clearSecret()
 	{
