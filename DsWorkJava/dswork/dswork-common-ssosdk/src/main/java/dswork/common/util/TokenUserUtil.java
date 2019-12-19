@@ -19,6 +19,7 @@ public class TokenUserUtil
 	public static final int code_timeout_second = 10 * 60;
 	public static final long token_timeout = 30 * 86400000;
 	public static final int token_timeout_second = 30 * 86400;
+	public static final int user_timeout_second = 50 * 365 * 86400;
 	private static final String secret = "TokenUserUtil";
 
 	/**
@@ -109,7 +110,7 @@ public class TokenUserUtil
 		{
 			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
 			db.set(openid, userinfoJSON == null ? "" : userinfoJSON);
-			db.expire(openid, token_timeout_second);
+			db.expire(openid, user_timeout_second);
 			db.close();
 		}
 		else
@@ -137,7 +138,7 @@ public class TokenUserUtil
 			db.set(key, access_token);
 			db.expire(key, token_timeout_second);
 			db.set(openid, userinfoJSON == null ? "" : userinfoJSON);
-			db.expire(openid, token_timeout_second);
+			db.expire(openid, user_timeout_second);
 			db.close();
 		}
 		else
