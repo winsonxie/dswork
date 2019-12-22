@@ -23,6 +23,7 @@ public class WebInitializer implements WebApplicationInitializer
 			,"/user/logout"         // 前端登出认证，即取消用户凭证
 			,"/user/redirect"       // 授权后访问重定向地址
 			,"/user/userinfo"       // 前端账户信息
+			
 			,"/user/update/userinfo"// 更新账户信息
 			,"/user/update/password"// 更新账户密码
 			,"/user/update/account" // 更新账户账号
