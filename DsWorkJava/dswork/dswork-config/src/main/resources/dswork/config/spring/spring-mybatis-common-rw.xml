@@ -11,9 +11,7 @@
 		<property name="username" value="${jdbc.common.username}" />
 		<property name="password" value="${jdbc.common.password}" />
 		
-		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
 		<property name="minEvictableIdleTimeMillis" value="${jdbc.common.minEvictableIdleTimeMillis:900000}" />
-		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
 		<property name="timeBetweenEvictionRunsMillis" value="${jdbc.common.timeBetweenEvictionRunsMillis:900000}" />
 		
 		<property name="initialSize" value="${jdbc.common.initialSize:1}" />
