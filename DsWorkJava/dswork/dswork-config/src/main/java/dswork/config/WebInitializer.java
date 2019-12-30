@@ -82,7 +82,6 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 		}
 		if(c("jdbc.url"))
 		{
-			context.setInitParameter("dswork1.t", "transactionInterceptor");
 			spring = ",classpath*:/dswork/config/spring/spring-mybatis" + (c("jdbc.read.url")?"-rw.xml":".xml")
 					+ (chk("jdbc.transaction") ? ",classpath*:/dswork/config/spring/ex/spring-dswork.xml" + spring : spring);
 		}
