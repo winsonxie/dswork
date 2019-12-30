@@ -35,8 +35,7 @@ public class TokenSmsUtil
 		{
 			String mkey = "u0" + key;
 			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
-			db.set(mkey, code);
-			db.expire(mkey, sms_timeout_second);
+			db.setex(mkey, sms_timeout_second, code);
 			db.close();
 		}
 		else

@@ -38,8 +38,7 @@ public class TokenUserUtil
 		{
 			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
 			String key = authorizecode;
-			db.set(key, ResponseUtil.toJson(code));
-			db.expire(key, code_timeout_second);
+			db.setex(key, code_timeout_second, ResponseUtil.toJson(code));
 			db.close();
 		}
 		else
@@ -109,8 +108,7 @@ public class TokenUserUtil
 		if(ResponseUtil.USE_REDIS)
 		{
 			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
-			db.set(openid, userinfoJSON == null ? "" : userinfoJSON);
-			db.expire(openid, user_timeout_second);
+			db.setex(openid, user_timeout_second, userinfoJSON == null ? "" : userinfoJSON);
 			db.close();
 		}
 		else
@@ -135,10 +133,8 @@ public class TokenUserUtil
 		if(ResponseUtil.USE_REDIS)
 		{
 			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
-			db.set(key, access_token);
-			db.expire(key, token_timeout_second);
-			db.set(openid, userinfoJSON == null ? "" : userinfoJSON);
-			db.expire(openid, user_timeout_second);
+			db.setex(key, token_timeout_second, access_token);
+			db.setex(openid, user_timeout_second, userinfoJSON == null ? "" : userinfoJSON);
 			db.close();
 		}
 		else

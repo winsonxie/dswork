@@ -47,12 +47,10 @@ public class TokenUnitUtil
 				}
 				if(out > 3000)
 				{
-					db.set(ukey2, oldvalue);
-					db.expire(ukey2, (int)(out/1000));// 剩余时间
+					db.setex(ukey2, (int)(out/1000), oldvalue);
 				}
 			}
-			db.set(ukey1, access_token);
-			db.expire(ukey1, token_timeout_second);
+			db.setex(ukey1, token_timeout_second, access_token);
 			db.close();
 		}
 		else
