@@ -73,33 +73,4 @@
 	<bean id="transactionManagerCommon" class="dswork.core.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSourceCommon"/>
 	</bean>
-	<bean id="transactionInterceptorCommon" class="org.springframework.transaction.interceptor.TransactionInterceptor">
-		<property name="transactionManager" ref="transactionManagerCommon" />
-		<property name="transactionAttributes">
-			<props>
-				<prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
-				<prop key="delete*">PROPAGATION_REQUIRED,-Exception</prop>
-				<prop key="update*">PROPAGATION_REQUIRED,-Exception</prop>
-				<prop key="get*">PROPAGATION_NEVER,readOnly</prop>
-				<prop key="query*">PROPAGATION_NEVER,readOnly</prop>
-				<prop key="*">PROPAGATION_NEVER,readOnly</prop>
-			</props>
-		</property>
-	</bean>
-	
-	
-	
-	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-		<property name="proxyTargetClass" value="true" />
-		<property name="beanNames">
-			<list>
-				<value>*Service</value>
-			</list>
-		</property>
-		<property name="interceptorNames">
-			<list>
-				<value>transactionInterceptorCommon</value>
-			</list>
-		</property>
-	</bean>
 </beans>

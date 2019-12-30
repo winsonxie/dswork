@@ -80,23 +80,22 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 		{
 			context.setInitParameter("dswork.datasource", dsworkDataSource);
 		}
-		
-		
 		if(c("jdbc.url"))
 		{
 			context.setInitParameter("dswork1.t", "transactionInterceptor");
-			spring = ",classpath*:/dswork/config/spring/spring-mybatis" + (c("jdbc.read.url")?"-rw.xml":".xml") + spring;
+			spring = ",classpath*:/dswork/config/spring/spring-mybatis" + (c("jdbc.read.url")?"-rw.xml":".xml")
+					+ (chk("jdbc.transaction") ? ",classpath*:/dswork/config/spring/ex/spring-dswork.xml" + spring : spring);
 		}
 		if(c("jdbc.common.dialect.name"))
 		{
-			
-			spring = ",classpath*:/dswork/config/spring/spring-mybatis-common" + (c("jdbc.common.read.url")?"-rw.xml":".xml") + spring;
+			spring = ",classpath*:/dswork/config/spring/spring-mybatis-common" + (c("jdbc.common.read.url")?"-rw.xml":".xml")
+				+ (chk("jdbc.common.transaction") ? ",classpath*:/dswork/config/spring/ex/spring-dswork-common.xml" + spring : spring);
 		}
 		if(c("jdbc1.dialect.name"))
 		{
-			
 			String[] mapperArray = {null, null, null, null, null, null};
-			spring = ",classpath*:/dswork/config/spring/spring-mybatis1" + (c("jdbc1.read.url")?"-rw.xml":".xml") + spring;
+			spring = ",classpath*:/dswork/config/spring/spring-mybatis1" + (c("jdbc1.read.url")?"-rw.xml":".xml")
+					+ (chk("jdbc1.transaction") ? ",classpath*:/dswork/config/spring/ex/spring-dswork-1.xml" + spring : spring);
 			String[] mappers = EnvironmentUtil.getToString("jdbc1.mapper", "").split(",");
 			int i = 1;
 			for(String p : mappers){if(p.length() > 0 && i < 6){mapperArray[i] = p;i++;}}
@@ -106,7 +105,8 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 		{
 			
 			String[] mapperArray = {null, null, null, null, null, null};
-			spring = ",classpath*:/dswork/config/spring/spring-mybatis2" + (c("jdbc2.read.url")?"-rw.xml":".xml") + spring;
+			spring = ",classpath*:/dswork/config/spring/spring-mybatis2" + (c("jdbc2.read.url")?"-rw.xml":".xml")
+					+ (chk("jdbc2.transaction") ? ",classpath*:/dswork/config/spring/ex/spring-dswork-2.xml" + spring : spring);
 			String[] mappers = EnvironmentUtil.getToString("jdbc2.mapper", "").split(",");
 			int i = 1;
 			for(String p : mappers){if(p.length() > 0 && i < 6){mapperArray[i] = p;i++;}}
@@ -116,7 +116,8 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 		{
 			
 			String[] mapperArray = {null, null, null, null, null, null};
-			spring = ",classpath*:/dswork/config/spring/spring-mybatis3" + (c("jdbc3.read.url")?"-rw.xml":".xml") + spring;
+			spring = ",classpath*:/dswork/config/spring/spring-mybatis3" + (c("jdbc3.read.url")?"-rw.xml":".xml")
+					+ (chk("jdbc3.transaction") ? ",classpath*:/dswork/config/spring/ex/spring-dswork-3.xml" + spring : spring);
 			String[] mappers = EnvironmentUtil.getToString("jdbc3.mapper", "").split(",");
 			int i = 1;
 			for(String p : mappers){if(p.length() > 0 && i < 6){mapperArray[i] = p;i++;}}
@@ -202,6 +203,11 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 	private boolean c(String name)
 	{
 		return EnvironmentUtil.getToString(name, "").length() > 0;
+	}
+	
+	private boolean chk(String name)
+	{
+		return EnvironmentUtil.getToString(name, "true").equals("true");
 	}
 }
 // context.setInitParameter("log4jConfiguration", "/WEB-INF/classes/config/log4j2.xml");

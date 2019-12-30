@@ -7,7 +7,7 @@
 	<classpathentry kind="src" path="dswork/dswork-config/src/main/java"/>
 	<classpathentry kind="src" path="dswork/dswork-core/src/main/java"/>
 	<classpathentry kind="src" path="dswork/dswork-cs/src/main/java"/>
-	<classpathentry kind="src" path="dswork/dswork-db/src/main/java"/>
+	<classpathentry excluding="dswork/db/redis/MyRedis.java" kind="src" path="dswork/dswork-db/src/main/java"/>
 	<classpathentry kind="src" path="dswork/dswork-flow/src/main/java"/>
 	<classpathentry kind="src" path="dswork/dswork-html/src/main/java"/>
 	<classpathentry kind="src" path="dswork/dswork-http/src/main/java"/>
@@ -22,15 +22,12 @@
 	<classpathentry kind="src" path="dswork/dswork-ee/src/main/java"/>
 	<classpathentry kind="src" path="dswork/dswork-config/src/main/resources"/>
 	<classpathentry kind="src" path="dswork/dswork-web/src/main/resources"/>
-	
 	<classpathentry kind="lib" path="/Lib/module/lucene/lucene-core-5.5.4.jar"/>
 	<classpathentry kind="lib" path="/Lib/module/template/freemarker-2.3.27.jar"/>
 	<classpathentry kind="lib" path="/Lib/database/mysql/mysql-connector-java-5.1.45-bin.jar"/>
 	<classpathentry kind="lib" path="/Lib/database/redis/commons-pool2-2.6.1.jar"/>
 	<classpathentry kind="lib" path="/Lib/database/redis/jedis-3.1.0.jar"/>
-	
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JAVAEE"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/DSWORK"/>
-	
 	<classpathentry kind="output" path="web/WEB-INF/classes"/>
 </classpath>
