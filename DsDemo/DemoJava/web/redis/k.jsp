@@ -10,7 +10,15 @@ static dswork.db.redis.config.RedisConfig config = new dswork.db.redis.config.Re
 static dswork.db.redis.RedisUtil mydb = new dswork.db.redis.RedisUtil(config);
 %><%
 String dbs = String.valueOf(request.getParameter("db"));
-String kv = String.valueOf(request.getParameter("k"));
+String kv = String.valueOf(request.getParameter("kv"));
+String k1 = String.valueOf(request.getParameter("k1"));
+String k2 = String.valueOf(request.getParameter("k2"));
+if(k1.equals("null")){
+	k1 = "";
+}
+if(k2.equals("null")){
+	k2 = "";
+}
 if(kv.equals("null") || kv.equals("")){
 	kv = "";
 }
@@ -35,7 +43,7 @@ if(db != 3)
 }
 if(kv.length() == 0)
 {
-	java.util.Set<String> set = jedis.keys("*");
+	java.util.Set<String> set = jedis.keys(k1 + "*");
 	jedis.close();
 	java.util.Set<String> sortSet = new java.util.TreeSet<String>(new java.util.Comparator<String>() {
 	    public int compare(String o1, String o2) {
@@ -67,18 +75,32 @@ if(kv.length() == 0)
 	</body>
 		<script type="text/javascript">
 		var iframe = document.getElementById("iframe");
-		function kv(k){iframe.setAttribute("src", "k.jsp?db=<%=db%>&k=" + k);}
+		function kv(k){iframe.setAttribute("src", "k.jsp?db=<%=db%>&kv=" + k);}
 		</script>
 	</html>
 	<%
 }
 else
 {
-	java.util.Map<String, String> map = jedis.hgetAll(kv);
+	java.util.Map<String, String> map = null;
 	String val = "";
-	if(map == null)
+	try
+	{
+		map = jedis.hgetAll(k2 + kv);
+	}
+	catch(Exception ex)
 	{
 		val = jedis.get(kv);
+	}
+	if(map == null)
+	{
+		try
+		{
+			val = jedis.get(kv);
+		}
+		catch(Exception ex)
+		{
+		}
 	}
 	jedis.close();
 	%>
@@ -95,10 +117,12 @@ else
 		<%
 		if(map == null)
 		{
-			out.print(kv + "=" + val + "<br/>");
+			out.print("String<br/>");
+			out.print(val + "<br/>");
 		}
 		else
 		{
+			out.print("Map<br/>");
 			for(String s : map.keySet())
 			{
 				out.print(s + "=" + String.valueOf(map.get(s)) + "<br/>");
