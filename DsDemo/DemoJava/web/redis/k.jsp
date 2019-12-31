@@ -46,9 +46,9 @@ if(kv.length() == 0)
 	java.util.Set<String> set = jedis.keys(k1 + "*");
 	jedis.close();
 	java.util.Set<String> sortSet = new java.util.TreeSet<String>(new java.util.Comparator<String>() {
-	    public int compare(String o1, String o2) {
-	        return o2.compareTo(o1);//降序排列
-	    }
+		public int compare(String o1, String o2) {
+			return o2.compareTo(o1);//降序排列
+		}
 	});
 	sortSet.addAll(set);
 	%>
