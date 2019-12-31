@@ -2,7 +2,7 @@
 static dswork.db.redis.config.RedisConfig config = new dswork.db.redis.config.RedisConfig()
 .setHost("127.0.0.1").setPassword(null).setPort(6379)//
 .setDatabase(3)//
-.setMinIdle(1).setMaxIdle(2).setMaxTotal(2)//
+.setMinIdle(1).setMaxIdle(1).setMaxTotal(1)//
 .setMaxWaitMillis(10000).setTestOnBorrow(true).setTestOnReturn(true).setTestWhileIdle(true)//
 .setMinEvictableIdleTimeMillis(60000).setTimeBetweenEvictionRunsMillis(30000).setNumTestsPerEvictionRun(-1)//
 .setConnectTimeout(2000).setSoTimeout(2000)//
@@ -44,7 +44,6 @@ if(kv.length() == 0)
 	});
 	sortSet.addAll(set);
 	%>
-	<!DOCTYPE html>
 	<html>
 	<head>
 		<meta charset="UTF-8" />
@@ -76,9 +75,13 @@ if(kv.length() == 0)
 else
 {
 	java.util.Map<String, String> map = jedis.hgetAll(kv);
+	String val = "";
+	if(map == null)
+	{
+		val = jedis.get(kv);
+	}
 	jedis.close();
 	%>
-	<!DOCTYPE html>
 	<html>
 	<head>
 		<meta charset="UTF-8" />
@@ -89,10 +92,17 @@ else
 		<title></title>
 	</head>
 	<body>
-		<% 
-		for(String s : map.keySet())
+		<%
+		if(map == null)
 		{
-			out.print(s + "=" + map.get(s) + "<br/>");
+			out.print(kv + "=" + val + "<br/>");
+		}
+		else
+		{
+			for(String s : map.keySet())
+			{
+				out.print(s + "=" + String.valueOf(map.get(s)) + "<br/>");
+			}
 		}
 		%>
 	</body>
