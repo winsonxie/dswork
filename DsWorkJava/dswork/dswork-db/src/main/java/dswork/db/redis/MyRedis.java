@@ -198,6 +198,16 @@ public class MyRedis
 		{
 			this.redis = redis;
 		}
+		
+		public List<String> hvals(String key)
+		{
+			return redis.lpop(key);
+			return redis.rpop(key);
+			return redis.lpush(key, strings);
+			return redis.rpush(key, strings);
+			
+			return redis.lpush(key, strings);
+		}
 	}
 	
 	/**

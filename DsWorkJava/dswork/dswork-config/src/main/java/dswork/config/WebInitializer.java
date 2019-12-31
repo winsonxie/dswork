@@ -85,18 +85,18 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 		if(c("jdbc.url"))
 		{
 			spring = spath + "/spring-mybatis" + (c("jdbc.read.url")?"-rw.xml":".xml")
-					+ (chk("jdbc.transaction") ? spath + "/spring-dswork.xml" + spring : spring);
+					+ (chk("jdbc.transaction") ? spath + "/spring-t.xml" + spring : spring);
 		}
 		if(c("jdbc.common.dialect.name"))
 		{
 			spring = spath + "/spring-mybatis-common" + (c("jdbc.common.read.url")?"-rw.xml":".xml")
-				+ (chk("jdbc.common.transaction") ? spath + "/spring-dswork-common.xml" + spring : spring);
+				+ (chk("jdbc.common.transaction") ? spath + "/spring-t-common.xml" + spring : spring);
 		}
 		if(c("jdbc1.dialect.name"))
 		{
 			String[] mapperArray = {null, null, null, null, null, null};
 			spring = spath + "/spring-mybatis1" + (c("jdbc1.read.url")?"-rw.xml":".xml")
-					+ (chk("jdbc1.transaction") ? spath + "/spring-dswork-1.xml" + spring : spring);
+					+ (chk("jdbc1.transaction") ? spath + "/spring-t-1.xml" + spring : spring);
 			String[] mappers = EnvironmentUtil.getToString("jdbc1.mapper", "").split(",");
 			int i = 1;
 			for(String p : mappers){if(p.length() > 0 && i < 6){mapperArray[i] = p;i++;}}
@@ -107,7 +107,7 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 			
 			String[] mapperArray = {null, null, null, null, null, null};
 			spring = spath + "/spring-mybatis2" + (c("jdbc2.read.url")?"-rw.xml":".xml")
-					+ (chk("jdbc2.transaction") ? spath + "/spring-dswork-2.xml" + spring : spring);
+					+ (chk("jdbc2.transaction") ? spath + "/spring-t-2.xml" + spring : spring);
 			String[] mappers = EnvironmentUtil.getToString("jdbc2.mapper", "").split(",");
 			int i = 1;
 			for(String p : mappers){if(p.length() > 0 && i < 6){mapperArray[i] = p;i++;}}
@@ -118,7 +118,7 @@ public class WebInitializer implements dswork.web.MyWebInitializer
 			
 			String[] mapperArray = {null, null, null, null, null, null};
 			spring = spath + "/spring-mybatis3" + (c("jdbc3.read.url")?"-rw.xml":".xml")
-					+ (chk("jdbc3.transaction") ? spath + "/spring-dswork-3.xml" + spring : spring);
+					+ (chk("jdbc3.transaction") ? spath + "/spring-t-3.xml" + spring : spring);
 			String[] mappers = EnvironmentUtil.getToString("jdbc3.mapper", "").split(",");
 			int i = 1;
 			for(String p : mappers){if(p.length() > 0 && i < 6){mapperArray[i] = p;i++;}}
