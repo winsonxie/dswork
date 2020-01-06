@@ -50,7 +50,7 @@ function attachUrl(){
 	document.getElementById(frameId).src = url;
 }
 
-$dswork.result = {type:"", msg:"", data:""};
+$dswork.result = {code:-1, type:"", msg:"", data:null};
 $dswork.checkResult = function(res){
 	var o = $dswork.result = {code:-1, type:"", msg:"", data:null};
 	try{
