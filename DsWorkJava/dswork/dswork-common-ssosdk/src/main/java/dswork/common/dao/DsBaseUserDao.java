@@ -209,13 +209,13 @@ public class DsBaseUserDao extends MyBatisDao
 	}
 
 	// 用于api
-	public List<IUser> queryUserByOrgPid(String orgpid)
+	public List<IUser> queryUserByOrgPid(long orgpid)
 	{
 		return executeSelectList("queryUserByOrgPid", orgpid);
 	}
 
 	// 用于api
-	public List<IUser> queryUserByOrgId(String orgid)
+	public List<IUser> queryUserByOrgId(long orgid)
 	{
 		return executeSelectList("queryUserByOrgId", orgid);
 	}

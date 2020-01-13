@@ -44,7 +44,7 @@ public class DsBaseOrgDao extends MyBatisDao
 	}
 
 	// org //////////////////////////////////////////////////////////////////
-	public IOrg getOrgByOrgid(String orgid)
+	public IOrg getOrgByOrgid(long orgid)
 	{
 		return (IOrg) executeSelect("getOrgByOrgid", orgid);
 	}

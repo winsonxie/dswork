@@ -196,7 +196,11 @@ public class SsoDao
 	// }
 	public IUser[] queryUserByOrgPid(String orgpid)
 	{
-		List<IUser> list = userDao.queryUserByOrgPid(orgpid);
+		if(orgpid == null || "".equals(orgpid))
+		{
+			orgpid = "0";
+		}
+		List<IUser> list = userDao.queryUserByOrgPid(Long.parseLong(orgpid));
 		if(list != null)
 		{
 			for(IUser u : list)
@@ -210,7 +214,11 @@ public class SsoDao
 
 	public IUser[] queryUserByOrgId(String orgid)
 	{
-		List<IUser> list = userDao.queryUserByOrgId(orgid);
+		if(orgid == null || "".equals(orgid))
+		{
+			orgid = "0";
+		}
+		List<IUser> list = userDao.queryUserByOrgId(Long.parseLong(orgid));
 		if(list != null)
 		{
 			for(IUser u : list)
@@ -275,7 +283,14 @@ public class SsoDao
 		{
 			return null;
 		}
-		return orgDao.getOrgByOrgid(orgid);
+		try
+		{
+			return orgDao.getOrgByOrgid(Long.parseLong(orgid));
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
 	}
 
 	public IOrg[] queryOrgByOrgPid(String orgpid)

@@ -89,10 +89,11 @@
 	left join DS_BASE_USER u on u.ID=ub.USERID
 	where ub.OPENID=#{openid} and ub.BINDID=#{bindid}
 </select>
-<select id="queryUserByOrgPid" resultMap="resultUser" parameterType="String">
-	select <include refid="columnsUser" />, 0 as SID from DS_BASE_USER u where u.ORGPID=#{orgpid}
+<select id="queryUserByOrgPid" resultMap="resultUser" parameterType="long">
+	select <include refid="columnsUser" />, 0 as SID from DS_BASE_USER u 
+	where <if test="orgpid &gt; 0"> u.ORGPID=#{orgpid} </if><if test="orgpid &lt;= 0"> u.ORGPID is null </if>
 </select>
-<select id="queryUserByOrgId" resultMap="resultUser" parameterType="String">
+<select id="queryUserByOrgId" resultMap="resultUser" parameterType="long">
 	select <include refid="columnsUser" />, 0 as SID from DS_BASE_USER u where u.ORGID=#{orgid}
 </select>
 
