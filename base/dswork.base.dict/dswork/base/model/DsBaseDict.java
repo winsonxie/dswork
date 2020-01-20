@@ -7,13 +7,13 @@ public class DsBaseDict
 {
 	// 主键
 	private Long id = 0L;
-	// 引用名
+	// 引用名，如SSXQ
 	private String name = "";
-	// 名称
+	// 名称，如行政区划
 	private String label = "";
-	// 层级(0任意树形,1列表,n=>n级属性)
+	// 层级(0为任意层,1层相当于列表,n=>n级属性)
 	private Integer level = 0;
-	// 编码规则(level>1时可选)
+	// 编码规则，逗号隔开每层位数(level大于0时必填，如SSXQ为2,2,2,3,3)
 	private String rule = "";
 	// 排序
 	private Integer seq = 0;
