@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -291,10 +292,33 @@ public class FileUtil
 	{
 		try
 		{
-			File file = new File(filePath);
-			if(file.isFile())// 存在且为文件
+			InputStream fin = null;
+			if(filePath.toLowerCase().startsWith("classpath:"))
 			{
-				FileInputStream fin = new FileInputStream(file);
+				fin = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath.substring("classpath:".length()));
+				if(fin == null)
+				{
+					throw new FileNotFoundException(filePath);
+				}
+			}
+			else if(filePath.toLowerCase().startsWith("classpath*:"))
+			{
+				fin = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath.substring("classpath*:".length()));
+				if(fin == null)
+				{
+					throw new FileNotFoundException(filePath);
+				}
+			}
+			else
+			{
+				File file = new File(filePath);
+				if(file.isFile())// 存在且为文件
+				{
+					fin = new FileInputStream(file);
+				}
+			}
+			if(fin != null)// 存在且为文件
+			{
 				ByteArrayOutputStream bout = new ByteArrayOutputStream(4096);
 				byte[] buffer = new byte[4096];
 				int bytes_read;
