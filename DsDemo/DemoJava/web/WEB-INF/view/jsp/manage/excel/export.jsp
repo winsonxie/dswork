@@ -20,6 +20,11 @@ HSSFRow row = null;
 HSSFCell cell;
 int colNum = 0;// 设置excel的位置
 
+int fw = 256;
+sheet.setColumnWidth(0, 20*fw);
+sheet.setColumnWidth(1, 35*fw);
+sheet.setColumnWidth(2, 19*fw);
+
 titleRow++;
 row = sheet.createRow(titleRow);
 //new Region(开始行, 开始列, 结束行, 结束列);
