@@ -71,19 +71,6 @@ $dswork.callback = function(){if($dswork.result.code == 1){
 		</td>
 	</tr>
 </c:forEach>
-<c:forEach items="${pageModel.result}" var="d">
-	<tr>
-		<td><input name="keyIndex" type="checkbox" value="${d.id}" /></td>
-		<td class="menuTool" keyIndex="${d.id}">&nbsp;</td>
-		<td>${fn:escapeXml(d.title)}</td>
-		<td>${fn:escapeXml(d.content)}</td>
-		<td>${fn:escapeXml(d.foundtime)}</td>
-		<td class="menuTool">
-			<a class="update" href="updDemo1.htm?keyIndex=${d.id}">修改</a>
-			<a class="delete" href="delDemo.htm?keyIndex=${d.id}">删除</a>
-		</td>
-	</tr>
-</c:forEach>
 	<tr class="nolist">
 		<td class="form_bottom" colspan="6"><input class="listFormDelAll" type="button" value="批量删除"></td>
 	</tr>

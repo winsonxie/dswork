@@ -19,7 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import dswork.core.page.Page;
-import dswork.core.page.PageNav;
+import dswork.core.util.IdUtil;
 import dswork.mvc.BaseController;
 import dswork.web.MyFile;
 import testwork.model.Demo;
@@ -101,7 +101,7 @@ public class ManageExcelController extends BaseController
 							}
 							// 标题title, 内容content, 创建时间foundtime
 							Demo o = new Demo();
-							// o.setId(IdUtil.genId());
+							o.setId(IdUtil.genId());
 							String title = getString(row.getCell(0));
 							String content = getString(row.getCell(1));
 							String foundtime = getString(row.getCell(2));
