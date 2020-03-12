@@ -27,12 +27,13 @@ int fw = 256;
 sheet.setColumnWidth(0, 20*fw);
 sheet.setColumnWidth(1, 35*fw);
 sheet.setColumnWidth(2, 19*fw);
+sheet.setColumnWidth(3, 10*fw);
 
 titleRow++;
 row = sheet.createRow(titleRow);
 //new Region(开始行, 开始列, 结束行, 结束列);
 //new CellRangeAddress(开始行, 结束行, 开始列, 结束列);
-sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0, 0, 0, 2));
+sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0, 0, 0, 3));
 cell = row.createCell(colNum++, Cell.CELL_TYPE_STRING);
 cell.setCellStyle(cellStyleTitle);
 cell.setCellValue("数据导出");
@@ -57,7 +58,7 @@ if(true)
 	
 	cell = row.createCell(colNum++, Cell.CELL_TYPE_STRING);
 	cell.setCellStyle(cellStyleTitle);
-	cell.setCellValue("测试信息2");
+	cell.setCellValue("扩展信息");
 }
 
 if(true)
@@ -68,6 +69,7 @@ if(true)
 	row.createCell(colNum++, Cell.CELL_TYPE_STRING).setCellValue("标题");
 	row.createCell(colNum++, Cell.CELL_TYPE_STRING).setCellValue("内容");
 	row.createCell(colNum++, Cell.CELL_TYPE_STRING).setCellValue("创建时间");
+	row.createCell(colNum++, Cell.CELL_TYPE_STRING).setCellValue("序号");
 }
 for(int i = 0; i < list.size(); i++)
 {
@@ -78,6 +80,18 @@ for(int i = 0; i < list.size(); i++)
 	row.createCell(colNum++, Cell.CELL_TYPE_STRING).setCellValue(d.getTitle());
 	row.createCell(colNum++, Cell.CELL_TYPE_STRING).setCellValue(d.getContent());
 	row.createCell(colNum++, Cell.CELL_TYPE_STRING).setCellValue(d.getFoundtime());
+	row.createCell(colNum++, Cell.CELL_TYPE_STRING).setCellValue(i+1);
+}
+
+
+if(true)
+{
+	titleRow++;
+	row = sheet.createRow(titleRow);
+	colNum = 4;
+	String colstr = "";
+	colstr = org.apache.poi.hssf.util.CellReference.convertNumToColString(colNum);// D列
+	row.createCell(colNum, Cell.CELL_TYPE_STRING).setCellFormula("SUM(" + colstr + "4:" + colstr + titleRow + ")");// 从1开始
 }
 
 wb.write(fos);
