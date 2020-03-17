@@ -86,7 +86,7 @@ public class WeiboUtil
 					}
 					userBind = new IUserBind();
 					userBind.setOpenid(user.getOpenid());
-					userBind.setUnionid("");
+					userBind.setUnionid(user.getOpenid());
 					userBind.setName(user.getName());
 					userBind.setSex(sex);
 					userBind.setAvatar(user.getProfileImageUrl());

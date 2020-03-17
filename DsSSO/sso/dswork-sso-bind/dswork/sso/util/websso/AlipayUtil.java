@@ -108,7 +108,7 @@ public class AlipayUtil
 				}
 				userBind = new IUserBind();
 				userBind.setOpenid(user.getUserid());
-				userBind.setUnionid("");
+				userBind.setUnionid(user.getUserid());
 				userBind.setName(user.getNickname());
 				userBind.setSex(sex);
 				userBind.setAvatar(user.getAvatar());
