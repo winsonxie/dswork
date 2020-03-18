@@ -16,10 +16,9 @@ public class TokenUserUtil
 	private static ConcurrentMap<String, String> user = new ConcurrentHashMap<String, String>();
 	// 1000(1秒)|60000(1分钟)|3600000(1小时)|86400000(1天)
 	public static final int code_timeout = 10 * 60000;
-	public static final int code_timeout_second = 10 * 60;
 	public static final long token_timeout = 30 * 86400000;
 	public static final int token_timeout_second = 30 * 86400;
-	public static final int user_timeout_second = 365 * 86400;
+	public static final int user_timeout = 365 * 86400000;
 	private static final String secret = "TokenUserUtil";
 
 	/**
@@ -38,7 +37,7 @@ public class TokenUserUtil
 		{
 			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
 			String key = authorizecode;
-			db.setex(key, code_timeout_second, ResponseUtil.toJson(code));
+			db.psetex(key, code_timeout, ResponseUtil.toJson(code));
 			db.close();
 		}
 		else
@@ -108,7 +107,7 @@ public class TokenUserUtil
 		if(ResponseUtil.USE_REDIS)
 		{
 			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
-			db.setex(openid, user_timeout_second, userinfoJSON == null ? "" : userinfoJSON);
+			db.psetex(openid, user_timeout, userinfoJSON == null ? "" : userinfoJSON);
 			db.close();
 		}
 		else
@@ -133,8 +132,8 @@ public class TokenUserUtil
 		if(ResponseUtil.USE_REDIS)
 		{
 			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
-			db.setex(key, token_timeout_second, access_token);
-			db.setex(openid, user_timeout_second, userinfoJSON == null ? "" : userinfoJSON);
+			db.psetex(key, token_timeout, access_token);
+			db.psetex(openid, user_timeout, userinfoJSON == null ? "" : userinfoJSON);
 			db.close();
 		}
 		else

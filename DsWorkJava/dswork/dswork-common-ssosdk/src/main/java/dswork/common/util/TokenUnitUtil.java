@@ -50,7 +50,7 @@ public class TokenUnitUtil
 					db.setex(ukey2, (int)(out/1000), oldvalue);
 				}
 			}
-			db.setex(ukey1, token_timeout_second, access_token);
+			db.psetex(ukey1, token_timeout, access_token);
 			db.close();
 		}
 		else
