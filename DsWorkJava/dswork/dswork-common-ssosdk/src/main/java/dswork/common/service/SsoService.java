@@ -14,6 +14,7 @@ import dswork.common.model.IOrg;
 import dswork.common.model.ISystem;
 import dswork.common.model.IUser;
 import dswork.common.model.IUserBind;
+import dswork.common.model.IUserBindState;
 import dswork.common.model.IUserBm;
 
 @Service
@@ -62,9 +63,14 @@ public class SsoService
 		return dao.updateUserPassword(userid, password);
 	}
 
-	public IUserBind saveOrUpdateUserBind(IUserBind userBind, boolean isCreateUser, String userType)
+	public IUserBind saveOrUpdateUserBind(IUserBind userBind, boolean isCreateUser, IUser bindUser)
 	{
-		return dao.saveOrUpdateUserBind(userBind, isCreateUser, userType);
+		return dao.saveOrUpdateUserBind(userBind, isCreateUser, bindUser);
+	}
+
+	public int updateUserBind(IUserBind userBind)
+	{
+		return dao.updateUserBind(userBind);
 	}
 
 	public int updateUserid(IUser user, String oldBm, String newBm)
@@ -80,6 +86,16 @@ public class SsoService
 	public IUserBm getUserBm(String bm)
 	{
 		return dao.getUserBm(bm.toLowerCase(Locale.ENGLISH));
+	}
+
+	public List<IUserBindState> getUserBindStateByUserId(long userid)
+	{
+		return dao.getUserBindStateByUserId(userid);
+	}
+
+	public int updateUserBindForUnBind(long userid, String bindids)
+	{
+		return dao.updateUserBindForUnBind(userid, bindids);
 	}
 	//////////////////////////// api////////////////////////////
 

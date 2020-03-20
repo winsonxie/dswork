@@ -16,9 +16,9 @@ public class TokenUserUtil
 	private static ConcurrentMap<String, String> user = new ConcurrentHashMap<String, String>();
 	// 1000(1秒)|60000(1分钟)|3600000(1小时)|86400000(1天)
 	public static final int code_timeout = 10 * 60000;
-	public static final long token_timeout = 30 * 86400000;
+	public static final long token_timeout = 30 * 86400000L;
 	public static final int token_timeout_second = 30 * 86400;
-	public static final int user_timeout = 365 * 86400000;
+	public static final long user_timeout = 365 * 86400000L;
 	private static final String secret = "TokenUserUtil";
 
 	/**

@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import dswork.common.model.IUserBind;
+import dswork.common.model.IUserBindState;
 import dswork.core.db.MyBatisDao;
 
 @Repository
@@ -26,7 +27,7 @@ public class DsBaseUserBindDao extends MyBatisDao
 		}
 		return super.getSqlSessionTemplate();
 	}
-	
+
 	public void setSqlSessionTemplateCommon(SqlSessionTemplate sqlSessionTemplate)
 	{
 		if(log.isInfoEnabled())
@@ -36,7 +37,7 @@ public class DsBaseUserBindDao extends MyBatisDao
 		hasCommon = true;
 		this.sqlSessionTemplateCommon = sqlSessionTemplate;
 	}
-	
+
 	@Override
 	public Class getEntityClass()
 	{
@@ -57,13 +58,14 @@ public class DsBaseUserBindDao extends MyBatisDao
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
-		return (IUserBind) executeSelect("queryUserBind", id);
+		return (IUserBind) executeSelect("queryUserBind", map);
 	}
 
-	public IUserBind queryUserBindByOpenid(String openid)
+	public IUserBind queryUserBindByOpenid(String openid, long bindid)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("openid", openid);
+		map.put("bindid", bindid);
 		return (IUserBind) executeSelect("queryUserBind", map);
 	}
 
@@ -72,5 +74,20 @@ public class DsBaseUserBindDao extends MyBatisDao
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("unionid", unionid);
 		return (List<IUserBind>) executeSelectList("queryUserBind", map);
+	}
+
+	public List<IUserBindState> getUserBindStateByUserId(long userid)
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userid", userid);
+		return (List<IUserBindState>) executeSelectList("getUserBindStateByUserId", map);
+	}
+
+	public int updateUserBindForUnBind(long userid, String bindids)
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userid", userid);
+		map.put("bindids", bindids);
+		return executeUpdate("updateUserBindForUnBind", map);
 	}
 }

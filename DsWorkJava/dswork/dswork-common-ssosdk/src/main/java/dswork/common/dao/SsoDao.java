@@ -12,6 +12,7 @@ import dswork.common.model.IOrg;
 import dswork.common.model.ISystem;
 import dswork.common.model.IUser;
 import dswork.common.model.IUserBind;
+import dswork.common.model.IUserBindState;
 import dswork.common.model.IUserBm;
 import dswork.core.util.EncryptUtil;
 import dswork.core.util.TimeUtil;
@@ -43,7 +44,7 @@ public class SsoDao
 		{
 			return null;
 		}
-		return (IUser) userDao.getUserByBm(bm);
+		return userDao.getUserByBm(bm);
 	}
 
 	public int saveUser(IUser user)
@@ -76,9 +77,16 @@ public class SsoDao
 		return userDao.updateUserPassword(userid, password);
 	}
 
-	public IUserBind saveOrUpdateUserBind(IUserBind userBind, boolean isCreateUser, String userType)
+	/**
+	 * @param userBind 第三方的用户信息
+	 * @param isCreateUser 是否创建用户，使用第三方账号注册用户，系统会自动生成账号并绑定
+	 * @param bindUser 第三方账号指定绑定的用户
+	 *        isCreateUser参数与bindUser参数理论上来说为互斥参数，isCreateUser==true时bindUser参数无效
+	 * @return
+	 */
+	public IUserBind saveOrUpdateUserBind(IUserBind userBind, boolean isCreateUser, IUser bindUser)
 	{
-		IUserBind temp = userBindDao.queryUserBindByOpenid(userBind.getOpenid());
+		IUserBind temp = userBindDao.queryUserBindByOpenid(userBind.getOpenid(), userBind.getBindid());
 		if(userBind.getUnionid().length() > 0 && (temp == null || temp.getUnionid().length() <= 0))
 		{
 			List<IUserBind> list = userBindDao.queryUserBindByUnionid(userBind.getUnionid());
@@ -106,17 +114,29 @@ public class SsoDao
 			userBind = temp;
 			temp = null;
 		}
-		if(isCreateUser && userBind.getUserid() == 0)
+		if(userBind.getUserid() == 0)
 		{
-			// 注册用户并绑定
-			IUser user = new IUser();
-			user.setStatus(1);
-			user.setName(userBind.getName());
-			user.setSex(userBind.getSex());
-			user.setAvatar(userBind.getAvatar());
-			user.setType(userType);
-			userDao.saveUser(user, null);
-			userBind.setUserid(user.getId());
+			if(isCreateUser)// 使用第三方账号注册用户，系统会自动生成账号并绑定
+			{
+				IUser user = new IUser();
+				user.setStatus(1);
+				user.setName(userBind.getName());
+				user.setSex(userBind.getSex());
+				user.setAvatar(userBind.getAvatar());
+				userDao.saveUser(user, null);
+				userBind.setUserid(user.getId());
+			}
+			else
+			{
+				if(bindUser != null)
+				{
+					IUser tempUser = userDao.getUserById(bindUser.getId());
+					if(tempUser != null)
+					{
+						userBind.setUserid(tempUser.getId());
+					}
+				}
+			}
 		}
 		userBind.setLasttime(System.currentTimeMillis());
 		if(userBind.getId() <= 0)
@@ -130,6 +150,11 @@ public class SsoDao
 			userBindDao.updateUserBind(userBind);// 如果没变不需要update
 		}
 		return userBind;
+	}
+
+	public int updateUserBind(IUserBind userBind)
+	{
+		return userBindDao.updateUserBind(userBind);
 	}
 
 	public int updateUserid(IUser user, String oldBm, String newBm)
@@ -146,8 +171,18 @@ public class SsoDao
 	{
 		return userDao.getUserBm(bm.toLowerCase(Locale.ENGLISH));
 	}
-	//////////////////////////// api////////////////////////////
 
+	public List<IUserBindState> getUserBindStateByUserId(long userid)
+	{
+		return userBindDao.getUserBindStateByUserId(userid);
+	}
+
+	public int updateUserBindForUnBind(long userid, String bindids)
+	{
+		return userBindDao.updateUserBindForUnBind(userid, bindids);
+	}
+
+	//////////////////////////// api////////////////////////////
 	public void updateUserPassword(String account, String password)
 	{
 		IUserBm bm = userDao.getUserBm(account.toLowerCase(Locale.ENGLISH));

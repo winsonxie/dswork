@@ -10,6 +10,7 @@ import dswork.common.model.IOrg;
 import dswork.common.model.ISystem;
 import dswork.common.model.IUser;
 import dswork.common.model.IUserBind;
+import dswork.common.model.IUserBindState;
 import dswork.common.model.IUserBm;
 import dswork.common.service.SsoService;
 
@@ -62,9 +63,14 @@ public class SsoServiceUtil
 		return service.updateUserPassword(userid, password);
 	}
 
-	public IUserBind saveOrUpdateUserBind(IUserBind userBind, boolean isCreateUser, String userType)
+	public IUserBind saveOrUpdateUserBind(IUserBind userBind, boolean isCreateUser, IUser bindUser)
 	{
-		return service.saveOrUpdateUserBind(userBind, isCreateUser, userType);
+		return service.saveOrUpdateUserBind(userBind, isCreateUser, bindUser);
+	}
+	
+	public int updateUserBind(IUserBind userBind)
+	{
+		return service.updateUserBind(userBind);
 	}
 
 	public int updateUserid(IUser user, String oldBm, String newBm)
@@ -81,6 +87,17 @@ public class SsoServiceUtil
 	{
 		return service.getUserBm(bm.toLowerCase(Locale.ENGLISH));
 	}
+	
+	public List<IUserBindState> getUserBindStateByUserId(long userid)
+	{
+		return service.getUserBindStateByUserId(userid);
+	}
+	
+	public int updateUserBindForUnBind(long userid, String bindids)
+	{
+		return service.updateUserBindForUnBind(userid, bindids);
+	}
+	
 
 	//////////////////////////// api////////////////////////////
 	public void updateUserPassword(String account, String password)

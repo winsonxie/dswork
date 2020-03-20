@@ -46,6 +46,10 @@
 	where ID=#{id}
 </update>
 
+<update id="updateUserBindForUnBind">
+	update DS_BASE_USER_BIND set USERID=0 where USERID=#{userid} and BINDID in (${bindids})
+</update>
+
 <sql id="dynamicWhere">
 	<where>
 		<if test="@Ognl@isNotEmpty(id)"> and ID=#{id} </if>
@@ -58,6 +62,26 @@
 <select id="queryUserBind" resultMap="resultUserBind">
 	select <include refid="columnsUserBind" /> from DS_BASE_USER_BIND
 	<include refid="dynamicWhere" />
+</select>
+
+<resultMap id="resultUserBindState" type="dswork.common.model.IUserBindState">
+	<id property="id" column="ID" />
+	<result property="status" column="STATUS" />
+	<result property="name" column="NAME" />
+	<result property="appid" column="APPID" />
+	<result property="appreturnurl" column="APPRETURNURL" />
+	<result property="apptype" column="APPTYPE" />
+	<result property="memo" column="MEMO" />
+	<result property="userbindid" column="USERBINDID" />
+	<result property="userid" column="USERID" />
+</resultMap>
+<sql id="columnsBind"></sql>
+
+<select id="getUserBindStateByUserId" resultMap="resultUserBindState">
+	select b.ID, b.STATUS, b.NAME, b.APPID, b.APPRETURNURL, b.APPTYPE, b.MEMO, ub.ID as USERBINDID, ub.USERID from DS_BASE_BIND b
+	left join DS_BASE_USER_BIND ub on ub.BINDID = b.ID and ub.USERID=#{userid}
+	where b.STATUS=1
+	group by b.ID
 </select>
 
 </mapper>
