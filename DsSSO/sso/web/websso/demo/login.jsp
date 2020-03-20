@@ -4,6 +4,7 @@ response.setDateHeader("Expires", 0);
 response.setHeader("Pragma","no-cache"); 
 request.setAttribute("c", "#2a92eb");// #003c7b #b71d29 #125995 #d3880d #2a92eb
 request.setAttribute("ctx", "/sso");
+request.setAttribute("list", dswork.common.SsoFactory.getSsoService().queryListBind());
 %><%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"
 %><%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"
 %><!DOCTYPE html>
@@ -66,7 +67,7 @@ i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
 .cp a:active{font-size:12px;font-weight:normal;font-family:arial;color:${c};text-decoration:underline;outline:none;}
 </style>
 <style type="text/css">
-body {background:#fff url(/sso/themes/share/bg/wave.png) bottom center repeat-x;}
+body {background:#fff url(${ctx}/themes/share/bg/wave.png) bottom center repeat-x;}
 .fieldset a {margin:0 10px;}
 </style>
 <link rel="stylesheet" type="text/css" href="${ctx}/themes/ssomedia.css"/>
@@ -82,11 +83,11 @@ body {background:#fff url(/sso/themes/share/bg/wave.png) bottom center repeat-x;
 				String loginURL = java.net.URLEncoder.encode(java.net.URLEncoder.encode("/sso/websso/demo/success.jsp", "UTF-8"), "UTF-8");
 				request.setAttribute("loginURL", java.net.URLEncoder.encode(loginURL, "UTF-8"));
 				%>
-				<a href="${ctx}/websso/login.jsp?bindid=1&bindtype=qq&appid=CA1DB36591314A59EB5B449EF61D03E6&url=${fn:escapeXml(loginURL)}" class="icon_qq" title="QQ登录"></a>
-				<a href="${ctx}/websso/login.jsp?bindid=2&bindtype=weibo&appid=CA1DB36591314A59EB5B449EF61D03E6&url=${fn:escapeXml(loginURL)}" class="icon_weibo" title="微博登录"></a>
-				<a href="${ctx}/websso/login.jsp?bindid=3&bindtype=alipay&appid=CA1DB36591314A59EB5B449EF61D03E6&url=${fn:escapeXml(loginURL)}" class="icon_alipay" title="支付宝登录"></a>
-				<a href="${ctx}/websso/login.jsp?bindid=6&bindtype=wechat-qrcode&appid=CA1DB36591314A59EB5B449EF61D03E6&url=${fn:escapeXml(loginURL)}" class="icon_wechat" title="微信扫码登录"></a>
-				<a href="${ctx}/websso/login.jsp?bindid=4&bindtype=wechat&appid=CA1DB36591314A59EB5B449EF61D03E6&url=${fn:escapeXml(loginURL)}" class="icon_wechat" title="微信公众号登录"></a>
+				<c:if test="${not empty list}">
+					<c:forEach items="${list}" var="d">
+						<a href="${ctx}/websso/login.jsp?bindid=${fn:escapeXml(d.id)}&bindtype=${fn:escapeXml(d.apptype)}&appid=CA1DB36591314A59EB5B449EF61D03E6&url=${fn:escapeXml(loginURL)}" class="icon_${fn:indexOf(d.apptype, 'wechat')!=-1?'wechat':d.apptype}" title="${fn:toUpperCase(d.name)}"></a>
+					</c:forEach>
+				</c:if>
 		</fieldset>
 	</div></div>
 	<div class="box"><div class="vbox">
@@ -96,11 +97,20 @@ body {background:#fff url(/sso/themes/share/bg/wave.png) bottom center repeat-x;
 				String registerURL = java.net.URLEncoder.encode(java.net.URLEncoder.encode("/sso/websso/demo/success.jsp", "UTF-8"), "UTF-8");
 				request.setAttribute("registerURL", java.net.URLEncoder.encode(registerURL, "UTF-8"));
 				%>
-				<a href="${ctx}/websso/login.jsp?bindid=1&reg=true&bindtype=qq&appid=CA1DB36591314A59EB5B449EF61D03E6&url=${fn:escapeXml(registerURL)}" class="icon_qq" title="QQ注册"></a>
-				<a href="${ctx}/websso/login.jsp?bindid=2&reg=true&bindtype=weibo&appid=CA1DB36591314A59EB5B449EF61D03E6&url=${fn:escapeXml(registerURL)}" class="icon_weibo" title="微博注册"></a>
-				<a href="${ctx}/websso/login.jsp?bindid=3&reg=true&bindtype=alipay&appid=CA1DB36591314A59EB5B449EF61D03E6&url=${fn:escapeXml(registerURL)}" class="icon_alipay" title="支付宝注册"></a>
-				<a href="${ctx}/websso/login.jsp?bindid=6&reg=true&bindtype=wechat-qrcode&appid=CA1DB36591314A59EB5B449EF61D03E6&url=${fn:escapeXml(registerURL)}" class="icon_wechat" title="微信扫码注册"></a>
-				<a href="${ctx}/websso/login.jsp?bindid=4&reg=true&bindtype=wechat&appid=CA1DB36591314A59EB5B449EF61D03E6&url=${fn:escapeXml(registerURL)}" class="icon_wechat" title="微信公众号注册"></a>
+				<c:if test="${not empty list}">
+					<c:forEach items="${list}" var="d">
+						<a href="${ctx}/websso/login.jsp?bindid=${fn:escapeXml(d.id)}&bindtype=${fn:escapeXml(d.apptype)}&reg=true&appid=CA1DB36591314A59EB5B449EF61D03E6&url=${fn:escapeXml(registerURL)}" class="icon_${fn:indexOf(d.apptype, 'wechat')!=-1?'wechat':d.apptype}" title="${fn:toUpperCase(d.name)}"></a>
+					</c:forEach>
+				</c:if>
+		</fieldset>
+	</div></div>
+	<div class="box"><div class="vbox">
+		<fieldset class="fieldset">
+			<legend align="center" class="legend">绑定第三方账号</legend>
+				<%
+				request.setAttribute("bind_uri", java.net.URLEncoder.encode("/sso/websso/demo/bind.jsp?appid=CA1DB36591314A59EB5B449EF61D03E6", "UTF-8"));
+				%>
+				<a href="${ctx}/user/authorize?appid=CA1DB36591314A59EB5B449EF61D03E6&redirect_uri=${bind_uri}&response_type=code">绑定第三方账号</a>
 		</fieldset>
 	</div></div>
 </div>

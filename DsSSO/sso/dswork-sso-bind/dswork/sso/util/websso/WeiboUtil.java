@@ -20,12 +20,12 @@ public class WeiboUtil
 	public static WeiboAccessToken getAccessToken(String bind, String code)
 	{
 		IBind ws = WebssoUtil.get(bind);
-		String url = new StringBuilder(API_ACCESSTOKEN)
-				.append("?client_id=").append(ws.getAppid())
-				.append("&client_secret=").append(ws.getAppsecret())
-				.append("&grant_type=").append("authorization_code")
-				.append("&redirect_uri=").append(ws.getAppreturnurl())
-				.append("&code=").append(code)
+		String url = new StringBuilder(API_ACCESSTOKEN)//
+				.append("?client_id=").append(ws.getAppid())//
+				.append("&client_secret=").append(ws.getAppsecret())//
+				.append("&grant_type=").append("authorization_code")//
+				.append("&redirect_uri=").append(ws.getAppreturnurl())//
+				.append("&code=").append(code)//
 				.toString();
 		String json = new HttpUtil().create(url).setRequestMethod("POST").connect();
 		return WebssoUtil.toBean(json, WeiboAccessToken.class);
@@ -33,8 +33,8 @@ public class WeiboUtil
 
 	public static WeiboTokenInfo getOpenid(String access_token)
 	{
-		String url = new StringBuilder(API_TOKEN_INFO)
-				.append("?access_token=").append(access_token)
+		String url = new StringBuilder(API_TOKEN_INFO)//
+				.append("?access_token=").append(access_token)//
 				.toString();
 		String json = new HttpUtil().create(url).setRequestMethod("POST").connect();
 		return WebssoUtil.toBean(json, WeiboTokenInfo.class);
@@ -42,9 +42,9 @@ public class WeiboUtil
 
 	public static WeiboUser getUser(String access_token, String openid)
 	{
-		String url = new StringBuilder(API_USER)
-				.append("?access_token=").append(access_token)
-				.append("&uid=").append(openid)
+		String url = new StringBuilder(API_USER)//
+				.append("?access_token=").append(access_token)//
+				.append("&uid=").append(openid)//
 				.toString();
 		String json = new HttpUtil().create(url).setRequestMethod("GET").connect();
 		WeiboUser po = WebssoUtil.toBean(json, WeiboUser.class);
@@ -86,7 +86,7 @@ public class WeiboUtil
 					}
 					userBind = new IUserBind();
 					userBind.setOpenid(user.getOpenid());
-					userBind.setUnionid(user.getOpenid());
+					userBind.setUnionid("");
 					userBind.setName(user.getName());
 					userBind.setSex(sex);
 					userBind.setAvatar(user.getProfileImageUrl());

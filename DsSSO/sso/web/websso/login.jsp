@@ -1,4 +1,57 @@
 <%@page language="java" pageEncoding="UTF-8"%><%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"
+%><%!
+// 获取当前会话的sso账户
+public dswork.common.model.IUser getCurrLoginUser(long appkey, HttpServletRequest request)
+{
+	dswork.common.model.IUser user = null;
+	String[] arr = null;
+	String ssoticket = "";
+	Cookie[] cookies = request.getCookies();
+	if(cookies != null && cookies.length > 0)
+	{
+		for(Cookie cookie : cookies)
+		{
+			if("ssoticket".equals(cookie.getName()))
+			{
+				ssoticket = cookie.getValue();
+				break;
+			}
+		}
+	}
+	if(ssoticket.length() > 0)
+	{
+		if(ssoticket != null && ssoticket.length() > 10)
+		{
+			if(ssoticket.startsWith("-"))
+			{
+				arr = ssoticket.substring(1).split("-", 2);
+				if(arr.length == 2)
+				{
+					arr = new String[] { "-" + arr[0], arr[1], ssoticket };
+				}
+			}
+			else
+			{
+				arr = ssoticket.split("-", 2);
+				if(arr.length == 2)
+				{
+					arr = new String[] { arr[0], arr[1], ssoticket };
+				}
+			}
+		}
+		if(arr != null)
+		{
+			String openid = arr[0];
+			String access_token = arr[1];
+			String userinfoJSON = dswork.common.util.TokenUserUtil.tokenGet(appkey, openid, access_token);
+			if(userinfoJSON != null)
+			{
+				user = dswork.common.util.ResponseUtil.toBean(userinfoJSON, dswork.common.model.IUser.class);
+			}
+		}
+	}
+	return user;
+}
 %><%
 int i = 0;
 String url = "";
@@ -16,14 +69,16 @@ try
 	{
 		//dswork.common.service.DsBaseUserService service = (dswork.common.service.DsBaseUserService)dswork.spring.BeanFactory.getBean("dsBaseUserService");
 		boolean reg = "true".equals(req.getString("reg", req.getString("register", "false")));
-		String type = req.getString("type");
 		if("".equals(c))// 首次进入，需重定向至第三方登录
 		{
 			c = dswork.core.util.EncryptUtil.encryptMd5(date + bindid);
 			String authorizeURL = "about:blank";
 			String redirectURL = "%s%s";
 			String return_url = "about:blank";
-			return_url = java.net.URLEncoder.encode(bind.getAppreturnurl()+(bind.getAppreturnurl().indexOf("?")>0?"&":"?")+"appid="+appid+"&bindid="+bindid+"&c=" + (reg?c + "&reg=true":c) + (type.length()>0?"&type="+type:"") + "&url=" + url, "UTF-8");
+			return_url = java.net.URLEncoder.encode(
+					bind.getAppreturnurl() + (bind.getAppreturnurl().indexOf("?")>0?"&":"?")
+					+ "appid=" + appid + "&bindid=" + bindid + "&c=" + c + (reg?"&reg=true":"") + "&url=" + url
+			, "UTF-8");
 			appid = bind.getAppid();
 			if("weibo".equals(bind.getApptype()))
 			{
@@ -59,52 +114,68 @@ try
 		}
 		else // 第三方授权回调
 		{
-			url = java.net.URLDecoder.decode(java.net.URLDecoder.decode(req.getString("url", ""), "UTF-8"), "UTF-8");// get方式传过来的
-			String code = "";
-			if("alipay".equals(bind.getApptype()))
+			dswork.common.model.IUserBind po = null;
+			if("wechat-app".equals(bind.getApptype()))
 			{
-				code = req.getString("auth_code");
+				po = dswork.sso.util.websso.WebssoUtil.getUserBind(bindid, req.getString("accessToken", null), req.getString("openid", null), null);
 			}
 			else
 			{
-				code = req.getString("code");
-			}
-			String data = req.getString("data");
-			String iv = req.getString("iv");
-			dswork.common.model.IUserBind po = dswork.sso.util.websso.WebssoUtil.getUserBind(bindid, code, data, iv);
-			if(po != null)
-			{
-				po = dswork.common.SsoFactory.getSsoService().saveOrUpdateUserBind(po, reg, type);
-				if("wechat-mini".equals(bind.getApptype()))// 微信小程序回调
+				url = java.net.URLDecoder.decode(java.net.URLDecoder.decode(req.getString("url", ""), "UTF-8"), "UTF-8");// get方式传过来的
+				String code = "";
+				if("alipay".equals(bind.getApptype()))
 				{
-					dswork.common.model.IUser user = dswork.common.SsoFactory.getSsoService().getUserById(po.getUserid());
-					String userjson = dswork.common.util.ResponseUtil.toJson(user);
-					dswork.common.model.ZAuthtoken token = dswork.common.util.TokenUserUtil.tokenCreate(unit.getType(), String.valueOf(user.getId()), userjson);
-					dswork.common.util.ResponseUtil.printJson(response, dswork.common.util.ResponseUtil.getJsonUserToken(token));// token只能同源获取
-					return;
+					code = req.getString("auth_code");
 				}
 				else
 				{
-					url += (url.indexOf("?") > 0 ? "&" : "?") + "appid=" + appid + "&bindid=" + bindid + "&bindtype=" + bind.getApptype();
-					if(po.getUserid() != 0)
+					code = req.getString("code");
+				}
+				String data = req.getString("data");
+				String iv = req.getString("iv");
+				po = dswork.sso.util.websso.WebssoUtil.getUserBind(bindid, code, data, iv);
+			}
+			
+			if(po != null)
+			{
+				dswork.common.model.IUser bindUser = null;
+				// TODO 再此可获取当前登录的用户，绑定已登录的用户
+				bindUser = getCurrLoginUser(unit.getType(), request);
+				po = dswork.common.SsoFactory.getSsoService().saveOrUpdateUserBind(po, reg, bindUser);
+				if(po.getUserid() != 0)
+				{
+					dswork.common.model.IUser user = dswork.common.SsoFactory.getSsoService().getUserById(po.getUserid());
+					if("wechat-mini".equals(bind.getApptype()) || "wechat-app".equals(bind.getApptype()))// 微信小程序或APP
 					{
-						dswork.common.model.IUser user = dswork.common.SsoFactory.getSsoService().getUserById(po.getUserid());
+						String userjson = dswork.common.util.ResponseUtil.toJson(user);
+						dswork.common.model.ZAuthtoken token = dswork.common.util.TokenUserUtil.tokenCreate(unit.getType(), String.valueOf(user.getId()), userjson);
+						dswork.common.util.ResponseUtil.printJson(response, dswork.common.util.ResponseUtil.getJsonUserToken(token));
+						return;
+					}
+					else
+					{
+						url += (url.indexOf("?") > 0 ? "&" : "?") + "appid=" + appid + "&bindid=" + bindid + "&bindtype=" + bind.getApptype() + "&userbind=" + po.getId();
 						String userjson = dswork.common.util.ResponseUtil.toJson(user);
 						dswork.common.model.ZAuthorizecode _code = dswork.common.util.TokenUserUtil.codeCreate(bind.getAppreturnurl(), userjson);// 获取code
 						url += "&code=" + _code.getCode();
 					}
+				}
+				else
+				{
+					if("wechat-mini".equals(bind.getApptype()) || "wechat-app".equals(bind.getApptype()))// 微信小程序或APP
+					{
+						dswork.common.util.ResponseUtil.printJson(response, "{\"code\":404}");
+						return;
+					}
 					else
 					{
-						// 返回userbind
-						// String userbind = dswork.core.util.EncryptUtil.encodeDes(String.valueOf(po.getId()), "userbind");
-						// url += "&userbind=" + userbind;
+						url += (url.indexOf("?") > 0 ? "&" : "?") + "appid=" + appid + "&bindid=" + bindid + "&bindtype=" + bind.getApptype() + "&userbind=" + po.getId();
 						url += "&error=404";// 用户不存在
 					}
-					response.sendRedirect(url);
-					return;
 				}
+				response.sendRedirect(url);
+				return;
 			}
-			//i = 2;
 		}
 	}
 }
@@ -125,44 +196,6 @@ request.setAttribute("ctx", "/sso");
 request.setAttribute("c", "#2a92eb");// #003c7b #b71d29 #125995 #d3880d #2a92eb%><!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8" /><title>统一身份认证平台跳转</title>
-<%if(i == 2){ %>
-<link rel="stylesheet" type="text/css" href="${ctx}/themes/share/fonts/dsworkfont.css"/>
-<style type="text/css">
-html,body{height:100%;margin:0px auto;}
-body {background-color:#fff;font-family:tahoma,arial,"Microsoft YaHei","\5B8B\4F53",sans-serif;color:${c};font-size:16px;line-height:120%;}
-i{font-family:dsworkfont;font-weight:normal;font-style:normal;}
-.center-in-center{position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%, -50%);-moz-transform:translate(-50%, -50%);-ms-transform:translate(-50%, -50%);-o-transform:translate(-50%, -50%);transform:translate(-50%, -50%);}
-
-.view {overflow:hidden;margin:0 auto;width:100%;min-width:300px;max-width:1000px;overflow:hidden;padding:8px 0;}
-.view .login{margin:0 auto;padding:0;width:360px;max-width:360px;border:${c} solid 0px;overflow:hidden;background-color:#fff;box-shadow:0 0 8px 0px ${c};}
-
-.boxmsg{padding:0;display:none;}
-.boxname{padding:0;}
-.box{overflow:hidden;text-align:center;width:100%;margin:0 auto;padding:8px 0;border:none;}
-.box .name{background-color:#fff;width:100%;padding:16px 0 8px 0;margin:0 auto;font-size:22px;line-height:22px;text-align:center;font-weight:normal;}
-.box .msg{color:#ff0000;line-height:25px;}
-.box .vbox{margin:0 auto;padding:0;overflow:hidden;text-align:left;vertical-align:top;width:275px;}
-.box .vbox .input{border-radius:0 6px 6px 0;vertical-align:middle;height:48px;line-height:48px;background-color:#edf2f6;border:#d6e5ef 1px solid;border-left:none;width:194px;outline:none;padding:0 0 0 12px;}
-.box .vbox .input:focus{border-color:${c};}
-.box .vbox .input::placeholder{color:#999;}
-.box .vbox span {border-radius:6px 0 0 6px;vertical-align:middle;height:48px;line-height:48px;background-color:${c};border:${c} 1px solid;font-size:24px;margin:0;padding:0 20px;display:inline-block;color:#fff;}
-.box .button{background-color:${c};color:#fff;width:280px;height:50px;line-height:50px;cursor:pointer;border:none;border-radius:6px;-webkit-appearance:none;}
-.box .button:hover{filter:alpha(opacity:80);opacity:0.8;}
-
-.box .left{float:left;}
-.box .right{float:right;}
-.box b{font-weight:normal;font-style:normal;text-decoration:none;}
-.box label{font-size:16px;font-weight:normal;line-height:18px;cursor:pointer;}
-.box .link a,
-.box .link a:link,
-.box .link a:visited,
-.box .link a:active,
-.box .link label,
-.box .link b{color:${c};font-size:12px;text-decoration:none;outline:none;}
-.box .link b{margin:0 5px;}
-.box .link a:hover{filter:alpha(opacity:80);opacity:0.8;text-decoration:none;}
-</style>
-<%} %>
 </head>
 <body>
 <%if(i == 1){ %>
@@ -173,39 +206,6 @@ if(!isPc()){
 	authorize = authorize + "&display=mobile";
 }
 location.href = authorize;
-</script>
-<%}else if(i == 2){ %>
-<div class="view center-in-center">
-  <div class="login">
-	<div class="box boxname"><div class="name">是否绑定已有账号</div></div>
-	<div class="box"><div class="vbox">
-		<span><i>&#xf1001;</i></span><input type="text" id="account" name="account" autocomplete="off" class="input" value="" title="账号" placeholder="账号" />
-	</div></div>
-	<!-- <div class="box"><div class="vbox">
-		<span><i>&#xf1002;</i></span><input type="password" id="password" name="password" autocomplete="off" class="input" value="" title="密码" placeholder="密码" />
-	</div></div> -->
-	<div class="box boxmsg" id="msgdiv"><div class="vbox">
-		<div id="msg" class="msg"></div>
-	</div></div>
-	<div class="box">
-		<input type="button" class="button" value="绑 定" onclick="doclick()" />
-	</div>
-	<div class="box"><div class="vbox link">
-		<b class="left">不需要绑定账号，</b><a href="loginAction.jsp?id=${po.id}&service=${url}" class="left">直接登录</a>
-	</div></div>
-  </div>
-</div>
-<script type="text/javascript">
-function doclick(){
-	var account = _$("account").value;
-	if(!account){show("请输入需要绑定的账号！");return false;}
-	else{ajax({method: 'POST',url:"loginAction.jsp",data:{"id":"${po.id}","account":account,"bindid":"${bindid}"},success: function(response){var json= eval("("+response+")");if(json.code==1){countDown(json.data.code);}else{show("绑定失败！");}}});}
-}
-var count = 3;
-function countDown(code){if(count==0){location.href = ("${url}" + ("${url}".indexOf("?") > 0 ? "&code=" : "?code=") + code);}show("绑定成功！" + (count--) +"秒后跳转页面");setTimeout("countDown(\""+code+"\")",1000);}
-function ajax(opt){opt = opt || {};opt.method = opt.method.toUpperCase() || 'POST';opt.url = opt.url || '';opt.async = opt.async || true;opt.data = opt.data || null;opt.success = opt.success || function(){};var xmlHttp = null;if(XMLHttpRequest){xmlHttp = new XMLHttpRequest();}else{xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');}var params = [];for(var key in opt.data){params.push(key + '=' + opt.data[key]);}var postData = params.join('&');if(opt.method.toUpperCase() === 'POST') {xmlHttp.open(opt.method, opt.url, opt.async);xmlHttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');xmlHttp.send(postData);}else if(opt.method.toUpperCase() === 'GET') {xmlHttp.open(opt.method, opt.url + '?' + postData, opt.async);xmlHttp.send(null);}xmlHttp.onreadystatechange = function (){if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {opt.success(xmlHttp.responseText);}};}
-function show(msg){if(_$("msg")){_$("msg").innerHTML = (msg==""?"":"<i>&#xf1010;</i> "+msg+"<br>");}if(_$("msgdiv")){_$("msgdiv").style.display = (msg==""?"none":"block");}};
-function _$(id){return document.getElementById(id);}
 </script>
 <%} %>
 </body>

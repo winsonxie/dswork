@@ -15,6 +15,7 @@ String code = String.valueOf(request.getParameter("code"));
 appid=<%=String.valueOf(request.getParameter("appid")) %><br>
 bindid=<%=String.valueOf(request.getParameter("bindid")) %><br>
 bindtype=<%=String.valueOf(request.getParameter("bindtype")) %><br>
+userbind=<%=String.valueOf(request.getParameter("userbind")) %><br>
 code=<%=String.valueOf(request.getParameter("code")) %><br>
 <%if(!error){%>
 <input type="button" value="确认转到Portal" onclick="location.href='/portal/sso/login?code=<%=code%>&url=%2Fportal%2Fframe%2Findex.jsp';"/><br>

@@ -20,12 +20,12 @@ public class QqUtil
 	public static QqAccessToken getAccessToken(String bind, String code)
 	{
 		IBind ws = WebssoUtil.get(bind);
-		String url = new StringBuilder(API_ACCESSTOKEN)
-				.append("?grant_type=").append("authorization_code")
-				.append("&client_id=").append(ws.getAppid())
-				.append("&client_secret=").append(ws.getAppsecret())
-				.append("&code=").append(code)
-				.append("&redirect_uri=").append(ws.getAppreturnurl())
+		String url = new StringBuilder(API_ACCESSTOKEN)//
+				.append("?grant_type=").append("authorization_code")//
+				.append("&client_id=").append(ws.getAppid())//
+				.append("&client_secret=").append(ws.getAppsecret())//
+				.append("&code=").append(code)//
+				.append("&redirect_uri=").append(ws.getAppreturnurl())//
 				.toString();
 		String query = new HttpUtil().create(url).setRequestMethod("GET").connect();
 		String json = queryToJson(query);
@@ -43,10 +43,10 @@ public class QqUtil
 	public static QqUserinfo getUserInfo(String bind, String access_token, String openid)
 	{
 		IBind ws = WebssoUtil.get(bind);
-		String url = new StringBuilder(API_USERINFO)
-				.append("?access_token=").append(access_token)
-				.append("&oauth_consumer_key=").append(ws.getAppid())
-				.append("&openid=").append(openid)
+		String url = new StringBuilder(API_USERINFO)//
+				.append("?access_token=").append(access_token)//
+				.append("&oauth_consumer_key=").append(ws.getAppid())//
+				.append("&openid=").append(openid)//
 				.toString();
 		String json = new HttpUtil().create(url).setRequestMethod("GET").connect();
 		QqUserinfo po = WebssoUtil.toBean(json, QqUserinfo.class);

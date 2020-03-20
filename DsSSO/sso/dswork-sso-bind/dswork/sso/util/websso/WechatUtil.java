@@ -18,26 +18,24 @@ public class WechatUtil
 	public static WechatAccessToken getAccessToken(String bind, String auth_code)
 	{
 		IBind ws = WebssoUtil.get(bind);
-		StringBuilder sb = new StringBuilder().append(API_ACCESSTOKEN)
-				.append("?appid=").append(ws.getAppid())
-				.append("&secret=").append(ws.getAppsecret())
-				.append("&code=").append(auth_code)
+		StringBuilder sb = new StringBuilder().append(API_ACCESSTOKEN)//
+				.append("?appid=").append(ws.getAppid())//
+				.append("&secret=").append(ws.getAppsecret())//
+				.append("&code=").append(auth_code)//
 				.append("&grant_type=authorization_code");
-		String json = new HttpUtil().create(sb.toString())
-				.connect();
+		String json = new HttpUtil().create(sb.toString()).connect();
 		return WebssoUtil.toBean(json, WechatAccessToken.class);
 	}
 
 	public static WechatUserinfo getUserInfo(String access_token, String openid)
 	{
-		StringBuilder sb = new StringBuilder().append(API_USERINFO)
-				.append("?access_token=").append(access_token)
+		StringBuilder sb = new StringBuilder().append(API_USERINFO)//
+				.append("?access_token=").append(access_token)//
 				.append("&openid=").append(openid);
-		String json = new HttpUtil().create(sb.toString())
-				.connect();
+		String json = new HttpUtil().create(sb.toString()).connect();
 		return WebssoUtil.toBean(json, WechatUserinfo.class);
 	}
-	
+
 	/**
 	 * 小程序登录凭证校验
 	 * @param bind
@@ -47,27 +45,33 @@ public class WechatUtil
 	public static Map<String, Object> code2Session(String bind, String code)
 	{
 		IBind ws = WebssoUtil.get(bind);
-		StringBuilder sb = new StringBuilder().append(API_MINI_SESSION)
-				.append("?appid=").append(ws.getAppid())
-				.append("&secret=").append(ws.getAppsecret())
-				.append("&js_code=").append(code)
+		StringBuilder sb = new StringBuilder().append(API_MINI_SESSION)//
+				.append("?appid=").append(ws.getAppid())//
+				.append("&secret=").append(ws.getAppsecret())//
+				.append("&js_code=").append(code)//
 				.append("&grant_type=").append("authorization_code");
-		String json = new HttpUtil().create(sb.toString())
-				.connect();
+		String json = new HttpUtil().create(sb.toString()).connect();
 		return WebssoUtil.toBean(json, Map.class);
 	}
 
-	public static IUserBind getUserBind(String bindid, String code, String data, String iv)
+	/**
+	 * @param bindid
+	 * @param codeOraccessToken Apptype：[wecha-app：accessToken，wechat-mini：code]
+	 * @param dataOrOpenid Apptype：[wecha-app：openid，wechat-mini：data]
+	 * @param iv Apptype：[wecha-app：null，wechat-mini：iv]
+	 * @return
+	 */
+	public static IUserBind getUserBind(String bindid, String codeOraccessToken, String dataOrOpenid, String iv)
 	{
 		IUserBind userBind = null;
 		IBind ws = WebssoUtil.get(bindid);
 		if("wechat-mini".equals(ws.getApptype()))
 		{
-			Map<String, Object> map = code2Session(bindid, code);
+			Map<String, Object> map = code2Session(bindid, codeOraccessToken);
 			if(map != null && 0D == Double.parseDouble(map.get("errcode").toString()))
 			{
 				String session_key = map.get("session_key").toString();
-				String user = decodeAes(data, session_key, iv);// 解密
+				String user = decodeAes(dataOrOpenid, session_key, iv);// 解密
 				map = WebssoUtil.toBean(user, Map.class);
 				userBind = new IUserBind();
 				userBind.setOpenid(map.get("openId").toString());
@@ -82,10 +86,15 @@ public class WechatUtil
 		}
 		else
 		{
-			WechatAccessToken accessToken = getAccessToken(bindid, code);
-			if(accessToken != null)
+			if(!"wechat-app".equals(ws.getApptype()))
 			{
-				WechatUserinfo user = getUserInfo(accessToken.getAccesstoken(), accessToken.getOpenid());
+				WechatAccessToken waccessToken = getAccessToken(bindid, codeOraccessToken);
+				codeOraccessToken = waccessToken.getAccesstoken();
+				dataOrOpenid = waccessToken.getOpenid();
+			}
+			if(codeOraccessToken != null && dataOrOpenid != null)
+			{
+				WechatUserinfo user = getUserInfo(codeOraccessToken, dataOrOpenid);
 				if(user != null)
 				{
 					int sex = 1;// 男性"1".equals(user.getSex())
@@ -114,7 +123,7 @@ public class WechatUtil
 		{
 			// 对称解密的目标密文
 			byte[] dataByte = dswork.core.util.EncryptUtil.decodeByteBase64(data);
-			// 对称解密秘钥 
+			// 对称解密秘钥
 			byte[] keyByte = dswork.core.util.EncryptUtil.decodeByteBase64(key);
 			// 对称解密算法初始向量
 			byte[] ivByte = dswork.core.util.EncryptUtil.decodeByteBase64(iv);
