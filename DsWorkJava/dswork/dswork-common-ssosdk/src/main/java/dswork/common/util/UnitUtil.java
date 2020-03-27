@@ -14,21 +14,46 @@ public class UnitUtil
 	{
 	}
 	private static ConcurrentMap<String, IUnit> map = new ConcurrentHashMap<String, IUnit>();
+	private static String UU = "UU";
 
 	public static void refresh()
 	{
 		DsBaseDao dao = (DsBaseDao) BeanFactory.getBean("dsBaseDao");
 		List<IUnit> list = dao.queryListUnit();
-		ConcurrentMap<String, IUnit> _map = new ConcurrentHashMap<String, IUnit>();
-		for(IUnit m : list)
+		if(ResponseUtil.USE_REDIS)
 		{
-			_map.put(m.getAppid() + "", m);
+			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
+			for(IUnit m : list)
+			{
+				db.hset(UU, m.getAppid() + "", ResponseUtil.toJson(m));
+			}
+			db.close();
 		}
-		map = _map;
+		else
+		{
+			ConcurrentMap<String, IUnit> _map = new ConcurrentHashMap<String, IUnit>();
+			for(IUnit m : list)
+			{
+				_map.put(m.getAppid() + "", m);
+			}
+			map = _map;
+		}
 	}
 
 	public static IUnit get(String appid)
 	{
-		return map.get(appid);
+		IUnit unit = null;
+		if(ResponseUtil.USE_REDIS)
+		{
+			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
+			String json = db.hget(UU, appid);
+			db.close();
+			unit = ResponseUtil.toBean(json, IUnit.class);
+		}
+		else
+		{
+			unit = map.get(appid);
+		}
+		return unit;
 	}
 }

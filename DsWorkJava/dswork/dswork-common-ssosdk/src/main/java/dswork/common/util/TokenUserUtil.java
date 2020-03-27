@@ -20,6 +20,14 @@ public class TokenUserUtil
 	public static final int token_timeout_second = 30 * 86400;
 	public static final long user_timeout = 365 * 86400000L;
 	private static final String secret = "TokenUserUtil";
+	private static final String SSO = "SSO";// 二级key
+	private static final String UT = "UT";
+
+	private static String getKey(long appkey, String openid)
+	{
+		StringBuilder sb = new StringBuilder(20);
+		return sb.append(UT).append(appkey).append("-").append(openid).toString();
+	}
 
 	/**
 	 * 存入值
@@ -98,25 +106,6 @@ public class TokenUserUtil
 	}
 
 	/**
-	 * 更新user值
-	 * @param openid 即userid
-	 * @param userinfoJSON
-	 */
-	public static void userUpdate(String openid, String userinfoJSON)
-	{
-		if(ResponseUtil.USE_REDIS)
-		{
-			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
-			db.psetex(openid, user_timeout, userinfoJSON == null ? "" : userinfoJSON);
-			db.close();
-		}
-		else
-		{
-			user.put(openid, userinfoJSON == null ? "" : userinfoJSON);
-		}
-	}
-
-	/**
 	 * 存入值
 	 * @param appkey 即unit的type
 	 * @param openid 即userid
@@ -128,12 +117,14 @@ public class TokenUserUtil
 		long time = System.currentTimeMillis() + token_timeout;
 		String access_token = dswork.core.util.EncryptUtil.encryptDes(time + "", secret);
 		ZAuthtoken token = new ZAuthtoken(access_token, token_timeout_second, "", openid);
-		String key = appkey + "-" + openid;
+		String key = getKey(appkey, openid);
 		if(ResponseUtil.USE_REDIS)
 		{
 			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
 			db.psetex(key, token_timeout, access_token);
-			db.psetex(openid, user_timeout, userinfoJSON == null ? "" : userinfoJSON);
+			// db.psetex(openid, user_timeout, userinfoJSON == null ? "" : userinfoJSON);
+			db.hset(openid, SSO, userinfoJSON == null ? "" : userinfoJSON);
+			db.pexpire(openid, user_timeout);
 			db.close();
 		}
 		else
@@ -149,19 +140,54 @@ public class TokenUserUtil
 	 * @param appkey 即unit的type
 	 * @param openid
 	 * @param access_token
+	 * @return info
+	 */
+	public static boolean tokenDel(long appkey, String openid, String access_token)
+	{
+		boolean result = false;
+		String key = getKey(appkey, openid);
+		if(ResponseUtil.USE_REDIS)
+		{
+			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
+			String token = db.get(key);
+			if(token != null && token.equals(access_token))
+			{
+				db.del(key);
+				result = true;
+			}
+			db.close();
+		}
+		else
+		{
+			String token = user_token.get(key);
+			if(token != null && token.equals(access_token))
+			{
+				user_token.remove(key);
+				result = true;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * 获取值
+	 * @param appkey 即unit的type
+	 * @param openid
+	 * @param access_token
 	 * @return userinfoJSON
 	 */
 	public static String tokenGet(long appkey, String openid, String access_token)
 	{
 		String info = null;
-		String key = appkey + "-" + openid;
+		String key = getKey(appkey, openid);
 		if(ResponseUtil.USE_REDIS)
 		{
 			redis.clients.jedis.Jedis db = RedisUtil.db.getReadJedis();
 			String token = db.get(key);
 			if(token != null && token.equals(access_token))
 			{
-				info = db.get(openid);
+				// info = db.get(openid);
+				info = db.hget(openid, SSO);
 			}
 			db.close();
 		}
@@ -193,36 +219,23 @@ public class TokenUserUtil
 	}
 
 	/**
-	 * 获取值
-	 * @param appkey 即unit的type
-	 * @param openid
-	 * @param access_token
-	 * @return info
+	 * 更新user值
+	 * @param openid 即userid
+	 * @param userinfoJSON
 	 */
-	public static boolean tokenDel(long appkey, String openid, String access_token)
+	public static void userUpdate(String openid, String userinfoJSON)
 	{
-		boolean result = false;
-		String key = appkey + "-" + openid;
 		if(ResponseUtil.USE_REDIS)
 		{
 			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
-			String token = db.get(key);
-			if(token != null && token.equals(access_token))
-			{
-				db.del(key);
-				result = true;
-			}
+			// db.psetex(openid, user_timeout, userinfoJSON == null ? "" : userinfoJSON);
+			db.hset(openid, SSO, userinfoJSON == null ? "" : userinfoJSON);
+			db.pexpire(openid, user_timeout);
 			db.close();
 		}
 		else
 		{
-			String token = user_token.get(key);
-			if(token != null && token.equals(access_token))
-			{
-				user_token.remove(key);
-				result = true;
-			}
+			user.put(openid, userinfoJSON == null ? "" : userinfoJSON);
 		}
-		return result;
 	}
 }
