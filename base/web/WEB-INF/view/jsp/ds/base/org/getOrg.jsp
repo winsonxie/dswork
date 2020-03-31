@@ -91,6 +91,7 @@ $("#dataTable>tbody>tr>td.v").each(function(){try{$(this).text($(this).text()=="
 		<td style="width:8%">类型</td>
 		<td>名称</td>
 		<td style="width:20%">系统编码</td>
+		<td style="width:20%">职责范围</td>
 		<td style="width:10%">操作</td>
 	</tr>
 <c:forEach items="${list}" var="d">
@@ -100,6 +101,7 @@ $("#dataTable>tbody>tr>td.v").each(function(){try{$(this).text($(this).text()=="
 		<td class="v">${d.status}</td>
 		<td>${fn:escapeXml(d.name)}</td>
 		<td>${d.id}</td>
+		<td>${fn:escapeXml(d.dutyscope)}</td>
 		<td class="menuTool">
 			<a class="update" href="updOrg1.htm?keyIndex=${d.id}">修改</a>
 		</td>
