@@ -22,6 +22,20 @@ import java.util.Locale;
  */
 public class EncryptUtil
 {
+	private static boolean isBase64 = false;
+	
+	static
+	{
+		try
+		{
+			Class.forName("java.util.Base64");
+			isBase64 = true;
+		}
+		catch(ClassNotFoundException ex)
+		{
+		}
+	}
+	
 	/**
 	 * 随机生成密钥对
 	 * @param keysize 512-2048
@@ -230,14 +244,9 @@ public class EncryptUtil
 	{
 		try
 		{
-			try
+			if(isBase64)
 			{
-				Class.forName("java.util.Base64");
 				return java.util.Base64.getEncoder().encodeToString(str.getBytes("UTF-8")).replaceAll("\r", "").replaceAll("\n", "");
-			}
-			catch(ClassNotFoundException ex)
-			{
-				// System.out.println("EncryptUtil ignore java.util.Base64 Class");
 			}
 			return (new sun.misc.BASE64Encoder()).encode(str.getBytes("UTF-8")).replaceAll("\r", "").replaceAll("\n", "");
 		}
@@ -259,14 +268,9 @@ public class EncryptUtil
 		{
 			if(str != null)
 			{
-				try
+				if(isBase64)
 				{
-					Class.forName("java.util.Base64");
 					return new String(java.util.Base64.getDecoder().decode(str), "UTF-8");
-				}
-				catch(ClassNotFoundException ex)
-				{
-					// .out.println("EncryptUtil ignore java.util.Base64 Class");
 				}
 				return new String((new sun.misc.BASE64Decoder()).decodeBuffer(str), "UTF-8");
 			}
@@ -287,14 +291,9 @@ public class EncryptUtil
 	{
 		try
 		{
-			try
+			if(isBase64)
 			{
-				Class.forName("java.util.Base64");
 				return java.util.Base64.getEncoder().encodeToString(byteArray).replaceAll("\r", "").replaceAll("\n", "");
-			}
-			catch(ClassNotFoundException ex)
-			{
-				// System.out.println("EncryptUtil ignore java.util.Base64 Class");
 			}
 			return (new sun.misc.BASE64Encoder()).encode(byteArray).replaceAll("\r", "").replaceAll("\n", "");
 		}
@@ -316,14 +315,9 @@ public class EncryptUtil
 		{
 			if(str != null)
 			{
-				try
+				if(isBase64)
 				{
-					Class.forName("java.util.Base64");
 					return java.util.Base64.getDecoder().decode(str);
-				}
-				catch(ClassNotFoundException ex)
-				{
-					// System.out.println("EncryptUtil ignore java.util.Base64 Class");
 				}
 				return (new sun.misc.BASE64Decoder()).decodeBuffer(str);
 			}
