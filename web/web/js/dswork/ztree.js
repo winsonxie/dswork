@@ -32,10 +32,10 @@ $dswork.ztree.rightClick = function(event, treeId, treeNode){//右击节点函�
 };
 $dswork.ztree.beforeCheck = function(treeId, treeNode){};//点击节点按钮前函数
 $dswork.ztree.check = function(event, treeId, treeNode){};//点击节点按钮函数
-$dswork.ztree.refreshNode = function(re, mynode){
+$dswork.ztree.refreshNode = function(re){
 	re = re?true:false;//是否需要刷新父节点，不传默认刷新当前节点
 	var z = $dswork.ztree;
-	var _c = mynode || z.getSelectedNode();//当前选中节点
+	var _c = z.getSelectedNode();//当前选中节点
 	if(_c == null){return false;}
 	if(_c.pid == null || _c.pid < 0){re = false;}//根节点
 	var _id = parseInt(re?_c.pid:_c.id);//需要刷新的节点id
