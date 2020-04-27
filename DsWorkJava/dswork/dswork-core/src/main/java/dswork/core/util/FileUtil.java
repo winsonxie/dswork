@@ -101,7 +101,6 @@ public class FileUtil
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
 		}
 	}
 
@@ -193,7 +192,6 @@ public class FileUtil
 		}
 		catch(Exception ex)
 		{
-			ex.printStackTrace();
 		}
 		return null;
 	}
@@ -274,12 +272,21 @@ public class FileUtil
 				outStream.write(data, 0, count);
 			}
 			data = null;
-			inStream.close();
 			return outStream.toByteArray();
 		}
 		catch(Exception e)
 		{
 			return null;
+		}
+		finally
+		{
+			try
+			{
+				inStream.close();
+			}
+			catch(Exception ee)
+			{
+			}
 		}
 	}
 
@@ -290,9 +297,9 @@ public class FileUtil
 	 */
 	public static byte[] getToByte(String filePath)
 	{
+		InputStream fin = null;
 		try
 		{
-			InputStream fin = null;
 			if(filePath.toLowerCase().startsWith("classpath:"))
 			{
 				fin = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath.substring("classpath:".length()));
@@ -326,13 +333,22 @@ public class FileUtil
 				{
 					bout.write(buffer, 0, bytes_read);
 				}
-				fin.close();
 				bout.close();
 				return bout.toByteArray();
 			}
 		}
 		catch(Exception ex)
 		{
+		}
+		finally
+		{
+			try
+			{
+				fin.close();
+			}
+			catch(Exception ee)
+			{
+			}
 		}
 		return null;
 	}
@@ -365,12 +381,21 @@ public class FileUtil
 				buffer.append(line + "\n");
 			}
 			in.close();
-			inStream.close();
 			return buffer.toString();
 		}
 		catch(Exception e)
 		{
 			return null;
+		}
+		finally
+		{
+			try
+			{
+				inStream.close();
+			}
+			catch(Exception ee)
+			{
+			}
 		}
 	}
 
@@ -393,7 +418,6 @@ public class FileUtil
 		}
 		catch(IOException e)
 		{
-			e.printStackTrace();
 		}
 		return null;
 	}
@@ -424,19 +448,36 @@ public class FileUtil
 			}
 			// 将该数据流写入到指定文件中
 			FileOutputStream outStream = new FileOutputStream(file);
-			byte[] buffer = new byte[8192];
-			int bytesRead;
-			while((bytesRead = inStream.read(buffer, 0, 8192)) != -1)// Read until EOF
+			try
 			{
-				outStream.write(buffer, 0, bytesRead);
+				byte[] buffer = new byte[8192];
+				int bytesRead;
+				while((bytesRead = inStream.read(buffer, 0, 8192)) != -1)// Read until EOF
+				{
+					outStream.write(buffer, 0, bytesRead);
+				} 
 			}
-			outStream.close();
-			inStream.close();
+			catch(Exception e)
+			{
+			}
+			finally
+			{
+				outStream.close();
+			}
 			return true;
 		}
 		catch(IOException ex)
 		{
-			ex.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				inStream.close();
+			}
+			catch(Exception ee)
+			{
+			}
 		}
 		return false;
 	}
@@ -473,7 +514,6 @@ public class FileUtil
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
 			return false;
 		}
 	}
