@@ -62,6 +62,11 @@ public class SsoServiceUtil
 	{
 		return service.updateUserPassword(userid, password);
 	}
+	
+	public int updateUserAccount(long userid, String account)
+	{
+		return service.updateUserAccount(userid, account);
+	}
 
 	public IUserBind saveOrUpdateUserBind(IUserBind userBind, boolean isCreateUser, IUser bindUser)
 	{
@@ -81,6 +86,11 @@ public class SsoServiceUtil
 	public int saveUser(IUser user, String reg_type)
 	{
 		return service.saveUser(user, reg_type);
+	}
+
+	public int saveUserBm(IUserBm userBm)
+	{
+		return service.saveUserBm(userBm);
 	}
 
 	public IUserBm getUserBm(String bm)

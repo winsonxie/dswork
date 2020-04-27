@@ -52,7 +52,7 @@ public class SsoService
 	{
 		return dao.updateUser(user);
 	}
-
+	
 	public int updateUserData(IUser user)
 	{
 		return dao.updateUserData(user);
@@ -61,6 +61,11 @@ public class SsoService
 	public int updateUserPassword(long userid, String password)
 	{
 		return dao.updateUserPassword(userid, password);
+	}
+	
+	public int updateUserAccount(long userid, String account)
+	{
+		return dao.updateUserAccount(userid, account);
 	}
 
 	public IUserBind saveOrUpdateUserBind(IUserBind userBind, boolean isCreateUser, IUser bindUser)
@@ -81,6 +86,11 @@ public class SsoService
 	public int saveUser(IUser user, String reg_type)
 	{
 		return dao.saveUser(user, reg_type);
+	}
+
+	public int saveUserBm(IUserBm userBm)
+	{
+		return dao.saveUserBm(userBm);
 	}
 
 	public IUserBm getUserBm(String bm)

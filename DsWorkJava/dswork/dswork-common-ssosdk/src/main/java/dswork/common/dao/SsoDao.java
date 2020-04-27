@@ -76,6 +76,11 @@ public class SsoDao
 	{
 		return userDao.updateUserPassword(userid, password);
 	}
+	
+	public int updateUserAccount(long userid, String account)
+	{
+		return userDao.updateUserAccount(userid, account);
+	}
 
 	/**
 	 * @param userBind 第三方的用户信息
@@ -165,6 +170,11 @@ public class SsoDao
 	public int saveUser(IUser user, String reg_type)
 	{
 		return userDao.saveUser(user, reg_type);
+	}
+
+	public int saveUserBm(IUserBm userBm)
+	{
+		return userDao.saveUserBm(userBm);
 	}
 
 	public IUserBm getUserBm(String bm)

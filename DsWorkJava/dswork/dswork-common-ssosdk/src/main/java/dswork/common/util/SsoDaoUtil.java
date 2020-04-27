@@ -75,6 +75,12 @@ public class SsoDaoUtil
 		return dao.updateUserPassword(userid, password);
 	}
 
+	public int updateUserAccount(long userid, String account)
+	{
+		init();
+		return dao.updateUserAccount(userid, account);
+	}
+
 	public IUserBind saveOrUpdateUserBind(IUserBind userBind, boolean isCreateUser, IUser bindUser)
 	{
 		init();
@@ -97,6 +103,12 @@ public class SsoDaoUtil
 	{
 		init();
 		return dao.saveUser(user, reg_type);
+	}
+
+	public int saveUserBm(IUserBm userBm)
+	{
+		init();
+		return dao.saveUserBm(userBm);
 	}
 
 	public IUserBm getUserBm(String bm)

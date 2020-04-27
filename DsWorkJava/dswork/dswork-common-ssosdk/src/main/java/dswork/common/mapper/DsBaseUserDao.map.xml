@@ -29,8 +29,9 @@
 	values
 	(#{id}, #{status}, #{ssqy}, #{name}, #{mobile}, #{account}, #{password}, #{workcard}, #{sex}, #{avatar}, #{idcard}, #{email}, #{phone}, #{orgpid}, #{orgid}, #{type}, #{typename}, #{exalias}, #{exname}, #{createtime}, #{lasttime})
 </insert>
-<delete id="delete">
-	delete from DS_BASE_USER where ID=#{id}
+
+<delete id="deleteUserBm">
+	delete from DS_BASE_USER_BM where BM=#{bm}
 </delete>
 <update id="updateUserPassword">
 	update DS_BASE_USER set PASSWORD=#{password}, LASTTIME=LASTTIME+1 where ID=#{id}
@@ -41,9 +42,13 @@
 	<if test="@Ognl@isNotEmpty(name)"> NAME=#{name}, </if>
 	<if test="@Ognl@isNotEmpty(sex)"> SEX=#{sex}, </if>
 	<if test="@Ognl@isNotEmpty(avatar)"> AVATAR=#{avatar}, </if>
+	<if test="@Ognl@isNotEmpty(idcard)"> IDCARD=#{idcard}, </if>
 	<if test="@Ognl@isNotEmpty(email)"> EMAIL=#{email}, </if>
 	<if test="@Ognl@isNotEmpty(phone)"> PHONE=#{phone}, </if>
 	LASTTIME=LASTTIME+1 where ID=#{id}
+</update>
+<update id="updateUserAccount" parameterType="dswork.common.model.IUser">
+	update DS_BASE_USER set ACCOUNT=#{account}, LASTTIME=LASTTIME+1 where ID=#{id}
 </update>
 <update id="updateUserData" parameterType="dswork.common.model.IUser">
 	update DS_BASE_USER set EXDATA=#{exdata}, LASTTIME=LASTTIME+1 where ID=#{id}

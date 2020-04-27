@@ -170,7 +170,7 @@ public class DsBaseUserDao extends MyBatisDao
 	{
 		return executeUpdate("updateUser", user);
 	}
-
+	
 	public int updateUserData(IUser user)
 	{
 		return executeUpdate("updateUserData", user);
@@ -184,6 +184,61 @@ public class DsBaseUserDao extends MyBatisDao
 			map.put("id", id);
 			map.put("password", password);
 			return executeUpdate("updateUserPassword", map);
+		}
+		return 0;
+	}
+
+	public int updateUserAccount(long userid, String account)
+	{
+		if(userid > 0)
+		{
+			String newAccount = account.trim().toLowerCase(Locale.ENGLISH);
+			IUser user = getUserById(userid);
+			if(user != null)
+			{
+				String oldAccount = user.getAccount();
+				boolean isChangeBm = false;
+				IUserBm oldUserBm = getUserBm(oldAccount);
+				if(oldUserBm != null && oldUserBm.getUserid() > 0)
+				{
+					IUserBm newUserBm = getUserBm(newAccount);
+					if(newUserBm == null)
+					{
+						isChangeBm = true;
+					}
+					else
+					{
+						if(newUserBm.getUserid() == 0l)
+						{
+							isChangeBm = true;
+						}
+					}
+				}
+				if(isChangeBm)
+				{
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("id", userid);
+					map.put("account", account);
+					int row = executeUpdate("updateUserAccount", map);
+					if(row > 0)
+					{
+						IUserBm newUserBm = new IUserBm();
+						newUserBm.setBm(newAccount);
+						newUserBm.setUserid(userid);
+						newUserBm.setType(0);
+						try
+						{
+							executeInsert("insertUserBm", newUserBm);
+						}
+						catch(Exception e)
+						{
+							executeUpdate("updateUserBm", newUserBm);
+						}
+						executeDelete("deleteUserBm", oldUserBm);
+						return 1;
+					}
+				}
+			}
 		}
 		return 0;
 	}
