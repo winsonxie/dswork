@@ -19,14 +19,14 @@ public class WebInitializer implements WebApplicationInitializer
 			,"/user/auth_token"     // 前端检查用户凭证(access_token)是否还有效
 			,"/user/authorize"      // 前端授权页面
 			,"/user/login"          // 前端登入认证
-			,"/user/register"       // 前端注册
 			,"/user/logout"         // 前端登出认证，即取消用户凭证
 			,"/user/redirect"       // 授权后访问重定向地址
+			,"/user/register"       // 前端注册
 			,"/user/userinfo"       // 前端账户信息
-			
-			,"/user/update/userinfo"// 更新账户信息
-			,"/user/update/password"// 更新账户密码
+
 			,"/user/update/account" // 更新账户账号
+			,"/user/update/password"// 更新账户密码
+			,"/user/update/userinfo"// 更新账户信息
 			
 			,"/unit/access_token"   // 获取应用凭证(access_token)
 			,"/unit/auth_token"     // 后端检查应用凭证(access_token)是否还有效
