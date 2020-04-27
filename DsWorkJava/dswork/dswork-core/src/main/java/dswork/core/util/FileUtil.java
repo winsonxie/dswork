@@ -99,7 +99,7 @@ public class FileUtil
 				writeFile(to.getPath(), (new FileInputStream(from)), true);
 			}
 		}
-		catch(Exception e)
+		catch(Exception ex)
 		{
 		}
 	}
