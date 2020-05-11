@@ -127,7 +127,7 @@ div.line{display:block;width:1px;height:3px;margin:0px;padding:0px;overflow:hidd
 .listTable{border:none;border-spacing:1px;border-collapse:separate;}
 .topTable tr, 
 .bottomTable tr, 
-.listTable tr{height:39px;line-height:1.5em;padding:0 15px;}
+.listTable tr{height:39px;line-height:1.5em;}
 .topTable td, 
 .listTable td{line-height:1.5em;vertical-align:middle;text-align:center;background-color:#ffffff;color:#2b3e44;word-wrap:break-word;word-break:break-all;}
 .listTable tr tr, .listTable td td{height:auto;line-height:normal;}
@@ -176,7 +176,7 @@ div.line{display:block;width:1px;height:3px;margin:0px;padding:0px;overflow:hidd
 /*内容*/td.form_input{padding-left:6px;padding-right:6px;text-align:left;background-color:#fff;}
 /*信息*/td.form_tips {text-align:center;height:50px;vertical-align:middle;}
 /*底部列(一般放置铵钮)*/
-td.form_bottom{height:39px;background-color:#fff;text-align:left;vertical-align:middle;padding:5px 0;}
+td.form_bottom{height:39px;background-color:#fff;text-align:left;vertical-align:middle;padding:3px 5px;}
 
 .treebody{height:100%;}
 .treebody .treediv{overflow:auto;height:100%;}
@@ -189,7 +189,7 @@ td.form_bottom{height:39px;background-color:#fff;text-align:left;vertical-align:
 .divMenuRight ul li.sep{padding:0px;height:1px;background-color:#dddddd;}
 
 #div_maskContainer{display:none;}
-#div_maskBackground{z-index:9999;position:absolute;left:0px;top:0px;background-color:#fff;}
+#div_maskBackground{z-index:9999;position:fixed;left:0px;top:0px;background-color:#fff;}
 #div_maskMessage{z-index:10000;width:300px;padding:40px;font-site:14px;font-weight:bold;position:absolute;text-align:center;background-color:#fff;border:#999 solid 3px;}
 
 .xheTool span{height:22px;height:22px !important;overflow:hidden;}

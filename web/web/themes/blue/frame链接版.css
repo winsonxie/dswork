@@ -226,7 +226,7 @@ td.form_bottom{height:39px;background-color:#fff;text-align:left;vertical-align:
 .divMenuRight ul li.sep{padding:0px;height:1px;background-color:#dddddd;}
 
 #div_maskContainer{display:none;}
-#div_maskBackground{z-index:9999;position:absolute;left:0px;top:0px;background-color:#fff;}
+#div_maskBackground{z-index:9999;position:fixed;left:0px;top:0px;background-color:#fff;}
 #div_maskMessage{z-index:10000;width:300px;padding:40px;font-site:14px;font-weight:bold;position:absolute;text-align:center;background-color:#fff;border:#999 solid 3px;}
 
 .xheTool span{height:22px;height:22px !important;overflow:hidden;}
