@@ -31,7 +31,7 @@ $dswork.getWebRootPath = function(){
 	var p = window.location.pathname;
 	var i = p.indexOf("/");
 	if(i != 0){p = p.substring(0, i);return "/" + p;}
-	return (p.match(/\/\w+/))[0];
+	return (p.match(/\/[\w-]+/))[0];
 };
 var ctx = $dswork.getWebRootPath();//站点虚拟根目录，没有则改为"/"
 String.prototype.trim = function(){return this.replace(/(^\s*)|(\s*$)/g, "").replace(/(^　*)|(　*$)/g, "");};
