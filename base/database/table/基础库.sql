@@ -39,7 +39,7 @@ CREATE TABLE DS_BASE_USER_LOG
   APPID                VARCHAR(256)  COMMENT '登录的APPID' NOT NULL,
   ATYPE                VARCHAR(16)   COMMENT '标识类型(AUTHORIZE或ACCESS_TOKEN或SMS)',
   ACODE                VARCHAR(128)  COMMENT '标识值',
-  OPTYPE               INT           COMMENT '操作(0登出,1登入,2修改密码,3更换账号,4注销)' NOT NULL
+  OPTYPE               INT           COMMENT '操作(0登出,1登入,2修改密码,3更换账号,4注销)' NOT NULL,
   OPTIME               VARCHAR(19)   COMMENT '操作时间' NOT NULL,
   OPREAD               VARCHAR(512)  COMMENT '操作说明',
   STATUS               INT           COMMENT '状态(0失败,1成功)' NOT NULL,
