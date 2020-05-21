@@ -5,9 +5,7 @@
 
 <mapper namespace="dswork.common.dao.DsBaseUserLogDao">
 <insert id="insertUserLog">
-	insert into DS_BASE_USER_LOG
-	(ID, APPID, ATYPE, ACODE, TICKET, OPTYPE, OPTIME, OPREAD, STATUS, IP, USERID, BM, NAME)
-	values
-	(#{id}, #{appid}, #{atype}, #{acode}, #{optype}, #{optime}, #{opread}, #{status}, #{ip}, #{userid}, #{bm}, #{name})
+	insert into DS_BASE_USER_LOG(ID, APPID, ATYPE, ACODE, OPTYPE, OPTIME, OPREAD, STATUS, IP, USERID, BM, NAME)
+	values(#{id}, #{appid}, #{atype}, #{acode}, #{optype}, #{optime}, #{opread}, #{status}, #{ip}, #{userid}, #{bm}, #{name})
 </insert>
 </mapper>
