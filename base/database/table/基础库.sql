@@ -32,23 +32,23 @@ CREATE TABLE DS_BASE_BIND (
   PRIMARY KEY (ID)
 ) COMMENT='第三方应用配置信息';
 
-DROP TABLE IF EXISTS DS_BASE_LOGIN;
-CREATE TABLE DS_BASE_LOGIN
+DROP TABLE IF EXISTS DS_BASE_USER_LOG;
+CREATE TABLE DS_BASE_USER_LOG
 (
   ID                   BIGINT(16)    COMMENT '主键ID' NOT NULL,
   APPID                VARCHAR(256)  COMMENT '登录的APPID' NOT NULL,
-  LOGINTIME            VARCHAR(19)   COMMENT '登录时间' NOT NULL,
-  LOGOUTTIME           VARCHAR(19)   COMMENT '登出时间',
-  TIMEOUTTIME          VARCHAR(19)   COMMENT '超时时间',
-  PWDTIME              VARCHAR(19)   COMMENT '密码修改时间,没修改则为空',
-  TICKET               VARCHAR(128)  COMMENT '登录标识，格式：CODE或OPENID-ACCESS_TOKEN',
+  ATYPE                VARCHAR(16)   COMMENT '标识类型(AUTHORIZE或ACCESS_TOKEN或SMS)',
+  ACODE                VARCHAR(128)  COMMENT '标识值',
+  OPTYPE               INT           COMMENT '操作(0登出,1登入,2修改密码,3更换账号,4注销)' NOT NULL
+  OPTIME               VARCHAR(19)   COMMENT '操作时间' NOT NULL,
+  OPREAD               VARCHAR(512)  COMMENT '操作说明',
+  STATUS               INT           COMMENT '状态(0失败,1成功)' NOT NULL,
   IP                   VARCHAR(128)  COMMENT 'IP地址',
   USERID               BIGINT(16)    COMMENT '用户ID',
   BM                   VARCHAR(64)   COMMENT '操作人当前账号',
   NAME                 VARCHAR(30)   COMMENT '操作人名称',
-  STATUS               INT           COMMENT '状态(0失败,1成功)' NOT NULL,
   PRIMARY KEY (ID)
-) COMMENT '系统登录日志';
+) COMMENT '用户日志';
 
 DROP TABLE IF EXISTS DS_BASE_USERTYPE;
 CREATE TABLE DS_BASE_USERTYPE
