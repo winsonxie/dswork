@@ -2,11 +2,11 @@
     <wb-module deploy-name="sso">
         <wb-resource deploy-path="/" source-path="/web" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/config"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-sso-sms"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-sso-auth"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-sso-bind"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-sso-core"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-sso-auth-portal"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork-sso-sms"/>
         <property name="java-output-path" value="/sso/web/WEB-INF/classes"/>
         <property name="context-root" value="sso"/>
     </wb-module>
