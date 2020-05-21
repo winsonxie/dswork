@@ -1,5 +1,6 @@
 2019-03-24
 	新版dswork-sso.jar
+	配置/config/sso.properties
 	参数说明，有默认值的均可根据实际情况不配置：
 		dswork.sso.AuthGlobal 核心参数
 			sso.appid=                              应用ID，或使用参数名：sso.appID
@@ -20,11 +21,7 @@
 
 二、初始化配置
 	非web项目，仅需要调用dswork.sso.AuthGlobal.initConfig方法，即可使用该类提供的基本接口
-	web项目，配置sso.properties文件位置，文件内容使用参数说明，配置可在web.xml或全局ServletContext中配置
-		<context-param>
-			<param-name>dsworkSSOConfiguration</param-name>
-			<param-value>/config/sso.properties</param-value>
-		</context-param>
+	web项目，文件位置，文件内容使用参数说明，配置可在web.xml或全局ServletContext中配置
 
 	需要在web.xml中增加以下配置，并且需要sso的应用支持，需要开启metadata-complete="false"
 		<filter>
@@ -33,7 +30,7 @@
 		</filter>
 		<filter-mapping><filter-name>websso</filter-name><url-pattern>/manage/*</url-pattern></filter-mapping>
 	
-	需要手动配置以下两个servlet，其中SSOLoginServlet为登录后根据code登录，门户模式下必须SSOLogoutServlet
+	不开启metadata-complete="false"时，需要手动配置以下两个servlet，其中SSOLoginServlet为登录后根据code登录，门户模式下必须SSOLogoutServlet
 		<servlet><servlet-name>SSOLoginServlet</servlet-name><servlet-class>dswork.sso.SSOLoginServlet</servlet-class></servlet>
 		<servlet-mapping><servlet-name>SSOLoginServlet</servlet-name><url-pattern>/sso/login</url-pattern></servlet-mapping>
 	
