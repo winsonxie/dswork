@@ -26,7 +26,6 @@ public class AutoTimerExecute extends Thread
 			{
 				public void run()
 				{
-					System.out.println("--AutomaticExecute，run/7200s。--");
 					try
 					{
 						UnitUtil.refresh();
