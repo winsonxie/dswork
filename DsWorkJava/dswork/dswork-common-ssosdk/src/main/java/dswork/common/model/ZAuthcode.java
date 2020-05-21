@@ -38,7 +38,6 @@ public class ZAuthcode
 	private static final int auth_timeout = 24 * 3600000;
 	/**
 	 * 获取访问码
-	 * @param authtime 有效时间
 	 * @param secret 密钥
 	 * @return 访问码
 	 */

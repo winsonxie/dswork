@@ -96,7 +96,7 @@ public class SsoDao
 	 * @param isCreateUser 是否创建用户，使用第三方账号注册用户，系统会自动生成账号并绑定
 	 * @param bindUser 第三方账号指定绑定的用户
 	 *        isCreateUser参数与bindUser参数理论上来说为互斥参数，isCreateUser==true时bindUser参数无效
-	 * @return
+	 * @return IUserBind
 	 */
 	public IUserBind saveOrUpdateUserBind(IUserBind userBind, boolean isCreateUser, IUser bindUser)
 	{

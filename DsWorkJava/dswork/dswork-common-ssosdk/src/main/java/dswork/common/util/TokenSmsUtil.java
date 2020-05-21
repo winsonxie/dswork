@@ -15,9 +15,8 @@ public class TokenSmsUtil
 	/**
 	 * 存入值
 	 * @param key appid + mobile
-	 * @param value
-	 * @param timeout
-	 * @return token
+	 * @param code 短信
+	 * @param timeout 超时时间TokenSmsUtil.sms_timeout，默认20分钟
 	 */
 	public static void smscodeSet(String key, String code, int timeout)
 	{
@@ -29,12 +28,12 @@ public class TokenSmsUtil
 		{
 			code = "";
 		}
-		long time = System.currentTimeMillis() + sms_timeout;
+		long time = System.currentTimeMillis() + timeout;
 		if(ResponseUtil.USE_REDIS)
 		{
 			String mkey = "u0" + key;
 			redis.clients.jedis.Jedis db = RedisUtil.db.getJedis();
-			db.psetex(mkey, sms_timeout, code);
+			db.psetex(mkey, timeout, code);
 			db.close();
 		}
 		else
@@ -44,10 +43,9 @@ public class TokenSmsUtil
 	}
 
 	/**
-	 * 获取值
+	 * 获取值，如果timeout小于等于0取完删掉
 	 * @param key appid + mobile
-	 * @param timeout 如果小于等于0取完删掉
-	 * @return
+	 * @return 短信验证码，不存在返回空
 	 */
 	public static String smscodeGet(String key)
 	{

@@ -31,10 +31,9 @@ public class TokenUserUtil
 
 	/**
 	 * 存入值
-	 * @param key
-	 * @param value
-	 * @param timeout
-	 * @return token
+	 * @param redirect_uri 重定向地址
+	 * @param value code
+	 * @return ZAuthorizecode
 	 */
 	public static ZAuthorizecode codeCreate(String redirect_uri, String value)
 	{
@@ -57,9 +56,9 @@ public class TokenUserUtil
 
 	/**
 	 * 获取值
-	 * @param authorizecode
+	 * @param authorizecode authorizecode
 	 * @param del 如果为true，则获取后删除
-	 * @return
+	 * @return ZAuthorizecode
 	 */
 	public static ZAuthorizecode codeGet(String authorizecode, boolean del)
 	{
@@ -109,8 +108,8 @@ public class TokenUserUtil
 	 * 存入值
 	 * @param appkey 即unit的type
 	 * @param openid 即userid
-	 * @param userinfoJSON
-	 * @return access_token
+	 * @param userinfoJSON json
+	 * @return ZAuthtoken
 	 */
 	public static ZAuthtoken tokenCreate(long appkey, String openid, String userinfoJSON)
 	{
@@ -138,9 +137,9 @@ public class TokenUserUtil
 	/**
 	 * 获取值
 	 * @param appkey 即unit的type
-	 * @param openid
-	 * @param access_token
-	 * @return info
+	 * @param openid openid
+	 * @param access_token access_token
+	 * @return boolean
 	 */
 	public static boolean tokenDel(long appkey, String openid, String access_token)
 	{
@@ -172,8 +171,8 @@ public class TokenUserUtil
 	/**
 	 * 获取值
 	 * @param appkey 即unit的type
-	 * @param openid
-	 * @param access_token
+	 * @param openid openid
+	 * @param access_token access_token
 	 * @return userinfoJSON
 	 */
 	public static String tokenGet(long appkey, String openid, String access_token)
@@ -221,7 +220,7 @@ public class TokenUserUtil
 	/**
 	 * 更新user值
 	 * @param openid 即userid
-	 * @param userinfoJSON
+	 * @param userinfoJSON json
 	 */
 	public static void userUpdate(String openid, String userinfoJSON)
 	{

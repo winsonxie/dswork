@@ -33,8 +33,8 @@ public class ResponseUtil
 	
 	/**
 	 * 输出同源json
-	 * @param response
-	 * @param json
+	 * @param response response
+	 * @param json 输出json
 	 */
 	public static void printDomainJson(HttpServletResponse response, String json)
 	{
@@ -51,8 +51,8 @@ public class ResponseUtil
 	
 	/**
 	 * 输出可跨域json
-	 * @param response
-	 * @param json
+	 * @param response response
+	 * @param json 输出json
 	 */
 	public static void printJson(HttpServletResponse response, String json)
 	{
@@ -69,6 +69,11 @@ public class ResponseUtil
 		}
 	}
 
+	/**
+	 * 重定向
+	 * @param response response
+	 * @param url 重定向地址
+	 */
 	public static void sendRedirect(HttpServletResponse response, String url)
 	{
 		try
@@ -80,6 +85,11 @@ public class ResponseUtil
 		}
 	}
 	
+	/**
+	 * encodeURL地址
+	 * @param url 源url
+	 * @return encode后的url
+	 */
 	public static String getEncodeURL(String url)
 	{
 		try
@@ -91,7 +101,12 @@ public class ResponseUtil
 			return "";
 		}
 	}
-	
+
+	/**
+	 * decodeURL地址
+	 * @param url 源url
+	 * @return decode后的url
+	 */
 	public static String getDecodeURL(String url)
 	{
 		try
@@ -105,11 +120,22 @@ public class ResponseUtil
 	}
 	
 	private static com.google.gson.Gson gson = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").disableHtmlEscaping().create();
+	/**
+	 * 对象转json
+	 * @param object 对象
+	 * @return 转换后的json
+	 */
 	public static String toJson(Object object)
 	{
 		return gson.toJson(object);
 	}
-
+	/**
+	 * json转对象
+	 * @param json json
+	 * @param classOfT 泛型
+	 * @param <T> 泛型
+	 * @return 对象
+	 */
 	public static <T> T toBean(String json, Class<T> classOfT)
 	{
 		return gson.fromJson(json, classOfT);

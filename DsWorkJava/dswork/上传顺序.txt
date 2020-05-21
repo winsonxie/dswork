@@ -2,7 +2,6 @@ dswork-parent 主要pom，所有模块均依赖它
 
 dswork-analyzer
 dswork-builder
-dswork-common-ssosdk
 dswork-core
 dswork-db
 dswork-flow
@@ -15,6 +14,7 @@ dswork-sso
 dswork-web
 dswork-webio
 
+dswork-common-ssosdk 依赖dswork-core
 dswork-config 依赖dswork-core和dswork-web
 dswork-mvc 依赖dswork-core和dswork-web
 

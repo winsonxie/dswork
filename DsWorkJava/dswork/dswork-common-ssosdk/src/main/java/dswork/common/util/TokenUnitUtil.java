@@ -19,9 +19,7 @@ public class TokenUnitUtil
 	
 	/**
 	 * 存入值
-	 * @param key appid
-	 * @param value
-	 * @param timeout
+	 * @param appid appid
 	 * @return token
 	 */
 	public static ZAuthtoken setUnitToken(String appid)
@@ -82,8 +80,8 @@ public class TokenUnitUtil
 
 	/**
 	 * 检查access_token是否有效
-	 * @param key
-	 * @param access_token
+	 * @param appid appid
+	 * @param access_token access_token
 	 * @return boolean
 	 */
 	public static boolean checkUnitToken(String appid, String access_token)
