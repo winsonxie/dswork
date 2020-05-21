@@ -287,7 +287,8 @@ public class UserController
 							ResponseUtil.printJson(response, msg);
 							try
 							{
-								SsoFactory.getSsoService().saveLogLogin(appid, code.getCode(), getClientIp(request), bm, loginUser.getName(), true);
+								String opread = "password".equals(grant_type) ? "password login" : "smscode login";
+								SsoFactory.getSsoService().saveUserLog(appid, "AUTHORIZE", code.getCode(), 1, opread, true, getClientIp(request), loginUser.getId(), bm, loginUser.getName());
 							}
 							catch(Exception e)
 							{
@@ -299,7 +300,8 @@ public class UserController
 							ResponseUtil.printDomainJson(response, ResponseUtil.getJsonUserToken(token));// token只能同源获取
 							try
 							{
-								SsoFactory.getSsoService().saveLogLogin(appid, token.getOpenid() + "-" + token.getAccess_token(), getClientIp(request), bm, loginUser.getName(), true);
+								String opread = "password".equals(grant_type) ? "password login" : "smscode login";
+								SsoFactory.getSsoService().saveUserLog(appid, "ACCESS_TOKEN", token.getOpenid() + "-" + token.getAccess_token(), 1, opread, true, getClientIp(request), loginUser.getId(), bm, loginUser.getName());
 							}
 							catch(Exception e)
 							{
@@ -311,7 +313,8 @@ public class UserController
 			}
 			try
 			{
-				SsoFactory.getSsoService().saveLogLogin(appid, "", getClientIp(request), bm, "", false);
+				String atype = "code".equals(response_type) ? "AUTHORIZE" : "ACCESS_TOKEN";
+				SsoFactory.getSsoService().saveUserLog(appid, atype, "", 1, "", false, getClientIp(request), 0L, bm, "");
 			}
 			catch(Exception e)
 			{
@@ -335,7 +338,12 @@ public class UserController
 		{
 			try
 			{
-				SsoFactory.getSsoService().saveLogLogout(openid + "-" + token, false, false);
+				String userJson = TokenUserUtil.tokenGet(unit.getType(), openid, token);
+				if(userJson != null)
+				{
+					IUser user = ResponseUtil.toBean(userJson, IUser.class);
+					SsoFactory.getSsoService().saveUserLog(appid, "ACCESS_TOKEN", openid + "-" + token, 0, "logout", true, getClientIp(request), Long.parseLong(openid), user.getAccount(), user.getName());
+				}
 			}
 			catch(Exception e)
 			{
@@ -578,14 +586,18 @@ public class UserController
 				password = "";
 				msg = CodeUtil.CODE_400;// 参数不正确
 			}
+			// reset
+			String account = req.getString("account").trim().toLowerCase(Locale.ENGLISH);
+			String smscode = req.getString("smscode");
+			// password
+			long openid = req.getLong("openid");
+			String access_token = req.getString("access_token");
 			if(password.length() != 32)
 			{
 				msg = CodeUtil.CODE_400;// 参数不正确
 			}
 			else if("reset".equals(grant_type)) // 忘记密码, 只能使用手机号+短信验证码进行重置
 			{
-				String account = req.getString("account").trim().toLowerCase(Locale.ENGLISH);
-				String smscode = req.getString("smscode");
 				if("".equals(account))
 				{
 					msg = CodeUtil.CODE_400;// 参数不正确
@@ -616,8 +628,6 @@ public class UserController
 			}
 			else if("password".equals(grant_type)) // 修改密码，原密码修改
 			{
-				long openid = req.getLong("openid");
-				String access_token = req.getString("access_token");
 				String userJson = TokenUserUtil.tokenGet(unit.getType(), String.valueOf(openid), access_token);
 				if(userJson != null && userJson.length() > 0)
 				{
@@ -656,6 +666,16 @@ public class UserController
 			{
 				if(SsoFactory.getSsoService().updateUserPassword(user.getId(), password.toUpperCase(Locale.ENGLISH)) > 0)
 				{
+					try
+					{
+						String atype = "reset".equals(grant_type) ? "SMS" : "ACCESS_TOKEN";
+						String acode = "reset".equals(grant_type) ? smscode : (openid + "-" + access_token);
+						String bm = "reset".equals(grant_type) ? account : user.getAccount();
+						SsoFactory.getSsoService().saveUserLog(appid, atype, acode, 2, grant_type, true, getClientIp(request), user.getId(), bm, user.getName());
+					}
+					catch(Exception e)
+					{
+					}
 					ResponseUtil.printJson(response, CodeUtil.CODE_001);
 					return;
 				}
@@ -694,6 +714,14 @@ public class UserController
 					{
 						if(SsoFactory.getSsoService().updateUserid(iUser, oldaccount, newaccount) > 0)
 						{
+							try
+							{
+								String opread = "bm changed from " + oldaccount+ " to " + newaccount;
+								SsoFactory.getSsoService().saveUserLog(appid, "SMS" , smscode, 3, opread, true, getClientIp(request), iUser.getId(), oldaccount, iUser.getName());
+							}
+							catch(Exception e)
+							{
+							}
 							msg = CodeUtil.CODE_001;
 						}
 					}
