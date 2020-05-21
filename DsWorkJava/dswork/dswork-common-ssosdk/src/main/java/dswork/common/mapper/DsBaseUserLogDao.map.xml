@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="dswork.common.dao.DsBaseUserLogDao">
+<insert id="insertUserLog">
+	insert into DS_BASE_USER_LOG
+	(ID, APPID, ATYPE, ACODE, TICKET, OPTYPE, OPTIME, OPREAD, STATUS, IP, USERID, BM, NAME)
+	values
+	(#{id}, #{appid}, #{atype}, #{acode}, #{optype}, #{optime}, #{opread}, #{status}, #{ip}, #{userid}, #{bm}, #{name})
+</insert>
+</mapper>

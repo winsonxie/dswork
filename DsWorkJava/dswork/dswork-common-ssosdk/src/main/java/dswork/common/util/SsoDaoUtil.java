@@ -45,6 +45,12 @@ public class SsoDaoUtil
 		return dao.saveUser(user);
 	}
 
+	public int deleteUser(long id)
+	{
+		init();
+		return dao.deleteUser(id);
+	}
+
 	public IUser getUserById(long id)
 	{
 		init();
@@ -211,16 +217,10 @@ public class SsoDaoUtil
 		init();
 		return dao.queryOrgByOrgPid(orgpid);
 	}
-
-	public void saveLogLogin(String appid, String ticket, String ip, String bm, String name, boolean isSuccess)
+	
+	public void saveUserLog(String appid, String atype, String acode, int optype, String opread, boolean isSuccess, String ip, Long userid, String bm, String name)
 	{
 		init();
-		dao.saveLogLogin(appid, ticket, ip, bm, name, isSuccess);
-	}
-
-	public void saveLogLogout(String ticket, boolean isTimeout, boolean isUpdatePassword)
-	{
-		init();
-		dao.saveLogLogout(ticket, isTimeout, isUpdatePassword);
+		dao.saveUserLog(appid, atype, acode, optype, opread, isSuccess, ip, userid, bm, name);
 	}
 }

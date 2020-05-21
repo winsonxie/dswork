@@ -12,7 +12,7 @@ import dswork.core.util.TimeUtil;
 
 @Repository
 @SuppressWarnings("all")
-public class DsBaseLoginDao extends MyBatisDao
+public class DsBaseUserLogDao extends MyBatisDao
 {
 	private SqlSessionTemplate sqlSessionTemplateCommon;
 	private static boolean hasCommon = false;
@@ -40,36 +40,24 @@ public class DsBaseLoginDao extends MyBatisDao
 	@Override
 	public Class getEntityClass()
 	{
-		return DsBaseLoginDao.class;
+		return DsBaseUserLogDao.class;
 	}
-
-	public void saveLogLogin(String appid, String ticket, String ip, String bm, String name, boolean isSuccess)
+	
+	public void saveUserLog(String appid, String atype, String acode, int optype, String opread, boolean isSuccess, String ip, Long userid, String bm, String name)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
-		String time = TimeUtil.getCurrentTime();
 		map.put("id", IdUtil.genId());
-		map.put("logintime", time);
-		map.put("logouttime", isSuccess ? "0" : time);// 退出前标识为0
 		map.put("appid", appid);
-		map.put("ticket", ticket);
+		map.put("atype", atype);
+		map.put("acode", acode);
+		map.put("optype", optype);
+		map.put("optime", TimeUtil.getCurrentTime());
+		map.put("opread", opread);
+		map.put("status", isSuccess ? "1" : "0");
 		map.put("ip", ip);
+		map.put("userid", userid);
 		map.put("bm", bm);
 		map.put("name", name);
-		map.put("status", isSuccess ? "1" : "0");
-		executeInsert("insertLoginLog", map);
-	}
-
-	public void saveLogLogout(String ticket, boolean isTimeout, boolean isUpdatePassword)
-	{
-		if(ticket.length() > 0 && !ticket.equals("null"))
-		{
-			Map<String, Object> map = new HashMap<String, Object>();
-			String time = TimeUtil.getCurrentTime();
-			map.put("logouttime", time);
-			map.put("timeouttime", isTimeout ? time : "");
-			map.put("pwdtime", isUpdatePassword ? time : "");
-			map.put("ticket", ticket);
-			executeUpdate("updateLoginLog", map);
-		}
+		executeInsert("insertUserLog", map);
 	}
 }

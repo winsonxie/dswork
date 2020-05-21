@@ -177,14 +177,9 @@ public class SsoServiceUtil
 	{
 		return service.queryOrgByOrgPid(orgpid);
 	}
-
-	public void saveLogLogin(String appid, String ticket, String ip, String bm, String name, boolean isSuccess)
+	
+	public void saveUserLog(String appid, String atype, String acode, int optype, String opread, boolean isSuccess, String ip, Long userid, String bm, String name)
 	{
-		service.saveLogLogin(appid, ticket, ip, bm, name, isSuccess);
-	}
-
-	public void saveLogLogout(String ticket, boolean isTimeout, boolean isUpdatePassword)
-	{
-		service.saveLogLogout(ticket, isTimeout, isUpdatePassword);
+		service.saveUserLog(appid, atype, acode, optype, opread, isSuccess, ip, userid, bm, name);
 	}
 }

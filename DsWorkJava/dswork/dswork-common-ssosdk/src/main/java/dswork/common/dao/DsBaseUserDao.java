@@ -51,6 +51,11 @@ public class DsBaseUserDao extends MyBatisDao
 	{
 		return executeInsert("insertUserBm", bm);
 	}
+	
+	public int deleteUser(long id)
+	{
+		return executeDelete("deleteUser", id);
+	}
 
 	public int updateUserid(IUser user, String oldBm, String newBm)
 	{

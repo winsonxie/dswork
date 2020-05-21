@@ -31,7 +31,7 @@ public class SsoDao
 	@Autowired
 	private DsBaseOrgDao orgDao;
 	@Autowired
-	private DsBaseLoginDao logDao;
+	private DsBaseUserLogDao userLogDao;
 
 	public List<IBind> queryListBind()
 	{
@@ -50,6 +50,15 @@ public class SsoDao
 	public int saveUser(IUser user)
 	{
 		return userDao.saveUser(user, null);
+	}
+
+	public int deleteUser(long id)
+	{
+		if(id > 0)
+		{
+			return userDao.deleteUser(id);
+		}
+		return 0;
 	}
 
 	public IUser getUserById(long id)
@@ -353,14 +362,9 @@ public class SsoDao
 		}
 		return null;
 	}
-
-	public void saveLogLogin(String appid, String ticket, String ip, String bm, String name, boolean isSuccess)
+	
+	public void saveUserLog(String appid, String atype, String acode, int optype, String opread, boolean isSuccess, String ip, Long userid, String bm, String name)
 	{
-		logDao.saveLogLogin(appid, ticket, ip, bm, name, isSuccess);
-	}
-
-	public void saveLogLogout(String ticket, boolean isTimeout, boolean isUpdatePassword)
-	{
-		logDao.saveLogLogout(ticket, isTimeout, isUpdatePassword);
+		userLogDao.saveUserLog(appid, atype, acode, optype, opread, isSuccess, ip, userid, bm, name);
 	}
 }
