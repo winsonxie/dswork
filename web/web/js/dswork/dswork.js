@@ -214,7 +214,7 @@ $dswork.upload.prototype = {
 	p.limit = parseInt(p.limit);
 	p.buttonid = p.buttonid || "";
 	p.$bid = p.buttonid == "" ? p.id + "_span" : p.buttonid;
-	p.$sid = p.id + "_showdiv";
+	p.$sid = (p.buttonid == "" ? p.id : p.buttonid) + "_showdiv";
 	
 	p.$vInput = null;
 	if(p.vid != ""){p.$vInput = $("#" + p.vid);}
