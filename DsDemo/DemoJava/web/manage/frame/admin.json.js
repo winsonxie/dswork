@@ -3,6 +3,8 @@ var treedata = [
 	{id:101,name:'Demo', img:"", imgOpen:"", url:'/manage/demo/getDemo.htm', items:[]}
 	,{id:102,name:'Mark', img:"", imgOpen:"", url:'/manage/mark/getDemo.htm', items:[]}
 	,{id:103,name:'Excel', img:"", imgOpen:"", url:'/manage/excel/import1.htm', items:[]}
+	,{id:104,name:'WebTest', img:"", imgOpen:"", url:'/demo/webtest.jsp', items:[]}
+	,{id:105,name:'WebTestLayout', img:"", imgOpen:"", url:'/demo/webtestLayout.jsp', items:[]}
 ]}
 ,{id:20, name:"BBS", img:"", imgOpen:"", url:"", items:[
      {id:21,name:"站点管理", img:"", imgOpen:"", url:'/bbs/admin/site/getSite.htm', items:[]}
