@@ -53,12 +53,21 @@
 <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 <div id="tt" class="easyui-tabs" style="width:600px;height:400px;">
 	<div title="首页" closable="false">
-		<div style="overflow:hidden;width:100%;height:100%;">666</div>
+		<div style="overflow:hidden;width:100%;height:100%;">
+			<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+			<input type="text" value="jsjs" class="WebDate" onclick="$jskey.calendar.show({target:this,format:'yyyy-MM-dd W',show:'yyyy'})" readonly="true" title="yyyy" /><br />
+			
+		</div>
 	</div>
 	<div title="Test" closable="false">
 		<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 		<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 		<br />
+		<div style="width:400px;height:200px;padding:0 0 0 400px;border:1px solid red;">
+			<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+			<input type="text" value="jsjs" class="WebDate" onclick="$jskey.calendar.show({target:this,format:'yyyy-MM-dd W',show:'yyyy'})" readonly="true" title="yyyy" /><br />
+			
+		</div>
 		<input type="text" value="jsjs" class="WebDate" onclick="$jskey.calendar.show({target:this,format:'yyyy-MM-dd W',show:'yyyy'})" readonly="true" title="yyyy" /><br />
 		<input type="text" value="2004-06" class="WebDate" onclick="$jskey.calendar.show({target:this,lang:'en-US',format:'yyyy-MM',show:'yyyy-MM'})" readonly="true" title="yyyy-MM" /><br />
 		<input type="text" value="2007-06-11" class="WebDate" onclick="$jskey.calendar.show({target:this,skin:'gray',format:'yyyy/MM/dd 周w 第W周',show:'yyyy-MM-dd',left:5,top:-10})" readonly="true" title="yyyy/MM/dd 周w 第W周" /><br />
