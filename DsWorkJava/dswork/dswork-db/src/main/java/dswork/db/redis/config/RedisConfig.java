@@ -23,7 +23,7 @@ public class RedisConfig
 	private int timeBetweenEvictionRunsMillis = 30000;// 配置间隔多久才进行一次检测，检测需要关闭的空闲连接
 	private int numTestsPerEvictionRun = -1;// 表示idle object evitor每次扫描的最多的对象数
 	private int connectTimeout = 2000;// 连接超时时间
-	private int soTimeout = 2000;// 读取数据超时时间
+	private int soTimeout = 10000;// 读取数据超时时间
 	private String clientName = null;// 默认直接为null即可
 	boolean ssl = false;
 	SSLSocketFactory sslSocketFactory = null;
