@@ -153,7 +153,7 @@ public class DsCommonUtil
 	 * 直接添加
 	 * @param iflow
 	 */
-	public void setList(IFlowHandle iflow)
+	public static void setList(IFlowHandle iflow)
 	{
 		if(list == null)
 		{
@@ -161,9 +161,4 @@ public class DsCommonUtil
 		}
 		list.add(iflow);
 	}
-	
-	/*public List<IFlowHandle> getList()
-	{
-		return list;
-	}*/
 }
