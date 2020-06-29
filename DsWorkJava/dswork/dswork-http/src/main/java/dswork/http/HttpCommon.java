@@ -131,30 +131,89 @@ public class HttpCommon
 		return result.toString();
 	}
 
-	private static String CONTENT_FILE = "Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"\r\nContent-Type: %s";
-	private static String CONTENT_VALUE = "Content-Disposition: form-data; name=\"%s\"\r\n\r\n%s";
+//	private static void toByteArr(String args) throws java.io.UnsupportedEncodingException
+//	{
+//		System.out.print("{");
+//		if(args.length() > 0)
+//		{
+//			byte[] arr = args.getBytes("ISO-8859-1");
+//			System.out.print(arr[0]);
+//			for(int i = 1; i < arr.length; i++)
+//			{
+//				System.out.print(", ");
+//				System.out.print(arr[i]);
+//			}
+//		}
+//		System.out.println("}");
+//	}
+//	
+//	public static void main(String[] args) throws Exception
+//	{
+//		toByteArr("Content-Disposition: form-data; name=\"");
+//		toByteArr("\"; filename=\"");
+//		toByteArr("\"");
+//		toByteArr("Content-Type: ");
+//		toByteArr("\r\n");
+//		toByteArr("--");
+//		toByteArr("----WebKitFormBoundaryForDsworkAbcdefg");
+//	}
+	private static String CONTENT_BOUNDARY = "----WebKitFormBoundaryForDsworkAbcdefg";
+	//【Content-Disposition: form-data; name=\"】
+	private static byte[] B_T = {67, 111, 110, 116, 101, 110, 116, 45, 68, 105, 115, 112, 111, 115, 105, 116, 105, 111, 110, 58, 32, 102, 111, 114, 109, 45, 100, 97, 116, 97, 59, 32, 110, 97, 109, 101, 61, 34};
+	//【\"; filename=\"】
+	private static byte[] B_M = {34, 59, 32, 102, 105, 108, 101, 110, 97, 109, 101, 61, 34};
+	//【\"】
+	private static byte[] B_D = {34};
+	//【Content-Type: 】
+	private static byte[] B_C = {67, 111, 110, 116, 101, 110, 116, 45, 84, 121, 112, 101, 58, 32};
+	//【\r\n】
+	private static byte[] B_RN = {13, 10};
+	//【--】
+	private static byte[] B_JJ = {45, 45};
+	//【----WebKitFormBoundaryForDsworkAbcdefg】
+	private static byte[] B_BOUNDARY = {45, 45, 45, 45, 87, 101, 98, 75, 105, 116, 70, 111, 114, 109, 66, 111, 117, 110, 100, 97, 114, 121, 70, 111, 114, 68, 115, 119, 111, 114, 107, 65, 98, 99, 100, 101, 102, 103};
+
+	// Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"
+	// Content-Type: %s
 	
+	// Content-Disposition: form-data; name=\"%s\"
+	// 
+	// %s
 	public static byte[] formatFormdata(List<? extends NameValue> parameters, String charsetName, String boundarySeparator) throws java.io.IOException
 	{
 		ByteArrayOutputStream bout = new ByteArrayOutputStream(4096);
-		byte[] rnBoundary = (boundarySeparator + "\r\n").getBytes("ISO-8859-1");
-		byte[] rn = "\r\n".getBytes("ISO-8859-1");
+		byte[] rnBoundary = CONTENT_BOUNDARY.equals(boundarySeparator) ? B_BOUNDARY : boundarySeparator.getBytes(charsetName);
+		bout.write(B_JJ);
 		bout.write(rnBoundary);
+		bout.write(B_RN);
 		for(NameValue nv : parameters)
 		{
+			bout.write(B_T);
+			bout.write(nv.getName().getBytes(charsetName));
 			if(nv.isFormdata())
 			{
 				NameFile nf = (NameFile)nv;
-				bout.write(String.format(CONTENT_FILE, nf.getName(), nf.getFilename(), nf.getContenttype()).getBytes("ISO-8859-1"));
-				bout.write(rn);
-				bout.write(rn);
+				bout.write(B_M);
+				bout.write(nf.getFilename().getBytes(charsetName));
+				bout.write(B_D);
+				
+				bout.write(B_RN);
+				bout.write(B_C);
+				bout.write(nf.getContenttype().getBytes(charsetName));
+				
+				bout.write(B_RN);
+				bout.write(B_RN);
 				bout.write(nf.getFileobject());
 			}
 			else
 			{
-				bout.write(String.format(CONTENT_VALUE, nv.getName(), nv.getValue()).getBytes(charsetName));
+				bout.write(B_D);
+				bout.write(B_RN);
+				bout.write(B_RN);
+				bout.write(nv.getValue().getBytes(charsetName));
 			}
-			bout.write(rn);
+			bout.write(B_RN);
+			bout.write(B_JJ);
 			bout.write(rnBoundary);
 		}
 		bout.close();
