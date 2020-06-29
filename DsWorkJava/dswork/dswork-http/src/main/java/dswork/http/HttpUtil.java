@@ -29,8 +29,7 @@ public class HttpUtil
 	private int readTimeout = 30000;
 	private String url = "";
 	private String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.104";
-	private static String boundary = "----WebKitFormBoundaryForDsworkAbcdefg";
-	private static String boundaryContentType = "multipart/form-data; boundary=" + boundary;
+	private static String boundaryContentType = "multipart/form-data; boundary=----WebKitFormBoundaryForDsworkAbcdefg";
 	private String contentType = null;
 	private int responseCode = 0;
 
@@ -222,7 +221,7 @@ public class HttpUtil
 			if(formdata)
 			{
 				this.contentType = boundaryContentType;
-				arr = HttpCommon.formatFormdata(form, charsetName, boundary);
+				arr = HttpCommon.formatFormdata(form, charsetName);
 			}
 			else
 			{

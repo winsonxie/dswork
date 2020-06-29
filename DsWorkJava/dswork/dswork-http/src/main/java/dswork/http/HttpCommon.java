@@ -157,7 +157,7 @@ public class HttpCommon
 //		toByteArr("--");
 //		toByteArr("----WebKitFormBoundaryForDsworkAbcdefg");
 //	}
-	private static String CONTENT_BOUNDARY = "----WebKitFormBoundaryForDsworkAbcdefg";
+	
 	//【Content-Disposition: form-data; name=\"】
 	private static byte[] B_T = {67, 111, 110, 116, 101, 110, 116, 45, 68, 105, 115, 112, 111, 115, 105, 116, 105, 111, 110, 58, 32, 102, 111, 114, 109, 45, 100, 97, 116, 97, 59, 32, 110, 97, 109, 101, 61, 34};
 	//【\"; filename=\"】
@@ -170,7 +170,7 @@ public class HttpCommon
 	private static byte[] B_RN = {13, 10};
 	//【--】
 	private static byte[] B_JJ = {45, 45};
-	//【----WebKitFormBoundaryForDsworkAbcdefg】
+	//【----WebKitFormBoundaryForDsworkAbcdefg】对应HttpUtil中的boundaryContentType
 	private static byte[] B_BOUNDARY = {45, 45, 45, 45, 87, 101, 98, 75, 105, 116, 70, 111, 114, 109, 66, 111, 117, 110, 100, 97, 114, 121, 70, 111, 114, 68, 115, 119, 111, 114, 107, 65, 98, 99, 100, 101, 102, 103};
 
 	// Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"
@@ -179,15 +179,14 @@ public class HttpCommon
 	// Content-Disposition: form-data; name=\"%s\"
 	// 
 	// %s
-	public static byte[] formatFormdata(List<? extends NameValue> parameters, String charsetName, String boundarySeparator) throws java.io.IOException
+	public static byte[] formatFormdata(List<? extends NameValue> parameters, String charsetName) throws java.io.IOException
 	{
 		ByteArrayOutputStream bout = new ByteArrayOutputStream(4096);
-		byte[] rnBoundary = CONTENT_BOUNDARY.equals(boundarySeparator) ? B_BOUNDARY : boundarySeparator.getBytes(charsetName);
 		bout.write(B_JJ);
-		bout.write(rnBoundary);
-		bout.write(B_RN);
+		bout.write(B_BOUNDARY);
 		for(NameValue nv : parameters)
 		{
+			bout.write(B_RN);
 			bout.write(B_T);
 			bout.write(nv.getName().getBytes(charsetName));
 			if(nv.isFormdata())
@@ -196,12 +195,12 @@ public class HttpCommon
 				bout.write(B_M);
 				bout.write(nf.getFilename().getBytes(charsetName));
 				bout.write(B_D);
-				
 				bout.write(B_RN);
+				
 				bout.write(B_C);
 				bout.write(nf.getContenttype().getBytes(charsetName));
-				
 				bout.write(B_RN);
+				
 				bout.write(B_RN);
 				bout.write(nf.getFileobject());
 			}
@@ -209,13 +208,15 @@ public class HttpCommon
 			{
 				bout.write(B_D);
 				bout.write(B_RN);
+				
 				bout.write(B_RN);
 				bout.write(nv.getValue().getBytes(charsetName));
 			}
 			bout.write(B_RN);
 			bout.write(B_JJ);
-			bout.write(rnBoundary);
+			bout.write(B_BOUNDARY);
 		}
+		bout.write(B_JJ);
 		bout.close();
 		return bout.toByteArray();
 	}
