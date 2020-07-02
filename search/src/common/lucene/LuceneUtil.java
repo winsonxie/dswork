@@ -133,7 +133,7 @@ public class LuceneUtil
 	{
 		if(files.isFile())
 		{
-			if(files.getName().endsWith(".html") && !files.getName().startsWith("index"))//
+			if(!files.getName().startsWith("index") && (files.getName().endsWith(".html") || files.getName().endsWith(".shtml")))//
 			{
 				String url = files.getPath().replaceAll("\\\\", "/").replaceFirst(rootpath, "");
 				dswork.html.nodes.Document document = HtmlUtil.parse(FileUtil.readFile(files.getPath(), "UTF-8").replaceAll("&nbsp;", ""));
