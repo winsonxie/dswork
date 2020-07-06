@@ -79,7 +79,7 @@ request.setAttribute("pageNav", new PageNav<java.util.Map<String, Object>>(reque
 </table>
 </form>
 <div class="line"></div>
-<table border="0" cellspacing="1" cellpadding="0" class="listTable">
+<table id="dataTable" border="0" cellspacing="1" cellpadding="0" class="listTable">
 	<tr class="list_title">
 		<td>用户二维码</td>
 	</tr>
