@@ -128,19 +128,11 @@ $dswork.doAjax = false;
 ${po.dataview}
 </script>
 <script type="text/javascript">
-$(function(){
-	var tpl = document.getElementById('tpl').innerHTML;
-	var res = ${m};
-	laytpl(tpl).render(res, function(render){
-	   document.getElementById('formdata').innerHTML = render;
-	   try{$(".form_title").css("width", "20%");}catch(e){}
-	});
-})
 function uploadFile(row){
 	var o = new $dswork.upload({io:true, name:row.ttype[0].key, ext:row.ttype[0].val});
 	$(function(){
 		o.init({id:"id_"+row.tname, vid:"vid_"+row.tname, ext:row.ttype[0].val});
-	})
+	});
 }
 function loaddata(name, value, objectid, type, ename){
 	$.post("${ctx}/common/share/getJsonDict.htm",{name:name, value:value},function(data){
@@ -164,9 +156,8 @@ function loaddata(name, value, objectid, type, ename){
 	});
 }
 var map = new $jskey.Map();
-var array = [];
 function getFormData(){
-	array = [];
+	var array = [];
 	var d = {};
 	var formdata = $("#formdata").serializeArray();
 	$.each(formdata, function(){
@@ -177,30 +168,33 @@ function getFormData(){
 		map.put(this.name, m);
 		array.push(m);
 	});
-	console.log(array)
+	console.log(array);
 	$("#datatable").val(JSON.stringify(array));
 }
 function init(){
 <c:forEach items="${map}" var="d">
-	var row = {};
-	row.tname  = "${d.value.tname}";
-	row.talias = "${d.value.talias}";
-	row.tuse   = "${d.value.tuse}";
-	var arr = [];
-	<c:forEach items="${d.value.ttype}" var="tp">
-	var ttype = {};
-	ttype.key  = "${tp.key}";
-	ttype.val  = "${tp.val}";
-	arr.push(ttype);
-	</c:forEach>
-	row.ttype = arr;
-	row.trwx   = "${d.value.trwx}";
-	row.tvalue = "${d.value.tvalue}";
-	map.put(row.tname, row);
+if(true){
+	var o = {
+		"tname":"${fn:escapeXml(d.value.tname)}",
+		"talias":"${fn:escapeXml(d.value.talias)}",
+		"tuse":"${fn:escapeXml(d.value.tuse)}",
+		"ttype":[],
+		"trwx":"${fn:escapeXml(d.value.trwx)}",
+		"tvalue":"${fn:escapeXml(d.value.tvalue)}"
+	};
+	<c:forEach items="${d.value.ttype}" var="tp">o.ttype.push({"key":"${fn:escapeXml(tp.key)}", "val":"${fn:escapeXml(tp.val)}"});</c:forEach>
+	map.put(o.tname, o);
+}
 </c:forEach>
 }
 $(function(){
-	init();
+	var tpl = document.getElementById('tpl').innerHTML;
+	var res = ${m};
+	laytpl(tpl).render(res, function(render){
+		document.getElementById('formdata').innerHTML = render;
+		try{$(".form_title").css("width", "20%");}catch(e){}
+		init();
+	});
 });
 
 $dswork.readySubmit = function(){
