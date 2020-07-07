@@ -130,9 +130,7 @@ ${po.dataview}
 <script type="text/javascript">
 function uploadFile(row){
 	var o = new $dswork.upload({io:true, name:row.ttype[0].key, ext:row.ttype[0].val});
-	$(function(){
-		o.init({id:"id_"+row.tname, vid:"vid_"+row.tname, ext:row.ttype[0].val});
-	});
+	o.init({id:"id_"+row.tname, vid:"vid_"+row.tname, ext:row.ttype[0].val});
 }
 function loaddata(name, value, objectid, type, ename){
 	$.post("${ctx}/common/share/getJsonDict.htm",{name:name, value:value},function(data){
