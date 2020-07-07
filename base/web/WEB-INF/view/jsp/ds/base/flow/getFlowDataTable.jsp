@@ -81,6 +81,7 @@ function paintMtdTuse($mtd_tuse, row){
 	$span.appendTo($mtd_tuse);
 	
 	var $btn = $("<input />");
+	$btn.attr("class", "button");
 	$btn.attr("type", "button");
 	$btn.attr("style", "margin:0 10px;");
 	$btn.attr("onclick", "setTypeInfo(this)");
