@@ -27,10 +27,10 @@ public class TokenUnitUtil
 	{
 		long time = System.currentTimeMillis() + token_timeout;
 		String access_token = null;
+		int timeout_second = token_timeout_second;
 		if(ResponseUtil.USE_REDIS)
 		{
 			redis.clients.jedis.Jedis db = null;
-			int timeout_second = token_timeout_second;
 			try
 			{
 				db = RedisUtil.db.getJedis();
@@ -66,36 +66,42 @@ public class TokenUnitUtil
 			{
 				db.close();
 			}
-			ZAuthtoken token = new ZAuthtoken(access_token, timeout_second, "", "");
-			return token;
 		}
 		else
 		{
-			access_token = dswork.core.util.EncryptUtil.encryptDes(time + "", secret);
-			ZAuthtoken token = new ZAuthtoken(access_token, token_timeout_second, "", "");
 			String oldvalue = unitTokenMap.get(appid);
 			if(oldvalue != null)
 			{
-				boolean out = false;
+				long out = 0L;
 				try
 				{
-					out = System.currentTimeMillis() > Long.parseLong(dswork.core.util.EncryptUtil.decryptDes(oldvalue, secret));
+					out = System.currentTimeMillis() - Long.parseLong(dswork.core.util.EncryptUtil.decryptDes(oldvalue, secret));
 				}
 				catch(Exception e)
 				{
 				}
-				if(out)
+				if(out > token_timeout_must)// 未过期不需要重新生成
 				{
-					unitTokenTempMap.remove(appid);// 更旧的
+					access_token = oldvalue;
+					timeout_second = (int)(out / 1000);
 				}
 				else
 				{
-					unitTokenTempMap.put(appid, oldvalue);
+					// unitTokenTempMap.remove(appid);// 下面会设置新的值
+					if(out > 3000)// 大于3秒才保留
+					{
+						unitTokenTempMap.put(appid, oldvalue);
+					}
 				}
 			}
-			unitTokenMap.put(appid, access_token);// 更新
-			return token;
+			if(access_token == null)
+			{
+				access_token = dswork.core.util.EncryptUtil.encryptDes(time + "", secret);
+				unitTokenMap.put(appid, access_token);// 更新
+			}
 		}
+		ZAuthtoken token = new ZAuthtoken(access_token, timeout_second, "", "");
+		return token;
 	}
 
 	/**
