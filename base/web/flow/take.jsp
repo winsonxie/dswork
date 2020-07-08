@@ -3,7 +3,7 @@ MyRequest req = new MyRequest(request);
 long waitid = req.getLong("wid");
 if(waitid > 0)
 {
-	DsFactory.getFlow().takeWaiting(waitid, "admin");
+	DsFactory.getFlow().process(waitid, null, null, null, "admin", "管理员", "", "取得任务", null, "mytype", "mystatus", "mydata");
 	response.sendRedirect("waiting.jsp");
 }
 %>
