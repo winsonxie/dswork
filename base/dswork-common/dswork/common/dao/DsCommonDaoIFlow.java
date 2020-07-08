@@ -64,17 +64,22 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		return DsCommonDaoIFlow.class;
 	}
 
-	private void updateFlowPi(Long id, int status, String pialias, String datatable)
+	// TODO
+	private void updateFlowPi(Long id, int status, String pialias, String datatable, String datamodel, String ywtype, String ywstatus, String ywdata)
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
 		map.put("status", status);
 		map.put("pialias", pialias);
 		map.put("datatable", datatable);
+		map.put("datamodel", datamodel);
 		if(status == 0)
 		{
 			map.put("piend", TimeUtil.getCurrentTime());
 		}
+		map.put("ywtype", ywtype);
+		map.put("ywstatus", ywstatus);
+		map.put("ywdata", ywdata);
 		executeUpdate("updateFlowPi", map);
 	}
 
@@ -172,7 +177,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		return executeSelectList("queryFlowWaiting", map);
 	}
 
-	public IFlowWaiting saveFlowStart(String alias, String users, String ywlsh, String sblsh, String account, String name, int piDay, boolean isWorkDay, boolean tenable)
+	public IFlowWaiting saveFlowStart(String alias, String users, String ywlsh, String sblsh, String account, String name, String ywtype, String ywstatus, String ywdata, int piDay, boolean isWorkDay, boolean tenable)
 	{
 		String time = TimeUtil.getCurrentTime();
 		IFlow flow = this.getFlow(alias);
@@ -186,15 +191,6 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			IFlowTask task = this.getFlowTask(flowid, "start");
 			IFlowPi pi = new IFlowPi();
 			pi.setId(IdUtil.genId());
-			IFlowParam beforeParam = new IFlowParam();
-			IFlowParam afterParam = new IFlowParam();
-			beforeParam.setFlowid(flowid);
-			beforeParam.setPiid(pi.getId());
-			beforeParam.setAlias(alias);
-			beforeParam.setStart(true);
-			BeanUtils.copyProperties(beforeParam, afterParam);// 复制
-			DsFactory.getUtil().handleMethod(beforeParam, true);
-			pi.setYwlsh(ywlsh);
 			pi.setSblsh(sblsh);
 			pi.setAlias(alias);
 			pi.setFlowid(flowid);
@@ -209,6 +205,19 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			pi.setPialias("start");
 			pi.setDatatable(task.getDatatable());
 			pi.setDataview(task.getDataview());
+			pi.setDatamodel("{}");
+			pi.setYwlsh(ywlsh);
+			pi.setYwtype(ywtype);
+			pi.setYwstatus(ywstatus);
+			pi.setYwdata(ywdata);
+			
+			IFlowParam beforeParam = new IFlowParam();
+			IFlowParam afterParam = new IFlowParam();
+			beforeParam.setStart(true);
+			beforeParam.setPi(pi);
+			BeanUtils.copyProperties(beforeParam, afterParam);// 复制
+			DsFactory.getUtil().handleMethod(beforeParam, true);
+			
 			executeInsert("insertFlowPi", pi);
 			Long piid = pi.getId();
 			IFlowWaiting m = new IFlowWaiting();
@@ -275,9 +284,9 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		return null;
 	}
 
-	public String saveStart(String alias, String users, String ywlsh, String sblsh, String account, String name, int piDay, boolean isWorkDay, boolean tenable)
+	public String saveStart(String alias, String users, String ywlsh, String sblsh, String account, String name, String ywtype, String ywstatus, String ywdata, int piDay, boolean isWorkDay, boolean tenable)
 	{
-		IFlowWaiting w = saveFlowStart(alias, users, ywlsh, sblsh, account, name, piDay, isWorkDay, tenable);
+		IFlowWaiting w = saveFlowStart(alias, users, ywlsh, sblsh, account, name, ywtype, ywstatus, ywdata, piDay, isWorkDay, tenable);
 		if(w != null)
 		{
 			return String.valueOf(w.getPiid());
@@ -285,40 +294,44 @@ public class DsCommonDaoIFlow extends MyBatisDao
 		return "";
 	}
 
-	public void saveStop(Long flowid, String alias, Long piid)
+	public void saveStop(Long piid, String ywtype, String ywstatus, String ywdata)
 	{
+		IFlowPi pi = this.getFlowPiByPiid(piid.longValue() + "");
+		pi.setYwtype(ywtype);
+		pi.setYwstatus(ywstatus);
+		pi.setYwdata(ywdata);
+		
 		IFlowParam beforeParam = new IFlowParam();
 		IFlowParam afterParam = new IFlowParam();
-		beforeParam.setFlowid(flowid);
-		beforeParam.setPiid(piid);
-		beforeParam.setAlias(alias);
 		beforeParam.setEnd(true);
+		beforeParam.setPi(pi);
 		BeanUtils.copyProperties(beforeParam, afterParam);// 复制
 		DsFactory.getUtil().handleMethod(beforeParam, true);
-		IFlowPi pi = this.getFlowPiByPiid(piid.longValue() + "");
 		this.deleteFlowWaitingByPiid(piid);
-		this.updateFlowPi(piid, 0, "", pi.getDatatable());// 结束
+		this.updateFlowPi(piid, 0, "", pi.getDatatable(), pi.getDatamodel(), ywtype, ywstatus , ywdata);// 结束
 		DsFactory.getUtil().handleMethod(afterParam, false);
 	}
 
-	public boolean saveProcess(long waitid, String[] nextTalias, String[] nextTusers, Integer customSubusers, String account, String name, String resultType, String resultMsg, String datatable)
+	public boolean saveProcess(long waitid, String[] nextTalias, String[] nextTusers, Integer customSubusers, String account, String name, String resultType, String resultMsg, String datatable, String ywtype, String ywstatus, String ywdata)
 	{
 		boolean isEnd = false;
 		IFlowWaiting m = this.getFlowWaiting(waitid);
 		if(m != null)
 		{
-			String dtSet = updateDataTable(datatable, m.getDatatable());
-			m.setDatatable(dtSet);
-
 			IFlowPi pi = this.getFlowPiByPiid(m.getPiid() + "");
+			pi.setYwtype(ywtype);
+			pi.setYwstatus(ywstatus);
+			pi.setYwdata(ywdata);
+			
+			updateDataTable(pi, datatable, m.getDatatable());
+			m.setDatatable(pi.getDatatable());
+
 			IFlowParam beforeParam = new IFlowParam();
 			IFlowParam afterParam = new IFlowParam();
 			IFlowWaiting w = new IFlowWaiting();
 			BeanUtils.copyProperties(m, w);// 复制m
-			beforeParam.setPiid(w.getPiid());
 			beforeParam.setProcess(w);
-			beforeParam.setFlowid(w.getFlowid());
-			beforeParam.setAlias(pi.getAlias());
+			beforeParam.setPi(pi);
 			BeanUtils.copyProperties(beforeParam, afterParam);// 复制
 			DsFactory.getUtil().handleMethod(beforeParam, true);
 			
@@ -464,7 +477,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 			{
 				afterParam.setEnd(true);// 标记为结束
 				this.deleteFlowWaitingByPiid(m.getPiid());// 已经结束，清空所有待办事项
-				this.updateFlowPi(m.getPiid(), 0, "", dtSet);// 结束
+				this.updateFlowPi(m.getPiid(), 0, "", pi.getDatatable(), pi.getDatamodel(), ywtype, ywstatus, ywdata);// 结束
 				// 记录最后一步流向
 				IFlowPiData pdend = new IFlowPiData();
 				pdend.setId(IdUtil.genId());
@@ -493,7 +506,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				{
 					sb.append(",").append(newWaitList.get(i).getTalias());
 				}
-				this.updateFlowPi(m.getPiid(), 2, sb.toString(), dtSet);// 处理中
+				this.updateFlowPi(m.getPiid(), 2, sb.toString(), pi.getDatatable(), pi.getDatamodel(), ywtype, ywstatus, ywdata);// 处理中
 				afterParam.setWaitingList(newWaitList);
 			}
 			afterParam.setPidataList(pidataList);
@@ -694,7 +707,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				w.setSubusers(subusers);
 				w.setSubcount(subcount);
 
-				w.setDatatable(updateDataTable(m.getDatatable(), w.getDatatable()));
+				w.setDatatable(updateDataTable(null, m.getDatatable(), w.getDatatable()));
 				
 				if(w.getId() <= 0)
 				{
@@ -724,7 +737,7 @@ public class DsCommonDaoIFlow extends MyBatisDao
 	 * @param nDataTable 目标的表单
 	 * @return
 	 */
-	private String updateDataTable(String oDataTable, String nDataTable)
+	private String updateDataTable(IFlowPi pi, String oDataTable, String nDataTable)
 	{
 		Map<String, IFlowDataRow> oMap = null;
 		Map<String, IFlowDataRow> nMap = null;
@@ -796,7 +809,22 @@ public class DsCommonDaoIFlow extends MyBatisDao
 				list.add(v);
 			}
 		}
-		return DsFactory.getUtil().toJson(list);
+
+		Map<String, String> modelMap = new LinkedHashMap<String, String>();;
+		for(IFlowDataRow model : list)
+		{
+			modelMap.put(model.getTname(), model.getTvalue());
+		}
+		if(pi == null)
+		{
+			return DsFactory.getUtil().toJson(list);
+		}
+		else
+		{
+			pi.setDatamodel(DsFactory.getUtil().toJson(modelMap));
+			pi.setDatatable(DsFactory.getUtil().toJson(list));
+			return pi.getDatatable();
+		}
 	}
 
 	/**

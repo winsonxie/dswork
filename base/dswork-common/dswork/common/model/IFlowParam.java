@@ -7,34 +7,12 @@ import java.util.List;
 
 public class IFlowParam
 {
-	private long flowid;
-	private long piid;
-	private String alias;
 	private boolean start = false;
 	private boolean end = false;
+	private IFlowPi pi;// 当前这一步
 	private IFlowWaiting process;// 当前这一步
 	private List<IFlowPiData> pidataList;// 当前已完成
 	private List<IFlowWaiting> waitingList;// 下一步
-
-	public long getFlowid()
-	{
-		return flowid;
-	}
-
-	public void setFlowid(long flowid)
-	{
-		this.flowid = flowid;
-	}
-
-	public long getPiid()
-	{
-		return piid;
-	}
-
-	public void setPiid(long piid)
-	{
-		this.piid = piid;
-	}
 
 	public boolean isStart()
 	{
@@ -56,14 +34,14 @@ public class IFlowParam
 		this.end = end;
 	}
 
-	public String getAlias()
+	public IFlowPi getPi()
 	{
-		return alias;
+		return pi;
 	}
 
-	public void setAlias(String alias)
+	public void setPi(IFlowPi pi)
 	{
-		this.alias = alias;
+		this.pi = pi;
 	}
 
 	public IFlowWaiting getProcess()

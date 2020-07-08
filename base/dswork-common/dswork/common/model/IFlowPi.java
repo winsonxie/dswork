@@ -7,8 +7,6 @@ public class IFlowPi
 {
 	// 主键ID(流程实例ID)
 	private Long id = 0L;
-	// 业务流水号
-	private String ywlsh = "";
 	// 申办流水号
 	private String sblsh = "";
 	// 流程标识
@@ -41,6 +39,16 @@ public class IFlowPi
 	private String datatable = "";
 	// 数据视图
 	private String dataview = "";
+	// 数据对象json
+	private String datamodel = "";
+	// 业务流水号
+	private String ywlsh = "";
+	// 业务类型
+	private String ywtype = "";
+	// 业务状态
+	private String ywstatus = "";
+	// 业务数据
+	private String ywdata = "";
 
 	public Long getId()
 	{
@@ -50,16 +58,6 @@ public class IFlowPi
 	public void setId(Long id)
 	{
 		this.id = id;
-	}
-
-	public String getYwlsh()
-	{
-		return ywlsh;
-	}
-
-	public void setYwlsh(String ywlsh)
-	{
-		this.ywlsh = ywlsh;
 	}
 
 	public String getSblsh()
@@ -220,5 +218,55 @@ public class IFlowPi
 	public void setDataview(String dataview)
 	{
 		this.dataview = dataview;
+	}
+
+	public String getDatamodel()
+	{
+		return datamodel;
+	}
+
+	public void setDatamodel(String datamodel)
+	{
+		this.datamodel = datamodel;
+	}
+
+	public String getYwlsh()
+	{
+		return ywlsh;
+	}
+
+	public void setYwlsh(String ywlsh)
+	{
+		this.ywlsh = ywlsh;
+	}
+
+	public String getYwtype()
+	{
+		return ywtype;
+	}
+
+	public void setYwtype(String ywtype)
+	{
+		this.ywtype = ywtype;
+	}
+
+	public String getYwstatus()
+	{
+		return ywstatus;
+	}
+
+	public void setYwstatus(String ywstatus)
+	{
+		this.ywstatus = ywstatus;
+	}
+
+	public String getYwdata()
+	{
+		return ywdata;
+	}
+
+	public void setYwdata(String ywdata)
+	{
+		this.ywdata = ywdata;
 	}
 }

@@ -32,7 +32,7 @@ try
 	String resultType = req.getString("resultType");
 	String resultMsg = req.getString("resultMsg");
 	String datatable = req.getString("datatable");
-	if(DsFactory.getFlow().process(po.getId(), taskList, "admin", "管理员", resultType, resultMsg, datatable))
+	if(DsFactory.getFlow().process(po.getId(), taskList, "admin", "管理员", resultType, resultMsg, datatable, "newmytype", "newmystatus", "newmydata"))
 		{msg = "处理成功";}
 	else
 		{msg = "处理失败";}

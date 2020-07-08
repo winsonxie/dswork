@@ -25,12 +25,12 @@ public class DsCommonIFlowUtil implements IFlowInterface
 		}
 	}
 
-	public String start(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, boolean tenable)
+	public String start(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, String ywtype, String ywstatus, String ywdata, int piDay, boolean isWorkDay, boolean tenable)
 	{
 		try
 		{
 			init();
-			return dao.saveStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, tenable);
+			return dao.saveStart(alias, users, ywlsh, sblsh, caccount, cname, ywtype, ywstatus, ywdata, piDay, isWorkDay, tenable);
 		}
 		catch(Exception e)
 		{
@@ -39,12 +39,12 @@ public class DsCommonIFlowUtil implements IFlowInterface
 		return "";
 	}
 	
-	public IFlowWaiting startFlow(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, boolean tenable)
+	public IFlowWaiting startFlow(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, String ywtype, String ywstatus, String ywdata, int piDay, boolean isWorkDay, boolean tenable)
 	{
 		try
 		{
 			init();
-			return dao.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, tenable);
+			return dao.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, ywtype, ywstatus, ywdata, piDay, isWorkDay, tenable);
 		}
 		catch(Exception e)
 		{
@@ -53,12 +53,12 @@ public class DsCommonIFlowUtil implements IFlowInterface
 		return null;
 	}
 
-	public void stop(Long flowid, String alias, String piid)
+	public void stop(String piid, String ywtype, String ywstatus, String ywdata)
 	{
 		try
 		{
 			init();
-			dao.saveStop(flowid, alias, Long.parseLong(piid));
+			dao.saveStop(Long.parseLong(piid), ywtype, ywstatus, ywdata);
 		}
 		catch(Exception e)
 		{
@@ -66,12 +66,12 @@ public class DsCommonIFlowUtil implements IFlowInterface
 		}
 	}
 
-	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, Integer customSubusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
+	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, Integer customSubusers, String paccount, String pname, String resultType, String resultMsg, String datatable, String ywtype, String ywstatus, String ywdata)
 	{
 		try
 		{
 			init();
-			return dao.saveProcess(waitid, nextTalias, nextTusers, customSubusers, paccount, pname, resultType, resultMsg, datatable);
+			return dao.saveProcess(waitid, nextTalias, nextTusers, customSubusers, paccount, pname, resultType, resultMsg, datatable, ywtype, ywstatus, ywdata);
 		}
 		catch(Exception e)
 		{

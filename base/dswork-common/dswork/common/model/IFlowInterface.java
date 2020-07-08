@@ -16,12 +16,15 @@ public interface IFlowInterface
 	 * @param sblsh 申办流水号
 	 * @param caccount 提交人账号
 	 * @param cname 提交人姓名
+	 * @param ywtype 业务类型
+	 * @param ywstatus 业务状态
+	 * @param ywdata 业务数据
 	 * @param piDay 时限天数
 	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
 	 * @param tenable 当前流程实例是否有效（false不启用，true启用），false：保存未提交的情况
 	 * @return 流程实例ID
 	 */
-	public String start(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, boolean tenable);
+	public String start(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, String ywtype, String ywstatus, String ywdata, int piDay, boolean isWorkDay, boolean tenable);
 
 	/**
 	 * 流程启动并返回开始节点待办信息
@@ -31,16 +34,24 @@ public interface IFlowInterface
 	 * @param sblsh 申办流水号
 	 * @param caccount 提交人账号
 	 * @param cname 提交人姓名
+	 * @param ywtype 业务类型
+	 * @param ywstatus 业务状态
+	 * @param ywdata 业务数据
 	 * @param piDay 时限天数
 	 * @param isWorkDay 时限天数类型(false日历日,true工作日)
 	 * @param tenable 当前流程实例是否有效（false不启用，true启用），false：保存未提交的情况
 	 * @return 流程实例的start待办信息或null
 	 */
-	public IFlowWaiting startFlow(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, boolean tenable);
+	public IFlowWaiting startFlow(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, String ywtype, String ywstatus, String ywdata, int piDay, boolean isWorkDay, boolean tenable);
 
-	
-	
-	public void stop(Long flowid, String alias, String piid);
+	/**
+	 * 流程强制停止
+	 * @param piid 流程实例ID
+	 * @param ywtype 业务类型
+	 * @param ywstatus 业务状态
+	 * @param ywdata 业务数据
+	 */
+	public void stop(String piid, String ywtype, String ywstatus, String ywdata);
 
 	/**
 	 * 流程处理
@@ -54,9 +65,12 @@ public interface IFlowInterface
 	 * @param resultType 处理类型
 	 * @param resultMsg 处理意见
 	 * @param datatable 当前数据集
+	 * @param ywtype 业务类型
+	 * @param ywstatus 业务状态
+	 * @param ywdata 业务数据
 	 * @return true|false
 	 */
-	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, Integer customSubusers, String paccount, String pname, String resultType, String resultMsg, String datatable);
+	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, Integer customSubusers, String paccount, String pname, String resultType, String resultMsg, String datatable, String ywtype, String ywstatus, String ywdata);
 
 	/**
 	 * 查询当前账号的所有待办

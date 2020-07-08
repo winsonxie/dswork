@@ -7,18 +7,17 @@
 
 <insert id="insertFlowPi" parameterType="dswork.common.model.IFlowPi">
 	insert into DS_FLOW_PI
-	(ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE, DATAVIEW)
+	(ID, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE, DATAVIEW, DATAMODEL, YWLSH, YWTYPE, YWSTATUS, YWDATA)
 	values
-	(#{id}, #{ywlsh}, #{sblsh}, #{alias}, #{flowid}, #{deployid}, #{piday}, #{pidaytype}, #{pistart},
+	(#{id}, #{sblsh}, #{alias}, #{flowid}, #{deployid}, #{piday}, #{pidaytype}, #{pistart},
 		<if test="@Ognl@isEmpty(piend)">null</if><if test="@Ognl@isNotEmpty(piend)">#{piend}</if>,
-		#{piupstart}, #{piupend}, #{status}, #{caccount}, #{cname}, #{pialias}, #{datatable}, #{dataview})
+		#{piupstart}, #{piupend}, #{status}, #{caccount}, #{cname}, #{pialias}, #{datatable}, #{dataview}, #{datamodel}, #{ywlsh}, #{ywtype}, #{ywstatus}, #{ywdata})
 </insert>
 <update id="updateFlowPi">
-	update DS_FLOW_PI set STATUS=#{status}<if test="status==0">, PIEND=#{piend}</if>, PIALIAS=#{pialias}, DATATABLE=#{datatable} where ID=#{id}
+	update DS_FLOW_PI set STATUS=#{status}<if test="status==0">, PIEND=#{piend}</if>, PIALIAS=#{pialias}, DATATABLE=#{datatable}, DATAMODEL=#{datamodel}<if test="null!=ywtype">, YWTYPE=#{ywtype}</if><if test="null!=ywstatus">, YWSTATUS=#{ywstatus}</if><if test="null!=ywdata">, YWDATA=#{ywdata}</if> where ID=#{id}
 </update>
 <resultMap id="resultFlowPi" type="dswork.common.model.IFlowPi">
 	<id property="id" column="ID" />
-	<result property="ywlsh" column="YWLSH" />
 	<result property="sblsh" column="SBLSH" />
 	<result property="alias" column="ALIAS" />
 	<result property="flowid" column="FLOWID" />
@@ -35,17 +34,22 @@
 	<result property="pialias" column="PIALIAS" />
 	<result property="datatable" column="DATATABLE" />
 	<result property="dataview" column="DATAVIEW" />
+	<result property="datamodel" column="DATAMODEL" />
+	<result property="ywlsh" column="YWLSH" />
+	<result property="ywtype" column="YWTYPE" />
+	<result property="ywstatus" column="YWSTATUS" />
+	<result property="ywdata" column="YWDATA" />
 </resultMap>
 <select id="queryFlowPi" resultMap="resultFlowPi">
-	select ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE, DATAVIEW
+	select ID, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE, DATAVIEW, DATAMODEL, YWLSH, YWTYPE, YWSTATUS, YWDATA
 	from DS_FLOW_PI where YWLSH=#{ywlsh}
 </select>
 <select id="queryFlowPiBySblsh" resultMap="resultFlowPi">
-	select ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE, DATAVIEW
+	select ID, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE, DATAVIEW, DATAMODEL, YWLSH, YWTYPE, YWSTATUS, YWDATA
 	from DS_FLOW_PI where SBLSH=#{sblsh}
 </select>
 <select id="queryFlowPiByPiid" resultMap="resultFlowPi">
-	select ID, YWLSH, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE, DATAVIEW
+	select ID, SBLSH, ALIAS, FLOWID, DEPLOYID, PIDAY, PIDAYTYPE, PISTART, PIEND, PIUPSTART, PIUPEND, STATUS, CACCOUNT, CNAME, PIALIAS, DATATABLE, DATAVIEW, DATAMODEL, YWLSH, YWTYPE, YWSTATUS, YWDATA
 	from DS_FLOW_PI where ID=#{piid}
 </select>
 <insert id="insertFlowPiData" parameterType="dswork.common.model.IFlowPiData">

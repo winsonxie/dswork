@@ -19,11 +19,11 @@ public class DsCommonIFlowServiceUtil implements IFlowInterface
 		this.service = service;
 	}
 	
-	public String start(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, boolean tenable)
+	public String start(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, String ywtype, String ywstatus, String ywdata, int piDay, boolean isWorkDay, boolean tenable)
 	{
 		try
 		{
-			return service.saveStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, tenable);
+			return service.saveStart(alias, users, ywlsh, sblsh, caccount, cname, ywtype, ywstatus, ywdata, piDay, isWorkDay, tenable);
 		}
 		catch(Exception e)
 		{
@@ -32,19 +32,19 @@ public class DsCommonIFlowServiceUtil implements IFlowInterface
 		return "";
 	}
 
-	public IFlowWaiting startFlow(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, int piDay, boolean isWorkDay, boolean tenable)
+	public IFlowWaiting startFlow(String alias, String users, String ywlsh, String sblsh, String caccount, String cname, String ywtype, String ywstatus, String ywdata, int piDay, boolean isWorkDay, boolean tenable)
 	{
-		return service.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, piDay, isWorkDay, tenable);
+		return service.saveFlowStart(alias, users, ywlsh, sblsh, caccount, cname, ywtype, ywstatus, ywdata, piDay, isWorkDay, tenable);
 	}
 
-	public void stop(Long flowid, String alias, String piid)
+	public void stop(String piid, String ywtype, String ywstatus, String ywdata)
 	{
-		service.saveStop(flowid, alias, piid);
+		service.saveStop(piid, ywtype, ywstatus, ywdata);
 	}
 
-	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, Integer customSubusers, String paccount, String pname, String resultType, String resultMsg, String datatable)
+	public boolean process(long waitid, String[] nextTalias, String[] nextTusers, Integer customSubusers, String paccount, String pname, String resultType, String resultMsg, String datatable, String ywtype, String ywstatus, String ywdata)
 	{
-		return service.saveProcess(waitid, nextTalias, nextTusers, customSubusers, paccount, pname, resultType, resultMsg, datatable);
+		return service.saveProcess(waitid, nextTalias, nextTusers, customSubusers, paccount, pname, resultType, resultMsg, datatable, ywtype, ywstatus, ywdata);
 	}
 
 	/**

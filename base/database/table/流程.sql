@@ -63,7 +63,6 @@ CREATE TABLE IF NOT EXISTS DS_FLOW_TASK
 CREATE TABLE IF NOT EXISTS DS_FLOW_PI
 (
   ID                   BIGINT(18)    COMMENT '主键ID(流程实例ID)' NOT NULL,
-  YWLSH                VARCHAR(128)  COMMENT '业务流水号',
   SBLSH                VARCHAR(128)  COMMENT '申办流水号',
   ALIAS                VARCHAR(64)   COMMENT '流程标识' NOT NULL,
   FLOWID               BIGINT(18)    COMMENT '流程ID(对应deployid)' NOT NULL,
@@ -80,6 +79,11 @@ CREATE TABLE IF NOT EXISTS DS_FLOW_PI
   PIALIAS              VARCHAR(1000) COMMENT '当前任务标识，以逗号分隔',
   DATATABLE            TEXT          COMMENT '数据结构',
   DATAVIEW             TEXT          COMMENT '数据视图',
+  DATAMODEL            TEXT          COMMENT '数据对象json',
+  YWLSH                VARCHAR(128)  COMMENT '业务流水号',
+  YWTYPE               VARCHAR(300)  COMMENT '业务类型',
+  YWSTATUS             VARCHAR(300)  COMMENT '业务状态',
+  YWDATA               TEXT          COMMENT '业务数据',
   PRIMARY KEY (ID)
 ) COMMENT '流程实例';
 
