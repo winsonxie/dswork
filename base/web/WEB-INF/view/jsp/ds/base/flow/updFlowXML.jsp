@@ -76,7 +76,7 @@ function updTaskMap(datatable){
 							row.talias = dt.talias;
 							row.tuse = dt.tuse;
 							row.ttype = dt.ttype;
-							row.trwx = dt.trwx;
+							row.trwx = _dt.trwx;
 							row.tvalue = dt.tvalue;
 							array.push(row);
 							break;
@@ -245,7 +245,7 @@ function setTableView(){
 				</div>
 			</div>
 			<div style="float:left;width:60px;padding:3px 0 3px 3px;">
-				<input id="btn_save" type="button" class="button" style="padding:14px 6px;" value="增改任务" />
+				<input id="btn_save" type="button" class="button" style="padding:14px 6px;" value="增加任务" />
 			</div>
 			<div style="float:left;width:60px;padding:3px 0 3px 3px;">
 				<input id="btn_delete" type="button" class="button" style="padding:14px 6px;" value="不可操作" />

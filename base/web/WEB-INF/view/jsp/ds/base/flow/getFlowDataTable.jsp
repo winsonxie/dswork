@@ -300,7 +300,7 @@ $(function(){
 				<option value="extend">扩展</option>
 			</select>
 			<span class="tuse_extend">
-				<input type="button" style="margin:0 5px;" onclick="setTypeInfo(this)" value="设置类型信息" />
+				<input class="button" type="button" style="margin:0 5px;" onclick="setTypeInfo(this)" value="设置类型信息" />
 				<span name="info"></span>
 			</span>
 		</td>

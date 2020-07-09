@@ -23,7 +23,15 @@ function updStatus(objid, id){
 };
 function deployFlow(id){
 	if(confirm("确认将当前流程配置发布成为正式版本吗？")){
-		$.post("deployFlow.htm",{"keyIndex":id},function(data){$dswork.checkResult(data);if($dswork.result.code == 1){
+		$.post("deployFlow.htm",{"keyIndex":id},function(data){$dswork.show($dswork.checkResult(data));if($dswork.result.code == 1){
+			$("#queryForm").submit();
+		}});
+	}
+	return false;
+};
+function redeployFlow(id){
+	if(confirm("确定更新当前的流程配置？")){
+		$.post("redeployFlow.htm",{"keyIndex":id},function(data){$dswork.show($dswork.checkResult(data));if($dswork.result.code == 1){
 			$("#queryForm").submit();
 		}});
 	}
@@ -93,6 +101,9 @@ $(function(){
 			<a id="a_status${status.index}" name="a_status" v="${d.status}" class="${1==d.status?'pause':'start'}"${''==d.deployid?' style="display:none;"':''} href="#" onclick="return updStatus('a_status${status.index}', '${d.id}');">${1==d.status?'禁用':'启用'}</a>
 			<a class="update" href="updFlow1.htm?keyIndex=${d.id}">修改</a>
 			<a class="menuTool-user" onclick="return deployFlow('${d.id}');">发布</a>
+			<c:if test="${d.deployid != ''}">
+				<a class="menuTool-user" onclick="return redeployFlow('${d.id}');">更新配置</a>
+			</c:if>
 		</td>
 	</tr>
 </c:forEach>

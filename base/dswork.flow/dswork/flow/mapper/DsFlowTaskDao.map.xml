@@ -16,6 +16,10 @@
 	delete from DS_FLOW_TASK where FLOWID=#{flowid}
 </delete>
 
+<update id="update">
+	update DS_FLOW_TASK set TNAME=#{tname}, TCOUNT=#{tcount}, TUSERS=#{tusers}, SUBCOUNT=#{subcount}, SUBUSERS=#{subusers}, TMEMO=#{tmemo}, DATATABLE=#{datatable}, DATAVIEW=#{dataview} where ID=#{id}
+</update>
+
 <resultMap id="result" type="dswork.flow.model.DsFlowTask">
 	<id property="id" column="ID" />
 	<result property="flowid" column="FLOWID" />

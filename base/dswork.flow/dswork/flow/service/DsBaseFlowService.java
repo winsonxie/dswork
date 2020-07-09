@@ -122,6 +122,72 @@ public class DsBaseFlowService
 	}
 
 	/**
+	 * 
+	 * @param flowid
+	 * @return 1:success,0:error,2:流程环节与已发布的不一致，不可重新发布
+	 */
+	public int redeployFlow(Long flowid)
+	{
+		DsFlow flow = (DsFlow) flowDao.get(flowid);
+		if(flow.getVnum() == 0)
+		{
+			String deployidStr = flow.getDeployid();
+			if(deployidStr.length() > 0)
+			{
+				String[] dArr = deployidStr.split("-", -1);
+				if(dArr.length == 2)
+				{
+					long dfid = Long.parseLong(dArr[1]);
+					List<DsFlowTask> editList = taskDao.queryList(flowid);
+					List<DsFlowTask> list = taskDao.queryList(dfid);
+					boolean isMacth = true;
+					if(editList != null && list != null)
+					{
+						if(editList.size() == list.size())
+						{
+							for(int i = 0; i < editList.size(); i++)
+							{
+								if(!editList.get(i).getTalias().equals(list.get(i).getTalias()))
+								{
+									isMacth = false;
+									break;
+								}
+							}
+						}
+						else
+						{
+							isMacth = false;
+						}
+					}
+					if(isMacth) 
+					{
+						for(int i = 0; i < list.size(); i++)
+						{
+							DsFlowTask editTask = editList.get(i);
+							DsFlowTask task = list.get(i);
+							task.setTname(editTask.getTname());
+							task.setTcount(editTask.getTcount());
+							task.setTusers(editTask.getTusers());
+							task.setSubcount(editTask.getSubcount());
+							task.setSubusers(editTask.getSubusers());
+							task.setTmemo(editTask.getTmemo());
+							task.setDatatable(editTask.getDatatable());
+							task.setDataview(editTask.getDataview());
+							taskDao.update(task);
+						}
+						return 1;
+					}
+					else
+					{
+						return 2;
+					}
+				}
+			}
+		}
+		return 0;
+	}
+
+	/**
 	 * 判断标识是否存在
 	 * @param alias 标识
 	 * @return boolean 存在true，不存在false

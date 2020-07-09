@@ -368,6 +368,23 @@ public class DsBaseFlowController extends BaseController
 		}
 	}
 
+	// 更新流程配置
+	@RequestMapping("redeployFlow")
+	public void redeployFlow()
+	{
+		try
+		{
+			Long id = req().getLong("keyIndex");
+			int i = service.redeployFlow(id);
+			print(i == 1 ? 1 : (i == 2 ? "0:与已发布的流程环节不一致，不可更新配置" : "0:此流程不能重新发布"));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			print("0:" + e.getMessage());
+		}
+	}
+
 	// 添加
 	@RequestMapping("/addFlowCategory1")
 	public String addFlowCategory1()

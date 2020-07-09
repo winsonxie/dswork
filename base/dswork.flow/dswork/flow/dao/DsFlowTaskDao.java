@@ -34,4 +34,9 @@ public class DsFlowTaskDao extends MyBatisDao
 	{
 		return executeSelectList("query", flowid);
 	}
+
+	public int update(DsFlowTask task)
+	{
+		return executeUpdate("update", task);
+	}
 }
