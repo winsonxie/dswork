@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
@@ -18,7 +19,7 @@ import javax.net.ssl.SSLSocketFactory;
 /**
  * 封装http请求
  * @author skey
- * @version 2.0
+ * @version 8.8.9
  */
 public class HttpUtil
 {
@@ -28,7 +29,7 @@ public class HttpUtil
 	private int connectTimeout = 10000;
 	private int readTimeout = 30000;
 	private String url = "";
-	private String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.104";
+	private String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0";
 	private static String boundaryContentType = "multipart/form-data; boundary=----WebKitFormBoundaryForDsworkAbcdefg";
 	private String contentType = null;
 	private int responseCode = 0;
@@ -110,12 +111,63 @@ public class HttpUtil
 	{
 		try
 		{
-			this.http.setRequestProperty(key, value);
+			if("Content-Type".equalsIgnoreCase(key))
+			{
+				setContentType(value);
+			}
+			else
+			{
+				this.http.setRequestProperty(key, value);
+			}
 		}
 		catch(Exception e)
 		{
 		}
 		return this;
+	}
+
+	/**
+	 * 设置requestProperty
+	 * @param key String
+	 * @param value String
+	 * @return HttpUtil
+	 */
+	public HttpUtil addRequestProperty(String key, String value)
+	{
+		try
+		{
+			if("Content-Type".equalsIgnoreCase(key))
+			{
+				setContentType(value);
+			}
+			else
+			{
+				this.http.addRequestProperty(key, value);
+			}
+		}
+		catch(Exception e)
+		{
+		}
+		return this;
+	}
+
+	/**
+	 * 获得HeaderField
+	 * @param key String
+	 * @return String
+	 */
+	public String getHeaderField(String key)
+	{
+		return this.http.getHeaderField(key);
+	}
+
+	/**
+	 * 获得HeaderFields
+	 * @return Map&lt;String, List&lt;String&gt;&gt;
+	 */
+	public Map<String, List<String>> getHeaderFields()
+	{
+		return this.http.getHeaderFields();
 	}
 
 	/**
@@ -359,6 +411,7 @@ public class HttpUtil
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 		}
 		connectClose();
 		return result;
@@ -464,25 +517,25 @@ public class HttpUtil
 		return this;
 	}
 
-	// /**
-	// * 添加文件表单项
-	// * @param name String
-	// * @param filename String
-	// * @param contenttype String
-	// * @param fileobject byte[]
-	// * @return HttpUtil
-	// */
-	// public HttpUtil addForm(String name, String filename, String contenttype, byte[] fileobject)
-	// {
-	//
-	// NameFile c = new NameFile(name, filename, contenttype, fileobject);
-	// if(c.getName().length() > 0)
-	// {
-	// form.add(c);
-	// formdata = true;
-	// }
-	// return this;
-	// }
+	/**
+	 * 添加文件表单项
+	 * @param name String
+	 * @param filename String
+	 * @param contenttype String
+	 * @param fileobject byte[]
+	 * @return HttpUtil
+	 */
+	public HttpUtil addForm(String name, String filename, String contenttype, byte[] fileobject)
+	{
+		NameFile c = new NameFile(name, filename, contenttype, fileobject);
+		if(c.getName().length() > 0)
+		{
+			form.add(c);
+			formdata = true;
+		}
+		return this;
+	}
+
 	/**
 	 * 批量添加表单项
 	 * @param array NameValue[]
