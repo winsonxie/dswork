@@ -108,6 +108,10 @@ public class SsoServiceUtil
 		return service.updateUserBindForUnBind(userid, bindids);
 	}
 	
+	public List<IUserBind> queryUserBindByUnionid(String unionid)
+	{
+		return service.queryUserBindByUnionid(unionid);
+	}
 
 	//////////////////////////// api////////////////////////////
 	public void updateUserPassword(String account, String password)

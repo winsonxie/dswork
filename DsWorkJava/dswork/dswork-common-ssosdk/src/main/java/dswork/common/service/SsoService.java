@@ -112,6 +112,11 @@ public class SsoService
 	{
 		return dao.updateUserBindForUnBind(userid, bindids);
 	}
+
+	public List<IUserBind> queryUserBindByUnionid(String unionid)
+	{
+		return dao.queryUserBindByUnionid(unionid);
+	}
 	//////////////////////////// api////////////////////////////
 
 	public void updateUserPassword(String account, String password)

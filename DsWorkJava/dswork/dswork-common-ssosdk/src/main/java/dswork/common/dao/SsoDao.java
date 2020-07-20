@@ -201,6 +201,11 @@ public class SsoDao
 		return userBindDao.updateUserBindForUnBind(userid, bindids);
 	}
 
+	public List<IUserBind> queryUserBindByUnionid(String unionid)
+	{
+		return userBindDao.queryUserBindByUnionid(unionid);
+	}
+
 	//////////////////////////// api////////////////////////////
 	public void updateUserPassword(String account, String password)
 	{

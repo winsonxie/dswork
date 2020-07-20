@@ -271,7 +271,9 @@ public class DsBaseUserDao extends MyBatisDao
 	// 用于api
 	public List<IUser> queryUserByOrgPid(long orgpid)
 	{
-		return executeSelectList("queryUserByOrgPid", orgpid);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("orgpid", orgpid);
+		return executeSelectList("queryUserByOrgPid", param);
 	}
 
 	// 用于api
