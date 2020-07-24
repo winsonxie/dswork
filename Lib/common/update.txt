@@ -1,3 +1,5 @@
+2020-07-24
+	dswork增加了dswork.mvc下的类JsonResult，用于接收处理自定义json结构
 2019-08-28
 	dswork修改了dswork.web中的MyRequest类，使application/json的上传文件，跳过request.getContentLength()为-1时的情况
 	dswork修改了dswork.core中的TimeUtil类，增加formatDate(int type, int diff, String format)用于处理简单的日期加减
