@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -23,25 +24,24 @@ import javax.net.ssl.SSLSocketFactory;
  */
 public class HttpUtil
 {
-	private HttpURLConnection http;
-	private SSLSocketFactory sslSocketFactory;
-	private boolean isHttps = false;
-	private int connectTimeout = 10000;
-	private int readTimeout = 30000;
-	private String url = "";
-	private String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0";
 	private static String boundaryContentType = "multipart/form-data; boundary=----WebKitFormBoundaryForDsworkAbcdefg";
+	
+	private SSLSocketFactory sslSocketFactory;
+	
+	private HttpURLConnection http = null;
+	
+	private boolean connectd = false;
+	private Map<String, List<String>> requestPropertyMap = new LinkedHashMap<String, List<String>>();
+	
+	private int connectTimeout = 10000;
 	private String contentType = null;
+	private int readTimeout = 30000;
 	private int responseCode = 0;
-
-	/**
-	 * 返回当前是否https请求
-	 * @return boolean
-	 */
-	public boolean isHttps()
-	{
-		return isHttps;
-	}
+	private String requestMethod = null;
+	private String url = "";
+	private boolean useCaches = false;
+	private String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0";
+	private boolean isHostnameVerifier = true;
 
 	/**
 	 * 设置超时时间毫秒
@@ -51,10 +51,6 @@ public class HttpUtil
 	public HttpUtil setConnectTimeout(int connectTimeout)
 	{
 		this.connectTimeout = connectTimeout;
-		if(http != null)
-		{
-			this.http.setConnectTimeout(connectTimeout);
-		}
 		return this;
 	}
 
@@ -77,10 +73,6 @@ public class HttpUtil
 	public HttpUtil setReadTimeout(int readTimeout)
 	{
 		this.readTimeout = readTimeout;
-		if(http != null)
-		{
-			this.http.setReadTimeout(readTimeout);
-		}
 		return this;
 	}
 
@@ -91,13 +83,7 @@ public class HttpUtil
 	 */
 	public HttpUtil setRequestMethod(String requestMethod)
 	{
-		try
-		{
-			this.http.setRequestMethod(requestMethod.toUpperCase(Locale.ROOT));
-		}
-		catch(Exception e)
-		{
-		}
+		this.requestMethod = requestMethod.toUpperCase(Locale.ENGLISH);
 		return this;
 	}
 
@@ -117,7 +103,21 @@ public class HttpUtil
 			}
 			else
 			{
-				this.http.setRequestProperty(key, value);
+				if(value == null)
+				{
+					requestPropertyMap.remove(key);
+				}
+				else
+				{
+					List<String> list = requestPropertyMap.get(key);
+					if(list == null)
+					{
+						list = new ArrayList<String>();
+						requestPropertyMap.put(key, list);
+					}
+					list.clear();
+					list.add(value);
+				}
 			}
 		}
 		catch(Exception e)
@@ -142,7 +142,16 @@ public class HttpUtil
 			}
 			else
 			{
-				this.http.addRequestProperty(key, value);
+				if(value != null)
+				{
+					List<String> list = requestPropertyMap.get(key);
+					if(list == null)
+					{
+						list = new ArrayList<String>();
+						requestPropertyMap.put(key, list);
+					}
+					list.add(value);
+				}
 			}
 		}
 		catch(Exception e)
@@ -158,7 +167,7 @@ public class HttpUtil
 	 */
 	public String getHeaderField(String key)
 	{
-		return this.http.getHeaderField(key);
+		return connectd ? this.http.getHeaderField(key) : null;
 	}
 
 	/**
@@ -167,7 +176,7 @@ public class HttpUtil
 	 */
 	public Map<String, List<String>> getHeaderFields()
 	{
-		return this.http.getHeaderFields();
+		return connectd ? this.http.getHeaderFields() : null;
 	}
 
 	/**
@@ -186,9 +195,9 @@ public class HttpUtil
 	 * @param usecaches boolean
 	 * @return HttpUtil
 	 */
-	public HttpUtil setUseCaches(boolean usecaches)
+	public HttpUtil setUseCaches(boolean useCaches)
 	{
-		this.http.setUseCaches(usecaches);
+		this.useCaches = useCaches;
 		return this;
 	}
 
@@ -200,10 +209,6 @@ public class HttpUtil
 	public HttpUtil setUserAgent(String userAgent)
 	{
 		this.userAgent = userAgent;
-		if(http != null)
-		{
-			this.http.setRequestProperty("User-Agent", userAgent);
-		}
 		return this;
 	}
 
@@ -225,9 +230,24 @@ public class HttpUtil
 	 */
 	public HttpUtil create(String url, boolean isHostnameVerifier)
 	{
+		connectClose();
 		this.url = url;
+		
+		// 还原
+		this.connectd = false;
 		this.clearForm();
-		this.responseCode = 0;// 还原
+		this.responseCode = 0;
+		this.requestMethod = null;
+		this.requestPropertyMap.clear();
+		this.isHostnameVerifier = isHostnameVerifier;
+
+		return this;
+	}
+
+	private void connectDoing(String charsetName) throws IOException
+	{
+		this.connectd = true;// 标记连接开始
+		boolean isHttps = false;
 		URL c;
 		try
 		{
@@ -241,30 +261,44 @@ public class HttpUtil
 				{
 					https.setSSLSocketFactory(this.sslSocketFactory);
 				}
-				if(isHostnameVerifier)
+				if(this.isHostnameVerifier)
 				{
 					https.setHostnameVerifier(HttpCommon.HV);// 不进行主机名确认
 				}
 			}
-			this.http.setDoInput(true);// 可以使用conn.getInputStream().read()，默认值为 true
-			this.http.setDoOutput(false);
-			this.http.setConnectTimeout(connectTimeout);
-			this.http.setReadTimeout(readTimeout);
-			this.http.setRequestProperty("User-Agent", userAgent);
-			this.http.setRequestProperty("Accept-Charset", "utf-8");
-			this.http.setRequestMethod("GET");
 		}
 		catch(Exception e)
 		{
 		}
-		return this;
-	}
-
-	private void connectDoing(String charsetName) throws IOException
-	{
+		
+		this.http.setDoInput(true);// 可以使用conn.getInputStream().read()，默认值为 true
+		// this.http.setDoOutput(false);
+		this.http.setUseCaches(useCaches);
+		this.http.setConnectTimeout(connectTimeout);
+		this.http.setReadTimeout(readTimeout);
+		this.http.setRequestProperty("User-Agent", userAgent);
+		this.http.setRequestProperty("Accept-Charset", "utf-8");
+		// GET DELETE, PUT, POST
+		this.http.setRequestMethod(this.requestMethod == null ? "GET" : this.requestMethod);
+		
+		int len;
+		for(String key : requestPropertyMap.keySet())
+		{
+			List<String> list = requestPropertyMap.get(key);
+			this.http.setRequestProperty(key, list.get(0));
+			len = list.size();
+			if(len > 1)
+			{
+				for(int i = 1; i < len; i++)
+				{
+					this.http.addRequestProperty(key, list.get(i));
+				}
+			}
+		}
+		
 		if(this.cookies.size() > 0)
 		{
-			String _c = HttpCommon.parse(HttpCommon.getHttpCookies(this.cookies, isHttps()), "; ");
+			String _c = HttpCommon.parse(HttpCommon.getHttpCookies(this.cookies, isHttps), "; ");
 			http.setRequestProperty("Cookie", _c);
 		}
 		byte[] arr = null;
@@ -304,7 +338,6 @@ public class HttpUtil
 		if(arr != null)
 		{
 			this.http.setDoOutput(true);// 可以使用conn.getOutputStream().write()，默认值为 false
-			this.http.setUseCaches(false);
 			if(this.http.getRequestMethod().toUpperCase().equals("GET"))// DELETE, PUT, POST
 			{
 				this.http.setRequestMethod("POST");
@@ -350,11 +383,17 @@ public class HttpUtil
 		}
 	}
 
-	private void connectClose()
+	/**
+	 * 调用connectStream后，需要手工关闭
+	 */
+	public void connectClose()
 	{
 		try
 		{
-			http.disconnect();
+			if(connectd && http != null)
+			{
+				http.disconnect();
+			}
 		}
 		catch(Exception e)
 		{
@@ -441,6 +480,7 @@ public class HttpUtil
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 		}
 		connectClose();
 		return null;
