@@ -246,7 +246,7 @@ public class HttpUtil
 					https.setHostnameVerifier(HttpCommon.HV);// 不进行主机名确认
 				}
 			}
-			this.http.setDoInput(true);
+			this.http.setDoInput(true);// 可以使用conn.getInputStream().read()，默认值为 true
 			this.http.setDoOutput(false);
 			this.http.setConnectTimeout(connectTimeout);
 			this.http.setReadTimeout(readTimeout);
@@ -303,7 +303,7 @@ public class HttpUtil
 		}
 		if(arr != null)
 		{
-			this.http.setDoOutput(true);
+			this.http.setDoOutput(true);// 可以使用conn.getOutputStream().write()，默认值为 false
 			this.http.setUseCaches(false);
 			if(this.http.getRequestMethod().toUpperCase().equals("GET"))// DELETE, PUT, POST
 			{
