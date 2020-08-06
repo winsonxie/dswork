@@ -1,3 +1,7 @@
+2020-08-06
+	dswork修改了dswork.core下的类EncryptUtil
+		修改encryptRSA和decryptRSA函数名称为encryptRsa和decryptRsa函数
+		增加rsaSign、rsaSignVerify函数
 2020-07-24
 	dswork增加了dswork.mvc下的类JsonResult，用于接收处理自定义json结构
 2019-08-28
