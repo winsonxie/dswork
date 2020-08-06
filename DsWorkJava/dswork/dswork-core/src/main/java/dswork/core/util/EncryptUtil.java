@@ -65,13 +65,13 @@ public class EncryptUtil
 	 * @param publicKey 公钥
 	 * @return 密文，失败返回null
 	 */
-	public static String encryptRSA(String str, String publicKey)
+	public static String encryptRsa(String str, String publicKey)
 	{
 		String out = null;
 		try
 		{
 			RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decodeByteBase64(publicKey)));
-			Cipher cipher = Cipher.getInstance("RSA");
+			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 			cipher.init(Cipher.ENCRYPT_MODE, pubKey);// RSA加密
 			out = encodeByteBase64(cipher.doFinal(str.getBytes("UTF-8")));
 		}
@@ -87,14 +87,58 @@ public class EncryptUtil
 	 * @param privateKey 私钥
 	 * @return 解码后的字符串，失败返回null
 	 */
-	public static String decryptRSA(String str, String privateKey)
+	public static String decryptRsa(String str, String privateKey)
 	{
 		String out = null;
 		try
 		{
 			RSAPrivateKey priKey = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(decodeByteBase64(privateKey)));
-			Cipher cipher = Cipher.getInstance("RSA");
+			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 			cipher.init(Cipher.DECRYPT_MODE, priKey);// RSA解密
+			out = new String(cipher.doFinal(decodeByteBase64(str)));
+		}
+		catch(Exception e)
+		{
+		}
+		return out;
+	}
+
+	/**
+	 * RSA私钥签名
+	 * @param str 加密字符串
+	 * @param privateKey 私钥
+	 * @return 密文，失败返回null
+	 */
+	public static String rsaSign(String str, String privateKey)
+	{
+		String out = null;
+		try
+		{
+			RSAPrivateKey priKey = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(decodeByteBase64(privateKey)));
+			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			cipher.init(Cipher.ENCRYPT_MODE, priKey);// RSA加密
+			out = encodeByteBase64(cipher.doFinal(str.getBytes("UTF-8")));
+		}
+		catch(Exception e)
+		{
+		}
+		return out;
+	}
+
+	/**
+	 * RSA公钥签名验证
+	 * @param str 加密字符串
+	 * @param publicKey 公钥
+	 * @return 解码后的字符串，失败返回null
+	 */
+	public static String rsaSignVerify(String str, String publicKey)
+	{
+		String out = null;
+		try
+		{
+			RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decodeByteBase64(publicKey)));
+			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			cipher.init(Cipher.DECRYPT_MODE, pubKey);// RSA解密
 			out = new String(cipher.doFinal(decodeByteBase64(str)));
 		}
 		catch(Exception e)
