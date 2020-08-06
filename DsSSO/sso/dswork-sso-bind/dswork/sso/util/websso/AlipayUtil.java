@@ -1,5 +1,8 @@
 package dswork.sso.util.websso;
 
+import java.security.KeyFactory;
+import java.security.Signature;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,6 +25,21 @@ public class AlipayUtil
 
 	private AlipayUtil()
 	{
+	}
+
+	public static String encryptRsa2(String str, String privateKey)
+	{
+		try
+		{
+			Signature signature = Signature.getInstance("SHA256WithRSA");
+			signature.initSign(KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(EncryptUtil.decodeByteBase64(privateKey))));
+			signature.update(str.getBytes("UTF-8"));
+			return EncryptUtil.encodeByteBase64(signature.sign());
+		}
+		catch(Exception e)
+		{
+		}
+		return null;
 	}
 
 	public static AlipayAccessToken getAccessToken(String bind, String auth_code)
@@ -85,7 +103,7 @@ public class AlipayUtil
 			v = map.get(k);
 			sb.append("&" + k + "=" + v);
 		}
-		return EncryptUtil.encryptRsa2(sb.toString(), keyprivate);
+		return encryptRsa2(sb.toString(), keyprivate);
 	}
 	
 	public static IUserBind getUserBind(String bindid, String code)
