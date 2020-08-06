@@ -6,9 +6,7 @@ import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
-import java.security.PrivateKey;
 import java.security.SecureRandom;
-import java.security.Signature;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -60,19 +58,90 @@ public class EncryptUtil
 	}
 
 	/**
-	 * RSA公钥加密
-	 * @param str 加密字符串
+	 * RSAPublicKey
 	 * @param publicKey 公钥
-	 * @return 密文，失败返回null
+	 * @return 失败返回null
 	 */
-	public static String encryptRsa(String str, String publicKey)
+	public static RSAPublicKey getRSAPublicKey(String publicKey)
+	{
+		try
+		{
+			return (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decodeByteBase64(publicKey)));
+		}
+		catch(Exception e)
+		{
+		}
+		return null;
+	}
+
+	/**
+	 * RSAPrivateKey
+	 * @param privateKey 私钥
+	 * @return 失败返回null
+	 */
+	public static RSAPrivateKey getRSAPrivateKey(String privateKey)
+	{
+		try
+		{
+			return (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(decodeByteBase64(privateKey)));
+		}
+		catch(Exception e)
+		{
+		}
+		return null;
+	}
+
+
+	/**
+	 * 加密Cipher
+	 * @param key Key
+	 * @return 失败返回null
+	 */
+	public static Cipher getEncryptCipher(java.security.Key key)
+	{
+		try
+		{
+			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			cipher.init(Cipher.ENCRYPT_MODE, key);// 加密
+			return cipher;
+		}
+		catch(Exception e)
+		{
+		}
+		return null;
+	}
+
+
+	/**
+	 * 解密Cipher
+	 * @param key Key
+	 * @return Cipher
+	 */
+	public static Cipher getDecryptCipher(java.security.Key key)
+	{
+		try
+		{
+			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			cipher.init(Cipher.DECRYPT_MODE, key);// 加密
+			return cipher;
+		}
+		catch(Exception e)
+		{
+		}
+		return null;
+	}
+
+	/**
+	 * RSA加密
+	 * @param str 字符串
+	 * @param publicKey 公钥
+	 * @return base64密文，失败返回null
+	 */
+	public static String encryptRsaForCipher(String str, Cipher cipher)
 	{
 		String out = null;
 		try
 		{
-			RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decodeByteBase64(publicKey)));
-			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-			cipher.init(Cipher.ENCRYPT_MODE, pubKey);// RSA加密
 			out = encodeByteBase64(cipher.doFinal(str.getBytes("UTF-8")));
 		}
 		catch(Exception e)
@@ -82,74 +151,95 @@ public class EncryptUtil
 	}
 
 	/**
+	 * RSA解密
+	 * @param str base64密文
+	 * @param privateKey 私钥
+	 * @return 解码后的字符串，失败返回null
+	 */
+	public static String decryptRsaForCipher(String str, Cipher cipher)
+	{
+		String out = null;
+		try
+		{
+			out = new String(cipher.doFinal(decodeByteBase64(str)));
+		}
+		catch(Exception e)
+		{
+		}
+		return out;
+	}
+
+	/**
+	 * RSA公钥加密
+	 * @param str 需要加密的字符串
+	 * @param publicKey 公钥
+	 * @return base64密文，失败返回null
+	 */
+	@Deprecated
+	public static String encryptRSA(String str, String publicKey)
+	{
+		return encryptRsaForCipher(str, getEncryptCipher(getRSAPublicKey(publicKey)));
+	}
+
+	/**
 	 * RSA私钥解密
-	 * @param str 加密字符串
+	 * @param str base64密文
+	 * @param privateKey 私钥
+	 * @return 解码后的字符串，失败返回null
+	 */
+	@Deprecated
+	public static String decryptRSA(String str, String privateKey)
+	{
+		return decryptRsaForCipher(str, getDecryptCipher(getRSAPrivateKey(privateKey)));
+	}
+
+	/**
+	 * RSA公钥加密
+	 * @param str 需要加密的字符串
+	 * @param publicKey 公钥
+	 * @return base64密文，失败返回null
+	 */
+	public static String encryptRsa(String str, String publicKey)
+	{
+		return encryptRsaForCipher(str, getEncryptCipher(getRSAPublicKey(publicKey)));
+	}
+
+	/**
+	 * RSA私钥解密
+	 * @param str base64密文
 	 * @param privateKey 私钥
 	 * @return 解码后的字符串，失败返回null
 	 */
 	public static String decryptRsa(String str, String privateKey)
 	{
-		String out = null;
-		try
-		{
-			RSAPrivateKey priKey = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(decodeByteBase64(privateKey)));
-			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-			cipher.init(Cipher.DECRYPT_MODE, priKey);// RSA解密
-			out = new String(cipher.doFinal(decodeByteBase64(str)));
-		}
-		catch(Exception e)
-		{
-		}
-		return out;
+		return decryptRsaForCipher(str, getDecryptCipher(getRSAPrivateKey(privateKey)));
 	}
 
 	/**
 	 * RSA私钥签名
-	 * @param str 加密字符串
+	 * @param str 需要签名的字符串
 	 * @param privateKey 私钥
-	 * @return 密文，失败返回null
+	 * @return base64密文，失败返回null
 	 */
-	public static String rsaSign(String str, String privateKey)
+	public static String signRsa(String str, String privateKey)
 	{
-		String out = null;
-		try
-		{
-			RSAPrivateKey priKey = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(decodeByteBase64(privateKey)));
-			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-			cipher.init(Cipher.ENCRYPT_MODE, priKey);// RSA加密
-			out = encodeByteBase64(cipher.doFinal(str.getBytes("UTF-8")));
-		}
-		catch(Exception e)
-		{
-		}
-		return out;
+		return encryptRsaForCipher(str, getEncryptCipher(getRSAPrivateKey(privateKey)));
 	}
 
 	/**
 	 * RSA公钥签名验证
-	 * @param str 加密字符串
+	 * @param str base64密文
 	 * @param publicKey 公钥
-	 * @return 解码后的字符串，失败返回null
+	 * @return 验证后的字符串，失败返回null
 	 */
-	public static String rsaSignVerify(String str, String publicKey)
+	public static String signRsaVerify(String str, String publicKey)
 	{
-		String out = null;
-		try
-		{
-			RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decodeByteBase64(publicKey)));
-			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-			cipher.init(Cipher.DECRYPT_MODE, pubKey);// RSA解密
-			out = new String(cipher.doFinal(decodeByteBase64(str)));
-		}
-		catch(Exception e)
-		{
-		}
-		return out;
+		return decryptRsaForCipher(str, getDecryptCipher(getRSAPublicKey(publicKey)));
 	}
 
 	/**
 	 * MD5加密
-	 * @param str 需要加密的String
+	 * @param str 需要加密的字符串
 	 * @return 32位MD5的String，失败返回null
 	 */
 	public static String encryptMd5(String str)
@@ -158,57 +248,6 @@ public class EncryptUtil
 		if(code != null)
 		{
 			return code.toUpperCase(Locale.ENGLISH);
-		}
-		return null;
-	}
-
-	private static boolean isWhiteSpace(char octect)
-	{
-		return (octect == 0x20 || octect == 0xd || octect == 0xa || octect == 0x9);
-	}
-
-	private static int removeWhiteSpace(char[] data)
-	{
-		if(data == null)
-		{
-			return 0;
-		}
-		// count characters that's not whitespace
-		int newSize = 0;
-		int len = data.length;
-		for(int i = 0; i < len; i++)
-		{
-			if(!isWhiteSpace(data[i]))
-			{
-				data[newSize++] = data[i];
-			}
-		}
-		return newSize;
-	}
-
-	/**
-	 * RSA2加密
-	 * @param str 需要加密的String
-	 * @param privateKey 私钥String，会对其进行去空处理
-	 * @return RSA2使用Base64编码的String，失败返回null
-	 */
-	public static String encryptRsa2(String str, String privateKey)
-	{
-		try
-		{
-			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-			char[] arr = privateKey.toCharArray();
-			removeWhiteSpace(arr);
-			byte[] encodeKey = decodeByteBase64(privateKey);
-			PrivateKey priKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(encodeKey));
-			Signature signature = Signature.getInstance("SHA256WithRSA");
-			signature.initSign(priKey);
-			signature.update(str.getBytes("UTF-8"));
-			return encodeByteBase64(signature.sign());
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
 		}
 		return null;
 	}
@@ -223,7 +262,7 @@ public class EncryptUtil
 		String code = encrypts(str, "SHA-1");
 		if(code != null)
 		{
-			return code.toUpperCase(Locale.ENGLISH);
+			return code;
 		}
 		return null;
 	}
@@ -238,7 +277,7 @@ public class EncryptUtil
 		String code = encrypts(str, "SHA-256");
 		if(code != null)
 		{
-			return code.toUpperCase(Locale.ENGLISH);
+			return code;
 		}
 		return null;
 	}
@@ -347,6 +386,30 @@ public class EncryptUtil
 		}
 	}
 
+//	private static boolean isWhiteSpace(char octect)
+//	{
+//		return (octect == 0x20 || octect == 0xd || octect == 0xa || octect == 0x9);
+//	}
+//
+//	private static int removeWhiteSpace(char[] data)
+//	{
+//		if(data == null)
+//		{
+//			return 0;
+//		}
+//		// count characters that's not whitespace
+//		int newSize = 0;
+//		int len = data.length;
+//		for(int i = 0; i < len; i++)
+//		{
+//			if(!isWhiteSpace(data[i]))
+//			{
+//				data[newSize++] = data[i];
+//			}
+//		}
+//		return newSize;
+//	}
+
 	/**
 	 * 将base64编码的字符串进行解码
 	 * @param str base64编码的字符串
@@ -359,6 +422,8 @@ public class EncryptUtil
 		{
 			if(str != null)
 			{
+				
+				
 				if(isBase64)
 				{
 					return java.util.Base64.getDecoder().decode(str);
@@ -370,30 +435,6 @@ public class EncryptUtil
 		{
 		}
 		return null;
-	}
-
-	/**
-	 * 将字符串转化为des编码，改用encryptDes
-	 * @param str 需要加密的String
-	 * @param key 密钥
-	 * @return des编码的String
-	 */
-	@Deprecated
-	public static String encodeDes(String str, String key)
-	{
-		return encryptDes(str, key);
-	}
-
-	/**
-	 * 将des编码的字符串进行解码，改用decryptDes
-	 * @param str des编码的字符串
-	 * @param key 密钥
-	 * @return 解码后的字符串
-	 */
-	@Deprecated
-	public static String decodeDes(String str, String key)
-	{
-		return decryptDes(str, key);
 	}
 
 	/**
