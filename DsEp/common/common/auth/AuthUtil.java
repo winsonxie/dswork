@@ -86,7 +86,7 @@ public class AuthUtil
 			{
 				if(loginUser.getLoginstatus() == 1)// 正常
 				{
-					String password = EncryptUtil.decodeDes(auth.getPassword(), "dswork");
+					String password = EncryptUtil.decryptDes(auth.getPassword(), "dswork");
 					password = EncryptUtil.encryptMd5(password).toLowerCase();
 					if(password.equalsIgnoreCase(loginUser.getPassword().toLowerCase()))
 					{
