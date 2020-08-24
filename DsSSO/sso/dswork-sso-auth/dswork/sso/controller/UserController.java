@@ -222,7 +222,7 @@ public class UserController
 					{
 						if("password".equals(grant_type))
 						{
-							if(!loginUser.getPassword().equals(EncryptUtil.decryptRSA(password, CodeUtil.privateKey).toUpperCase(Locale.ENGLISH)))
+							if(!loginUser.getPassword().equals(EncryptUtil.decryptRsa(password, CodeUtil.privateKey).toUpperCase(Locale.ENGLISH)))
 							{
 								msg = CodeUtil.CODE_402;// 密码不正确
 							}
@@ -583,7 +583,7 @@ public class UserController
 		{
 			try
 			{
-				password = EncryptUtil.decryptRSA(password, CodeUtil.privateKey);
+				password = EncryptUtil.decryptRsa(password, CodeUtil.privateKey);
 			}
 			catch(Exception e)
 			{
@@ -647,7 +647,7 @@ public class UserController
 					}
 					try
 					{
-						oldpassword = EncryptUtil.decryptRSA(oldpassword, CodeUtil.privateKey).toUpperCase(Locale.ENGLISH);
+						oldpassword = EncryptUtil.decryptRsa(oldpassword, CodeUtil.privateKey).toUpperCase(Locale.ENGLISH);
 						if(null == user)
 						{
 							msg = CodeUtil.CODE_404;// 用户不存在
