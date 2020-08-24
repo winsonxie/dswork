@@ -71,6 +71,7 @@ try
 		boolean reg = "true".equals(req.getString("reg", req.getString("register", "false")));
 		if("".equals(c))// 首次进入，需重定向至第三方登录
 		{
+			String scope = req.getString("scope", "snsapi_userinfo");
 			c = dswork.core.util.EncryptUtil.encryptMd5(date + bindid);
 			String authorizeURL = "about:blank";
 			String redirectURL = "%s%s";
@@ -92,7 +93,14 @@ try
 				}
 				else// wechat-mini || wechat
 				{// scope=snsapi_base可获取用户openid且无需授权，但无法获取别的信息（如用户关注过，则可以获取别的信息）；已关注用户scope=snsapi_userinfo拉取用户信息也是无需授权的
-					redirectURL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo#wechat_redirect";
+					if("snsapi_userinfo".equals(scope))
+					{
+						redirectURL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo#wechat_redirect";
+					}
+					else
+					{
+						redirectURL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo#wechat_redirect";
+					}
 				}
 			}
 			else if("qq".equals(bind.getApptype()))

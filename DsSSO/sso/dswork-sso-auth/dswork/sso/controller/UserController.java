@@ -185,10 +185,8 @@ public class UserController
 			String appid = req.getString("appid");
 			String response_type = req.getString("response_type");// code|token
 			String grant_type = req.getString("grant_type");// password|sms
-			String redirect_uri = req.getString("redirect_uri", req.getString("service"));
 			String bm = req.getString("account").trim().toLowerCase(Locale.ENGLISH);
 			String password = req.getString("password");// rsa(md5(password)), publicKey加密
-			String state = req.getString("state");
 			IUnit unit = null;
 			if("".equals(bm) || "".equals(password))
 			{
@@ -208,10 +206,6 @@ public class UserController
 				if(null == unit)
 				{
 					msg = CodeUtil.CODE_400_APPID;
-				}
-				else if(!redirect_uri.startsWith(unit.getReturnurl()))
-				{
-					msg = CodeUtil.CODE_400_REDIRECT_URI;
 				}
 				else
 				{
@@ -269,6 +263,8 @@ public class UserController
 						String userjson = ResponseUtil.toJson(loginUser);
 						if(type)
 						{
+							String redirect_uri = req.getString("redirect_uri", req.getString("service"));
+							String state = req.getString("state");
 							if(state.length() > 0)
 							{
 								String p = (redirect_uri.contains("?") ? "&state=" : "?state=") + ResponseUtil.getEncodeURL(state);
@@ -282,16 +278,24 @@ public class UserController
 									redirect_uri = redirect_uri + p;
 								}
 							}
-							ZAuthorizecode code = TokenUserUtil.codeCreate(redirect_uri, userjson);// 获取code
-							msg = ResponseUtil.getJsonUserCode(code.getCode(), code.getExpires_in() / 1000);
-							ResponseUtil.printJson(response, msg);
-							try
+							if(!redirect_uri.startsWith(unit.getReturnurl()))
 							{
-								String opread = "password".equals(grant_type) ? "password login" : "smscode login";
-								SsoFactory.getSsoService().saveUserLog(appid, "AUTHORIZE", code.getCode(), 1, opread, true, getClientIp(request), loginUser.getId(), bm, loginUser.getName());
+								msg = CodeUtil.CODE_400_REDIRECT_URI;
+								ResponseUtil.printJson(response, msg);
 							}
-							catch(Exception e)
+							else
 							{
+								ZAuthorizecode code = TokenUserUtil.codeCreate(redirect_uri, userjson);// 获取code
+								msg = ResponseUtil.getJsonUserCode(code.getCode(), code.getExpires_in() / 1000);
+								ResponseUtil.printJson(response, msg);
+								try
+								{
+									String opread = "password".equals(grant_type) ? "password login" : "smscode login";
+									SsoFactory.getSsoService().saveUserLog(appid, "AUTHORIZE", code.getCode(), 1, opread, true, getClientIp(request), loginUser.getId(), bm, loginUser.getName());
+								}
+								catch(Exception e)
+								{
+								}
 							}
 						}
 						else
@@ -356,7 +360,7 @@ public class UserController
 		}
 	}
 
-	@RequestMapping("/redirect")
+	@RequestMapping(value = "/redirect", method = RequestMethod.GET)
 	public void redirect(HttpServletRequest request, HttpServletResponse response)
 	{
 		MyRequest req = new MyRequest(request);

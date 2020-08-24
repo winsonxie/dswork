@@ -2,11 +2,14 @@ package dswork.sso.util.websso;
 
 import java.util.Map;
 
-import dswork.sso.model.wechat.WechatAccessToken;
-import dswork.sso.model.wechat.WechatUserinfo;
 import dswork.common.model.IBind;
 import dswork.common.model.IUserBind;
+import dswork.common.util.ResponseUtil;
 import dswork.http.HttpUtil;
+import dswork.sso.model.wechat.WechatAccessToken;
+import dswork.sso.model.wechat.WechatMiniCode2Session;
+import dswork.sso.model.wechat.WechatMiniUserinfo;
+import dswork.sso.model.wechat.WechatUserinfo;
 
 @SuppressWarnings("all")
 public class WechatUtil
@@ -14,7 +17,12 @@ public class WechatUtil
 	public static final String API_ACCESSTOKEN = "https://api.weixin.qq.com/sns/oauth2/access_token";
 	public static final String API_USERINFO = "https://api.weixin.qq.com/sns/userinfo";
 	public static final String API_MINI_SESSION = "https://api.weixin.qq.com/sns/jscode2session";
-
+	
+	static
+	{
+		java.security.Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+	}
+	
 	public static WechatAccessToken getAccessToken(String bind, String auth_code)
 	{
 		IBind ws = WebssoUtil.get(bind);
@@ -42,7 +50,7 @@ public class WechatUtil
 	 * @param code
 	 * @return
 	 */
-	public static Map<String, Object> code2Session(String bind, String code)
+	public static WechatMiniCode2Session code2Session(String bind, String code)
 	{
 		IBind ws = WebssoUtil.get(bind);
 		StringBuilder sb = new StringBuilder().append(API_MINI_SESSION)//
@@ -51,7 +59,7 @@ public class WechatUtil
 				.append("&js_code=").append(code)//
 				.append("&grant_type=").append("authorization_code");
 		String json = new HttpUtil().create(sb.toString()).connect();
-		return WebssoUtil.toBean(json, Map.class);
+		return WebssoUtil.toBean(json, WechatMiniCode2Session.class);
 	}
 
 	/**
@@ -67,21 +75,20 @@ public class WechatUtil
 		IBind ws = WebssoUtil.get(bindid);
 		if("wechat-mini".equals(ws.getApptype()))
 		{
-			Map<String, Object> map = code2Session(bindid, codeOraccessToken);
-			if(map != null && 0D == Double.parseDouble(map.get("errcode").toString()))
+			WechatMiniCode2Session c2s = code2Session(bindid, codeOraccessToken);
+			if(c2s != null && !"".equals(c2s.getSession_key()))
 			{
-				String session_key = map.get("session_key").toString();
-				String user = decodeAes(dataOrOpenid, session_key, iv);// 解密
-				map = WebssoUtil.toBean(user, Map.class);
+				String user = decodeAes(dataOrOpenid, c2s.getSession_key(), iv);// 解密
+				WechatMiniUserinfo mini = WebssoUtil.toBean(user, WechatMiniUserinfo.class);
 				userBind = new IUserBind();
-				userBind.setOpenid(map.get("openId").toString());
-				userBind.setUnionid(map.get("unionId").toString());
-				userBind.setName(map.get("nickName").toString());
-				userBind.setSex(Integer.parseInt(map.get("gender").toString()));
-				userBind.setAvatar(map.get("avatarUrl").toString());
-				userBind.setCountry(map.get("country").toString());
-				userBind.setProvince(map.get("province").toString());
-				userBind.setCity(map.get("city").toString());
+				userBind.setOpenid(mini.getOpenId());
+				userBind.setUnionid(mini.getUnionId());
+				userBind.setName(mini.getNickName());
+				userBind.setSex(mini.getGender());
+				userBind.setAvatar(mini.getAvatarUrl());
+				userBind.setCountry(mini.getCountry());
+				userBind.setProvince(mini.getProvince());
+				userBind.setCity(mini.getCity());
 			}
 		}
 		else
@@ -127,6 +134,8 @@ public class WechatUtil
 			byte[] keyByte = dswork.core.util.EncryptUtil.decodeByteBase64(key);
 			// 对称解密算法初始向量
 			byte[] ivByte = dswork.core.util.EncryptUtil.decodeByteBase64(iv);
+			// AES/CBC/PKCS7Padding，需要bcprov-jdk16-1.46.jar，微信文档要求使用
+			// AES/CBC/PKCS5Padding，第一次doFinal不行，后面就可以
 			javax.crypto.Cipher cipher = javax.crypto.Cipher.getInstance("AES/CBC/PKCS7Padding");
 			javax.crypto.spec.SecretKeySpec spec = new javax.crypto.spec.SecretKeySpec(keyByte, "AES");
 			java.security.AlgorithmParameters parameters = java.security.AlgorithmParameters.getInstance("AES");
@@ -140,6 +149,7 @@ public class WechatUtil
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 		}
 		return null;
 	}

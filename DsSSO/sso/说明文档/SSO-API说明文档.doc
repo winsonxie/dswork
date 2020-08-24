@@ -1,0 +1,1062 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+    xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:w="urn:schemas-microsoft-com:office:word"
+    xmlns="http://www.w3.org/TR/REC-html40">
+    <head><meta http-equiv=Content-Type content="text/html; charset=utf-8">
+    <style type="text/css">
+        table  
+        {  
+            border-collapse: collapse;
+            border: none;  
+            width: 100%;  
+        }  
+        td,tr  
+        {  
+            border: solid #CCC 1px;
+            padding:3px;
+            font-size:9pt;
+        } 
+        .codestyle{
+            word-break: break-all;
+            mso-highlight:rgb(252, 252, 252);
+            padding-left: 5px; background-color: rgb(252, 252, 252); border: 1px solid rgb(225, 225, 232);
+        }
+        img {
+            width:100;
+        }
+    </style>
+    <meta name=ProgId content=Word.Document>
+    <meta name=Generator content="Microsoft Word 11">
+    <meta name=Originator content="Microsoft Word 11">
+    <xml><w:WordDocument><w:View>Print</w:View></xml></head>
+    <body><h1>1、获取用户access_token</h1><div style="margin-left:20px;"><p><strong>简要描述</strong></p>
+<ul>
+<li>获取用户access_token</li>
+</ul>
+<p><strong>请求地址</strong></p>
+<ul>
+<li><code>/sso/user/access_token</code></li>
+</ul>
+<p><strong>请求方式</strong></p>
+<ul>
+<li>POST或GET</li>
+</ul>
+<p><strong>请求参数</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">appid</td>
+<td>是</td>
+<td>String</td>
+<td>应用ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">appsecret</td>
+<td>是</td>
+<td>String</td>
+<td>应用秘钥</td>
+</tr>
+<tr>
+<td style="text-align: center;">grant_type</td>
+<td>是</td>
+<td>String</td>
+<td>授权类型，请填写authorization_code</td>
+</tr>
+<tr>
+<td style="text-align: center;">code</td>
+<td>是</td>
+<td>String</td>
+<td>授权码</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+    "code":1,
+    "data":{
+        "access_token":"97A55BF4A81A399F8F54BFF3B6E7B56D6AA836BBEBAC09DDD44F22AC9C4DDC24",
+        "expires_in":2592000,
+        "refresh_token":"",
+        "openid":"1595029661979613"
+    }
+}
+</code></pre></table>
+<p><strong>返回data数据说明</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">access_token</td>
+<td>String</td>
+<td>用户凭证</td>
+</tr>
+<tr>
+<td style="text-align: center;">expires_in</td>
+<td>int</td>
+<td>过期时间（s）</td>
+</tr>
+<tr>
+<td style="text-align: center;">refresh_token</td>
+<td>String</td>
+<td>刷新凭证</td>
+</tr>
+<tr>
+<td style="text-align: center;">openid</td>
+<td>String</td>
+<td>用户ID</td>
+</tr>
+</tbody>
+</table></div><h1>2、检查用户凭证(access_token)是否还有效</h1><div style="margin-left:20px;"><p><strong>简要描述</strong></p>
+<ul>
+<li>检查用户凭证(access_token)是否还有效</li>
+</ul>
+<p><strong>请求地址</strong></p>
+<ul>
+<li><code>/sso/user/auth_token</code></li>
+</ul>
+<p><strong>请求方式</strong></p>
+<ul>
+<li>POST或GET</li>
+</ul>
+<p><strong>请求参数</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">appid</td>
+<td>是</td>
+<td>String</td>
+<td>应用ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">openid</td>
+<td>是</td>
+<td>String</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">access_token</td>
+<td>是</td>
+<td>String</td>
+<td>用户凭证</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+    "code":1
+}
+</code></pre></table></div><h1>3、授权登录页面</h1><div style="margin-left:20px;"><p><strong>简要描述</strong></p>
+<ul>
+<li>授权登录页面</li>
+</ul>
+<p><strong>请求地址</strong></p>
+<ul>
+<li><code>/sso/user/authorize</code></li>
+</ul>
+<p><strong>请求方式</strong></p>
+<ul>
+<li>GET</li>
+</ul>
+<p><strong>请求参数</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">appid</td>
+<td>是</td>
+<td>String</td>
+<td>应用ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">redirect_uri</td>
+<td>是</td>
+<td>String</td>
+<td>授权后重定向的回调链接地址， 请使用 urlEncode 对链接进行处理</td>
+</tr>
+<tr>
+<td style="text-align: center;">response_type</td>
+<td>是</td>
+<td>String</td>
+<td>返回类型，请填写code</td>
+</tr>
+<tr>
+<td style="text-align: center;">state</td>
+<td>否</td>
+<td>String</td>
+<td>重定向后会带上state参数</td>
+</tr>
+</tbody>
+</table></div><h1>4、登入认证</h1><div style="margin-left:20px;"><p><strong>简要描述</strong></p>
+<ul>
+<li>登入认证</li>
+</ul>
+<p><strong>请求地址</strong></p>
+<ul>
+<li><code>/sso/user/login</code></li>
+</ul>
+<p><strong>请求方式</strong></p>
+<ul>
+<li>POST</li>
+</ul>
+<p><strong>请求参数</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">appid</td>
+<td>是</td>
+<td>String</td>
+<td>应用ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">response_type</td>
+<td>是</td>
+<td>String</td>
+<td>返回类型，请填写code或token</td>
+</tr>
+<tr>
+<td style="text-align: center;">grant_type</td>
+<td>是</td>
+<td>String</td>
+<td>授权类型，请填写password或sms（密码或短信验证码）</td>
+</tr>
+<tr>
+<td style="text-align: center;">account</td>
+<td>是</td>
+<td>String</td>
+<td>账号</td>
+</tr>
+<tr>
+<td style="text-align: center;">password</td>
+<td>是</td>
+<td>String</td>
+<td>密码，grant_type=password时需rsa(md5(password))</td>
+</tr>
+<tr>
+<td style="text-align: center;">redirect_uri</td>
+<td>否</td>
+<td>String</td>
+<td><strong>response_type=code时，需带上此参数</strong>，授权后重定向的回调链接地址， 请使用 urlEncode 对链接进行处理</td>
+</tr>
+<tr>
+<td style="text-align: center;">state</td>
+<td>否</td>
+<td>String</td>
+<td><strong>response_type=code时，</strong>重定向后会带上state参数</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>response_type=code返回以下数据格式
+{
+    "code":1,
+    "data":{
+        "code":"B49F943C5B5A6802417AC5875F9EE7095CD4DA4BFA73F8C9E5554A5894BDFEFD",
+        "expires_in":1595573879
+    }
+}
+response_type=token返回以下数据格式
+{
+    "code":1,
+    "data":{
+        "access_token":"97A55BF4A81A399F8F54BFF3B6E7B56D6AA836BBEBAC09DDD44F22AC9C4DDC24",
+        "expires_in":2592000,
+        "refresh_token":"",
+        "openid":"1595029661979613"
+    }
+}</code></pre></table>
+<p><strong>返回data数据（response_type=code）说明</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">code</td>
+<td>String</td>
+<td>授权码</td>
+</tr>
+<tr>
+<td style="text-align: center;">expires_in</td>
+<td>int</td>
+<td>过期时间（ms）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回data数据（response_type=token）说明</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">access_token</td>
+<td>String</td>
+<td>用户凭证</td>
+</tr>
+<tr>
+<td style="text-align: center;">expires_in</td>
+<td>int</td>
+<td>过期时间（s）</td>
+</tr>
+<tr>
+<td style="text-align: center;">refresh_token</td>
+<td>String</td>
+<td>刷新凭证</td>
+</tr>
+<tr>
+<td style="text-align: center;">openid</td>
+<td>String</td>
+<td>用户ID</td>
+</tr>
+</tbody>
+</table></div><h1>5、登出认证</h1><div style="margin-left:20px;"><p><strong>简要描述</strong></p>
+<ul>
+<li>登出认证，即取消用户凭证</li>
+</ul>
+<p><strong>请求地址</strong></p>
+<ul>
+<li><code>/sso/user/logout</code></li>
+</ul>
+<p><strong>请求方式</strong></p>
+<ul>
+<li>POST或GET</li>
+</ul>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">appid</td>
+<td>是</td>
+<td>String</td>
+<td>应用ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">openid</td>
+<td>是</td>
+<td>String</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">access_token</td>
+<td>是</td>
+<td>String</td>
+<td>用户凭证</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+    "code":1
+}
+</code></pre></table></div><h1>6、授权后访问重定向地址</h1><div style="margin-left:20px;"><p><strong>简要描述</strong></p>
+<ul>
+<li>授权后访问重定向地址</li>
+</ul>
+<p><strong>请求地址</strong></p>
+<ul>
+<li><code>/sso/user/redirect</code></li>
+</ul>
+<p><strong>请求方式</strong></p>
+<ul>
+<li>GET</li>
+</ul>
+<p><strong>请求参数</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">appid</td>
+<td>是</td>
+<td>String</td>
+<td>应用ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">code</td>
+<td>是</td>
+<td>String</td>
+<td>授权码</td>
+</tr>
+</tbody>
+</table></div><h1>7、注册</h1><div style="margin-left:20px;"><p><strong>简要描述</strong></p>
+<ul>
+<li>注册</li>
+</ul>
+<p><strong>请求地址</strong></p>
+<ul>
+<li><code>/sso/user/register</code></li>
+</ul>
+<p><strong>请求方式</strong></p>
+<ul>
+<li>POST</li>
+</ul>
+<p><strong>请求参数</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">appid</td>
+<td>是</td>
+<td>String</td>
+<td>应用ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">user</td>
+<td>是</td>
+<td>String</td>
+<td>des(用户信息JSON, appid)，详见<strong>《用户信息JSON》</strong></td>
+</tr>
+<tr>
+<td style="text-align: center;">reg_type</td>
+<td>否</td>
+<td>String</td>
+<td>注册账号的类型（默认为a）：账号a,手机m,身份证件号u,可组合</td>
+</tr>
+<tr>
+<td style="text-align: center;">smscode</td>
+<td>否</td>
+<td>String</td>
+<td>短信验证码，<strong>reg_type包含m时，此参数必须</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>用户信息JSON</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+    "ssqy":"",
+    "name":"",
+    "mobile":"",
+    "account":"",
+    "password":"",
+    "workcard":"",
+    "sex":0,
+    "avatar":"",
+    "idcard":"",
+    "email":"",
+    "phone":"",
+    "orgpid":0,
+    "orgid":0,
+    "type":"",
+    "typename":"",
+    "exalias":"",
+    "exname":"",
+    "exdata":""
+}</code></pre></table>
+<p><strong>用户信息JSON数据说明</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">ssqy</td>
+<td>String</td>
+<td>最长12位的区域编码-区域名称</td>
+</tr>
+<tr>
+<td style="text-align: center;">name</td>
+<td>String</td>
+<td>姓名</td>
+</tr>
+<tr>
+<td style="text-align: center;">mobile</td>
+<td>String</td>
+<td>手机</td>
+</tr>
+<tr>
+<td style="text-align: center;">account</td>
+<td>String</td>
+<td>自定义账号</td>
+</tr>
+<tr>
+<td style="text-align: center;">password</td>
+<td>String</td>
+<td>密码md5(password)</td>
+</tr>
+<tr>
+<td style="text-align: center;">workcard</td>
+<td>String</td>
+<td>工作证号</td>
+</tr>
+<tr>
+<td style="text-align: center;">sex</td>
+<td>int</td>
+<td>性别(0未知,1男,2女)</td>
+</tr>
+<tr>
+<td style="text-align: center;">avatar</td>
+<td>String</td>
+<td>头像</td>
+</tr>
+<tr>
+<td style="text-align: center;">idcard</td>
+<td>String</td>
+<td>身份证号</td>
+</tr>
+<tr>
+<td style="text-align: center;">email</td>
+<td>String</td>
+<td>电子邮件</td>
+</tr>
+<tr>
+<td style="text-align: center;">phone</td>
+<td>String</td>
+<td>电话</td>
+</tr>
+<tr>
+<td style="text-align: center;">orgpid</td>
+<td>String</td>
+<td>单位ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">orgid</td>
+<td>String</td>
+<td>部门ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">type</td>
+<td>String</td>
+<td>类型</td>
+</tr>
+<tr>
+<td style="text-align: center;">typename</td>
+<td>String</td>
+<td>类型名称</td>
+</tr>
+<tr>
+<td style="text-align: center;">exalias</td>
+<td>String</td>
+<td>类型扩展标识</td>
+</tr>
+<tr>
+<td style="text-align: center;">exname</td>
+<td>String</td>
+<td>类型扩展名称</td>
+</tr>
+<tr>
+<td style="text-align: center;">exdata</td>
+<td>String</td>
+<td>用于存放自定义对象的json值</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+    "code":1
+}</code></pre></table></div><h1>8、修改密码或者重置密码</h1><div style="margin-left:20px;"><p><strong>简要描述</strong></p>
+<ul>
+<li>修改密码或者重置密码</li>
+</ul>
+<p><strong>请求地址</strong></p>
+<ul>
+<li><code>/sso/user/update/password</code></li>
+</ul>
+<p><strong>请求方式</strong></p>
+<ul>
+<li>POST</li>
+</ul>
+<p><strong>请求参数</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">appid</td>
+<td>是</td>
+<td>String</td>
+<td>应用ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">grant_type</td>
+<td>是</td>
+<td>String</td>
+<td>操作类型，请填写password/reset（修改密码/重置密码）</td>
+</tr>
+<tr>
+<td style="text-align: center;">password</td>
+<td>是</td>
+<td>String</td>
+<td>新密码，rsa(md5(password)), publicKey加密</td>
+</tr>
+<tr>
+<td style="text-align: center;">account</td>
+<td>否</td>
+<td>String</td>
+<td><strong>grant_type=reset时必须</strong>，账号</td>
+</tr>
+<tr>
+<td style="text-align: center;">smscode</td>
+<td>否</td>
+<td>String</td>
+<td><strong>grant_type=reset时必须</strong>，短信验证码，只能使用手机号+短信验证码进行重置</td>
+</tr>
+<tr>
+<td style="text-align: center;">openid</td>
+<td>否</td>
+<td>String</td>
+<td><strong>grant_type=password时必须</strong>，用户ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">access_token</td>
+<td>否</td>
+<td>String</td>
+<td><strong>grant_type=password时必须</strong>，用户凭证</td>
+</tr>
+<tr>
+<td style="text-align: center;">oldpassword</td>
+<td>否</td>
+<td>String</td>
+<td><strong>grant_type=password时必须</strong>，旧密码，rsa(md5(password)), publicKey加密</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+    "code":1
+}</code></pre></table></div><h1>9、更换账号(手机号)</h1><div style="margin-left:20px;"><p><strong>简要描述</strong></p>
+<ul>
+<li>更换账号(手机号)</li>
+</ul>
+<p><strong>请求地址</strong></p>
+<ul>
+<li><code>/sso/user/update/account</code></li>
+</ul>
+<p><strong>请求方式</strong></p>
+<ul>
+<li>POST</li>
+</ul>
+<p><strong>请求参数</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">appid</td>
+<td>是</td>
+<td>String</td>
+<td>应用ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">oldaccount</td>
+<td>是</td>
+<td>String</td>
+<td>旧的手机号</td>
+</tr>
+<tr>
+<td style="text-align: center;">newaccount</td>
+<td>是</td>
+<td>String</td>
+<td>新的手机号</td>
+</tr>
+<tr>
+<td style="text-align: center;">smscode</td>
+<td>是</td>
+<td>String</td>
+<td>新的手机号的验证码</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+    "code":1
+}</code></pre></table></div><h1>10、更新账户信息</h1><div style="margin-left:20px;"><p><strong>简要描述</strong></p>
+<ul>
+<li>更新账户信息</li>
+</ul>
+<p><strong>请求地址</strong></p>
+<ul>
+<li><code>/sso/user/update/userinfo</code></li>
+</ul>
+<p><strong>请求方式</strong></p>
+<ul>
+<li>POST</li>
+</ul>
+<p><strong>请求参数</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">appid</td>
+<td>是</td>
+<td>String</td>
+<td>应用ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">openid</td>
+<td>是</td>
+<td>String</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">user</td>
+<td>否</td>
+<td>String</td>
+<td>des(用户信息JSON, appid)，<strong>详见《用户信息JSON》，当该参数不传时，以下参数可选</strong></td>
+</tr>
+<tr>
+<td style="text-align: center;">ssqy</td>
+<td>否</td>
+<td>String</td>
+<td>最长12位的区域编码-区域名称</td>
+</tr>
+<tr>
+<td style="text-align: center;">name</td>
+<td>否</td>
+<td>String</td>
+<td>姓名</td>
+</tr>
+<tr>
+<td style="text-align: center;">sex</td>
+<td>否</td>
+<td>int</td>
+<td>性别(0未知,1男,2女)</td>
+</tr>
+<tr>
+<td style="text-align: center;">avatar</td>
+<td>否</td>
+<td>String</td>
+<td>头像</td>
+</tr>
+<tr>
+<td style="text-align: center;">idcard</td>
+<td>否</td>
+<td>String</td>
+<td>身份证号</td>
+</tr>
+<tr>
+<td style="text-align: center;">email</td>
+<td>否</td>
+<td>String</td>
+<td>电子邮件</td>
+</tr>
+<tr>
+<td style="text-align: center;">phone</td>
+<td>否</td>
+<td>String</td>
+<td>电话</td>
+</tr>
+</tbody>
+</table>
+<p><strong>用户信息JSON</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+    "ssqy":"",
+    "name":"",
+    "sex":0,
+    "avatar":"",
+    "idcard":"",
+    "email":"",
+    "phone":"",
+}</code></pre></table>
+<p><strong>用户信息JSON数据说明</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">ssqy</td>
+<td>String</td>
+<td>最长12位的区域编码-区域名称</td>
+</tr>
+<tr>
+<td style="text-align: center;">name</td>
+<td>String</td>
+<td>姓名</td>
+</tr>
+<tr>
+<td style="text-align: center;">sex</td>
+<td>int</td>
+<td>性别(0未知,1男,2女)</td>
+</tr>
+<tr>
+<td style="text-align: center;">avatar</td>
+<td>String</td>
+<td>头像</td>
+</tr>
+<tr>
+<td style="text-align: center;">idcard</td>
+<td>String</td>
+<td>身份证号</td>
+</tr>
+<tr>
+<td style="text-align: center;">email</td>
+<td>String</td>
+<td>电子邮件</td>
+</tr>
+<tr>
+<td style="text-align: center;">phone</td>
+<td>String</td>
+<td>电话</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+    "code":1
+}</code></pre></table></div><h1>11、获取账户信息</h1><div style="margin-left:20px;"><p><strong>简要描述</strong></p>
+<ul>
+<li>获取账户信息</li>
+</ul>
+<p><strong>请求地址</strong></p>
+<ul>
+<li><code>/sso/user/userinfo</code></li>
+</ul>
+<p><strong>请求方式</strong></p>
+<ul>
+<li>POST或GET</li>
+</ul>
+<p><strong>请求参数</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">appid</td>
+<td>是</td>
+<td>String</td>
+<td>应用ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">openid</td>
+<td>是</td>
+<td>String</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">access_token</td>
+<td>是</td>
+<td>String</td>
+<td>用户凭证</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+    "code":1,
+    "data":{
+        "id":1595029661979613,
+        "status":1,
+        "ssqy":"",
+        "name":"",
+        "mobile":"",
+        "account":"",
+        "workcard":"",
+        "sex":0,
+        "avatar":"",
+        "idcard":"",
+        "email":"",
+        "phone":"",
+        "orgpid":0,
+        "orgid":0,
+        "type":"",
+        "typename":"",
+        "exalias":"",
+        "exname":"",
+        "createtime":"2019-04-30 10:44:43",
+        "lasttime":1560055114185,
+        "exdata":"",
+        "sid":0
+    }
+}</code></pre></table>
+<p><strong>返回data数据说明</strong></p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: center;">参数名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">id</td>
+<td>long</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">status</td>
+<td>int</td>
+<td>状态(1启用,0禁用)</td>
+</tr>
+<tr>
+<td style="text-align: center;">ssqy</td>
+<td>String</td>
+<td>最长12位的区域编码-区域名称</td>
+</tr>
+<tr>
+<td style="text-align: center;">name</td>
+<td>String</td>
+<td>姓名</td>
+</tr>
+<tr>
+<td style="text-align: center;">mobile</td>
+<td>String</td>
+<td>手机</td>
+</tr>
+<tr>
+<td style="text-align: center;">account</td>
+<td>String</td>
+<td>自定义账号</td>
+</tr>
+<tr>
+<td style="text-align: center;">workcard</td>
+<td>String</td>
+<td>工作证号</td>
+</tr>
+<tr>
+<td style="text-align: center;">sex</td>
+<td>int</td>
+<td>性别(0未知,1男,2女)</td>
+</tr>
+<tr>
+<td style="text-align: center;">avatar</td>
+<td>String</td>
+<td>头像</td>
+</tr>
+<tr>
+<td style="text-align: center;">idcard</td>
+<td>String</td>
+<td>身份证号</td>
+</tr>
+<tr>
+<td style="text-align: center;">email</td>
+<td>String</td>
+<td>电子邮件</td>
+</tr>
+<tr>
+<td style="text-align: center;">phone</td>
+<td>String</td>
+<td>电话</td>
+</tr>
+<tr>
+<td style="text-align: center;">orgpid</td>
+<td>String</td>
+<td>单位ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">orgid</td>
+<td>String</td>
+<td>部门ID</td>
+</tr>
+<tr>
+<td style="text-align: center;">type</td>
+<td>String</td>
+<td>类型</td>
+</tr>
+<tr>
+<td style="text-align: center;">typename</td>
+<td>String</td>
+<td>类型名称</td>
+</tr>
+<tr>
+<td style="text-align: center;">exalias</td>
+<td>String</td>
+<td>类型扩展标识</td>
+</tr>
+<tr>
+<td style="text-align: center;">exname</td>
+<td>String</td>
+<td>类型扩展名称</td>
+</tr>
+<tr>
+<td style="text-align: center;">createtime</td>
+<td>String</td>
+<td>创建时间 yyyy-MM-dd HH:mm:ss</td>
+</tr>
+<tr>
+<td style="text-align: center;">lasttime</td>
+<td>long</td>
+<td>最后更新时间</td>
+</tr>
+<tr>
+<td style="text-align: center;">exdata</td>
+<td>String</td>
+<td>用于存放自定义对象的json值</td>
+</tr>
+<tr>
+<td style="text-align: center;">sid</td>
+<td>long</td>
+<td>子用户id，一般设置为当前登录用户</td>
+</tr>
+</tbody>
+</table></div></body></html>
