@@ -163,7 +163,7 @@ public class EncryptUtil
 		String out = null;
 		try
 		{
-			out = new String(cipher.doFinal(decodeByteBase64(str)));
+			out = new String(cipher.doFinal(decodeByteBase64(str)), "UTF-8");
 		}
 		catch(Exception e)
 		{
