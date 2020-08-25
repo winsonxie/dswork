@@ -95,13 +95,14 @@ public class EncryptUtil
 	/**
 	 * 加密Cipher
 	 * @param key Key
+	 * @param transformation 算法/模式/填充，默认值是RSA/ECB/PKCS1Padding
 	 * @return 失败返回null
 	 */
-	public static Cipher getEncryptCipher(java.security.Key key)
+	public static Cipher getEncryptCipher(java.security.Key key, String transformation)
 	{
 		try
 		{
-			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			Cipher cipher = Cipher.getInstance(transformation);
 			cipher.init(Cipher.ENCRYPT_MODE, key);// 加密
 			return cipher;
 		}
@@ -115,13 +116,14 @@ public class EncryptUtil
 	/**
 	 * 解密Cipher
 	 * @param key Key
+	 * @param transformation 算法/模式/填充，默认值是RSA/ECB/PKCS1Padding
 	 * @return Cipher
 	 */
-	public static Cipher getDecryptCipher(java.security.Key key)
+	public static Cipher getDecryptCipher(java.security.Key key, String transformation)
 	{
 		try
 		{
-			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			Cipher cipher = Cipher.getInstance(transformation);
 			cipher.init(Cipher.DECRYPT_MODE, key);// 加密
 			return cipher;
 		}
@@ -178,7 +180,7 @@ public class EncryptUtil
 	@Deprecated
 	public static String encryptRSA(String str, String publicKey)
 	{
-		return encryptRsaForCipher(str, getEncryptCipher(getRSAPublicKey(publicKey)));
+		return encryptRsaForCipher(str, getEncryptCipher(getRSAPublicKey(publicKey), "RSA/ECB/PKCS1Padding"));
 	}
 
 	/**
@@ -190,51 +192,99 @@ public class EncryptUtil
 	@Deprecated
 	public static String decryptRSA(String str, String privateKey)
 	{
-		return decryptRsaForCipher(str, getDecryptCipher(getRSAPrivateKey(privateKey)));
+		return decryptRsaForCipher(str, getDecryptCipher(getRSAPrivateKey(privateKey), "RSA/ECB/PKCS1Padding"));
 	}
 
 	/**
 	 * RSA公钥加密
 	 * @param str 需要加密的字符串
 	 * @param publicKey 公钥
+	 * @param transformation 算法/模式/填充，默认值是RSA/ECB/PKCS1Padding
 	 * @return base64密文，失败返回null
 	 */
-	public static String encryptRsa(String str, String publicKey)
+	public static String encryptRsa(String str, String publicKey, String transformation)
 	{
-		return encryptRsaForCipher(str, getEncryptCipher(getRSAPublicKey(publicKey)));
+		return encryptRsaForCipher(str, getEncryptCipher(getRSAPublicKey(publicKey), transformation));
 	}
 
 	/**
 	 * RSA私钥解密
 	 * @param str base64密文
 	 * @param privateKey 私钥
+	 * @param transformation 算法/模式/填充，默认值是RSA/ECB/PKCS1Padding
 	 * @return 解码后的字符串，失败返回null
 	 */
-	public static String decryptRsa(String str, String privateKey)
+	public static String decryptRsa(String str, String privateKey, String transformation)
 	{
-		return decryptRsaForCipher(str, getDecryptCipher(getRSAPrivateKey(privateKey)));
+		return decryptRsaForCipher(str, getDecryptCipher(getRSAPrivateKey(privateKey), transformation));
 	}
 
 	/**
 	 * RSA私钥签名
 	 * @param str 需要签名的字符串
 	 * @param privateKey 私钥
+	 * @param transformation 算法/模式/填充，默认值是RSA/ECB/PKCS1Padding
 	 * @return base64密文，失败返回null
 	 */
-	public static String signRsa(String str, String privateKey)
+	public static String signRsa(String str, String privateKey, String transformation)
 	{
-		return encryptRsaForCipher(str, getEncryptCipher(getRSAPrivateKey(privateKey)));
+		return encryptRsaForCipher(str, getEncryptCipher(getRSAPrivateKey(privateKey), transformation));
 	}
 
 	/**
 	 * RSA公钥签名验证
 	 * @param str base64密文
 	 * @param publicKey 公钥
+	 * @param transformation 算法/模式/填充，默认值是RSA/ECB/PKCS1Padding
+	 * @return 验证后的字符串，失败返回null
+	 */
+	public static String signRsaVerify(String str, String publicKey, String transformation)
+	{
+		return decryptRsaForCipher(str, getDecryptCipher(getRSAPublicKey(publicKey), transformation));
+	}
+
+	/**
+	 * RSA公钥加密(RSA/ECB/PKCS1Padding)
+	 * @param str 需要加密的字符串
+	 * @param publicKey 公钥
+	 * @return base64密文，失败返回null
+	 */
+	public static String encryptRsa(String str, String publicKey)
+	{
+		return encryptRsa(str, publicKey, "RSA/ECB/PKCS1Padding");
+	}
+
+	/**
+	 * RSA私钥解密(RSA/ECB/PKCS1Padding)
+	 * @param str base64密文
+	 * @param privateKey 私钥
+	 * @return 解码后的字符串，失败返回null
+	 */
+	public static String decryptRsa(String str, String privateKey)
+	{
+		return decryptRsa(str, privateKey, "RSA/ECB/PKCS1Padding");
+	}
+
+	/**
+	 * RSA私钥签名(RSA/ECB/PKCS1Padding)
+	 * @param str 需要签名的字符串
+	 * @param privateKey 私钥
+	 * @return base64密文，失败返回null
+	 */
+	public static String signRsa(String str, String privateKey)
+	{
+		return signRsa(str, privateKey, "RSA/ECB/PKCS1Padding");
+	}
+
+	/**
+	 * RSA公钥签名验证(RSA/ECB/PKCS1Padding)
+	 * @param str base64密文
+	 * @param publicKey 公钥
 	 * @return 验证后的字符串，失败返回null
 	 */
 	public static String signRsaVerify(String str, String publicKey)
 	{
-		return decryptRsaForCipher(str, getDecryptCipher(getRSAPublicKey(publicKey)));
+		return signRsaVerify(str, publicKey, "RSA/ECB/PKCS1Padding");
 	}
 
 	/**
