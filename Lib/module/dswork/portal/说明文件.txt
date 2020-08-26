@@ -1,3 +1,6 @@
+2020-08-26
+	删掉sso客户端中IUser的idcard、email、phone字段
+
 2019-03-24
 	新版dswork-sso.jar
 	配置/config/sso.properties
