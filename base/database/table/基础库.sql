@@ -67,6 +67,7 @@ DROP TABLE IF EXISTS DS_BASE_USER;
 CREATE TABLE DS_BASE_USER (
   ID                    BIGINT(16)    COMMENT '主键ID' NOT NULL,
   STATUS                INT(1)        COMMENT '状态(1启用,0禁用)' NOT NULL,
+  OWN                   VARCHAR(256)  COMMENT '扩展用户身份标识',
   SSQY                  VARCHAR(64)   COMMENT '最长12位的区域编码-区域名称',
   NAME                  VARCHAR(30)   COMMENT '姓名',
   MOBILE                VARCHAR(30)   COMMENT '手机',
