@@ -25,9 +25,9 @@
 
 <insert id="insertUser" parameterType="dswork.common.model.IUser">
 	insert into DS_BASE_USER
-	(ID, STATUS, SSQY, NAME, MOBILE, ACCOUNT, PASSWORD, WORKCARD, SEX, AVATAR, IDCARD, EMAIL, PHONE, ORGPID, ORGID, TYPE, TYPENAME, EXALIAS, EXNAME, CREATETIME, LASTTIME)
+	(ID, STATUS, OWN, SSQY, NAME, MOBILE, ACCOUNT, PASSWORD, WORKCARD, SEX, AVATAR, IDCARD, EMAIL, PHONE, ORGPID, ORGID, TYPE, TYPENAME, EXALIAS, EXNAME, CREATETIME, LASTTIME)
 	values
-	(#{id}, #{status}, #{ssqy}, #{name}, #{mobile}, #{account}, #{password}, #{workcard}, #{sex}, #{avatar}, #{idcard}, #{email}, #{phone}, #{orgpid}, #{orgid}, #{type}, #{typename}, #{exalias}, #{exname}, #{createtime}, #{lasttime})
+	(#{id}, #{status}, #{own}, #{ssqy}, #{name}, #{mobile}, #{account}, #{password}, #{workcard}, #{sex}, #{avatar}, #{idcard}, #{email}, #{phone}, #{orgpid}, #{orgid}, #{type}, #{typename}, #{exalias}, #{exname}, #{createtime}, #{lasttime})
 </insert>
 <delete id="deleteUser">
 	delete from DS_BASE_USER_BM where USERID=#{id};
@@ -60,6 +60,7 @@
 <resultMap id="resultUser" type="dswork.common.model.IUser">
 	<id property="id" column="ID" />
 	<result property="status" column="STATUS" />
+	<result property="own" column="OWN" />
 	<result property="ssqy" column="SSQY" />
 	<result property="name" column="NAME" />
 	<result property="mobile" column="MOBILE" />
@@ -80,30 +81,30 @@
 	<result property="createtime" column="CREATETIME" />
 	<result property="lasttime" column="LASTTIME" />
 	<result property="exdata" column="EXDATA" />
-	<result property="sid" column="SID" />
+	<result property="binduserid" column="BINDUSERID" />
 </resultMap>
 <sql id="columnsUser">
-	u.ID, u.STATUS, u.SSQY, u.NAME, u.MOBILE, u.ACCOUNT, u.PASSWORD, 
+	u.ID, u.STATUS, u.OWN, u.SSQY, u.NAME, u.MOBILE, u.ACCOUNT, u.PASSWORD, 
 	u.WORKCARD, u.SEX, u.AVATAR, u.IDCARD, u.EMAIL, u.PHONE, 
 	u.ORGPID, u.ORGID, u.TYPE, u.TYPENAME, u.EXALIAS, u.EXNAME, u.CREATETIME, u.LASTTIME , u.EXDATA 
 </sql>
 <select id="getUserById" resultMap="resultUser">
-	select <include refid="columnsUser" />, 0 as SID from DS_BASE_USER u where u.ID=#{id}
+	select <include refid="columnsUser" />, 0 as BINDUSERID from DS_BASE_USER u where u.ID=#{id}
 </select>
 <select id="getUserByAccount" resultMap="resultUser">
-	select <include refid="columnsUser" />, 0 as SID from DS_BASE_USER u where u.ACCOUNT=#{account}
+	select <include refid="columnsUser" />, 0 as BINDUSERID from DS_BASE_USER u where u.ACCOUNT=#{account}
 </select>
 <select id="getUserByOpenid" resultMap="resultUser">
-	select <include refid="columnsUser" />, ub.ID as SID from DS_BASE_USER_BIND ub
+	select <include refid="columnsUser" />, ub.ID as BINDUSERID from DS_BASE_USER_BIND ub
 	left join DS_BASE_USER u on u.ID=ub.USERID
 	where ub.OPENID=#{openid} and ub.BINDID=#{bindid}
 </select>
 <select id="queryUserByOrgPid" resultMap="resultUser" parameterType="long">
-	select <include refid="columnsUser" />, 0 as SID from DS_BASE_USER u 
+	select <include refid="columnsUser" />, 0 as BINDUSERID from DS_BASE_USER u 
 	where <if test="orgpid &gt; 0"> u.ORGPID=#{orgpid} </if><if test="orgpid &lt;= 0"> u.ORGPID is null </if>
 </select>
 <select id="queryUserByOrgId" resultMap="resultUser" parameterType="long">
-	select <include refid="columnsUser" />, 0 as SID from DS_BASE_USER u where u.ORGID=#{orgid}
+	select <include refid="columnsUser" />, 0 as BINDUSERID from DS_BASE_USER u where u.ORGID=#{orgid}
 </select>
 
 </mapper>

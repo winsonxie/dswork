@@ -8,6 +8,7 @@ public class IUser
 {
 	private long id = 0L;// 主键，登录时读到的用户只有id=id这个账号
 	private int status = 0;// 状态（0禁用，1启用）
+	private String own = "";// 扩展用户身份标识
 	private String ssqy = "";// 最长12位的区域编码-区域名称
 	private String name = "";// 姓名
 	private String mobile = "";// 手机
@@ -28,7 +29,7 @@ public class IUser
 	private String createtime = "";// 创建时间
 	private long lasttime = 0L;// 最后更新时间
 	private String exdata = "";// 用于存放自定义对象的json值
-	private long sid = 0L;// 子用户id，一般设置为当前登录用户
+	private long binduserid = 0L;// 当前登录用户子用户id，一般设置为哪个第三方账号登录的
 
 	public IUser clearSecret()
 	{
@@ -54,6 +55,16 @@ public class IUser
 	public void setStatus(int status)
 	{
 		this.status = status;
+	}
+
+	public String getOwn()
+	{
+		return own;
+	}
+
+	public void setOwn(String own)
+	{
+		this.own = own;
 	}
 
 	public String getSsqy()
@@ -255,14 +266,14 @@ public class IUser
 	{
 		this.exdata = exdata;
 	}
-	
-	public long getSid()
+
+	public long getBinduserid()
 	{
-		return sid;
+		return binduserid;
 	}
 
-	public void setSid(long sid)
+	public void setBinduserid(long binduserid)
 	{
-		this.sid = sid;
+		this.binduserid = binduserid;
 	}
 }

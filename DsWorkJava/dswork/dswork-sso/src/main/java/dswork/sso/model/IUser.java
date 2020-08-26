@@ -10,6 +10,7 @@ public class IUser implements Serializable
 	private static final long serialVersionUID = 1L;
 	private Long id = 0L;// 主账号id
 	private int status = 0;// 状态（0禁用，1启用）
+	private String own = "";// 扩展用户身份标识
 	private String ssqy = "";// 最长12位的区域编码
 	private String name = "";// 姓名
 	private String mobile = "";// 手机
@@ -18,9 +19,9 @@ public class IUser implements Serializable
 	private String workcard = "";// 工作证号
 	private int sex = 0;// 性别（0未知，1男，2女）
 	private String avatar = "";// 头像
-	private String idcard = "";// 身份证号
-	private String email = "";// 电子邮件
-	private String phone = "";// 电话
+//	private String idcard = "";// 身份证号
+//	private String email = "";// 电子邮件
+//	private String phone = "";// 电话
 	private Long orgpid = 0L;// 所属单位
 	private Long orgid = 0L;// 所属部门
 	private String type = "";// 类型
@@ -30,7 +31,7 @@ public class IUser implements Serializable
 	private String createtime = "";// 创建时间
 	private long lasttime = 0L;// 最后更新时间
 	private String exdata = "";// 用于存放自定义对象的json值
-	private long sid = 0L;// 实际登录用户id
+	private long binduserid = 0L;// 当前登录用户子用户id，一般设置为哪个第三方账号登录的
 	private String ssoticket = "";// openid-access_token
 
 	public Long getId()
@@ -51,6 +52,16 @@ public class IUser implements Serializable
 	public void setStatus(int status)
 	{
 		this.status = status;
+	}
+
+	public String getOwn()
+	{
+		return own;
+	}
+
+	public void setOwn(String own)
+	{
+		this.own = own;
 	}
 
 	public String getSsqy()
@@ -123,35 +134,35 @@ public class IUser implements Serializable
 		this.avatar = avatar;
 	}
 
-	public String getIdcard()
-	{
-		return idcard;
-	}
-
-	public void setIdcard(String idcard)
-	{
-		this.idcard = idcard;
-	}
-
-	public String getEmail()
-	{
-		return email;
-	}
-
-	public void setEmail(String email)
-	{
-		this.email = email;
-	}
-
-	public String getPhone()
-	{
-		return phone;
-	}
-
-	public void setPhone(String phone)
-	{
-		this.phone = phone;
-	}
+//	public String getIdcard()
+//	{
+//		return idcard;
+//	}
+//
+//	public void setIdcard(String idcard)
+//	{
+//		this.idcard = idcard;
+//	}
+//
+//	public String getEmail()
+//	{
+//		return email;
+//	}
+//
+//	public void setEmail(String email)
+//	{
+//		this.email = email;
+//	}
+//
+//	public String getPhone()
+//	{
+//		return phone;
+//	}
+//
+//	public void setPhone(String phone)
+//	{
+//		this.phone = phone;
+//	}
 
 	public Long getOrgpid()
 	{
@@ -243,14 +254,14 @@ public class IUser implements Serializable
 		this.exdata = exdata;
 	}
 
-	public long getSid()
+	public long getBinduserid()
 	{
-		return sid;
+		return binduserid;
 	}
 
-	public void setSid(long sid)
+	public void setBinduserid(long binduserid)
 	{
-		this.sid = sid;
+		this.binduserid = binduserid;
 	}
 
 	public String getSsoticket()
