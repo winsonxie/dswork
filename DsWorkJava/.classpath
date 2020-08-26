@@ -6,6 +6,7 @@
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="src" path="dswork/dswork-analyzer/src/main/java"/>
+	<classpathentry kind="src" path="dswork/dswork-authown/src/main/java"/>
 	<classpathentry kind="src" path="dswork/dswork-builder/src/main/java"/>
 	<classpathentry kind="src" path="dswork/dswork-common-ssosdk/src/main/java"/>
 	<classpathentry kind="src" path="dswork/dswork-config/src/main/java"/>

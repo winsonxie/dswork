@@ -20,6 +20,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-webio/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-config/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-web/src/main/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dswork/dswork-authown/src/main/java"/>
         <property name="context-root" value="DsWorkJava"/>
         <property name="java-output-path" value="/DsWorkJava/web/WEB-INF/classes"/>
     </wb-module>

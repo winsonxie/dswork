@@ -17,6 +17,7 @@ dswork-webio
 dswork-common-ssosdk 依赖dswork-core
 dswork-config 依赖dswork-core和dswork-web
 dswork-mvc 依赖dswork-core和dswork-web
+dswork-authown 依赖dswork-sso
 
 dswork-java    pom非jar，cs环境
 dswork-javaweb pom非jar，bs环境
