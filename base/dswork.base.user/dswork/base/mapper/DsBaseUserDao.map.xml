@@ -6,11 +6,11 @@
 
 <insert id="insert" parameterType="dswork.base.model.DsBaseUser">
 	insert into DS_BASE_USER
-	(ID, STATUS, SSQY, NAME, MOBILE, ACCOUNT, PASSWORD, 
+	(ID, STATUS, OWN, SSQY, NAME, MOBILE, ACCOUNT, PASSWORD, 
 	WORKCARD, SEX, AVATAR, IDCARD, EMAIL, PHONE, 
 	ORGPID, ORGID, TYPE, TYPENAME, EXALIAS, EXNAME, CREATETIME, LASTTIME)
 	values
-	(#{id}, #{status}, #{ssqy}, #{name}, #{mobile}, #{account}, #{password}, 
+	(#{id}, #{status}, #{own}, #{ssqy}, #{name}, #{mobile}, #{account}, #{password}, 
 	#{workcard}, #{sex}, #{avatar}, #{idcard}, #{email}, #{phone}, 
 	#{orgpid}, #{orgid}, #{type}, #{typename}, #{exalias}, #{exname}, #{createtime}, #{lasttime})
 </insert>
@@ -30,6 +30,7 @@
 
 <update id="update" parameterType="dswork.base.model.DsBaseUser">
 	update DS_BASE_USER set
+		OWN=#{own},
 		NAME=#{name},
 		IDCARD=#{idcard},
 		EMAIL=#{email},

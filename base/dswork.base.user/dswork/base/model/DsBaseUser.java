@@ -5,52 +5,30 @@ package dswork.base.model;
 
 public class DsBaseUser
 {
-	// ID
-	private Long id = 0L;
-	// 状态(1启用,0禁用)
-	private int status = 1;
-	// 最长12位的区域编码-区域名称
-	private String ssqy = "";
-	// 姓名
-	private String name = "";
-	// 手机
-	private String mobile = "";
-	// 帐号
-	private String account = "";
-	// 密码
-	private String password = "";
-	// 工作证号
-	private String workcard = "";
-	// 性别(0未知,1男,2女)
-	private int sex = 0;
-	// 头像
-	private String avatar = "";
-	// 身份证号
-	private String idcard = "";
-	// 电子邮箱
-	private String email = "";
-	// 电话
-	private String phone = "";
-	// 所属单位ID
-	private Long orgpid = 0L;
-	// 所属部门ID
-	private Long orgid = 0L;
-	// 单位名称
-	private String orgpname = "";
-	// 部门名称
-	private String orgname = "";
-	// 类型
-	private String type = "";
-	// 类型名称
-	private String typename = "";
-	// 类型扩展标识
-	private String exalias = "";
-	// 类型扩展名称
-	private String exname = "";
-	// 创建时间
-	private String createtime = "";
-	// 创建时间
-	private long lasttime = 0L;
+	private Long id = 0L;// ID
+	private int status = 1;// 状态(1启用,0禁用)
+	private String own;// 扩展用户身份标识
+	private String ssqy = "";// 最长12位的区域编码-区域名称
+	private String name = "";// 姓名
+	private String mobile = "";// 手机
+	private String account = "";// 帐号
+	private String password = "";// 密码
+	private String workcard = "";// 工作证号
+	private int sex = 0;// 性别(0未知,1男,2女)
+	private String avatar = "";// 头像
+	private String idcard = "";// 身份证号
+	private String email = "";// 电子邮箱
+	private String phone = "";// 电话
+	private Long orgpid = 0L;// 所属单位ID
+	private Long orgid = 0L;// 所属部门ID
+	private String orgpname = "";// 单位名称
+	private String orgname = "";// 部门名称
+	private String type = "";// 类型
+	private String typename = "";// 类型名称
+	private String exalias = "";// 类型扩展标识
+	private String exname = "";// 类型扩展名称
+	private String createtime = "";// 创建时间
+	private long lasttime = 0L;// 最后更新时间
 
 	public Long getId()
 	{
@@ -70,6 +48,16 @@ public class DsBaseUser
 	public void setStatus(int status)
 	{
 		this.status = status != 1 ? 0 : 1;
+	}
+
+	public String getOwn()
+	{
+		return own;
+	}
+
+	public void setOwn(String own)
+	{
+		this.own = own;
 	}
 
 	public String getSsqy()

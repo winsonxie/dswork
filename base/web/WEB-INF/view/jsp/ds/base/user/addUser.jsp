@@ -106,8 +106,8 @@ $(function(){
 		<td class="form_input"><input type="password" id="password2" style="width:130px;" datatype="Repeat" to="password1" msg="两次输入的密码不一致" value="000000" /> <span class="imp">*</span></td>
 	</tr>
 	<tr>
-		<td class="form_title">身份证号</td>
-		<td class="form_input"><input type="text" id="idcard" name="idcard" style="width:200px;" datatype="!IdCard" maxlength="18" value="" /></td>
+		<td class="form_title">手机</td>
+		<td class="form_input"><input type="text" id="mobile" name="mobile" datatype="!Mobile" maxlength="50" value="" /></td>
 	</tr>
 	<tr>
 		<td class="form_title">所属单位</td>
@@ -117,26 +117,33 @@ $(function(){
 		<td class="form_title">所属部门</td>
 		<td class="form_input"><input type="text" id="orgname" name="orgname" readonly="readonly" value="" /><input type="hidden" id="orgid" name="orgid" value="" /></td>
 	</tr>
+<%--
+	<tr>
+		<td class="form_title">身份证号</td>
+		<td class="form_input"><input type="text" id="idcard" name="idcard" style="width:200px;" datatype="!IdCard" maxlength="18" value="" /></td>
+	</tr>
 	<tr>
 		<td class="form_title">邮箱</td>
 		<td class="form_input"><input type="text" id="email" name="email" readonly="readonly" style="width:200px;" datatype="!Email" maxlength="250" value="" /></td>
 	</tr>
 	<tr>
-		<td class="form_title">手机</td>
-		<td class="form_input"><input type="text" id="mobile" name="mobile" datatype="!Mobile" maxlength="50" value="" /></td>
-	</tr>
-	<tr>
 		<td class="form_title">电话</td>
 		<td class="form_input"><input type="text" id="phone" name="phone" datatype="!Phone" maxlength="50" value="" /></td>
 	</tr>
+--%>
 	<tr>
-		<td class="form_title">工作证号</td>
+		<td class="form_title">扩展</td>
 		<td class="form_input"><input type="text" id="workcard" name="workcard" style="width:200px;" datatype="!Require" maxlength="64" value="" /></td>
 	</tr>
 </table>
 <input type="hidden" id="password" name="password" value="" />
 <input type="hidden" id="typename" name="typename" value="" />
 <input type="hidden" id="exname" name="exname" value="" />
+<input type="hidden" name="own" value="" />
+
+<input type="hidden" name="phone" value="" />
+<input type="hidden" name="email" value="" />
+<input type="hidden" name="idcard" value="" />
 </form>
 </body>
 </html>

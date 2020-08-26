@@ -82,6 +82,7 @@ $(function(){
 		<td class="form_title">手机</td>
 		<td class="form_input"><input type="text" id="mobile" name="mobile" datatype="!Mobile" maxlength="50" value="${fn:escapeXml(po.mobile)}" /></td>
 	</tr>
+<%--
 	<tr>
 		<td class="form_title">电话</td>
 		<td class="form_input"><input type="text" id="phone" name="phone" datatype="!Phone" maxlength="50" value="${fn:escapeXml(po.phone)}" /></td>
@@ -94,8 +95,9 @@ $(function(){
 		<td class="form_title">身份证号</td>
 		<td class="form_input"><input type="text" id="idcard" name="idcard" style="width:200px;" datatype="!IdCard" maxlength="18" value="${fn:escapeXml(po.idcard)}" /></td>
 	</tr>
+--%>
 	<tr>
-		<td class="form_title">工作证号</td>
+		<td class="form_title">扩展</td>
 		<td class="form_input"><input type="text" id="workcard" name="workcard" style="width:200px;" datatype="!Require" maxlength="64" value="${fn:escapeXml(po.workcard)}" /></td>
 	</tr>
 	<tr>
@@ -106,6 +108,11 @@ $(function(){
 <input type="hidden" name="id" value="${po.id}" />
 <input type="hidden" id="typename" name="typename" value="${fn:escapeXml(po.typename)}" />
 <input type="hidden" id="exname" name="exname" value="${fn:escapeXml(po.exname)}" />
+<input type="hidden" name="own" value="${fn:escapeXml(po.own)}" />
+
+<input type="hidden" name="phone" value="${fn:escapeXml(po.phone)}" />
+<input type="hidden" name="email" value="${fn:escapeXml(po.email)}" />
+<input type="hidden" name="idcard" value="${fn:escapeXml(po.idcard)}" />
 </form>
 </body>
 </html>
