@@ -21,7 +21,6 @@ import java.util.Locale;
 public class EncryptUtil
 {
 	private static boolean isBase64 = false;
-	
 	static
 	{
 		try
@@ -33,7 +32,7 @@ public class EncryptUtil
 		{
 		}
 	}
-	
+
 	/**
 	 * 随机生成密钥对
 	 * @param keysize 512-2048
@@ -91,7 +90,6 @@ public class EncryptUtil
 		return null;
 	}
 
-
 	/**
 	 * 加密Cipher
 	 * @param key Key
@@ -111,7 +109,6 @@ public class EncryptUtil
 		}
 		return null;
 	}
-
 
 	/**
 	 * 解密Cipher
@@ -459,7 +456,7 @@ public class EncryptUtil
 //		}
 //		return newSize;
 //	}
-
+	
 	/**
 	 * 将base64编码的字符串进行解码
 	 * @param str base64编码的字符串
@@ -472,8 +469,6 @@ public class EncryptUtil
 		{
 			if(str != null)
 			{
-				
-				
 				if(isBase64)
 				{
 					return java.util.Base64.getDecoder().decode(str);
