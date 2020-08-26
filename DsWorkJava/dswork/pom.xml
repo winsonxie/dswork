@@ -26,6 +26,7 @@
 		<module>dswork-common-ssosdk</module>
 		<module>dswork-config</module>
 		<module>dswork-mvc</module>
+		<module>dswork-authown</module>
 		
 		
 		<module>dswork-java</module>
