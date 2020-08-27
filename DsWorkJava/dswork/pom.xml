@@ -112,7 +112,7 @@
 			<id>release</id>
 			<activation><activeByDefault>true</activeByDefault></activation>
 			<build>
-				<pluginManagement>
+				<!--<pluginManagement></pluginManagement>-->
 					<plugins>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
@@ -175,7 +175,6 @@
 							</configuration>
 						</plugin>
 					</plugins>
-				</pluginManagement>
 			</build>
 			<distributionManagement>
 				<repository>
