@@ -192,7 +192,7 @@ public class HttpUtil
 
 	/**
 	 * 设置useCaches
-	 * @param usecaches boolean
+	 * @param useCaches boolean
 	 * @return HttpUtil
 	 */
 	public HttpUtil setUseCaches(boolean useCaches)
