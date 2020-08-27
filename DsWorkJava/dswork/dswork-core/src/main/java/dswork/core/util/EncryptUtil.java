@@ -133,7 +133,7 @@ public class EncryptUtil
 	/**
 	 * RSA加密
 	 * @param str 字符串
-	 * @param publicKey 公钥
+	 * @param cipher Cipher
 	 * @return base64密文，失败返回null
 	 */
 	public static String encryptRsaForCipher(String str, Cipher cipher)
@@ -152,7 +152,7 @@ public class EncryptUtil
 	/**
 	 * RSA解密
 	 * @param str base64密文
-	 * @param privateKey 私钥
+	 * @param cipher Cipher
 	 * @return 解码后的字符串，失败返回null
 	 */
 	public static String decryptRsaForCipher(String str, Cipher cipher)
