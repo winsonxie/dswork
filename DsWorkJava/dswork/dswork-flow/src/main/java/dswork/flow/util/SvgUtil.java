@@ -170,7 +170,7 @@ public class SvgUtil
 	 * @param stroke
 	 * @param strokeWidth
 	 * @param points
-	 * @return
+	 * @return svg
 	 */
 	public static String getPolyline(String fill, double fillOpacity, String stroke, int strokeWidth, String points)
 	{
@@ -189,7 +189,7 @@ public class SvgUtil
 	 * 画多边形
 	 * @param fill
 	 * @param points
-	 * @return
+	 * @return svg
 	 */
 	public static String getPolygon(String fill, String points)
 	{
