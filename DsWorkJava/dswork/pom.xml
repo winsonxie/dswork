@@ -57,7 +57,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<v-log4j>2.3</v-log4j>
-		<v-spring>4.3.27.RELEASE</v-spring>
+		<v-spring>4.3.28.RELEASE</v-spring>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
