@@ -98,13 +98,13 @@
 
 			<dependency><groupId>mysql</groupId><artifactId>mysql-connector-java</artifactId><version>5.1.45</version></dependency>
 		
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-core      </artifactId><version>${project.version}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-db        </artifactId><version>${project.version}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-jdbc      </artifactId><version>${project.version}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-spring    </artifactId><version>${project.version}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-sso       </artifactId><version>${project.version}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-common-sso</artifactId><version>${project.version}</version></dependency>
-			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-web       </artifactId><version>${project.version}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-core         </artifactId><version>${project.version}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-db           </artifactId><version>${project.version}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-jdbc         </artifactId><version>${project.version}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-spring       </artifactId><version>${project.version}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-sso          </artifactId><version>${project.version}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-common-ssosdk</artifactId><version>${project.version}</version></dependency>
+			<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-web          </artifactId><version>${project.version}</version></dependency>
 		</dependencies>
 	</dependencyManagement>
 	<profiles>
