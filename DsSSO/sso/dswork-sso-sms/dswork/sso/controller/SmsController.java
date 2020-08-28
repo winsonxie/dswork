@@ -64,44 +64,20 @@ public class SmsController
 	 */
 	public static boolean SEND_MESSAGE(String appid, String mobile)
 	{
-		return SEND_MESSAGE_GDFTU(appid, mobile);
+		return SEND_MESSAGE_ALIYUN(appid, mobile);
 	}
 
-	/**
-	 * 输入电话来发送短信
-	 * @param mobile
-	 * @return 发送成功 返回true,发送失败 返回false 采用默认字节utf-8 支持500字节
-	 */
-	public static boolean SEND_MESSAGE_GDFTU(String appid, String mobile)
-	{
-		try
-		{
-			int smscode = (int) ((Math.random() * 9 + 1) * 100000);
-			String msg = "验证码为" + smscode + "，请在页面中输入以继续相关操作";
-			dswork.http.HttpUtil httpUtil = new dswork.http.HttpUtil();
-			String connect = httpUtil.create("http://oasms.gd.gov.cn/oasms/SMInterface.aspx").setContentType("application/x-www-form-urlencoded").setRequestMethod("POST").addForm("Account", "sms12351@gdftu").addForm("PWD", "gdszgh#51").addForm("Msg1", msg).addForm("Mobile1", mobile).connect();
-			if(connect.equals("OK"))
-			{
-				dswork.common.util.TokenSmsUtil.smscodeSet(appid + mobile, String.valueOf(smscode), dswork.common.util.TokenSmsUtil.sms_timeout);
-				return true;
-			}
-		}
-		catch(Exception ex)
-		{
-		}
-		return false;
-	}
 
 	public static boolean SEND_MESSAGE_ALIYUN(String appid, String mobile)
 	{
 		try
 		{
 			int smscode = (int) ((Math.random() * 9 + 1) * 100000);
-			String accessKeyId = "LTAIJ8qPgnVIpcJ2";// "testId";
-			String accessSecret = "1TPdqKoH0edDxMUXI8tXSnC46ecklG";// "testSecret";
-			String signName = "阿里云短信测试专用";// 必填:短信签名-可在短信控制台中找到
-			String templateCode = "SMS_105250497";// 必填:短信模板-可在短信控制台中找到
-			// String mobile = "18378322669";// 必填:待发送手机号
+			String accessKeyId = "testId";// "testId";
+			String accessSecret = "testSecret";// "testSecret";
+			String signName = "";// 必填:短信签名-可在短信控制台中找到
+			String templateCode = "";// 必填:短信模板-可在短信控制台中找到
+			// String mobile = "";// 必填:待发送手机号
 			String msgJson = "{\"code\":\"" + smscode + "\"}";// 可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
 			String outid = "dswork";// 可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
 			try
@@ -124,16 +100,8 @@ public class SmsController
 	}
 
 	/**
-	 * 阿里云短信平台发送短信
-	 * @param accessKeyId 访问ID
-	 * @param accessSecret 访问密钥
-	 * @param signName 短信签名-可在短信控制台中找到
-	 * @param templateCode 短信模板-可在短信控制台中找到，如模板内容为"尊敬的${name},您的验证码为${code}"
-	 * @param mobile 待发送手机号
-	 * @param msgJson 可选:短信数据集，如上模板内容时，此处的值为{"name":"张三","code":"000000"}
-	 * @param outid 可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
-	 * @return json {"Message":"OK","RequestId":"D5992B13-F912-4307-AD8E-63427AA22CBF","BizId":"303717826362176026^0","Code":"OK"}
-	 * @throws Exception
+	 * {"Message":"OK","RequestId":"D5992B13-F912-4307-AD8E-63427AA22CBF","BizId":"303717826362176026^0","Code":"OK"}
+	 * @return json
 	 */
 	public static String sendSMS(String accessKeyId, String accessSecret, String signName, String templateCode, String mobile, String msgJson, String outid) throws Exception
 	{
